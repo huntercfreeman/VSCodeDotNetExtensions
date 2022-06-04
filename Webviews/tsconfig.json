@@ -1,0 +1,6 @@
+{
+    "extends": "../tsconfig.json",
+    "include": ["./**/*", "../src/Models/NugetPackageModel.ts", ],
+    "exclude": ["../node_modules/*"],
+    "compilerOptions": {"strict": true, }
+  }
