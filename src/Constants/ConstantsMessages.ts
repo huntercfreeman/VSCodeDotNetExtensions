@@ -13,10 +13,6 @@ export class ConstantsMessages {
             value: solutionAbsoluteFilePaths
         };
     }
-    
-    public static UnwrapLoadSolutionsInWorkspaceMessage(loadSolutionsInWorkspaceMessage: any) : AbsoluteFilePath[] {
-        return loadSolutionsInWorkspaceMessage.solutionAbsoluteFilePaths;
-    }
 
     public static readonly LOAD_SOLUTIONS_IN_WORKSPACE: string = "loadSolutionsInWorkspace";
 }

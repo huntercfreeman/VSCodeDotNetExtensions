@@ -25,7 +25,7 @@ export class SidebarProvider implements vscode.WebviewViewProvider {
     webviewView.webview.html = this.getWebviewContent(webviewView.webview);
     
     webviewView.webview.onDidReceiveMessage(async (data) => {
-      switch (data.command) {
+      switch (data.type) {
         case ConstantsMessages.LOAD_SOLUTIONS_IN_WORKSPACE: {
           return await loadSolutionsInWorkspace(webviewView);
         }
@@ -105,7 +105,8 @@ async function loadSolutionsInWorkspace(webviewView: vscode.WebviewView): Promis
     return solutionOne.localeCompare(solutionTwo);
   });
   
-  let solutionAbsoluteFilePaths = solutionFsPaths.map(x => new AbsoluteFilePath(x, false));
+  let solutionAbsoluteFilePaths = solutionFsPaths.map(x => 
+    new AbsoluteFilePath(x, false, null));
 
   webviewView.webview.postMessage(
     ConstantsMessages
