@@ -1,4 +1,5 @@
 import { ConstantsFilePath } from "../Constants/ConstantsFilePath";
+import { getNonce } from "../IdGeneration/getNonce";
 import { FilePathParser } from "../Parsers/FilePathParser";
 import { FilePathStandardizer } from "./FilePathStandardizer";
 
@@ -11,7 +12,12 @@ export class AbsoluteFilePath {
      */
     constructor(public readonly initialAbsoluteFilePathStringInput: string, 
         public readonly isDirectory: boolean,
-        public readonly parentDirectories: AbsoluteFilePath[] | null) {
+        public readonly parentDirectories: AbsoluteFilePath[] | null,
+        public readonly nonce: string | null) {
+            if(nonce === null) {
+                nonce = getNonce();
+            }
+
             initialAbsoluteFilePathStringInput = FilePathStandardizer.standardizeFilePath(initialAbsoluteFilePathStringInput);
             
             let possibleFileNameWithExtension: string | undefined = initialAbsoluteFilePathStringInput.split(ConstantsFilePath.STANDARDIZED_FILE_DELIMITER).pop();

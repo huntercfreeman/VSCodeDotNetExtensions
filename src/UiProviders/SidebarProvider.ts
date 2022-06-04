@@ -28,11 +28,9 @@ export class SidebarProvider implements vscode.WebviewViewProvider {
     webviewView.webview.onDidReceiveMessage(async (data) => {
       switch (data.type) {
         case ConstantsMessages.LOAD_SOLUTIONS_IN_WORKSPACE: {
-          return await loadSolutionsInWorkspace(webviewView);
+          return await loadSolutionsInWorkspace(webviewView, data);
         }
-        case ConstantsMessages.READ_SOLUTION:
-          return readSolution(webviewView, data.value);
-        }
+      }
     });
   }
 
@@ -67,6 +65,7 @@ export class SidebarProvider implements vscode.WebviewViewProvider {
 	  <title>NugetPackageManagerWebview</title>
     <link href="${resetCssUri}" rel="stylesheet">
     <link href="${vSCodeCssUri}" rel="stylesheet">
+    <link href="${dotNetIdeSvelteAppCssUri}" rel="stylesheet">
 	  <script>
 		const tsVscode = acquireVsCodeApi();
 	</script>
@@ -78,7 +77,7 @@ export class SidebarProvider implements vscode.WebviewViewProvider {
   }
 }
 
-async function loadSolutionsInWorkspace(webviewView: vscode.WebviewView): Promise<void> {
+async function loadSolutionsInWorkspace(webviewView: vscode.WebviewView, data: any): Promise<void> {
   let workspaceFolderAbsolutePath: string;
 
 	let workspaceFolderFsPaths = vscode.workspace.workspaceFolders?.map(folder => folder.uri.fsPath);
@@ -109,25 +108,12 @@ async function loadSolutionsInWorkspace(webviewView: vscode.WebviewView): Promis
   });
   
   let solutionAbsoluteFilePaths = solutionFsPaths.map(x => 
-    new AbsoluteFilePath(x, false, null));
+    new AbsoluteFilePath(x, false, null, null));
 
   let solutions = solutionAbsoluteFilePaths.map(x =>
     new SolutionModel(x));
 
-  webviewView.webview.postMessage(
-    ConstantsMessages
-      .ConstructLoadSolutionsInWorkspaceMessage(solutions));
-}
+  data.value = solutions;
 
-async function readSolution(webviewView: vscode.WebviewView, value: SolutionModel): Promise<void> {
-  await SolutionModel.getFileContents(value, (err: any, data: any) => {
-      if (err) {
-          console.error(err);
-          return;
-      }
-
-      webviewView.webview.postMessage(
-        ConstantsMessages
-          .ConstructReadSolutionMessage(data));
-    });
+  webviewView.webview.postMessage(data);
 }

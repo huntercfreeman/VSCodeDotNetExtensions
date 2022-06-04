@@ -1,34 +1,35 @@
 <script lang="ts">
-	import Test from "./Components/Test.svelte";
+	import { onMount } from "svelte";
+	import type { AbsoluteFilePath } from "../../out/FileSystem/AbsoluteFilePath";
+	import type { SolutionModel } from "../../out/DotNet/SolutionModel";
+	import type { CSharpProjectModel } from "../../out/DotNet/CSharpProjectModel";
 
-	export let name: string;
+	import { ConstantsMessages } from "../../out/Constants/ConstantsMessages";
+	import SelectSolutionForm from "./Components/SelectSolutionForm.svelte";
+
+	let solutionModels: SolutionModel[] = [];
+
+	function getSolutionFilesInWorkspace() {
+		tsVscode.postMessage(
+			ConstantsMessages.ConstructMessage(ConstantsMessages.LOAD_SOLUTIONS_IN_WORKSPACE, null));
+	}
+
+	onMount(async () => {
+		window.addEventListener("message", async (event) => {
+			const message = event.data;
+			switch (message.type) {
+				case ConstantsMessages.LOAD_SOLUTIONS_IN_WORKSPACE:
+					solutionModels = message.value;
+					break;
+			}
+		});
+
+		getSolutionFilesInWorkspace();
+	});
 </script>
 
-<main>
-	<Test />
+<button on:click={getSolutionFilesInWorkspace}>
+	Reload Solutions In Workspace
+</button>
 
-	<h1>Hello {name}!</h1>
-	<p>Visit the <a href="https://svelte.dev/tutorial">Svelte tutorial</a> to learn how to build Svelte apps.</p>
-</main>
-
-<style>
-	main {
-		text-align: center;
-		padding: 1em;
-		max-width: 240px;
-		margin: 0 auto;
-	}
-
-	h1 {
-		color: #ff3e00;
-		text-transform: uppercase;
-		font-size: 4em;
-		font-weight: 100;
-	}
-
-	@media (min-width: 640px) {
-		main {
-			max-width: none;
-		}
-	}
-</style>
+<SelectSolutionForm solutionModels="{solutionModels}" />
