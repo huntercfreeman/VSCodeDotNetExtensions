@@ -38,8 +38,11 @@ export class SidebarProvider implements vscode.WebviewViewProvider {
   }
 
   private getWebviewContent(webview: vscode.Webview) {
-	const dotNetIdeJavaScriptUri = webview.asWebviewUri(vscode.Uri.joinPath(
-		this.context.extensionUri, 'out/compiled', 'DotNetIdePage.js'));
+  	const dotNetIdeSvelteAppJavaScriptUri = webview.asWebviewUri(vscode.Uri.joinPath(
+	  	this.context.extensionUri, 'out/SvelteApp/build', 'bundle.js'));
+
+    const dotNetIdeSvelteAppCssUri = webview.asWebviewUri(vscode.Uri.joinPath(
+		  this.context.extensionUri, 'out/SvelteApp/build', 'bundle.css'));
 
     const resetCssUri = webview.asWebviewUri(
       vscode.Uri.joinPath(this.context.extensionUri, "media", "reset.css")
@@ -61,13 +64,12 @@ export class SidebarProvider implements vscode.WebviewViewProvider {
 	  <title>NugetPackageManagerWebview</title>
     <link href="${resetCssUri}" rel="stylesheet">
     <link href="${vSCodeCssUri}" rel="stylesheet">
-    <link href="${dotNetIdeCssUri}" rel="stylesheet">
 	  <script>
 		const tsVscode = acquireVsCodeApi();
 	</script>
   </head>
   <body>
-	  <script src="${dotNetIdeJavaScriptUri}"></script>
+	  <script src="${dotNetIdeSvelteAppJavaScriptUri}"></script>
   </body>
   </html>`;
   }

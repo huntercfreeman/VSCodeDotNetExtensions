@@ -10,7 +10,7 @@ export class ConstantsMessages {
     public static ConstructLoadSolutionsInWorkspaceMessage(solutionAbsoluteFilePaths: AbsoluteFilePath[] | null) {
         return {
             type: ConstantsMessages.LOAD_SOLUTIONS_IN_WORKSPACE,
-            solutionAbsoluteFilePaths: solutionAbsoluteFilePaths
+            value: solutionAbsoluteFilePaths
         };
     }
     
