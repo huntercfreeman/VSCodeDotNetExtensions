@@ -1,5 +1,6 @@
 import * as vscode from 'vscode';
 import { ConstantsMessages } from '../Constants/ConstantsMessages';
+import { SolutionModel } from '../DotNet/SolutionModel';
 import { AbsoluteFilePath } from '../FileSystem/AbsoluteFilePath';
 
 /**
@@ -29,7 +30,9 @@ export class SidebarProvider implements vscode.WebviewViewProvider {
         case ConstantsMessages.LOAD_SOLUTIONS_IN_WORKSPACE: {
           return await loadSolutionsInWorkspace(webviewView);
         }
-      }
+        case ConstantsMessages.READ_SOLUTION:
+          return readSolution(webviewView, data.value);
+        }
     });
   }
 
@@ -108,7 +111,23 @@ async function loadSolutionsInWorkspace(webviewView: vscode.WebviewView): Promis
   let solutionAbsoluteFilePaths = solutionFsPaths.map(x => 
     new AbsoluteFilePath(x, false, null));
 
+  let solutions = solutionAbsoluteFilePaths.map(x =>
+    new SolutionModel(x));
+
   webviewView.webview.postMessage(
     ConstantsMessages
-      .ConstructLoadSolutionsInWorkspaceMessage(solutionAbsoluteFilePaths));
+      .ConstructLoadSolutionsInWorkspaceMessage(solutions));
+}
+
+async function readSolution(webviewView: vscode.WebviewView, value: SolutionModel): Promise<void> {
+  await SolutionModel.getFileContents(value, (err: any, data: any) => {
+      if (err) {
+          console.error(err);
+          return;
+      }
+
+      webviewView.webview.postMessage(
+        ConstantsMessages
+          .ConstructReadSolutionMessage(data));
+    });
 }
