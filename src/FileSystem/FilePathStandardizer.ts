@@ -1,0 +1,8 @@
+export class FilePathStandardizer {
+    /**
+     * Normalizes file delimiters: ['\\', '/'] to be only '/'
+     */
+    public static standardizeFilePath(inputString: string) {
+        return inputString.replace(/\\/g, "/");
+    }
+}
