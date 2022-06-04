@@ -5,7 +5,7 @@ const fs = require('fs');
 
 export class SolutionModel {
     constructor(public readonly absoluteFilePath: AbsoluteFilePath) {
-        var dotNetSolutionParser: DotNetSolutionParser = new DotNetSolutionParser(absoluteFilePath,
+        this.dotNetSolutionParser = new DotNetSolutionParser(absoluteFilePath,
             this);
     }
 
@@ -16,4 +16,10 @@ export class SolutionModel {
             callback(err, data);
         });        
     }
+    
+    public static async parseSolution(solution: SolutionModel, callback: any) : Promise<void> {
+        solution.dotNetSolutionParser.parse();
+    }
+
+    public readonly dotNetSolutionParser: DotNetSolutionParser;
 }

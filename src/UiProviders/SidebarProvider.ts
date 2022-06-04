@@ -30,6 +30,9 @@ export class SidebarProvider implements vscode.WebviewViewProvider {
         case ConstantsMessages.LOAD_SOLUTIONS_IN_WORKSPACE: {
           return await loadSolutionsInWorkspace(webviewView, data);
         }
+        case ConstantsMessages.PARSE_SOLUTION: {
+          return await loadSolutionsInWorkspace(webviewView, data);
+        }
       }
     });
   }

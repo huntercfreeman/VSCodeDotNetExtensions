@@ -19,4 +19,5 @@ export class ConstantsMessages {
 
     public static readonly LOAD_SOLUTIONS_IN_WORKSPACE: string = "loadSolutionsInWorkspace";
     public static readonly READ_SOLUTION: string = "readSolution";
+    public static readonly PARSE_SOLUTION: string = "parseSolution";
 }

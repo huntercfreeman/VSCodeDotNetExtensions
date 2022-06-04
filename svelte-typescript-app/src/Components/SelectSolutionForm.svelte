@@ -11,7 +11,10 @@
 	let selectedSolution;
 	
 	function handleSelectOnChange() {
-		
+		if(selectedSolution) {
+			tsVscode.postMessage(
+			ConstantsMessages.ConstructMessage(ConstantsMessages.LOAD_SOLUTIONS_IN_WORKSPACE, null));
+		}
 	}
 </script>
 
