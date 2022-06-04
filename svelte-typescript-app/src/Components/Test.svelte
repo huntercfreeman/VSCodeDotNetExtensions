@@ -2,6 +2,7 @@
 	import { onMount } from "svelte";
 	import type { AbsoluteFilePath } from "../../../out/FileSystem/AbsoluteFilePath";
 	import type { SolutionModel } from "../../../out/DotNet/SolutionModel";
+	import type { CSharpProjectModel } from "../../../out/DotNet/CSharpProjectModel";
 
 	import { ConstantsMessages } from "../../../out/Constants/ConstantsMessages";
 
@@ -52,9 +53,17 @@
 
 {#each solutionFilesInWorkspace as solution}
 	<div style="border: 2px solid aqua;">
-		{solution.absoluteFilePath.initialAbsoluteFilePathStringInput}
+		{solution.absoluteFilePath.fileNameWithExtension}
 
 		<button on:click="{() => readSolutionContents(solution)}">Read {solution.absoluteFilePath.fileNameWithExtension} Contents</button>
+
+		{#if (solution.projects?.length ?? 0) > 0}
+			{#each solution.projects as project}
+				{project.absoluteFilePath.fileNameWithExtension}
+			{/each}
+		{:else}
+			<div>(solution.projects?.length ?? 0) > 0</div>
+		{/if}
 	</div>
 {/each}
 
