@@ -5,8 +5,10 @@
 	import type { CSharpProjectModel } from "../../../out/DotNet/CSharpProjectModel";
 	import { ConstantsMessages } from "../../../out/Constants/ConstantsMessages";
 	import { ConstantsTreeView } from "../../../out/Constants/ConstantsTreeView";
+	import { ConstantsContextualInformation } from "../../../out/Constants/ConstantsContextualInformation";
 	import ExpansionChevron from "./ExpansionChevron.svelte";
 	import { json } from "stream/consumers";
+	import ContextMenu from './ContextMenu.svelte';
 
 	export let data: any;
 	export let children: any[];
@@ -77,6 +79,10 @@
 		<span class="dni_tree-view-title-text">
 			{getTitleText()}
 		</span>
+
+		{#if !data.secondGuid}
+			<ContextMenu contextualInformation="{ConstantsContextualInformation.TREE_VIEW_SOLUTION_CONTEXT}" />
+		{/if}
 	</div>
 	
 	<div class="dni_tree-view-children">

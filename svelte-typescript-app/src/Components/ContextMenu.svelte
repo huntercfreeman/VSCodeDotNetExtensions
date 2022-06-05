@@ -2,7 +2,11 @@
     import Menu from './Menu.svelte'
     import MenuOption from './MenuOption.svelte';
 	import MenuDivider from './MenuDivider.svelte';
-    
+	import ContextMenuForSolution from './ContextMenus/ContextMenuForSolution.svelte';
+    import { ConstantsContextualInformation } from "../../../out/Constants/ConstantsContextualInformation";
+
+	export let contextualInformation: string;
+
     let pos = { x: 0, y: 0 };
     let showMenu = false;
 
@@ -22,22 +26,9 @@
 </script>
 
 {#if showMenu}
-	<Menu {...pos} on:click={closeMenu} on:clickoutside={closeMenu}>
-		<MenuOption 
-			on:click={console.log} 
-			text="Do nothing" />
-		<MenuOption 
-			on:click={console.log} 
-			text="Do nothing, but twice" />
-		<MenuDivider />
-		<MenuOption 
-			isDisabled={true} 
-			on:click={console.log} 
-			text="Whoops, disabled!" />
-		<MenuOption on:click={console.log}>
-			<span>Look! An icon!</span>
-		</MenuOption>
-	</Menu>
+	{#if contextualInformation === ConstantsContextualInformation.TREE_VIEW_SOLUTION_CONTEXT}
+		<ContextMenuForSolution x={pos.x} y={pos.y} closeMenu={closeMenu} />
+	{/if}
 {/if}
 
 <svelte:body on:contextmenu|preventDefault={onRightClick} />

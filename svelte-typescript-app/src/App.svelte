@@ -49,8 +49,6 @@
 		<TreeViewDisplay data={selectedSolution}
 						 children={selectedSolution.projects} />	
 	{/if}
-	
-	<CustomMenu />
 </div>
 
 <style>
