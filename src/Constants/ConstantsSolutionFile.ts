@@ -5,6 +5,16 @@ export class ConstantsSolutionFile {
      */
     public static readonly START_OF_PROJECT_DEFINITION: string = "Project(\"{";
     /**
+    * Example text: Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}")
+    */
+    public static readonly START_OF_GUID: string = "{";
+    /**
+    * Example text: Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}")
+    */
+     public static readonly END_OF_GUID: string = "}";
+
+
+    /**
      * One must first check for ConstantsSolutionFile.START_OF_GLOBAL_SECTION as this is 
      * a substring of START_OF_GLOBAL_SECTION
      */

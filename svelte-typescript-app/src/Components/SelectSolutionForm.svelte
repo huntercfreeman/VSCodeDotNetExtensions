@@ -13,13 +13,13 @@
 	function handleSelectOnChange() {
 		if(selectedSolution) {
 			tsVscode.postMessage(
-			ConstantsMessages.ConstructMessage(ConstantsMessages.LOAD_SOLUTIONS_IN_WORKSPACE, null));
+			ConstantsMessages.ConstructMessage(ConstantsMessages.PARSE_SOLUTION, selectedSolution));
 		}
 	}
 </script>
 
 <div>
-	<select bind:value={selectedSolution} class="dni_select">
+	<select bind:value={selectedSolution} on:change="{handleSelectOnChange}" class="dni_select">
 		{#each solutionModels as solution}
 			<option value="{solution}" class="dni_option">{solution.absoluteFilePath.fileNameWithExtension}</option>
 		{/each}

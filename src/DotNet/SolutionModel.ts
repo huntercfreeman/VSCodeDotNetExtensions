@@ -4,9 +4,7 @@ import { CSharpProjectModel } from "./CSharpProjectModel";
 const fs = require('fs');
 
 export class SolutionModel {
-    constructor(public readonly absoluteFilePath: AbsoluteFilePath) {
-        this.dotNetSolutionParser = new DotNetSolutionParser(absoluteFilePath,
-            this);
+    constructor(public readonly absoluteFilePath: AbsoluteFilePath) {   
     }
 
     public readonly projects: CSharpProjectModel[] = [];
@@ -18,8 +16,9 @@ export class SolutionModel {
     }
     
     public static async parseSolution(solution: SolutionModel, callback: any) : Promise<void> {
-        solution.dotNetSolutionParser.parse();
+        let dotNetSolutionParser = new DotNetSolutionParser(solution.absoluteFilePath,
+            solution);
+        
+        dotNetSolutionParser.parse(callback);
     }
-
-    public readonly dotNetSolutionParser: DotNetSolutionParser;
 }
