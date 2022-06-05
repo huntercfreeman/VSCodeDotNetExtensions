@@ -11,7 +11,6 @@ export class DotNetSolutionParser {
     public readonly solutionModel: SolutionModel) {
   }
 
-  private _position: number = 0;
   private _stringReader!: StringReader;
 
   public async parse(callback: any) {
@@ -45,7 +44,6 @@ export class DotNetSolutionParser {
           if (ConstantsSolutionFile.START_OF_GLOBAL.substring(1) ===
             this._stringReader.peek(ConstantsSolutionFile.START_OF_GLOBAL.length - 1)) {
             handledToken = true;
-            break; // TODO: Parse more of the .sln after checking if the projects parsed correctly
             this.readInGlobalDefinition();
           }
         }
@@ -94,18 +92,10 @@ export class DotNetSolutionParser {
 
     }
 
-
     //           ------------------------------------
     // Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyCrudApp", "MyCrudApp\MyCrudApp.csproj", "{8257B361-20EC-4D50-8987-169E8BEC46E4}"
     //           ------------------------------------
-    let firstGuid = "";
-
-    while ((currentCharacter = this._stringReader.consume(1)) !==
-      ConstantsStringReader.END_OF_FILE_MARKER &&
-      currentCharacter !== ConstantsSolutionFile.END_OF_GUID) {
-
-      firstGuid += currentCharacter;
-    }
+    let firstGuid = this.readInGuid();
 
     while ((currentCharacter = this._stringReader.consume(1)) !==
       ConstantsStringReader.END_OF_FILE_MARKER &&
@@ -154,14 +144,7 @@ export class DotNetSolutionParser {
     //                                                                                                  ------------------------------------
     // Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyCrudApp", "MyCrudApp\MyCrudApp.csproj", "{8257B361-20EC-4D50-8987-169E8BEC46E4}"
     //                                                                                                  ------------------------------------
-    let secondGuid = "";
-
-    while ((currentCharacter = this._stringReader.consume(1)) !==
-      ConstantsStringReader.END_OF_FILE_MARKER &&
-      currentCharacter !== ConstantsSolutionFile.END_OF_GUID) {
-
-      secondGuid += currentCharacter;
-    }
+    let secondGuid = this.readInGuid();
 
     let project = new CSharpProjectModel(this.solutionModel,
       firstGuid,
@@ -174,27 +157,72 @@ export class DotNetSolutionParser {
 
 
   public readInGlobalDefinition() {
-    throw new Error("function not implemented.");
+    return;
   }
 
 
   public readInGlobalSection() {
-    throw new Error("function not implemented.");
+    return;
   }
 
 
   public readInSolutionProperties() {
-    throw new Error("function not implemented.");
+    return;
   }
 
 
   public readInSolutionFolders() {
-    throw new Error("function not implemented.");
+    let currentCharacter: string = "";
+
+    let projectGuid: string | undefined = undefined;
+    let solutionFolderGuid: string | undefined = undefined;
+
+    while ((currentCharacter = this._stringReader.consume(1)) !==
+      ConstantsStringReader.END_OF_FILE_MARKER) {
+
+        switch(currentCharacter) {
+          case ConstantsSolutionFile.START_OF_GUID:
+            var guid = this.readInGuid();
+
+            if(!projectGuid) {
+              projectGuid = guid;
+            }
+            else {
+              solutionFolderGuid = guid;
+
+              if(!this.solutionModel.solutionFolderMap.set) {
+                this.solutionModel.solutionFolderMap = new Map();
+              }
+              
+              this.solutionModel.solutionFolderMap.set(projectGuid, solutionFolderGuid);
+
+              projectGuid = undefined;
+              solutionFolderGuid = undefined;
+            }
+        }
+    }
   }
 
 
   public readInExtensibilityGlobals() {
-    throw new Error("function not implemented.");
+    return;
+  }
+  
+  public readInGuid(): string {
+    //           ------------------------------------
+    // Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyCrudApp", "MyCrudApp\MyCrudApp.csproj", "{8257B361-20EC-4D50-8987-169E8BEC46E4}"
+    //           ------------------------------------
+    let currentCharacter = "";
+    let guid = "";
+
+    while ((currentCharacter = this._stringReader.consume(1)) !==
+      ConstantsStringReader.END_OF_FILE_MARKER &&
+      currentCharacter !== ConstantsSolutionFile.END_OF_GUID) {
+
+      guid += currentCharacter;
+    }
+
+    return guid;
   }
 }
 
