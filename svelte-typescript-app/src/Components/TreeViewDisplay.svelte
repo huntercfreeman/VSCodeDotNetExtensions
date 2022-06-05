@@ -6,13 +6,28 @@
 
 	import { ConstantsMessages } from "../../../out/Constants/ConstantsMessages";
 	import ExpansionChevron from "./ExpansionChevron.svelte";
+import { json } from "stream/consumers";
 
 	export let data: any;
 	export let children: any[];
+	export let selectedSolution: SolutionModel;
 
-	let selectedSolution: SolutionModel;
 	let isExpanded: boolean = false;
+
+	function getPossibleSolutionFolderChildren(): any[] {
+		let temporaryChildArray: any[] = [];
+
+		for (const [key, value] of Object.entries(selectedSolution.solutionFolderMap)) {
+			if (value === data.guidTwo) {
+				temporaryChildArray.push(selectedSolution.projects.find(x => x.guidTwo === key));
+			}
+		}
+
+		return temporaryChildArray;
+	}
 </script>
+
+
 
 <div class="dni_tree-view">
 	<div class="dni_tree-view-title">
@@ -28,9 +43,11 @@
 	<div class="dni_tree-view-children">
 		{#if isExpanded}
 			{#each children as child}
-			
-				<svelte:self data={child}
-					   children={[]} />
+				{#if !selectedSolution.solutionFolderMap.has(data?.guidTwo ?? "")}
+					<svelte:self data={child}
+						children={getPossibleSolutionFolderChildren()}
+						selectedSolution={selectedSolution} />
+				{/if}
 			{/each}
 		{/if}
 	</div>

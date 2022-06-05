@@ -41,6 +41,8 @@
 <SelectSolutionForm solutionModels={solutionModels} />
 
 {#if selectedSolution}
-	<TreeViewDisplay data={selectedSolution}
-		children={selectedSolution.projects} />	
+{JSON.stringify(selectedSolution.solutionFolderMap)}
+	<!-- <TreeViewDisplay selectedSolution={selectedSolution} 
+					 data={selectedSolution}
+		             children={selectedSolution.projects} />	 -->
 {/if}
