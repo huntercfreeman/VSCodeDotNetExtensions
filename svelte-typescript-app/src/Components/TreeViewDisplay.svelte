@@ -53,7 +53,7 @@
 	</div>
 	
 	<div class="dni_tree-view-children">
-		{#if isExpanded}
+		{#if isExpanded && children}
 			{#each children as child}
 				{#if !hasDifferentParentContainer(child)}
 					<svelte:self data={child}
