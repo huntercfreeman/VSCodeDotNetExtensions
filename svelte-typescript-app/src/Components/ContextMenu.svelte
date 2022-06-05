@@ -6,16 +6,17 @@
     let pos = { x: 0, y: 0 };
     let showMenu = false;
 
-    async function onRightClick(e: any) {
-        if (showMenu) {
-            showMenu = false;
-        }
-
-        pos = { x: e.clientX, y: e.clientY };
-        showMenu = true;
-    }
-
-    function closeMenu() {
+    async function onRightClick(e) {
+		if (showMenu) {
+			showMenu = false;
+			await new Promise(res => setTimeout(res, 100));
+		}
+		
+		pos = { x: e.clientX, y: e.clientY };
+		showMenu = true;
+	}
+	
+	function closeMenu() {
 		showMenu = false;
 	}
 </script>
@@ -40,15 +41,3 @@
 {/if}
 
 <svelte:body on:contextmenu|preventDefault={onRightClick} />
-
-<style>
-    .dni_context-menu {
-        width: 300px;
-        height: 300px;
-        position: fixed;
-        left: 0;
-        top: 0;
-        background-color: aqua;
-        color: red;
-    }
-</style>

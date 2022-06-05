@@ -28,13 +28,15 @@
 		grid-gap: 5px;
 	}
 	div:hover {
-		background: #0002;
+		color: var(--vscode-button-foreground);
+		background: var(--vscode-button-hoverBackground);
 	}
 	div.disabled {
-		color: #0006;
+		color: var(--vscode-disabledForeground);
 	}
 	div.disabled:hover {
-		background: white;
+		color: var(--vscode-button-foreground);
+		background: var(--vscode-button-hoverBackground);
 	}
 </style>
 

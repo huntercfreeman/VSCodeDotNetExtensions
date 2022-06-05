@@ -38,7 +38,7 @@
 	});
 </script>
 
-<div>
+<div class="dni_app">
 	<button on:click={getSolutionFilesInWorkspace}>
 		Reload Solutions In Workspace
 	</button>
@@ -52,3 +52,9 @@
 	
 	<CustomMenu />
 </div>
+
+<style>
+	.dni_app {
+		height: calc(100vh - var(--input-margin-vertical) * 2);
+	}
+</style>

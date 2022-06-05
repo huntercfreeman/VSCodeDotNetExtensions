@@ -32,9 +32,10 @@
 	div {
 		position: absolute;
 		display: grid;
-		border: 1px solid #0003;
-		box-shadow: 2px 2px 5px 0px #0002;
-		background: white;
+		border: 1px solid var(--vscode-widget-shadow);
+		box-shadow: 2px 2px 5px 0px var(--vscode-widget-shadow);
+		background: var(--vscode-dropdown-background);
+        color: var(--vscode-dropdown-foreground);;
 	}
 </style>
 
