@@ -37,7 +37,7 @@ export class AbsoluteFilePath {
         }
     }
 
-    public static ConstructAbsoluteFilePathFromAbsoluteFilePathAndRelativePath(absoluteFilePath: AbsoluteFilePath,
+    public static constructAbsoluteFilePathFromAbsoluteFilePathAndRelativePath(absoluteFilePath: AbsoluteFilePath,
         relativePathFromGivenAbsoluteFilePath: string,
         isDirectory: boolean)
         : AbsoluteFilePath {

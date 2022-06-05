@@ -45,6 +45,7 @@ export class DotNetSolutionParser {
           if (ConstantsSolutionFile.START_OF_GLOBAL.substring(1) ===
             this._stringReader.peek(ConstantsSolutionFile.START_OF_GLOBAL.length - 1)) {
             handledToken = true;
+            break; // TODO: Parse more of the .sln after checking if the projects parsed correctly
             this.readInGlobalDefinition();
           }
         }
