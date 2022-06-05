@@ -1,3 +1,4 @@
+import { ConstantsContextualInformation } from "../Constants/ConstantsContextualInformation";
 import { AbsoluteFilePath } from "../FileSystem/AbsoluteFilePath";
 import { SolutionModel } from "./SolutionModel";
 
@@ -16,4 +17,6 @@ export class CSharpProjectModel {
     public readonly absoluteFilePath: AbsoluteFilePath;
     public solutionFolderEntries: CSharpProjectModel[] | undefined;
     public solutionFolderParentSecondGuid: string | undefined;
+
+    public contextualInformation: string = ConstantsContextualInformation.TREE_VIEW_SOLUTION_CONTEXT;
 }

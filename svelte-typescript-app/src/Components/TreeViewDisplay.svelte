@@ -80,9 +80,8 @@
 			{getTitleText()}
 		</span>
 
-		{#if !data.secondGuid}
-			<ContextMenu contextualInformation="{ConstantsContextualInformation.TREE_VIEW_SOLUTION_CONTEXT}" />
-		{/if}
+		<ContextMenu contextualInformation="{data.contextualInformation}" />
+
 	</div>
 	
 	<div class="dni_tree-view-children">

@@ -2,7 +2,9 @@
     import Menu from './Menu.svelte'
     import MenuOption from './MenuOption.svelte';
 	import MenuDivider from './MenuDivider.svelte';
-	import ContextMenuForSolution from './ContextMenus/ContextMenuForSolution.svelte';
+	import ContextMenuForSolutionTreeView from './ContextMenus/ContextMenuForSolutionTreeView.svelte';
+	import ContextMenuForSolutionFolderTreeView from './ContextMenus/ContextMenuForSolutionFolderTreeView.svelte';
+	import ContextMenuForCSharpProjectTreeView from './ContextMenus/ContextMenuForCSharpProjectTreeView.svelte';
     import { ConstantsContextualInformation } from "../../../out/Constants/ConstantsContextualInformation";
 
 	export let contextualInformation: string;
@@ -26,8 +28,13 @@
 </script>
 
 {#if showMenu}
+
 	{#if contextualInformation === ConstantsContextualInformation.TREE_VIEW_SOLUTION_CONTEXT}
-		<ContextMenuForSolution x={pos.x} y={pos.y} closeMenu={closeMenu} />
+		<ContextMenuForSolutionTreeView x={pos.x} y={pos.y} closeMenu={closeMenu} />
+	{:else if contextualInformation === ConstantsContextualInformation.TREE_VIEW_SOLUTION_FOLDER_CONTEXT}
+		<ContextMenuForSolutionFolderTreeView x={pos.x} y={pos.y} closeMenu={closeMenu} />
+	{:else if contextualInformation === ConstantsContextualInformation.TREE_VIEW_CSHARP_PROJECT_CONTEXT}
+		<ContextMenuForCSharpProjectTreeView x={pos.x} y={pos.y} closeMenu={closeMenu} />
 	{/if}
 {/if}
 

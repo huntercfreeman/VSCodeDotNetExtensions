@@ -1,3 +1,4 @@
+import { ConstantsContextualInformation } from "../Constants/ConstantsContextualInformation";
 import { AbsoluteFilePath } from "../FileSystem/AbsoluteFilePath";
 import { DotNetSolutionParser } from "../Parsers/DotNetSolutionParser";
 import { CSharpProjectModel } from "./CSharpProjectModel";
@@ -21,4 +22,6 @@ export class SolutionModel {
         
         dotNetSolutionParser.parse(callback);
     }
+
+    public readonly contextualInformation: string = ConstantsContextualInformation.TREE_VIEW_SOLUTION_CONTEXT;
 }
