@@ -5,7 +5,6 @@ const fs = require('fs');
 
 export class SolutionModel {
     constructor(public readonly absoluteFilePath: AbsoluteFilePath) {   
-        this.solutionFolderMap = new Map<string, string>();
     }
 
     public readonly projects: CSharpProjectModel[] = [];
@@ -22,6 +21,4 @@ export class SolutionModel {
         
         dotNetSolutionParser.parse(callback);
     }
-
-    public solutionFolderMap: Map<string, string>;
 }

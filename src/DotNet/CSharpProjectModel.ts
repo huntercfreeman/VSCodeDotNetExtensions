@@ -14,4 +14,6 @@ export class CSharpProjectModel {
     }
 
     public readonly absoluteFilePath: AbsoluteFilePath;
+    public solutionFolderEntries: CSharpProjectModel[] | undefined;
+    public containedInSolutionFolder: boolean = false;
 }

@@ -180,34 +180,46 @@ export class DotNetSolutionParser {
     while ((currentCharacter = this._stringReader.consume(1)) !==
       ConstantsStringReader.END_OF_FILE_MARKER) {
 
-        switch(currentCharacter) {
-          case ConstantsSolutionFile.START_OF_GUID:
-            var guid = this.readInGuid();
+      switch (currentCharacter) {
+        case ConstantsSolutionFile.START_OF_GUID:
+          var guid = this.readInGuid();
 
-            if(!projectGuid) {
-              projectGuid = guid;
+          if (!projectGuid) {
+            projectGuid = guid;
+          }
+          else {
+            solutionFolderGuid = guid;
+
+            let project = this.solutionModel.projects
+              .find(x => x.secondGuid === projectGuid);
+
+            let solutionFolder = this.solutionModel.projects
+              .find(x => x.secondGuid === solutionFolderGuid);
+
+            if (project && solutionFolder) {
+              project.containedInSolutionFolder = true;
+
+              if (!solutionFolder.solutionFolderEntries) {
+                solutionFolder.solutionFolderEntries = [];
+              }
+
+              solutionFolder.solutionFolderEntries.push(project);
             }
             else {
-              solutionFolderGuid = guid;
-
-              if(!this.solutionModel.solutionFolderMap.set) {
-                this.solutionModel.solutionFolderMap = new Map();
-              }
-              
-              this.solutionModel.solutionFolderMap.set(projectGuid, solutionFolderGuid);
-
-              projectGuid = undefined;
-              solutionFolderGuid = undefined;
+              throw new Error("Could not map project to solution folder in solution's .sln file");
             }
-        }
+
+            projectGuid = undefined;
+            solutionFolderGuid = undefined;
+          }
+      }
     }
   }
-
 
   public readInExtensibilityGlobals() {
     return;
   }
-  
+
   public readInGuid(): string {
     //           ------------------------------------
     // Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyCrudApp", "MyCrudApp\MyCrudApp.csproj", "{8257B361-20EC-4D50-8987-169E8BEC46E4}"
