@@ -1,5 +1,6 @@
 import { ConstantsSolutionFile } from "../Constants/ConstantsSolutionFile";
 import { ConstantsStringReader } from "../Constants/ConstantsStringReader";
+import { CSharpProjectModel } from "../DotNet/CSharpProjectModel";
 import { SolutionModel } from "../DotNet/SolutionModel";
 import { AbsoluteFilePath } from "../FileSystem/AbsoluteFilePath";
 import { StringReader } from "./StringReader";
@@ -140,7 +141,7 @@ export class DotNetSolutionParser {
     while ((currentCharacter = this._stringReader.consume(1)) !==
       ConstantsStringReader.END_OF_FILE_MARKER &&
       currentCharacter !== '"') {
-        projectRelativePathFromSolution += currentCharacter;
+      projectRelativePathFromSolution += currentCharacter;
     }
 
     while ((currentCharacter = this._stringReader.consume(1)) !==
@@ -158,10 +159,16 @@ export class DotNetSolutionParser {
       ConstantsStringReader.END_OF_FILE_MARKER &&
       currentCharacter !== ConstantsSolutionFile.END_OF_GUID) {
 
-        secondGuid += currentCharacter;
+      secondGuid += currentCharacter;
     }
 
-    
+    let project = new CSharpProjectModel(this.solutionModel,
+      firstGuid,
+      displayName,
+      projectRelativePathFromSolution,
+      secondGuid);
+
+    this.solutionModel.projects.push(project);
   }
 
 

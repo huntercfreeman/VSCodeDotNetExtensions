@@ -18,7 +18,7 @@ export class FilePathParser {
         let previouslySeenParentDirectories: AbsoluteFilePath[] = [];
 
         separatedFiles.forEach(element => {
-            let parentAbsoluteFilePath = new AbsoluteFilePath(element, true, [...previouslySeenParentDirectories]);
+            let parentAbsoluteFilePath = new AbsoluteFilePath(element, true, [...previouslySeenParentDirectories], null);
 
             previouslySeenParentDirectories.push(parentAbsoluteFilePath);
         });

@@ -7,7 +7,10 @@ export class CSharpProjectModel {
         public readonly displayName: string,
         public readonly projectRelativePathFromSolution: string,
         public readonly secondGuid: string) {
-            absoluteFilePath = new AbsoluteFilePath();
+            this.absoluteFilePath = AbsoluteFilePath
+                .ConstructAbsoluteFilePathFromAbsoluteFilePathAndRelativePath(parentSolutionModel.absoluteFilePath,
+                    this.projectRelativePathFromSolution,
+                    false);
     }
 
     public readonly absoluteFilePath: AbsoluteFilePath;

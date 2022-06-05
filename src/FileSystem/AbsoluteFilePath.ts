@@ -8,11 +8,11 @@ export class AbsoluteFilePath {
      * 
      * @param initialAbsoluteFilePathStringInput 
      * @param isDirectory 
-     * @param parentDirectories If passed as an empty array the parentDirectories will be parsed from the initialAbsoluteFilePathStringInput. If passed with entries parent directories will not be parsed from initialAbsoluteFilePathStringInput as this could cause an infinite loop of parsing for parent directories.
+     * @param initialParentDirectories If passed as a null array the parentDirectories will be parsed from the initialAbsoluteFilePathStringInput. If passed with entries parent directories will not be parsed from initialAbsoluteFilePathStringInput as this could cause an infinite loop of parsing for parent directories.
      */
     constructor(public readonly initialAbsoluteFilePathStringInput: string,
         public readonly isDirectory: boolean,
-        public readonly parentDirectories: AbsoluteFilePath[],
+        initialParentDirectories: AbsoluteFilePath[] | null,
         public readonly nonce: string | null) {
         if (nonce === null) {
             nonce = getNonce();
@@ -20,17 +20,20 @@ export class AbsoluteFilePath {
 
         initialAbsoluteFilePathStringInput = FilePathStandardizer.standardizeFilePath(initialAbsoluteFilePathStringInput);
 
-        this.fileNameWithExtension = AbsoluteFilePath.GetFileNameWithExtension(initialAbsoluteFilePathStringInput);
+        this.fileNameWithExtension = AbsoluteFilePath.getFileNameWithExtension(initialAbsoluteFilePathStringInput);
 
         let possibleFileNameNoExtension: string | undefined = AbsoluteFilePath
-            .GetFileNameWithoutExtensionFromFileNameWithExtension(this.fileNameWithExtension);
+            .getFileNameWithoutExtensionFromFileNameWithExtension(this.fileNameWithExtension);
 
         if (!possibleFileNameNoExtension) {
             this.fileNameNoExtension = this.fileNameWithExtension;
         }
 
-        if (parentDirectories.length == 0) {
-            parentDirectories = FilePathParser.parseParentDirectories(initialAbsoluteFilePathStringInput);
+        if (!initialParentDirectories) {
+            this.parentDirectories = FilePathParser.parseParentDirectories(initialAbsoluteFilePathStringInput);
+        }
+        else {
+            this.parentDirectories = initialParentDirectories;
         }
     }
 
@@ -58,17 +61,17 @@ export class AbsoluteFilePath {
                 parentDirectories,
                 null);
         }
-        else (normalizedRelativePath.startsWith(`.${ConstantsFilePath.STANDARDIZED_FILE_DELIMITER}`)) {
+        else {
             return new AbsoluteFilePath(absoluteFilePath.initialAbsoluteFilePathStringInput
                 .replace(absoluteFilePath.fileNameWithExtension, 
-                    AbsoluteFilePath.GetFileNameWithExtension(relativePathFromGivenAbsoluteFilePath)),
+                    AbsoluteFilePath.getFileNameWithExtension(relativePathFromGivenAbsoluteFilePath)),
                 isDirectory,
                 absoluteFilePath.parentDirectories,
                 null);
         }
     }
 
-    public static GetFileNameWithExtension(input: string) {
+    public static getFileNameWithExtension(input: string) {
         let possibleFileNameWithExtension: string | undefined = input
             .split(ConstantsFilePath.STANDARDIZED_FILE_DELIMITER)
             .pop();
@@ -80,7 +83,7 @@ export class AbsoluteFilePath {
         return possibleFileNameWithExtension;
     }
 
-    public static GetFileNameWithoutExtensionFromFileNameWithExtension(input: string) {
+    public static getFileNameWithoutExtensionFromFileNameWithExtension(input: string) {
         let startingIndexOfFileExtension = input.indexOf(".");
 
         if (startingIndexOfFileExtension !== -1) {
@@ -90,6 +93,7 @@ export class AbsoluteFilePath {
 
     public fileNameNoExtension!: string;
     public fileNameWithExtension!: string;
+    public readonly parentDirectories: AbsoluteFilePath[];
 
     public static readonly fileNameException = 'Malformed absolute path could not parse filename';
 }
