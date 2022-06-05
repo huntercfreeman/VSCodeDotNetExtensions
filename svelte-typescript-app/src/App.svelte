@@ -6,8 +6,11 @@
 
 	import { ConstantsMessages } from "../../out/Constants/ConstantsMessages";
 	import SelectSolutionForm from "./Components/SelectSolutionForm.svelte";
+	import TreeViewDisplay from "./Components/TreeViewDisplay.svelte";
 
 	let solutionModels: SolutionModel[] = [];
+
+	let selectedSolution: SolutionModel;
 
 	function getSolutionFilesInWorkspace() {
 		tsVscode.postMessage(
@@ -21,9 +24,12 @@
 				case ConstantsMessages.LOAD_SOLUTIONS_IN_WORKSPACE:
 					solutionModels = message.value;
 					break;
+				case ConstantsMessages.PARSE_SOLUTION:
+					selectedSolution = message.value;
+					break;
 			}
 		});
-
+		
 		getSolutionFilesInWorkspace();
 	});
 </script>
@@ -32,4 +38,9 @@
 	Reload Solutions In Workspace
 </button>
 
-<SelectSolutionForm solutionModels="{solutionModels}" />
+<SelectSolutionForm solutionModels={solutionModels} />
+
+{#if selectedSolution}
+	<TreeViewDisplay data={selectedSolution}
+		children={selectedSolution.projects} />	
+{/if}

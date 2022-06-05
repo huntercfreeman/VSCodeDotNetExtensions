@@ -16,17 +16,6 @@
 			ConstantsMessages.ConstructMessage(ConstantsMessages.PARSE_SOLUTION, selectedSolution));
 		}
 	}
-
-	onMount(async () => {
-		window.addEventListener("message", async (event) => {
-			const message = event.data;
-			switch (message.type) {
-				case ConstantsMessages.PARSE_SOLUTION:
-					selectedSolution = message.value;
-					break;
-			}
-		});
-	});
 </script>
 
 <div>
@@ -36,16 +25,6 @@
 		{/each}
 	</select>
 </div>
-
-{#if (selectedSolution?.projects.length ?? 0) > 0}
-	{#each selectedSolution.projects as project}
-	<div>
-<pre>
-{JSON.stringify(project, null, 2)}
-</pre>
-	</div>
-	{/each}
-{/if}
 
 <style>
 	.dni_select {
