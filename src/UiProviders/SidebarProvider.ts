@@ -85,7 +85,7 @@ export class SidebarProvider implements vscode.WebviewViewProvider {
 		const tsVscode = acquireVsCodeApi();
 	</script>
   </head>
-  <body>
+  <body style="padding: 0 5px;">
 	  <script src="${dotNetIdeSvelteAppJavaScriptUri}"></script>
   </body>
   </html>`;

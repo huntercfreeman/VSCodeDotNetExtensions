@@ -1,5 +1,8 @@
 <script lang="ts">
 	import { onMount } from "svelte";
+
+	import CustomMenu from './Components/ContextMenu.svelte';
+
 	import type { AbsoluteFilePath } from "../../out/FileSystem/AbsoluteFilePath";
 	import type { SolutionModel } from "../../out/DotNet/SolutionModel";
 	import type { CSharpProjectModel } from "../../out/DotNet/CSharpProjectModel";
@@ -35,13 +38,17 @@
 	});
 </script>
 
-<button on:click={getSolutionFilesInWorkspace}>
-	Reload Solutions In Workspace
-</button>
-
-<SelectSolutionForm solutionModels={solutionModels} />
-
-{#if selectedSolution}
-	<TreeViewDisplay data={selectedSolution}
-		             children={selectedSolution.projects} />	
-{/if}
+<div>
+	<button on:click={getSolutionFilesInWorkspace}>
+		Reload Solutions In Workspace
+	</button>
+	
+	<SelectSolutionForm solutionModels={solutionModels} />
+	
+	{#if selectedSolution}
+		<TreeViewDisplay data={selectedSolution}
+						 children={selectedSolution.projects} />	
+	{/if}
+	
+	<CustomMenu />
+</div>
