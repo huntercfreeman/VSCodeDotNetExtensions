@@ -7,6 +7,7 @@
 	import { ConstantsMessages } from "../../out/Constants/ConstantsMessages";
 	import SelectSolutionForm from "./Components/SelectSolutionForm.svelte";
 	import TreeViewDisplay from "./Components/TreeViewDisplay.svelte";
+	import ContextMenu from "./Components/ContextMenu.svelte";
 
 	let solutionModels: SolutionModel[] = [];
 
