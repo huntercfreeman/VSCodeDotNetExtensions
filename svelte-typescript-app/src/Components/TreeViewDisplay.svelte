@@ -13,6 +13,20 @@
 	
 	let isExpanded: boolean = false;
 
+	function getDataChildren(): any[] {
+		if (children) {
+			return children;
+		}
+		else {
+			tsVscode.postMessage(
+				ConstantsMessages
+					.ConstructMessage(ConstantsMessages.LOAD_CSHARP_PROJECT_CHILD_FILES, 
+						data));
+			
+			return [];
+		}
+	}
+
 	function hasDifferentParentContainer(child: any): boolean {
 		if(child.solutionFolderParentSecondGuid) {
 			if(child.solutionFolderParentSecondGuid !==
@@ -38,7 +52,20 @@
 			
 			return ConstantsTreeView.UNDEFINED_ABSOLUTE_FILE_PATH;
 		}
-	}
+	}	
+
+	onMount(async () => {
+		window.addEventListener("message", async (event) => {
+			const message = event.data;
+			switch (message.type) {
+				case ConstantsMessages.LOAD_CSHARP_PROJECT_CHILD_FILES:
+					if(message.value.secondGuid === data.secondGuid) {
+						children = message.value.children;
+					}
+					break;
+			}
+		});
+	});
 </script>
 
 <div class="dni_tree-view">
@@ -53,8 +80,8 @@
 	</div>
 	
 	<div class="dni_tree-view-children">
-		{#if isExpanded && children}
-			{#each children as child}
+		{#if isExpanded}
+			{#each getDataChildren() as child}
 				{#if !hasDifferentParentContainer(child)}
 					<svelte:self data={child}
 						children={getChildrenOfChild(child)} />

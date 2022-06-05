@@ -35,6 +35,16 @@ export class SidebarProvider implements vscode.WebviewViewProvider {
             webviewView.webview.postMessage(data);
           });
         }
+        case ConstantsMessages.LOAD_CSHARP_PROJECT_CHILD_FILES: {
+          return await SolutionModel.parseSolution(data.value, (childFiles: any[]) => {
+            data.value = {
+              secondGuid: data.value.secondGuid,
+              childFiles: childFiles
+            };
+
+            webviewView.webview.postMessage(data);
+          });
+        }
       }
     });
   }

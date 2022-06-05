@@ -12,7 +12,15 @@ export class FilePathParser {
 
         // The final "absolute file path string" will not count as a parent it is the child 
         for (let i = 0; i < separatedFiles.length - 1; i++) {
-            parentDirectoriesAbsoluteFilePathStrings.push(separatedFiles[i]);
+            let directoryAbsoluteFilePath = "";
+
+            for (let i = 0; i < i; i++) {
+                directoryAbsoluteFilePath += 
+                    separatedFiles[i] + ConstantsFilePath.STANDARDIZED_FILE_DELIMITER;    
+            }
+
+            parentDirectoriesAbsoluteFilePathStrings
+                .push(directoryAbsoluteFilePath + separatedFiles[i]);
         }        
 
         let previouslySeenParentDirectories: AbsoluteFilePath[] = [];
