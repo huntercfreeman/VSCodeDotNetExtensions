@@ -8,11 +8,11 @@ export class AbsoluteFilePath {
      * 
      * @param initialAbsoluteFilePathStringInput 
      * @param isDirectory 
-     * @param parentDirectories If passed as null the parentDirectories will be parsed from the initialAbsoluteFilePathStringInput. If passed with a value parent directories will not be parsed from initialAbsoluteFilePathStringInput as this could cause an infinite loop of parsing for parent directories.
+     * @param parentDirectories If passed as an empty array the parentDirectories will be parsed from the initialAbsoluteFilePathStringInput. If passed with entries parent directories will not be parsed from initialAbsoluteFilePathStringInput as this could cause an infinite loop of parsing for parent directories.
      */
     constructor(public readonly initialAbsoluteFilePathStringInput: string,
         public readonly isDirectory: boolean,
-        public readonly parentDirectories: AbsoluteFilePath[] | null,
+        public readonly parentDirectories: AbsoluteFilePath[],
         public readonly nonce: string | null) {
         if (nonce === null) {
             nonce = getNonce();
@@ -22,11 +22,14 @@ export class AbsoluteFilePath {
 
         this.fileNameWithExtension = AbsoluteFilePath.GetFileNameWithExtension(initialAbsoluteFilePathStringInput);
 
-        this.fileNameNoExtension = AbsoluteFilePath
-            .GetFileNameWithoutExtensionFromFileNameWithExtension(this.fileNameWithExtension)
-                ?? "";
+        let possibleFileNameNoExtension: string | undefined = AbsoluteFilePath
+            .GetFileNameWithoutExtensionFromFileNameWithExtension(this.fileNameWithExtension);
 
-        if (!parentDirectories) {
+        if (!possibleFileNameNoExtension) {
+            this.fileNameNoExtension = this.fileNameWithExtension;
+        }
+
+        if (parentDirectories.length == 0) {
             parentDirectories = FilePathParser.parseParentDirectories(initialAbsoluteFilePathStringInput);
         }
     }
@@ -38,15 +41,30 @@ export class AbsoluteFilePath {
         let normalizedRelativePath = FilePathStandardizer
             .standardizeFilePath(relativePathFromGivenAbsoluteFilePath);
 
-        if (normalizedRelativePath.startsWith("./")) {
+        if (normalizedRelativePath.startsWith("..")) {
+            // Check how many times '../' occurs in path. 
+            // Example: "../../MyDirectory" is 2
+            var count = (normalizedRelativePath.match(`/..${ConstantsFilePath.STANDARDIZED_FILE_DELIMITER}/g`) || [])
+                            .length;
+            
+            var parentDirectories = absoluteFilePath.parentDirectories
+                .slice(0, absoluteFilePath.parentDirectories.length - count);
+
+            let joinedAbsolutePathString = parentDirectories
+                .join(ConstantsFilePath.STANDARDIZED_FILE_DELIMITER);
+
+            return new AbsoluteFilePath(joinedAbsolutePathString,
+                isDirectory,
+                parentDirectories,
+                null);
+        }
+        else (normalizedRelativePath.startsWith(`.${ConstantsFilePath.STANDARDIZED_FILE_DELIMITER}`)) {
             return new AbsoluteFilePath(absoluteFilePath.initialAbsoluteFilePathStringInput
-                .replace(absoluteFilePath.fileNameWithExtension, relativePathFromGivenAbsoluteFilePath),
+                .replace(absoluteFilePath.fileNameWithExtension, 
+                    AbsoluteFilePath.GetFileNameWithExtension(relativePathFromGivenAbsoluteFilePath)),
                 isDirectory,
                 absoluteFilePath.parentDirectories,
                 null);
-        }
-        else if (normalizedRelativePath.startsWith("..")) {
-            
         }
     }
 
