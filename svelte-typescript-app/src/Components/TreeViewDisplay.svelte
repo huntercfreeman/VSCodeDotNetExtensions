@@ -13,8 +13,13 @@
 	let isExpanded: boolean = false;
 
 	function hasDifferentParentContainer(child: any): boolean {
-		if(child.containedInSolutionFolder) {
-			return true;
+		if(child.solutionFolderParentSecondGuid) {
+			if(child.solutionFolderParentSecondGuid !==
+				data.secondGuid) {
+					return true;
+			}
+
+			return false;
 		}
 	}
 	
@@ -53,6 +58,7 @@
 <style>
 	.dni_tree-view-children {
 		margin-left: 10px;
+		padding-left: 3px;
     	border-left: 1px solid var(--vscode-tree-indentGuidesStroke);
 	}
 </style>

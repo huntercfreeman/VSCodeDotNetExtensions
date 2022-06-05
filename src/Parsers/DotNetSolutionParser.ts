@@ -197,7 +197,7 @@ export class DotNetSolutionParser {
               .find(x => x.secondGuid === solutionFolderGuid);
 
             if (project && solutionFolder) {
-              project.containedInSolutionFolder = true;
+              project.solutionFolderParentSecondGuid = solutionFolderGuid;
 
               if (!solutionFolder.solutionFolderEntries) {
                 solutionFolder.solutionFolderEntries = [];
