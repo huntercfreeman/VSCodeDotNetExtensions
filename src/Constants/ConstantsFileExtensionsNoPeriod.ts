@@ -8,4 +8,5 @@ export class ConstantsFileExtensionsNoPeriod {
     // TODO: Directories should always end in a '/' except when accessing fileNameWithoutExtension
     public static readonly DIRECTORY_FILE_EXTENSION: string = "/";
     public static readonly RAZOR_FILE_EXTENSION: string = "razor";
+    public static readonly JSON_FILE_EXTENSION: string = "json";
 }

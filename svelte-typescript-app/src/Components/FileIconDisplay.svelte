@@ -9,6 +9,7 @@
     import FileCssIcon from "./Icons/FileCssIcon.svelte";
     import FileTxtIcon from "./Icons/FileTxtIcon.svelte";
     import FileSolutionFolderIcon from "./Icons/FileSolutionFolderIcon.svelte";
+    import FileJsonIcon from "./Icons/FileJsonIcon.svelte";
 
     export let fileKind: typeof FileKind;
 </script>
@@ -31,4 +32,6 @@
     <FileRazorIcon />
 {:else if fileKind === FileKind.css}
     <FileCssIcon />
+{:else if fileKind === FileKind.json}
+    <FileJsonIcon />
 {/if}

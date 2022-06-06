@@ -18,6 +18,8 @@ export class FileKindMatcher {
                 return FileKind.directory;
             case ConstantsFileExtensionsNoPeriod.RAZOR_FILE_EXTENSION:
                 return FileKind.razor;
+            case ConstantsFileExtensionsNoPeriod.JSON_FILE_EXTENSION:
+                return FileKind.json;
             default:
                 return FileKind.default;
         }

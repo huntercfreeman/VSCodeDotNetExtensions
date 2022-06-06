@@ -104,7 +104,7 @@ export class AbsoluteFilePath {
     }
     
     public static getExtensionNoPeriodFromFileNameWithExtension(input: string): string {
-        let startingIndexOfFileExtension = input.indexOf(".");
+        let startingIndexOfFileExtension = input.lastIndexOf(".");
 
         if (startingIndexOfFileExtension !== -1) {
             return input.substring(startingIndexOfFileExtension + 1);

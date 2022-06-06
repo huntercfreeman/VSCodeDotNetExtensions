@@ -8,4 +8,5 @@ export enum FileKind {
     cshtml,
     razor,
     css,
+    json
 }
