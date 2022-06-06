@@ -23,8 +23,7 @@ export class DotNetSolutionParser {
         console.error(err);
         return;
       }
-      console.log(data);
-
+      
       this._stringReader = new StringReader(data);
 
       let currentCharacter = "";

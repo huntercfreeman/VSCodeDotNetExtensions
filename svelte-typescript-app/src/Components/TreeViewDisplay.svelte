@@ -100,6 +100,14 @@
 		</span>
 
 		<span class="dni_tree-view-title-text">
+			{#if data.fileKind}
+				{#if data.fileKind === FileKind.razor}
+					.razor
+				{/if}
+				{#if data.fileKind === FileKind.cshtml}
+					.cshtml
+				{/if}
+			{/if}
 			{getTitleText()}
 		</span>
 	</div>

@@ -29,6 +29,13 @@ export class AbsoluteFilePath {
             this.fileNameNoExtension = this.fileNameWithExtension;
         }
 
+        if(isDirectory) {
+            this.extensionNoPeriod = ConstantsFilePath.STANDARDIZED_FILE_DELIMITER;
+        }
+        else {
+            this.extensionNoPeriod = AbsoluteFilePath.getExtensionNoPeriodFromFileNameWithExtension(this.fileNameWithExtension);
+        }
+
         if (!initialParentDirectories) {
             this.parentDirectories = FilePathParser.parseParentDirectories(this.initialAbsoluteFilePathStringInput);
         }
@@ -95,9 +102,20 @@ export class AbsoluteFilePath {
             return input.substring(0, startingIndexOfFileExtension + 1);
         }
     }
+    
+    public static getExtensionNoPeriodFromFileNameWithExtension(input: string): string {
+        let startingIndexOfFileExtension = input.indexOf(".");
+
+        if (startingIndexOfFileExtension !== -1) {
+            return input.substring(startingIndexOfFileExtension + 1);
+        }
+
+        return "";
+    }
 
     public fileNameNoExtension!: string;
     public fileNameWithExtension!: string;
+    public extensionNoPeriod!: string;
     public readonly parentDirectories: AbsoluteFilePath[];
     public readonly initialAbsoluteFilePathStringInput: string;
 

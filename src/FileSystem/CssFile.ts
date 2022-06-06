@@ -2,7 +2,7 @@ import { ConstantsContextualInformation } from "../Constants/ConstantsContextual
 import { AbsoluteFilePath } from "./AbsoluteFilePath";
 import { IdeFile } from "./IdeFile";
 
-export class DefaultFile extends IdeFile {
+export class CssFile extends IdeFile {
     constructor(givenAbsoluteFilePath: AbsoluteFilePath) {
         super(givenAbsoluteFilePath);
     }
