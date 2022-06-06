@@ -14,9 +14,9 @@ export class FilePathParser {
         for (let i = 0; i < separatedFiles.length - 1; i++) {
             let directoryAbsoluteFilePath = "";
 
-            for (let i = 0; i < i; i++) {
+            for (let j = 0; j < i; j++) {
                 directoryAbsoluteFilePath += 
-                    separatedFiles[i] + ConstantsFilePath.STANDARDIZED_FILE_DELIMITER;    
+                    separatedFiles[j] + ConstantsFilePath.STANDARDIZED_FILE_DELIMITER;    
             }
 
             parentDirectoriesAbsoluteFilePathStrings

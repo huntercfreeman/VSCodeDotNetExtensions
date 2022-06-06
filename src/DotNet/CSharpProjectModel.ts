@@ -16,6 +16,7 @@ export class CSharpProjectModel {
 
     public readonly absoluteFilePath: AbsoluteFilePath;
     public solutionFolderEntries: CSharpProjectModel[] | undefined;
+	public childFiles: any[] | undefined;
     public solutionFolderParentSecondGuid: string | undefined;
 
     public contextualInformation: string = ConstantsContextualInformation.TREE_VIEW_CSHARP_PROJECT_CONTEXT;

@@ -10,7 +10,7 @@ export class AbsoluteFilePath {
      * @param isDirectory 
      * @param initialParentDirectories If passed as a null array the parentDirectories will be parsed from the initialAbsoluteFilePathStringInput. If passed with entries parent directories will not be parsed from initialAbsoluteFilePathStringInput as this could cause an infinite loop of parsing for parent directories.
      */
-    constructor(public readonly initialAbsoluteFilePathStringInput: string,
+    constructor(public absoluteFilePathString: string,
         public readonly isDirectory: boolean,
         initialParentDirectories: AbsoluteFilePath[] | null,
         public readonly nonce: string | null) {
@@ -18,9 +18,9 @@ export class AbsoluteFilePath {
             nonce = getNonce();
         }
 
-        initialAbsoluteFilePathStringInput = FilePathStandardizer.standardizeFilePath(initialAbsoluteFilePathStringInput);
+        this.initialAbsoluteFilePathStringInput = FilePathStandardizer.standardizeFilePath(absoluteFilePathString);
 
-        this.fileNameWithExtension = AbsoluteFilePath.getFileNameWithExtension(initialAbsoluteFilePathStringInput);
+        this.fileNameWithExtension = AbsoluteFilePath.getFileNameWithExtension(this.initialAbsoluteFilePathStringInput);
 
         let possibleFileNameNoExtension: string | undefined = AbsoluteFilePath
             .getFileNameWithoutExtensionFromFileNameWithExtension(this.fileNameWithExtension);
@@ -30,7 +30,7 @@ export class AbsoluteFilePath {
         }
 
         if (!initialParentDirectories) {
-            this.parentDirectories = FilePathParser.parseParentDirectories(initialAbsoluteFilePathStringInput);
+            this.parentDirectories = FilePathParser.parseParentDirectories(this.initialAbsoluteFilePathStringInput);
         }
         else {
             this.parentDirectories = initialParentDirectories;
@@ -48,8 +48,8 @@ export class AbsoluteFilePath {
             // Check how many times '../' occurs in path. 
             // Example: "../../MyDirectory" is 2
             var count = (normalizedRelativePath.match(`/..${ConstantsFilePath.STANDARDIZED_FILE_DELIMITER}/g`) || [])
-                            .length;
-            
+                .length;
+
             var parentDirectories = absoluteFilePath.parentDirectories
                 .slice(0, absoluteFilePath.parentDirectories.length - count);
 
@@ -62,11 +62,16 @@ export class AbsoluteFilePath {
                 null);
         }
         else {
+
+            normalizedRelativePath = normalizedRelativePath
+                .replace('.${ConstantsFilePath.STANDARDIZED_FILE_DELIMITER}',
+                    ConstantsFilePath.STANDARDIZED_FILE_DELIMITER);
+
             return new AbsoluteFilePath(absoluteFilePath.initialAbsoluteFilePathStringInput
-                .replace(absoluteFilePath.fileNameWithExtension, 
-                    AbsoluteFilePath.getFileNameWithExtension(relativePathFromGivenAbsoluteFilePath)),
+                .replace(absoluteFilePath.fileNameWithExtension,
+                    normalizedRelativePath),
                 isDirectory,
-                absoluteFilePath.parentDirectories,
+                null,
                 null);
         }
     }
@@ -94,6 +99,7 @@ export class AbsoluteFilePath {
     public fileNameNoExtension!: string;
     public fileNameWithExtension!: string;
     public readonly parentDirectories: AbsoluteFilePath[];
+    public readonly initialAbsoluteFilePathStringInput: string;
 
     public static readonly fileNameException = 'Malformed absolute path could not parse filename';
 }

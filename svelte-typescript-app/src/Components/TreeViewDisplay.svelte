@@ -11,22 +11,30 @@
 	import ContextMenu from './ContextMenu.svelte';
 
 	export let data: any;
-	export let children: any[];
 	
 	let isExpanded: boolean = false;
 
+	let children: any[] | undefined;
+
 	function getDataChildren(): any[] {
-		if (children) {
-			return children;
-		}
-		else {
+		children = 
+		 	// .sln
+			data.projects
+			// solution folder
+			?? data.solutionFolderEntries
+			// .csproj
+			?? data.childFiles;
+
+		if(!children) {
 			tsVscode.postMessage(
 				ConstantsMessages
 					.ConstructMessage(ConstantsMessages.LOAD_CSHARP_PROJECT_CHILD_FILES, 
 						data));
-			
+
 			return [];
 		}
+
+		return children;
 	}
 
 	function hasDifferentParentContainer(child: any): boolean {
@@ -39,18 +47,13 @@
 			return false;
 		}
 	}
-	
-	function getChildrenOfChild(child: any): any[] {
-		if(child.solutionFolderEntries) {
-			return child.solutionFolderEntries;
-		}
-
-		return [];
-	}
 
 	function getTitleText() {
 		if (data.absoluteFilePath) {
 			return data.absoluteFilePath.fileNameWithExtension;
+		}
+		else if (data.fileNameWithExtension) {
+			return data.fileNameWithExtension;
 		}
 		else {
 			
@@ -63,14 +66,24 @@
 			const message = event.data;
 			switch (message.type) {
 				case ConstantsMessages.LOAD_CSHARP_PROJECT_CHILD_FILES:
+					console.log(`if(${message.value.secondGuid} === ${data.secondGuid})`);
 					if(message.value.secondGuid === data.secondGuid) {
-						children = message.value.children;
+						data = message.value;
+						children = message.value.childFiles;
 					}
 					break;
 			}
 		});
 	});
+
+	function consoleLogSomething() {
+		console.log("data.childFiles: " + JSON.stringify(data.childFiles, null, 2));
+		console.log("children: " + JSON.stringify(children, null, 2));
+		console.log("null coallesce chain: " + JSON.stringify(data.projects ?? data.solutionFolderEntries ?? data.childFiles, null, 2));
+	}
 </script>
+
+<button on:click="{consoleLogSomething}">consoleLogSomething</button>
 
 <div class="dni_tree-view">
 	<div class="dni_tree-view-title" title="{getTitleText()}">
@@ -87,10 +100,9 @@
 	
 	<div class="dni_tree-view-children">
 		{#if isExpanded}
-			{#each getDataChildren() as child}
+			{#each (children ?? getDataChildren()) as child}
 				{#if !hasDifferentParentContainer(child)}
-					<svelte:self data={child}
-						children={getChildrenOfChild(child)} />
+					<svelte:self data={child} />
 				{/if}
 			{/each}
 		{/if}

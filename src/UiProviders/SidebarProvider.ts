@@ -37,11 +37,12 @@ export class SidebarProvider implements vscode.WebviewViewProvider {
           });
         }
         case ConstantsMessages.LOAD_CSHARP_PROJECT_CHILD_FILES: {
-          return await FileSystemReader.getSiblingFiles(data.value.absoluteFilePath, (childFiles: any[]) => {
-            data.value = {
-              secondGuid: data.value.secondGuid,
-              childFiles: childFiles
-            };
+          return await FileSystemReader.getSiblingFiles(data.value.absoluteFilePath, (siblingFiles: any[]) => {
+
+            siblingFiles = siblingFiles
+              .filter(x => x !== data.value.absoluteFilePath.fileNameWithExtension);
+
+            data.value.childFiles = siblingFiles;
 
             webviewView.webview.postMessage(data);
           });

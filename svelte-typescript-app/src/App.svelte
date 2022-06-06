@@ -46,8 +46,7 @@
 	<SelectSolutionForm solutionModels={solutionModels} />
 	
 	{#if selectedSolution}
-		<TreeViewDisplay data={selectedSolution}
-						 children={selectedSolution.projects} />	
+		<TreeViewDisplay data={selectedSolution} />	
 	{/if}
 </div>
 

@@ -1,14 +1,12 @@
 import { AbsoluteFilePath } from "./AbsoluteFilePath";
 
+const fs = require('fs');
+
 export class FileSystemReader {
-    /**
-     *
-     */
-    constructor() {
-
-    }
-
-    public static getSiblingFiles(absoluteFilePath: AbsoluteFilePath, callback: any) {
-        let z = 1;
+    public static async getSiblingFiles(absoluteFilePath: AbsoluteFilePath, callback: any): Promise<void> {
+        fs.readdir(absoluteFilePath.parentDirectories[absoluteFilePath.parentDirectories.length - 1].initialAbsoluteFilePathStringInput, 
+            (err: any, files: any) => {
+            callback(files);
+          });
     }
 }
