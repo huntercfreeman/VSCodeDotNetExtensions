@@ -22,7 +22,7 @@
 			data.projects
 			// solution folder
 			?? data.solutionFolderEntries
-			// .csproj
+			// .csproj || IFile
 			?? data.childFiles;
 
 		if(!children) {
@@ -33,12 +33,10 @@
 							data));
 			}
 			else if (data.isDirectory) {
-				// TODO: Read directory
-
-				// tsVscode.postMessage(
-				// 	ConstantsMessages
-				// 		.ConstructMessage(ConstantsMessages.LOAD_CSHARP_PROJECT_CHILD_FILES, 
-				// 			data));
+				tsVscode.postMessage(
+					ConstantsMessages
+						.ConstructMessage(ConstantsMessages.LOAD_DIRECTORY_CHILD_FILES, 
+							data));
 			}
 			
 			return [];
@@ -76,8 +74,13 @@
 			const message = event.data;
 			switch (message.type) {
 				case ConstantsMessages.LOAD_CSHARP_PROJECT_CHILD_FILES:
-					console.log(`if(${message.value.secondGuid} === ${data.secondGuid})`);
 					if(message.value.secondGuid === data.secondGuid) {
+						data = message.value;
+						children = message.value.childFiles;
+					}
+					break;
+				case ConstantsMessages.LOAD_DIRECTORY_CHILD_FILES:
+					if(message.value.nonce === data.nonce) {
 						data = message.value;
 						children = message.value.childFiles;
 					}

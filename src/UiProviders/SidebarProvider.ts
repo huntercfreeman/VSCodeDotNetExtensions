@@ -2,6 +2,8 @@ import * as vscode from 'vscode';
 import { ConstantsMessages } from '../Constants/ConstantsMessages';
 import { SolutionModel } from '../DotNet/SolutionModel';
 import { AbsoluteFilePath } from '../FileSystem/AbsoluteFilePath';
+import { DefaultFile } from '../FileSystem/DefaultFile';
+import { DirectoryFile } from '../FileSystem/DirectoryFile';
 import { FileSystemReader } from '../FileSystem/FileSystemReader';
 
 /**
@@ -44,6 +46,25 @@ export class SidebarProvider implements vscode.WebviewViewProvider {
 
             data.value.childFiles = siblingFiles
               .map(x => new AbsoluteFilePath(x, FileSystemReader.isDir(x), null, null));
+
+            webviewView.webview.postMessage(data);
+          });
+        }
+        case ConstantsMessages.LOAD_DIRECTORY_CHILD_FILES: {
+          return await FileSystemReader.getChildFilesOfDirectory(data.value.absoluteFilePath, (childFiles: any[]) => {
+
+            let childAbsoluteFilePaths: AbsoluteFilePath[] = childFiles
+              .map(x => new AbsoluteFilePath(x, FileSystemReader.isDir(x), null, null));
+              
+            data.value.childFiles = childAbsoluteFilePaths
+              .map(absoluteFilePath => {
+                if(absoluteFilePath.isDirectory) {
+                  return new DirectoryFile(absoluteFilePath);
+                }
+                else {
+                  return new DefaultFile(absoluteFilePath);
+                }
+              });
 
             webviewView.webview.postMessage(data);
           });

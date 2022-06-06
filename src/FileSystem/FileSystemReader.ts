@@ -10,6 +10,18 @@ export class FileSystemReader {
           });
     }
 
+    public static async getChildFilesOfDirectory(absoluteFilePath: AbsoluteFilePath, callback: any): Promise<void> {
+        if(this.isDir(absoluteFilePath.initialAbsoluteFilePathStringInput)) {
+            fs.readdir(absoluteFilePath.initialAbsoluteFilePathStringInput, 
+                (err: any, files: any) => {
+                callback(files);
+              });
+        }
+        else {
+            throw new Error("Not a directory");
+        }
+    }
+
     public static isDir(absoluteFilePathString: string) {
         try {
             var stat = fs.lstatSync(absoluteFilePathString);
