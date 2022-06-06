@@ -2,6 +2,7 @@ import * as vscode from 'vscode';
 import { ConstantsMessages } from '../Constants/ConstantsMessages';
 import { SolutionModel } from '../DotNet/SolutionModel';
 import { AbsoluteFilePath } from '../FileSystem/AbsoluteFilePath';
+import { FileSystemReader } from '../FileSystem/FileSystemReader';
 
 /**
  * SidebarProvider is the main entry point for the IDE user interface to be displayed.
@@ -36,7 +37,7 @@ export class SidebarProvider implements vscode.WebviewViewProvider {
           });
         }
         case ConstantsMessages.LOAD_CSHARP_PROJECT_CHILD_FILES: {
-          return await SolutionModel.parseSolution(data.value, (childFiles: any[]) => {
+          return await FileSystemReader.getSiblingFiles(data.value.absoluteFilePath, (childFiles: any[]) => {
             data.value = {
               secondGuid: data.value.secondGuid,
               childFiles: childFiles

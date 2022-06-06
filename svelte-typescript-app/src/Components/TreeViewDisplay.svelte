@@ -44,6 +44,8 @@
 		if(child.solutionFolderEntries) {
 			return child.solutionFolderEntries;
 		}
+
+		return [];
 	}
 
 	function getTitleText() {
@@ -81,7 +83,6 @@
 		</span>
 
 		<ContextMenu contextualInformation="{data.contextualInformation}" />
-
 	</div>
 	
 	<div class="dni_tree-view-children">

@@ -8,7 +8,7 @@ export class FileSystemReader {
 
     }
 
-    // public static getSiblingFiles(absoluteFilePath: AbsoluteFilePath) {
-    //     let z = absoluteFilePath.
-    // }
+    public static getSiblingFiles(absoluteFilePath: AbsoluteFilePath, callback: any) {
+        let z = 1;
+    }
 }

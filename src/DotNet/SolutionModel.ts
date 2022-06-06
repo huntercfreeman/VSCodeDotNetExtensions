@@ -13,7 +13,7 @@ export class SolutionModel {
     public static async getFileContents(solution: SolutionModel, callback: any) : Promise<string> {
         return await fs.readFile(solution.absoluteFilePath.initialAbsoluteFilePathStringInput, 'utf8', (err: any, data: any) => {
             callback(err, data);
-        });        
+        });
     }
     
     public static async parseSolution(solution: SolutionModel, callback: any) : Promise<void> {

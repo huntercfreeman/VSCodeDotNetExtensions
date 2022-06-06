@@ -18,5 +18,5 @@ export class CSharpProjectModel {
     public solutionFolderEntries: CSharpProjectModel[] | undefined;
     public solutionFolderParentSecondGuid: string | undefined;
 
-    public contextualInformation: string = ConstantsContextualInformation.TREE_VIEW_SOLUTION_CONTEXT;
+    public contextualInformation: string = ConstantsContextualInformation.TREE_VIEW_CSHARP_PROJECT_CONTEXT;
 }

@@ -1,3 +1,4 @@
+import { ConstantsContextualInformation } from "../Constants/ConstantsContextualInformation";
 import { ConstantsSolutionFile } from "../Constants/ConstantsSolutionFile";
 import { ConstantsStringReader } from "../Constants/ConstantsStringReader";
 import { CSharpProjectModel } from "../DotNet/CSharpProjectModel";
@@ -197,6 +198,8 @@ export class DotNetSolutionParser {
               .find(x => x.secondGuid === solutionFolderGuid);
 
             if (project && solutionFolder) {
+              solutionFolder.contextualInformation = ConstantsContextualInformation.TREE_VIEW_SOLUTION_FOLDER_CONTEXT;
+
               project.solutionFolderParentSecondGuid = solutionFolderGuid;
 
               if (!solutionFolder.solutionFolderEntries) {
