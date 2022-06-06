@@ -51,14 +51,13 @@ export class SidebarProvider implements vscode.WebviewViewProvider {
               .map(x => new AbsoluteFilePath(x, FileSystemReader.isDir(x), null, null));
 
             data.value.childFiles = siblingAbsoluteFilePaths
-              .map(absoluteFilePath => {
-                if (absoluteFilePath.isDirectory) {
-                  return new DirectoryFile(absoluteFilePath);
-                }
-                else {
-                  return new DefaultFile(absoluteFilePath);
-                }
-              });
+              .map(absoluteFilePath => IdeFileFactory.constructIdeFile(absoluteFilePath));
+
+            for (let i = data.value.childFiles.length - 1; i > -1; i--) {
+              if (data.value.childFiles[i].fosterVirtualChildFiles) {
+                data.value.childFiles[i].fosterVirtualChildFiles(data.value.childFiles);
+              }
+            }
 
             webviewView.webview.postMessage(data);
           });
@@ -68,15 +67,15 @@ export class SidebarProvider implements vscode.WebviewViewProvider {
 
             let childAbsoluteFilePaths: AbsoluteFilePath[] = childFiles
               .map(x => data.value.absoluteFilePath.initialAbsoluteFilePathStringInput +=
-                        ConstantsFilePath.STANDARDIZED_FILE_DELIMITER +
-                        x)
+                ConstantsFilePath.STANDARDIZED_FILE_DELIMITER +
+                x)
               .map(x => new AbsoluteFilePath(x, FileSystemReader.isDir(x), null, null));
 
             data.value.childFiles = childAbsoluteFilePaths
               .map(absoluteFilePath => IdeFileFactory.constructIdeFile(absoluteFilePath));
 
             for (let i = data.value.childFiles.length - 1; i > -1; i--) {
-              if(data.value.childFiles[i].fosterVirtualChildFiles) {
+              if (data.value.childFiles[i].fosterVirtualChildFiles) {
                 data.value.childFiles[i].fosterVirtualChildFiles(data.value.childFiles);
               }
             }
