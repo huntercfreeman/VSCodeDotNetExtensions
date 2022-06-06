@@ -44,11 +44,13 @@
 	</button>
 	
 	<SelectSolutionForm solutionModels={solutionModels} />
-	
+
 	{#if selectedSolution}
 		<TreeViewDisplay data={selectedSolution} />	
 	{/if}
 </div>
+
+<ContextMenu />
 
 <style>
 	.dni_app {

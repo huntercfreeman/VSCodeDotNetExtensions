@@ -6,7 +6,7 @@ import { FilePathStandardizer } from "./FilePathStandardizer";
 export class AbsoluteFilePath {
     /**
      * 
-     * @param initialAbsoluteFilePathStringInput 
+     * @param absoluteFilePathString 
      * @param isDirectory 
      * @param initialParentDirectories If passed as a null array the parentDirectories will be parsed from the initialAbsoluteFilePathStringInput. If passed with entries parent directories will not be parsed from initialAbsoluteFilePathStringInput as this could cause an infinite loop of parsing for parent directories.
      */

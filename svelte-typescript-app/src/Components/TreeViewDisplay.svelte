@@ -5,6 +5,7 @@
 	import type { CSharpProjectModel } from "../../../out/DotNet/CSharpProjectModel";
 	import { ConstantsMessages } from "../../../out/Constants/ConstantsMessages";
 	import { ConstantsTreeView } from "../../../out/Constants/ConstantsTreeView";
+	import { FileKind } from "../../../out/FileSystem/FileKind";
 	import { ConstantsContextualInformation } from "../../../out/Constants/ConstantsContextualInformation";
 	import ExpansionChevron from "./ExpansionChevron.svelte";
 	import { json } from "stream/consumers";
@@ -32,11 +33,13 @@
 						.ConstructMessage(ConstantsMessages.LOAD_CSHARP_PROJECT_CHILD_FILES, 
 							data));
 			}
-			else if (data.isDirectory) {
-				tsVscode.postMessage(
-					ConstantsMessages
-						.ConstructMessage(ConstantsMessages.LOAD_DIRECTORY_CHILD_FILES, 
-							data));
+			else if (data.fileKind) {
+				if(data.fileKind === FileKind.directory) {
+					tsVscode.postMessage(
+						ConstantsMessages
+							.ConstructMessage(ConstantsMessages.LOAD_DIRECTORY_CHILD_FILES, 
+								data));
+				}
 			}
 			
 			return [];
@@ -99,8 +102,6 @@
 		<span class="dni_tree-view-title-text">
 			{getTitleText()}
 		</span>
-
-		<ContextMenu contextualInformation="{data.contextualInformation}" />
 	</div>
 	
 	<div class="dni_tree-view-children">

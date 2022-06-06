@@ -7,12 +7,10 @@
 	import ContextMenuForCSharpProjectTreeView from './ContextMenus/ContextMenuForCSharpProjectTreeView.svelte';
     import { ConstantsContextualInformation } from "../../../out/Constants/ConstantsContextualInformation";
 
-	export let contextualInformation: string;
-
     let pos = { x: 0, y: 0 };
     let showMenu = false;
 
-    async function onRightClick(e) {
+    export async function onRightClick(e) {
 		if (showMenu) {
 			showMenu = false;
 			await new Promise(res => setTimeout(res, 100));
@@ -28,14 +26,22 @@
 </script>
 
 {#if showMenu}
-
-	{#if contextualInformation === ConstantsContextualInformation.TREE_VIEW_SOLUTION_CONTEXT}
-		<ContextMenuForSolutionTreeView x={pos.x} y={pos.y} closeMenu={closeMenu} />
-	{:else if contextualInformation === ConstantsContextualInformation.TREE_VIEW_SOLUTION_FOLDER_CONTEXT}
-		<ContextMenuForSolutionFolderTreeView x={pos.x} y={pos.y} closeMenu={closeMenu} />
-	{:else if contextualInformation === ConstantsContextualInformation.TREE_VIEW_CSHARP_PROJECT_CONTEXT}
-		<ContextMenuForCSharpProjectTreeView x={pos.x} y={pos.y} closeMenu={closeMenu} />
-	{/if}
+	<Menu {...pos} on:click={closeMenu} on:clickoutside={closeMenu}>
+		<MenuOption 
+			on:click={console.log} 
+			text="C# Project Tree View" />
+		<MenuOption 
+			on:click={console.log} 
+			text="Do nothing, but twice" />
+		<MenuDivider />
+		<MenuOption 
+			isDisabled={true} 
+			on:click={console.log} 
+			text="Whoops, disabled!" />
+		<MenuOption on:click={console.log}>
+			<span>Look! An icon!</span>
+		</MenuOption>
+	</Menu>
 {/if}
 
 <svelte:body on:contextmenu|preventDefault={onRightClick} />
