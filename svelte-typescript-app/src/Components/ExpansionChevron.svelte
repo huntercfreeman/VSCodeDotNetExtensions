@@ -1,6 +1,6 @@
 <script lang="ts">
-    import ChevronRight from "./Icons/chevronRight.svelte";
-    import ChevronDown from "./Icons/chevronDown.svelte";
+    import ChevronRight from "./Icons/ChevronRight.svelte";
+    import ChevronDown from "./Icons/ChevronDown.svelte";
 
 	export let isExpanded: boolean;
 

@@ -1,6 +1,7 @@
 export enum FileKind {
-    cSharpProject,
     solution,
+    solutionFolder,
+    cSharpProject,
     default,
     directory,
     cSharp,

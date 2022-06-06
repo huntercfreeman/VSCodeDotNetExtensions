@@ -10,6 +10,7 @@
 	import ExpansionChevron from "./ExpansionChevron.svelte";
 	import { json } from "stream/consumers";
 	import ContextMenu from './ContextMenu.svelte';
+	import FileIconDisplay from './FileIconDisplay.svelte';
 
 	export let data: any;
 	
@@ -101,12 +102,13 @@
 
 		<span class="dni_tree-view-title-text">
 			{#if data.fileKind}
-				{#if data.fileKind === FileKind.razor}
-					.razor
-				{/if}
-				{#if data.fileKind === FileKind.cshtml}
-					.cshtml
-				{/if}
+				<FileIconDisplay fileKind={data.fileKind} />
+			{:else if data.projects}
+				<FileIconDisplay fileKind={FileKind.solution} />
+			{:else if data.solutionFolderEntries}
+				<FileIconDisplay fileKind={FileKind.solutionFolder} />
+			{:else if data.secondGuid}
+				<FileIconDisplay fileKind={FileKind.cSharpProject} />
 			{/if}
 			{getTitleText()}
 		</span>
