@@ -1,7 +1,35 @@
 .vscode-dark  {
-    --dni_file-solution-icon-background: red;
+    --dni_file-solution-icon-background: #a074c4;
+    --dni_file-cshtml-icon-background: #c586c0;
+    --dni_file-cs-icon-background: #519aba;
+    --dni_file-css-icon-background: #e36a6e;
+    --dni_file-directory-icon-background: #d7ab69;
+    --dni_file-json-icon-background: #cbc638;
+    --dni_file-project-dependencies-st2-fill: #fcfcfc;
+    --dni_file-project-dependencies-st3-fill: #4e4e4e;
+    --dni_file-project-icon-background: #88d184;
+    --dni_file-razor-icon-background: #c586c0;
+    --dni_file-solution-folder-icon-background: #058af0;
+    --dni_file-txt-icon-background: #c4c4c4;
+    --dni_file-wwwroot-icon-background: #c4c4c4;
+    --dni_file-markdown-icon-background: #c4c4c4;
+    --dni_file-readme-icon-background: #c4c4c4;
 }
 
 .vscode-light {
     --dni_file-solution-icon-background: #cf5bca;
+    --dni_file-cshtml-icon-background: #45a156;
+    --dni_file-cs-icon-background: #1569d0;
+    --dni_file-css-icon-background: #e6575b;
+    --dni_file-directory-icon-background: #ab811f;
+    --dni_file-json-icon-background: #ff8800;
+    --dni_file-project-dependencies-st2-fill: #4e4e4e;
+    --dni_file-project-dependencies-st3-fill: #fcfcfc;
+    --dni_file-project-icon-background: #24bd1c;
+    --dni_file-razor-icon-background: #972fed;
+    --dni_file-solution-folder-icon-background: #058af0;
+    --dni_file-txt-icon-background: #373737;
+    --dni_file-wwwroot-icon-background: #858585;
+    --dni_file-markdown-icon-background: #373737;
+    --dni_file-readme-icon-background: #373737;
 }
