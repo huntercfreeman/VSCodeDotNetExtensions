@@ -6,6 +6,7 @@ import { AbsoluteFilePath } from '../FileSystem/AbsoluteFilePath';
 import { DefaultFile } from '../FileSystem/DefaultFile';
 import { DirectoryFile } from '../FileSystem/DirectoryFile';
 import { FileSystemReader } from '../FileSystem/FileSystemReader';
+import { IdeFileFactory } from '../FileSystem/IdeFileFactory';
 
 /**
  * SidebarProvider is the main entry point for the IDE user interface to be displayed.
@@ -72,14 +73,13 @@ export class SidebarProvider implements vscode.WebviewViewProvider {
               .map(x => new AbsoluteFilePath(x, FileSystemReader.isDir(x), null, null));
 
             data.value.childFiles = childAbsoluteFilePaths
-              .map(absoluteFilePath => {
-                if (absoluteFilePath.isDirectory) {
-                  return new DirectoryFile(absoluteFilePath);
-                }
-                else {
-                  return new DefaultFile(absoluteFilePath);
-                }
-              });
+              .map(absoluteFilePath => IdeFileFactory.constructIdeFile(absoluteFilePath));
+
+            for (let i = data.value.childFiles.length - 1; i > -1; i--) {
+              if(data.value.childFiles[i].fosterVirtualChildFiles) {
+                data.value.childFiles[i].fosterVirtualChildFiles(data.value.childFiles);
+              }
+            }
 
             webviewView.webview.postMessage(data);
           });
