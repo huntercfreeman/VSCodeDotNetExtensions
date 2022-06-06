@@ -42,7 +42,8 @@ export class SidebarProvider implements vscode.WebviewViewProvider {
             siblingFiles = siblingFiles
               .filter(x => x !== data.value.absoluteFilePath.fileNameWithExtension);
 
-            data.value.childFiles = siblingFiles;
+            data.value.childFiles = siblingFiles
+              .map(x => new AbsoluteFilePath(x, FileSystemReader.isDir(x), null, null));
 
             webviewView.webview.postMessage(data);
           });

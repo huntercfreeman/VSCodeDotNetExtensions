@@ -9,4 +9,14 @@ export class FileSystemReader {
             callback(files);
           });
     }
+
+    public static isDir(absoluteFilePathString: string) {
+        try {
+            var stat = fs.lstatSync(absoluteFilePathString);
+            return stat.isDirectory();
+        } catch (e) {
+            // lstatSync throws an error if path doesn't exist
+            return false;
+        }
+    }
 }

@@ -26,11 +26,21 @@
 			?? data.childFiles;
 
 		if(!children) {
-			tsVscode.postMessage(
-				ConstantsMessages
-					.ConstructMessage(ConstantsMessages.LOAD_CSHARP_PROJECT_CHILD_FILES, 
-						data));
+			if (data.secondGuid) {
+				tsVscode.postMessage(
+					ConstantsMessages
+						.ConstructMessage(ConstantsMessages.LOAD_CSHARP_PROJECT_CHILD_FILES, 
+							data));
+			}
+			else if (data.isDirectory) {
+				// TODO: Read directory
 
+				// tsVscode.postMessage(
+				// 	ConstantsMessages
+				// 		.ConstructMessage(ConstantsMessages.LOAD_CSHARP_PROJECT_CHILD_FILES, 
+				// 			data));
+			}
+			
 			return [];
 		}
 
@@ -75,15 +85,7 @@
 			}
 		});
 	});
-
-	function consoleLogSomething() {
-		console.log("data.childFiles: " + JSON.stringify(data.childFiles, null, 2));
-		console.log("children: " + JSON.stringify(children, null, 2));
-		console.log("null coallesce chain: " + JSON.stringify(data.projects ?? data.solutionFolderEntries ?? data.childFiles, null, 2));
-	}
 </script>
-
-<button on:click="{consoleLogSomething}">consoleLogSomething</button>
 
 <div class="dni_tree-view">
 	<div class="dni_tree-view-title" title="{getTitleText()}">
