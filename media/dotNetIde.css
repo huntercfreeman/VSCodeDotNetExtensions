@@ -1,0 +1,7 @@
+.vscode-dark  {
+    --dni_file-solution-icon-background: red;
+}
+
+.vscode-light {
+    --dni_file-solution-icon-background: #cf5bca;
+}

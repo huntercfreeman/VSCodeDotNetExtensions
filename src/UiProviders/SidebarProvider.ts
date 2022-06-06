@@ -119,12 +119,13 @@ export class SidebarProvider implements vscode.WebviewViewProvider {
 	  <title>NugetPackageManagerWebview</title>
     <link href="${resetCssUri}" rel="stylesheet">
     <link href="${vSCodeCssUri}" rel="stylesheet">
+    <link href="${dotNetIdeCssUri}" rel="stylesheet">
     <link href="${dotNetIdeSvelteAppCssUri}" rel="stylesheet">
 	  <script>
 		const tsVscode = acquireVsCodeApi();
 	</script>
   </head>
-  <body style="padding: 0 5px;">
+  <body style="padding: 0 5px;" class="">
 	  <script src="${dotNetIdeSvelteAppJavaScriptUri}"></script>
   </body>
   </html>`;
