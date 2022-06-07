@@ -96,6 +96,21 @@ export class SidebarProvider implements vscode.WebviewViewProvider {
               vscode.window.showTextDocument(doc, textDocumentShowOptions);
           });
         }
+        case ConstantsMessages.ADD_SOLUTION_FOLDER: {
+          let z = 2;
+          console.log();
+          break;
+        }
+        case ConstantsMessages.ADD_PROJECT_TO_SOLUTION: {
+          let z = 2;
+          console.log();
+          break;
+        }
+        case ConstantsMessages.ADD_PROJECT_TO_SOLUTION_FOLDER: {
+          let z = 2;
+          console.log();
+          break;
+        }
       }
     });
   }

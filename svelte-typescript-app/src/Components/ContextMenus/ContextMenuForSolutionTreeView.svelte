@@ -2,31 +2,43 @@
 	import Menu from '../Menu.svelte'
     import MenuOption from '../MenuOption.svelte';
 	import MenuDivider from '../MenuDivider.svelte';
+	import { contextMenuTarget } from '../menu.js';
+	import { ConstantsMessages } from '../../../../out/Constants/ConstantsMessages';
 
 	export let x: number;
 	export let y: number;
 	export let closeMenu;
 
+	let contextMenuTargetValue;
+	
+	contextMenuTarget.subscribe(value => {
+		contextMenuTargetValue = value;
+	});
+
 	$: pos = {
 		x: x,
 		y: y
 	}
+
+	function addSolutionFolderOnClick() {
+		tsVscode.postMessage(
+			ConstantsMessages.ConstructMessage(ConstantsMessages.ADD_SOLUTION_FOLDER, 
+				contextMenuTargetValue));
+	}	
+	
+	function addProjectToSolutionOnClick() {
+		tsVscode.postMessage(
+			ConstantsMessages.ConstructMessage(ConstantsMessages.ADD_PROJECT_TO_SOLUTION, 
+				contextMenuTargetValue));
+	}	
 </script>
 
 
 <Menu {...pos} on:click={closeMenu} on:clickoutside={closeMenu}>
-		<MenuOption 
-			on:click={console.log} 
-			text="Solution Tree View" />
-		<MenuOption 
-			on:click={console.log} 
-			text="Do nothing, but twice" />
-		<MenuDivider />
-		<MenuOption 
-			isDisabled={true} 
-			on:click={console.log} 
-			text="Whoops, disabled!" />
-		<MenuOption on:click={console.log}>
-			<span>Look! An icon!</span>
-		</MenuOption>
-	</Menu>
+	<MenuOption 
+		on:click={addSolutionFolderOnClick} 
+		text="Add solution folder." />
+	<MenuOption 
+		on:click={addProjectToSolutionOnClick} 
+		text="Add project to solution." />
+</Menu>
