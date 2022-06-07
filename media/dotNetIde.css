@@ -43,3 +43,13 @@
     -o-user-select: none;
     user-select: none;
 }
+
+.dni_tree-view-title-expansion-chevron:hover {
+    color: var(--vscode-button-foreground);
+    background-color: var(--vscode-button-hoverBackground);
+}
+
+.dni_unselectable .dni_tree-view-title-expansion-chevron:hover {
+    color: transparent;
+    background-color: transparent;
+}

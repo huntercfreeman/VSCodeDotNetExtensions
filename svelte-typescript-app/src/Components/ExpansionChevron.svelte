@@ -9,7 +9,7 @@
     }
 </script>
 
-<span on:click="{toggleIsExpanded}">
+<span on:click|stopPropagation="{toggleIsExpanded}">
 	{#if !isExpanded}
         <ChevronRight />
     {:else}

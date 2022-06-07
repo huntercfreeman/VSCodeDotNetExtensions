@@ -15,6 +15,7 @@
 	export let data: any;
 	
 	let isExpanded: boolean = false;
+	let discardIsExpanded: boolean = false;
 
 	let children: any[] | undefined;
 
@@ -72,6 +73,22 @@
 			return ConstantsTreeView.UNDEFINED_ABSOLUTE_FILE_PATH;
 		}
 	}	
+	
+	function titleOnClick() {
+		if (!data.solutionFolderEntries) {
+			let absoluteFilePath = data.absoluteFilePath ??
+				data;
+
+			if(absoluteFilePath.isDirectory) {
+				return;
+			}
+
+			tsVscode.postMessage(
+				ConstantsMessages
+					.ConstructMessage(ConstantsMessages.OPEN_FILE, 
+					absoluteFilePath));
+		}
+	}	
 
 	onMount(async () => {
 		window.addEventListener("message", async (event) => {
@@ -95,18 +112,20 @@
 </script>
 
 <div class="dni_tree-view">
-	<div class="dni_tree-view-title" title="{getTitleText()}">
-		<span class="dni_tree-view-title-expansion-chevron">
-			{#if data.hideExpansionChevronWhenNoChildFiles && (((children ?? getDataChildren())?.length ?? 0) === 0)}
-				<span style="visibility: hidden;" 
-				      tabindex="-1"
-					  class="dni_unselectable">
-					<ExpansionChevron bind:isExpanded={isExpanded} />
-				</span>
-			{:else}
+	<div class="dni_tree-view-title" 
+	     title="{getTitleText()}"
+		 on:click="{titleOnClick}">
+		{#if data.hideExpansionChevronWhenNoChildFiles && (((children ?? getDataChildren())?.length ?? 0) === 0)}
+			<span style="visibility: hidden;" 
+					tabindex="-1"
+					class="dni_unselectable">
+				<ExpansionChevron bind:isExpanded={discardIsExpanded} />
+			</span>
+		{:else}
+			<span class="dni_tree-view-title-expansion-chevron">
 				<ExpansionChevron bind:isExpanded={isExpanded} />
-			{/if}
-		</span>
+			</span>
+		{/if}
 
 		<span class="dni_tree-view-title-text">
 			{#if data.fileKind}
@@ -141,17 +160,19 @@
 	}
 
 	.dni_tree-view-title {
+		width: 100%;
 		white-space: nowrap;
 		display: inline-flex;
     	align-items: center;
 	}
+	
+	.dni_tree-view-title:hover {
+		background-color: var(--vscode-editorHoverWidget-background);
+		color: var(--vscode-editorHoverWidget-foreground);
+		cursor: pointer;
+	}
 
 	.dni_tree-view-title-text {
 		margin-left: 2px;
-	}
-
-	.dni_tree-view-title-expansion-chevron:hover {
-		color: var(--vscode-button-foreground);
-		background-color: var(--vscode-button-hoverBackground);
 	}
 </style>

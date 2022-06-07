@@ -66,7 +66,7 @@ export class SidebarProvider implements vscode.WebviewViewProvider {
           return await FileSystemReader.getChildFilesOfDirectory(data.value.absoluteFilePath, (childFiles: any[]) => {
 
             let childAbsoluteFilePaths: AbsoluteFilePath[] = childFiles
-              .map(x => data.value.absoluteFilePath.initialAbsoluteFilePathStringInput +=
+              .map(x => data.value.absoluteFilePath.initialAbsoluteFilePathStringInput +
                 ConstantsFilePath.STANDARDIZED_FILE_DELIMITER +
                 x)
               .map(x => new AbsoluteFilePath(x, FileSystemReader.isDir(x), null, null));
@@ -81,6 +81,19 @@ export class SidebarProvider implements vscode.WebviewViewProvider {
             }
 
             webviewView.webview.postMessage(data);
+          });
+        }
+        case ConstantsMessages.OPEN_FILE: {
+          const openPath = vscode.Uri.file(data.value.initialAbsoluteFilePathStringInput);
+
+          vscode.workspace.openTextDocument(openPath).then(doc => {
+              let textDocumentShowOptions: vscode.TextDocumentShowOptions = {
+                "preserveFocus": false,
+                "preview": false,
+                "viewColumn": vscode.ViewColumn.One
+              };
+
+              vscode.window.showTextDocument(doc, textDocumentShowOptions);
           });
         }
       }
