@@ -4,6 +4,8 @@
 	
 	export let isDisabled = false;
 	export let text = '';
+	export let onClickStopPropagation = false;
+	export let onClick = undefined;
 	
 	import { createEventDispatcher } from 'svelte';
 	const dispatch = createEventDispatcher();	
@@ -11,7 +13,12 @@
 	const { dispatchClick } = getContext(key);
 	
 	const handleClick = e => {
+		if(onClick) {
+			onClick();
+		}
+
 		if (isDisabled) return;
+		if (onClickStopPropagation) return;
 		
 		dispatch('click');
 		dispatchClick();

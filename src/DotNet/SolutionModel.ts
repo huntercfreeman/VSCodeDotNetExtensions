@@ -23,5 +23,12 @@ export class SolutionModel {
         dotNetSolutionParser.parse(callback);
     }
 
+    public static async addSolutionFolder(solution: SolutionModel, solutionFolderName: string, callback: any) : Promise<void> {
+        let dotNetSolutionParser = new DotNetSolutionParser(solution.absoluteFilePath,
+            solution);
+        
+        dotNetSolutionParser.addSolutionFolder(solutionFolderName, callback);
+    }
+
     public readonly contextualInformation: string = ConstantsContextualInformation.TREE_VIEW_SOLUTION_CONTEXT;
 }

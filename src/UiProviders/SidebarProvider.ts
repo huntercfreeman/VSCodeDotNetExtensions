@@ -95,11 +95,13 @@ export class SidebarProvider implements vscode.WebviewViewProvider {
 
               vscode.window.showTextDocument(doc, textDocumentShowOptions);
           });
+          break;
         }
         case ConstantsMessages.ADD_SOLUTION_FOLDER: {
-          let z = 2;
-          console.log();
-          break;
+          return await SolutionModel.addSolutionFolder(data.value.solutionModel,
+            data.value.solutionFolderName, () => {
+            webviewView.webview.postMessage(data);
+          });
         }
         case ConstantsMessages.ADD_PROJECT_TO_SOLUTION: {
           let z = 2;
