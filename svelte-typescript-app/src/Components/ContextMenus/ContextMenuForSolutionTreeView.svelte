@@ -2,6 +2,7 @@
 	import Menu from '../Menu.svelte'
     import MenuOption from '../MenuOption.svelte';
 	import MenuDivider from '../MenuDivider.svelte';
+	import TextInputForm from '../TextInputForm.svelte';
 	import { contextMenuTarget } from '../menu.js';
 	import { ConstantsMessages } from '../../../../out/Constants/ConstantsMessages';
 
@@ -40,14 +41,10 @@
 						solutionFolderName: addSolutionFolderName
 					}));
 		}
-	}	
+	}
 
-	function cancelFormAddSolutionFolderOnClick() {
-		addSolutionFolderName = undefined;
-	}	
-	
 	function addProjectToSolutionOnClick() {
-		cancelFormAddSolutionFolderOnClick();
+		addSolutionFolderName = undefined;
 
 		tsVscode.postMessage(
 			ConstantsMessages.ConstructMessage(ConstantsMessages.ADD_PROJECT_TO_SOLUTION, 
@@ -59,11 +56,8 @@
 	<MenuOption onClickStopPropagation="{true}"
 		onClick={beginFormAddSolutionFolderOnClick} 
 		text="Add solution folder." />
-	{#if addSolutionFolderName !== undefined}
-		<input placeholder="Give Solution Folder Name" bind:value="{addSolutionFolderName}" />
-		<button on:click="{confirmFormAddSolutionFolderOnClick}">Confirm</button>
-		<button on:click="{cancelFormAddSolutionFolderOnClick}">Cancel</button>
-	{/if}
+	<TextInputForm bind:value="{addSolutionFolderName}"
+	               onValidSubmit="{confirmFormAddSolutionFolderOnClick}" />
 	<MenuOption 
 		on:click={addProjectToSolutionOnClick} 
 		text="Add project to solution." />

@@ -32,6 +32,12 @@
 	function closeMenu() {
 		showMenu = false;
 	}
+
+	function extendOnKeyDown(keyboardEvent) {
+        if (keyboardEvent.code === "Escape" && showMenu) {
+            closeMenu();
+        }
+    }
 </script>
 
 {#if showMenu}
@@ -58,4 +64,4 @@
 	{/if}
 {/if}
 
-<svelte:body on:contextmenu|preventDefault={onRightClick} />
+<svelte:body on:contextmenu|preventDefault={onRightClick} on:keydown={extendOnKeyDown} />

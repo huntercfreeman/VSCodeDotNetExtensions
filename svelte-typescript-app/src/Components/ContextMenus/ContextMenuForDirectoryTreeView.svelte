@@ -31,5 +31,8 @@
 <Menu {...pos} on:click={closeMenu} on:clickoutside={closeMenu}>
 	<MenuOption 
 		on:click={addFileToFolderOnClick} 
-		text="Add file folder." />
+		text="Add file with template." />
+	<MenuOption 
+		on:click={addFileToFolderOnClick} 
+		text="Add empty file." />
 </Menu>
