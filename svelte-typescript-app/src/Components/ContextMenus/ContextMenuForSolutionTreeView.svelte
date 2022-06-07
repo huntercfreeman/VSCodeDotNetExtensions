@@ -11,6 +11,7 @@
 	export let closeMenu;
 
 	let contextMenuTargetValue;
+	let addSolutionFolderName: string | undefined;
 	
 	contextMenuTarget.subscribe(value => {
 		contextMenuTargetValue = value;
@@ -20,8 +21,6 @@
 		x: x,
 		y: y
 	}
-
-	let addSolutionFolderName: string | undefined;
 
 	function fireCloseMenu() {
 		addSolutionFolderName = undefined;

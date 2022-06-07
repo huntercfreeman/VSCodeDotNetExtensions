@@ -25,5 +25,7 @@ export class ConstantsMessages {
     public static readonly PARSE_SOLUTION: string = "PARSE_SOLUTION";
     public static readonly LOAD_CSHARP_PROJECT_CHILD_FILES: string = "LOAD_CSHARP_PROJECT_CHILD_FILES";
     public static readonly LOAD_DIRECTORY_CHILD_FILES: string = "LOAD_DIRECTORY_CHILD_FILES";
+    public static readonly ADD_FILE_WITH_TEMPLATE_TO_DIRECTORY: string = "ADD_FILE_WITH_TEMPLATE_TO_DIRECTORY";
+    public static readonly ADD_EMPTY_FILE_TO_DIRECTORY: string = "ADD_EMPTY_FILE_TO_DIRECTORY";
     public static readonly OPEN_FILE:  string = "OPEN_FILE";
 }

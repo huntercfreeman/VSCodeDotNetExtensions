@@ -41,67 +41,28 @@ export class SidebarProvider implements vscode.WebviewViewProvider {
         }
         case ConstantsMessages.LOAD_CSHARP_PROJECT_CHILD_FILES: {
           return await FileSystemReader.getSiblingFiles(data.value.absoluteFilePath, (siblingFiles: any[]) => {
-
-            siblingFiles = siblingFiles
-              .filter(x => x !== data.value.absoluteFilePath.fileNameWithExtension);
-
-            let siblingAbsoluteFilePaths: AbsoluteFilePath[] = siblingFiles
-              .map(x => data.value.absoluteFilePath.initialAbsoluteFilePathStringInput
-                .replace(data.value.absoluteFilePath.fileNameWithExtension, x))
-              .map(x => new AbsoluteFilePath(x, FileSystemReader.isDir(x), null, null));
-
-            data.value.childFiles = siblingAbsoluteFilePaths
-              .map(absoluteFilePath => IdeFileFactory.constructIdeFile(absoluteFilePath));
-
-            for (let i = data.value.childFiles.length - 1; i > -1; i--) {
-              if (data.value.childFiles[i].fosterVirtualChildFiles) {
-                data.value.childFiles[i].fosterVirtualChildFiles(data.value.childFiles);
-              }
-            }
-
-            webviewView.webview.postMessage(data);
+            this.handleLoadCSharpProjectChildFilesResponse(webviewView, data, siblingFiles);
           });
         }
         case ConstantsMessages.LOAD_DIRECTORY_CHILD_FILES: {
           return await FileSystemReader.getChildFilesOfDirectory(data.value.absoluteFilePath, (childFiles: any[]) => {
-
-            let childAbsoluteFilePaths: AbsoluteFilePath[] = childFiles
-              .map(x => data.value.absoluteFilePath.initialAbsoluteFilePathStringInput +
-                ConstantsFilePath.STANDARDIZED_FILE_DELIMITER +
-                x)
-              .map(x => new AbsoluteFilePath(x, FileSystemReader.isDir(x), null, null));
-
-            data.value.childFiles = childAbsoluteFilePaths
-              .map(absoluteFilePath => IdeFileFactory.constructIdeFile(absoluteFilePath));
-
-            for (let i = data.value.childFiles.length - 1; i > -1; i--) {
-              if (data.value.childFiles[i].fosterVirtualChildFiles) {
-                data.value.childFiles[i].fosterVirtualChildFiles(data.value.childFiles);
-              }
-            }
-
-            webviewView.webview.postMessage(data);
+            this.handleGetChildFilesOfDirectoryResponse(webviewView, data, childFiles);
           });
         }
+        case ConstantsMessages.ADD_EMPTY_FILE_TO_DIRECTORY: {
+          return await handleAddEmptyFileToDirectoryRequest(); SolutionModel.addSolutionFolder(data.value.solutionModel,
+            data.value.solutionFolderName, () => {
+              webviewView.webview.postMessage(data);
+            });
+        }
         case ConstantsMessages.OPEN_FILE: {
-          const openPath = vscode.Uri.file(data.value.initialAbsoluteFilePathStringInput);
-
-          vscode.workspace.openTextDocument(openPath).then(doc => {
-              let textDocumentShowOptions: vscode.TextDocumentShowOptions = {
-                "preserveFocus": false,
-                "preview": false,
-                "viewColumn": vscode.ViewColumn.One
-              };
-
-              vscode.window.showTextDocument(doc, textDocumentShowOptions);
-          });
-          break;
+          return this.handleOpenFileRequest(data);
         }
         case ConstantsMessages.ADD_SOLUTION_FOLDER: {
           return await SolutionModel.addSolutionFolder(data.value.solutionModel,
             data.value.solutionFolderName, () => {
-            webviewView.webview.postMessage(data);
-          });
+              webviewView.webview.postMessage(data);
+            });
         }
         case ConstantsMessages.ADD_PROJECT_TO_SOLUTION: {
           let z = 2;
@@ -119,6 +80,74 @@ export class SidebarProvider implements vscode.WebviewViewProvider {
 
   public revive(panel: vscode.WebviewView) {
     this._view = panel;
+  }
+
+  public handleLoadCSharpProjectChildFilesResponse(webviewView: vscode.WebviewView, data: any, siblingFiles: any[]) {
+    siblingFiles = siblingFiles
+      .filter(x => x !== data.value.absoluteFilePath.fileNameWithExtension);
+
+    let siblingAbsoluteFilePaths: AbsoluteFilePath[] = siblingFiles
+      .map(x => data.value.absoluteFilePath.initialAbsoluteFilePathStringInput
+        .replace(data.value.absoluteFilePath.fileNameWithExtension, x))
+      .map(x => new AbsoluteFilePath(x, FileSystemReader.isDir(x), null, null));
+
+    data.value.childFiles = siblingAbsoluteFilePaths
+      .map(absoluteFilePath => IdeFileFactory.constructIdeFile(absoluteFilePath));
+
+    for (let i = data.value.childFiles.length - 1; i > -1; i--) {
+      if (data.value.childFiles[i].fosterVirtualChildFiles) {
+        data.value.childFiles[i].fosterVirtualChildFiles(data.value.childFiles);
+      }
+    }
+
+    webviewView.webview.postMessage(data);
+  }
+
+  public handleGetChildFilesOfDirectoryResponse(webviewView: vscode.WebviewView, data: any, childFiles: any[]) {
+    let childAbsoluteFilePaths: AbsoluteFilePath[] = childFiles
+      .map(x => data.value.absoluteFilePath.initialAbsoluteFilePathStringInput +
+        ConstantsFilePath.STANDARDIZED_FILE_DELIMITER +
+        x)
+      .map(x => new AbsoluteFilePath(x, FileSystemReader.isDir(x), null, null));
+
+    data.value.childFiles = childAbsoluteFilePaths
+      .map(absoluteFilePath => IdeFileFactory.constructIdeFile(absoluteFilePath));
+
+    for (let i = data.value.childFiles.length - 1; i > -1; i--) {
+      if (data.value.childFiles[i].fosterVirtualChildFiles) {
+        data.value.childFiles[i].fosterVirtualChildFiles(data.value.childFiles);
+      }
+    }
+
+    webviewView.webview.postMessage(data);
+  }
+
+  public handleOpenFileRequest(data: any) {
+    const openPath = vscode.Uri.file(data.value.initialAbsoluteFilePathStringInput);
+
+    vscode.workspace.openTextDocument(openPath).then(doc => {
+      let textDocumentShowOptions: vscode.TextDocumentShowOptions = {
+        "preserveFocus": false,
+        "preview": false,
+        "viewColumn": vscode.ViewColumn.One
+      };
+
+      vscode.window.showTextDocument(doc, textDocumentShowOptions);
+    });
+  }
+  
+  public handleAddEmptyFileToDirectoryRequest(data: any) {
+    const openPath = vscode.Uri.file(data.value.initialAbsoluteFilePathStringInput);
+
+    vscode.workspace.openTextDocument(openPath).then(doc => {
+      let textDocumentShowOptions: vscode.TextDocumentShowOptions = {
+        "preserveFocus": false,
+        "preview": false,
+        "viewColumn": vscode.ViewColumn.One
+      };
+
+      vscode.window.showTextDocument(doc, textDocumentShowOptions);
+    });
   }
 
   private getWebviewContent(webview: vscode.Webview) {
