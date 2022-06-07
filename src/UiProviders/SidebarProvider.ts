@@ -54,6 +54,9 @@ export class SidebarProvider implements vscode.WebviewViewProvider {
         case ConstantsMessages.ADD_EMPTY_FILE_TO_DIRECTORY: {
           return this.handleAddEmptyFileToDirectoryRequest(webviewView, data.value);
         }
+        case ConstantsMessages.ADD_FILE_WITH_TEMPLATE_TO_DIRECTORY: {
+          return this.handleAddFileWithTemplateToDirectoryRequest(webviewView, data.value);
+        }
         case ConstantsMessages.OPEN_FILE: {
           return this.handleOpenFileRequest(data);
         }
@@ -154,6 +157,53 @@ export class SidebarProvider implements vscode.WebviewViewProvider {
           
           webviewView.webview.postMessage(ConstantsMessages.ConstructMessage(ConstantsMessages.ADD_EMPTY_FILE_TO_DIRECTORY, 
               data.directory));
+
+          const openPath = vscode.Uri.file(absoluteFilePath.initialAbsoluteFilePathStringInput);
+
+          vscode.workspace.openTextDocument(openPath).then(doc => {
+            let textDocumentShowOptions: vscode.TextDocumentShowOptions = {
+              "preserveFocus": false,
+              "preview": false,
+              "viewColumn": vscode.ViewColumn.One
+            };
+            
+            vscode.window.showTextDocument(doc, textDocumentShowOptions);
+          });
+        }
+    });
+  }
+  
+  public handleAddFileWithTemplateToDirectoryRequest(webviewView: vscode.WebviewView, data: any) {
+    let writePath: string = data.directory.absoluteFilePath.initialAbsoluteFilePathStringInput;
+
+    if(!writePath.endsWith(ConstantsFilePath.STANDARDIZED_FILE_DELIMITER)) {
+      writePath += ConstantsFilePath.STANDARDIZED_FILE_DELIMITER;
+    }
+    
+    writePath += data.filename;
+    
+    fs.writeFile(writePath, 
+                 "", 
+                 { flag: 'a+' }, 
+                 (err: any) => {
+        if (!err) {
+          let absoluteFilePath = new AbsoluteFilePath(writePath, false, null, null);
+          data.directory.childFiles.push(IdeFileFactory.constructIdeFile(absoluteFilePath));
+          
+          webviewView.webview.postMessage(ConstantsMessages.ConstructMessage(ConstantsMessages.ADD_EMPTY_FILE_TO_DIRECTORY, 
+              data.directory));
+
+          const openPath = vscode.Uri.file(absoluteFilePath.initialAbsoluteFilePathStringInput);
+
+          vscode.workspace.openTextDocument(openPath).then(doc => {
+            let textDocumentShowOptions: vscode.TextDocumentShowOptions = {
+              "preserveFocus": false,
+              "preview": false,
+              "viewColumn": vscode.ViewColumn.One
+            };
+            
+            vscode.window.showTextDocument(doc, textDocumentShowOptions);
+          });
         }
     });
   }
