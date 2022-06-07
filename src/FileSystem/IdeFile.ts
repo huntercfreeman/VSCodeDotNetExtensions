@@ -4,11 +4,9 @@ import { FileKind } from "./FileKind";
 import { FileKindMatcher } from "./FileKindMatcher";
 
 export abstract class IdeFile {
-    constructor(public readonly absoluteFilePath: AbsoluteFilePath, containingCSharpProjectModel: CSharpProjectModel) {
+    constructor(public readonly absoluteFilePath: AbsoluteFilePath, public containingCSharpProjectModelAbsoluteFilePath: AbsoluteFilePath) {
         this.fileKind = FileKindMatcher.getFileKind(absoluteFilePath.extensionNoPeriod);
-        this.containingCSharpProjectModelAbsoluteFilePath = containingCSharpProjectModel.absoluteFilePath;
     }
 
     public fileKind: FileKind;
-    public containingCSharpProjectModelAbsoluteFilePath: AbsoluteFilePath;
 }

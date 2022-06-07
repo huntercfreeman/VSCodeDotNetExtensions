@@ -95,7 +95,7 @@ export class SidebarProvider implements vscode.WebviewViewProvider {
       .map(x => new AbsoluteFilePath(x, FileSystemReader.isDir(x), null, null));
 
     data.value.childFiles = siblingAbsoluteFilePaths
-      .map(absoluteFilePath => IdeFileFactory.constructIdeFile(absoluteFilePath, data.value));
+      .map(absoluteFilePath => IdeFileFactory.constructIdeFile(absoluteFilePath, data.value.absoluteFilePath));
 
     for (let i = data.value.childFiles.length - 1; i > -1; i--) {
       if (data.value.childFiles[i].fosterVirtualChildFiles) {
@@ -114,7 +114,7 @@ export class SidebarProvider implements vscode.WebviewViewProvider {
       .map(x => new AbsoluteFilePath(x, FileSystemReader.isDir(x), null, null));
 
     data.value.childFiles = childAbsoluteFilePaths
-      .map(absoluteFilePath => IdeFileFactory.constructIdeFile(absoluteFilePath, data.value.containingCSharpProjectModel));
+      .map(absoluteFilePath => IdeFileFactory.constructIdeFile(absoluteFilePath, data.value.containingCSharpProjectModelAbsoluteFilePath));
 
     for (let i = data.value.childFiles.length - 1; i > -1; i--) {
       if (data.value.childFiles[i].fosterVirtualChildFiles) {
@@ -154,7 +154,7 @@ export class SidebarProvider implements vscode.WebviewViewProvider {
                  (err: any) => {
         if (!err) {
           let absoluteFilePath = new AbsoluteFilePath(writePath, false, null, null);
-          data.directory.childFiles.push(IdeFileFactory.constructIdeFile(absoluteFilePath, data.directory.containingCSharpProjectModel));
+          data.directory.childFiles.push(IdeFileFactory.constructIdeFile(absoluteFilePath, data.directory.containingCSharpProjectModelAbsoluteFilePath));
           
           webviewView.webview.postMessage(ConstantsMessages.ConstructMessage(ConstantsMessages.ADD_EMPTY_FILE_TO_DIRECTORY, 
               data.directory));
@@ -185,7 +185,7 @@ export class SidebarProvider implements vscode.WebviewViewProvider {
 
     let absoluteFilePath = new AbsoluteFilePath(writePath, false, null, null);
     
-    let ideFile = IdeFileFactory.constructIdeFile(absoluteFilePath, data.directory.containingCSharpProjectModel);
+    let ideFile = IdeFileFactory.constructIdeFile(absoluteFilePath, data.directory.containingCSharpProjectModelAbsoluteFilePath);
 
     fs.writeFile(writePath, 
                  ConstantsFileTemplates.getFileTemplate(ideFile), 

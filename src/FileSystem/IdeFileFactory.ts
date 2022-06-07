@@ -13,26 +13,26 @@ import { IdeFile } from "./IdeFile";
 import { CSharpProjectModel } from "../DotNet/CSharpProjectModel";
 
 export class IdeFileFactory {
-    public static constructIdeFile(absoluteFilePath: AbsoluteFilePath, containingCSharpProjectModel: CSharpProjectModel): IdeFile {
+    public static constructIdeFile(absoluteFilePath: AbsoluteFilePath, containingCSharpProjectModelAbsoluteFilePath: AbsoluteFilePath): IdeFile {
         switch (FileKindMatcher.getFileKind(absoluteFilePath.extensionNoPeriod)) {
             // case FileKind.cSharpProject:
             //     return ;
             // case FileKind.solution:
             //     return ;
             case FileKind.cSharp:
-                return new CSharpFile(absoluteFilePath, containingCSharpProjectModel);
+                return new CSharpFile(absoluteFilePath, containingCSharpProjectModelAbsoluteFilePath);
             case FileKind.cshtml:
-                return new CshtmlFile(absoluteFilePath, containingCSharpProjectModel);
+                return new CshtmlFile(absoluteFilePath, containingCSharpProjectModelAbsoluteFilePath);
             case FileKind.css:
-                return new CssFile(absoluteFilePath, containingCSharpProjectModel);
+                return new CssFile(absoluteFilePath, containingCSharpProjectModelAbsoluteFilePath);
             case FileKind.directory:
-                return new DirectoryFile(absoluteFilePath, containingCSharpProjectModel);
+                return new DirectoryFile(absoluteFilePath, containingCSharpProjectModelAbsoluteFilePath);
             case FileKind.razor:
-                return new RazorFile(absoluteFilePath, containingCSharpProjectModel);
+                return new RazorFile(absoluteFilePath, containingCSharpProjectModelAbsoluteFilePath);
             case FileKind.json:
-                return new JsonFile(absoluteFilePath, containingCSharpProjectModel);
+                return new JsonFile(absoluteFilePath, containingCSharpProjectModelAbsoluteFilePath);
             default:
-                return new DefaultFile(absoluteFilePath, containingCSharpProjectModel);
+                return new DefaultFile(absoluteFilePath, containingCSharpProjectModelAbsoluteFilePath);
         }
     }
 }
