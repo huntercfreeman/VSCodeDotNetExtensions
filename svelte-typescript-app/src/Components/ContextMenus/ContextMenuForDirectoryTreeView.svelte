@@ -5,6 +5,7 @@
 	import TextInputForm from '../TextInputForm.svelte';
 	import { contextMenuTarget } from '../menu.js';
 	import { ConstantsMessages } from '../../../../out/Constants/ConstantsMessages';
+	import { ConstantsFileExtensionsNoPeriod } from '../../../../out/Constants/ConstantsFileExtensionsNoPeriod';
 
 	export let x: number;
 	export let y: number;
@@ -13,6 +14,7 @@
 	let contextMenuTargetValue;
 	let addFileWithTemplateFilename: string | undefined;
 	let addEmptyFileFilename: string | undefined;
+	let shouldAddCodeBehind: boolean = true;
 	
 	contextMenuTarget.subscribe(value => {
 		contextMenuTargetValue = value;
@@ -44,8 +46,19 @@
 				ConstantsMessages.ConstructMessage(ConstantsMessages.ADD_FILE_WITH_TEMPLATE_TO_DIRECTORY, 
 					{ 
 						directory: contextMenuTargetValue,
-						filename: addFileWithTemplateFilename
+						filename: addFileWithTemplateFilename,
+						shouldAddCodeBehind: shouldAddCodeBehind
 					}));
+
+			if (shouldAddCodeBehind) {
+				tsVscode.postMessage(
+					ConstantsMessages.ConstructMessage(ConstantsMessages.ADD_FILE_WITH_TEMPLATE_TO_DIRECTORY, 
+						{ 
+							directory: contextMenuTargetValue,
+							filename: addFileWithTemplateFilename + 
+								`.${ConstantsFileExtensionsNoPeriod.C_SHARP_FILE_EXTENSION}`
+						}));
+			}
 
 			closeMenu();
 		}
@@ -72,6 +85,15 @@
 		text="Add file with template." />
 	<TextInputForm bind:value="{addFileWithTemplateFilename}"
 	               onValidSubmit="{addFileWithTemplateToFolderOnClick}" />
+	{#if addFileWithTemplateFilename && addFileWithTemplateFilename.endsWith(ConstantsFileExtensionsNoPeriod.RAZOR_FILE_EXTENSION)}
+		Add a code behind? 
+		
+		<input style="display: inline;" 
+		       type="checkbox"
+		       bind:checked="{shouldAddCodeBehind}" />
+
+			   shouldAddCodeBehind: {shouldAddCodeBehind}
+	{/if}
 
 	<MenuDivider />
 
