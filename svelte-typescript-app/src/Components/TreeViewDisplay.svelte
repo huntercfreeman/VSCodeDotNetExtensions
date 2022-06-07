@@ -107,6 +107,12 @@
 						children = message.value.childFiles;
 					}
 					break;
+				case ConstantsMessages.ADD_EMPTY_FILE_TO_DIRECTORY:
+					if(message.value.nonce === data.nonce) {
+						data = message.value;
+						children = message.value.childFiles;
+					}
+					break;
 			}
 		});
 	});

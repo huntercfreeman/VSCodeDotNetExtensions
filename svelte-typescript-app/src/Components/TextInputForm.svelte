@@ -7,6 +7,7 @@
     function validate() {
         if (value) {
             onValidSubmit();
+            value = undefined;
         }
         else if (onInvalidSubmit) {
             onInvalidSubmit();
@@ -16,6 +17,9 @@
     function extendOnKeyDown(keyboardEvent) {
         if (keyboardEvent.code === "Escape") {
             onCancel();
+        }
+        else if (keyboardEvent.code === "Enter") {
+            validate();
         }
     }
 </script>

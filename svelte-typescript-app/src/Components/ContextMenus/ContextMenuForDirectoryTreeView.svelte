@@ -11,8 +11,8 @@
 	export let closeMenu;
 
 	let contextMenuTargetValue;
-	let addFileWithTemplateName: string | undefined;
-	let addEmptyFile: string | undefined;
+	let addFileWithTemplateFilename: string | undefined;
+	let addEmptyFileFilename: string | undefined;
 	
 	contextMenuTarget.subscribe(value => {
 		contextMenuTargetValue = value;
@@ -24,39 +24,43 @@
 	}
 
 	function clearForms() {
-		addFileWithTemplateName = undefined;
-		addEmptyFile = undefined;
+		addFileWithTemplateFilename = undefined;
+		addEmptyFileFilename = undefined;
 	}
 		
 	function beginFormAddFileWithTemplateNameOnClick() {
 		clearForms();
-		addFileWithTemplateName = "";
+		addFileWithTemplateFilename = "";
 	}	
 
 	function beginFormAddEmptyFileOnClick() {
 		clearForms();
-		addEmptyFile = "";
+		addEmptyFileFilename = "";
 	}	
 
 	function addFileWithTemplateToFolderOnClick() {
-		if(addFileWithTemplateName) {
+		if(addFileWithTemplateFilename) {
 			tsVscode.postMessage(
 				ConstantsMessages.ConstructMessage(ConstantsMessages.ADD_FILE_WITH_TEMPLATE_TO_DIRECTORY, 
 					{ 
 						directory: contextMenuTargetValue,
-						filename: addFileWithTemplateName
+						filename: addFileWithTemplateFilename
 					}));
+
+			closeMenu();
 		}
 	}
 	
 	function addEmptyFileToFolderOnClick() {
-		if(addEmptyFile) {
+		if(addEmptyFileFilename) {
 			tsVscode.postMessage(
 				ConstantsMessages.ConstructMessage(ConstantsMessages.ADD_EMPTY_FILE_TO_DIRECTORY, 
 					{ 
 						directory: contextMenuTargetValue,
-						filename: addEmptyFile
+						filename: addEmptyFileFilename
 					}));
+			
+			closeMenu();
 		}
 	}
 
@@ -66,7 +70,7 @@
 	<MenuOption onClickStopPropagation="{true}"
 		onClick={beginFormAddFileWithTemplateNameOnClick} 
 		text="Add file with template." />
-	<TextInputForm bind:value="{addFileWithTemplateName}"
+	<TextInputForm bind:value="{addFileWithTemplateFilename}"
 	               onValidSubmit="{addFileWithTemplateToFolderOnClick}" />
 
 	<MenuDivider />
@@ -74,6 +78,6 @@
 	<MenuOption onClickStopPropagation="{true}"
 		onClick={beginFormAddEmptyFileOnClick} 
 		text="Add empty file." />
-	<TextInputForm bind:value="{addEmptyFile}"
+	<TextInputForm bind:value="{addEmptyFileFilename}"
 	               onValidSubmit="{addEmptyFileToFolderOnClick}" />
 </Menu>

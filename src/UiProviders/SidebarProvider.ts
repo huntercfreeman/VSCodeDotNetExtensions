@@ -8,6 +8,8 @@ import { DirectoryFile } from '../FileSystem/DirectoryFile';
 import { FileSystemReader } from '../FileSystem/FileSystemReader';
 import { IdeFileFactory } from '../FileSystem/IdeFileFactory';
 
+const fs = require('fs');
+
 /**
  * SidebarProvider is the main entry point for the IDE user interface to be displayed.
  */
@@ -50,10 +52,7 @@ export class SidebarProvider implements vscode.WebviewViewProvider {
           });
         }
         case ConstantsMessages.ADD_EMPTY_FILE_TO_DIRECTORY: {
-          return await handleAddEmptyFileToDirectoryRequest(); SolutionModel.addSolutionFolder(data.value.solutionModel,
-            data.value.solutionFolderName, () => {
-              webviewView.webview.postMessage(data);
-            });
+          return this.handleAddEmptyFileToDirectoryRequest(webviewView, data.value);
         }
         case ConstantsMessages.OPEN_FILE: {
           return this.handleOpenFileRequest(data);
@@ -136,17 +135,26 @@ export class SidebarProvider implements vscode.WebviewViewProvider {
     });
   }
   
-  public handleAddEmptyFileToDirectoryRequest(data: any) {
-    const openPath = vscode.Uri.file(data.value.initialAbsoluteFilePathStringInput);
+  public handleAddEmptyFileToDirectoryRequest(webviewView: vscode.WebviewView, data: any) {
+    let writePath: string = data.directory.absoluteFilePath.initialAbsoluteFilePathStringInput;
 
-    vscode.workspace.openTextDocument(openPath).then(doc => {
-      let textDocumentShowOptions: vscode.TextDocumentShowOptions = {
-        "preserveFocus": false,
-        "preview": false,
-        "viewColumn": vscode.ViewColumn.One
-      };
-
-      vscode.window.showTextDocument(doc, textDocumentShowOptions);
+    if(!writePath.endsWith(ConstantsFilePath.STANDARDIZED_FILE_DELIMITER)) {
+      writePath += ConstantsFilePath.STANDARDIZED_FILE_DELIMITER;
+    }
+    
+    writePath += data.filename;
+    
+    fs.writeFile(writePath, 
+                 "", 
+                 { flag: 'a+' }, 
+                 (err: any) => {
+        if (!err) {
+          let absoluteFilePath = new AbsoluteFilePath(writePath, false, null, null);
+          data.directory.childFiles.push(IdeFileFactory.constructIdeFile(absoluteFilePath));
+          
+          webviewView.webview.postMessage(ConstantsMessages.ConstructMessage(ConstantsMessages.ADD_EMPTY_FILE_TO_DIRECTORY, 
+              data.directory));
+        }
     });
   }
 
