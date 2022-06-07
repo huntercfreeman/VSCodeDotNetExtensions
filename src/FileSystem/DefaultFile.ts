@@ -9,5 +9,7 @@ export class DefaultFile extends IdeFile {
     
     public childFiles: any[] | undefined;
     
+    public hideExpansionChevronWhenNoChildFiles: boolean = true;
+    
     public readonly contextualInformation: string = ConstantsContextualInformation.TREE_VIEW_DEFAULT_FILE_CONTEXT;
 }

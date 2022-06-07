@@ -8,6 +8,8 @@ export class JsonFile extends IdeFile {
     }
     
     public childFiles: any[] | undefined;
+    
+    public hideExpansionChevronWhenNoChildFiles: boolean = true;
 
     public fosterVirtualChildFiles(siblingFiles: IdeFile[]) {
         for(let i = siblingFiles.length - 1; i > -1; i--) {

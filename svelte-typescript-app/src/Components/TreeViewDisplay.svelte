@@ -97,7 +97,15 @@
 <div class="dni_tree-view">
 	<div class="dni_tree-view-title" title="{getTitleText()}">
 		<span class="dni_tree-view-title-expansion-chevron">
-			<ExpansionChevron bind:isExpanded={isExpanded} />
+			{#if data.hideExpansionChevronWhenNoChildFiles && (((children ?? getDataChildren())?.length ?? 0) === 0)}
+				<span style="visibility: hidden;" 
+				      tabindex="-1"
+					  class="dni_unselectable">
+					<ExpansionChevron bind:isExpanded={isExpanded} />
+				</span>
+			{:else}
+				<ExpansionChevron bind:isExpanded={isExpanded} />
+			{/if}
 		</span>
 
 		<span class="dni_tree-view-title-text">
