@@ -20,20 +20,20 @@ export class AbsoluteFilePath {
 
         this.initialAbsoluteFilePathStringInput = FilePathStandardizer.standardizeFilePath(absoluteFilePathString);
 
-        this.fileNameWithExtension = AbsoluteFilePath.getFileNameWithExtension(this.initialAbsoluteFilePathStringInput);
+        this.filenameWithExtension = AbsoluteFilePath.getFilenameWithExtension(this.initialAbsoluteFilePathStringInput);
 
-        let possibleFileNameNoExtension: string | undefined = AbsoluteFilePath
-            .getFileNameWithoutExtensionFromFileNameWithExtension(this.fileNameWithExtension);
+        let possibleFilenameNoExtension: string | undefined = AbsoluteFilePath
+            .getFilenameWithoutExtensionFromFilenameWithExtension(this.filenameWithExtension);
 
-        if (!possibleFileNameNoExtension) {
-            this.fileNameNoExtension = this.fileNameWithExtension;
+        if (!possibleFilenameNoExtension) {
+            this.filenameNoExtension = this.filenameWithExtension;
         }
 
         if(isDirectory) {
             this.extensionNoPeriod = ConstantsFilePath.STANDARDIZED_FILE_DELIMITER;
         }
         else {
-            this.extensionNoPeriod = AbsoluteFilePath.getExtensionNoPeriodFromFileNameWithExtension(this.fileNameWithExtension);
+            this.extensionNoPeriod = AbsoluteFilePath.getExtensionNoPeriodFromFilenameWithExtension(this.filenameWithExtension);
         }
 
         if (!initialParentDirectories) {
@@ -75,7 +75,7 @@ export class AbsoluteFilePath {
                     ConstantsFilePath.STANDARDIZED_FILE_DELIMITER);
 
             return new AbsoluteFilePath(absoluteFilePath.initialAbsoluteFilePathStringInput
-                .replace(absoluteFilePath.fileNameWithExtension,
+                .replace(absoluteFilePath.filenameWithExtension,
                     normalizedRelativePath),
                 isDirectory,
                 null,
@@ -83,19 +83,19 @@ export class AbsoluteFilePath {
         }
     }
 
-    public static getFileNameWithExtension(input: string) {
-        let possibleFileNameWithExtension: string | undefined = input
+    public static getFilenameWithExtension(input: string) {
+        let possibleFilenameWithExtension: string | undefined = input
             .split(ConstantsFilePath.STANDARDIZED_FILE_DELIMITER)
             .pop();
 
-        if (!possibleFileNameWithExtension) {
-            throw this.fileNameException;
+        if (!possibleFilenameWithExtension) {
+            throw this.filenameException;
         }
 
-        return possibleFileNameWithExtension;
+        return possibleFilenameWithExtension;
     }
 
-    public static getFileNameWithoutExtensionFromFileNameWithExtension(input: string) {
+    public static getFilenameWithoutExtensionFromFilenameWithExtension(input: string) {
         let startingIndexOfFileExtension = input.indexOf(".");
 
         if (startingIndexOfFileExtension !== -1) {
@@ -103,7 +103,7 @@ export class AbsoluteFilePath {
         }
     }
     
-    public static getExtensionNoPeriodFromFileNameWithExtension(input: string): string {
+    public static getExtensionNoPeriodFromFilenameWithExtension(input: string): string {
         let startingIndexOfFileExtension = input.lastIndexOf(".");
 
         if (startingIndexOfFileExtension !== -1) {
@@ -113,11 +113,11 @@ export class AbsoluteFilePath {
         return "";
     }
 
-    public fileNameNoExtension!: string;
-    public fileNameWithExtension!: string;
+    public filenameNoExtension!: string;
+    public filenameWithExtension!: string;
     public extensionNoPeriod!: string;
     public readonly parentDirectories: AbsoluteFilePath[];
     public readonly initialAbsoluteFilePathStringInput: string;
 
-    public static readonly fileNameException = 'Malformed absolute path could not parse filename';
+    public static readonly filenameException = 'Malformed absolute path could not parse filename';
 }

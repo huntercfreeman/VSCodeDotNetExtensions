@@ -21,7 +21,7 @@
 <div>
 	<select bind:value={selectedSolution} on:change="{handleSelectOnChange}" class="dni_select">
 		{#each solutionModels as solution}
-			<option value="{solution}" class="dni_option">{solution.absoluteFilePath.fileNameWithExtension}</option>
+			<option value="{solution}" class="dni_option">{solution.absoluteFilePath.filenameWithExtension}</option>
 		{/each}
 	</select>
 </div>

@@ -1,5 +1,6 @@
 import * as vscode from 'vscode';
 import { ConstantsFilePath } from '../Constants/ConstantsFilePath';
+import { ConstantsFileTemplates } from '../Constants/ConstantsFileTemplates';
 import { ConstantsMessages } from '../Constants/ConstantsMessages';
 import { SolutionModel } from '../DotNet/SolutionModel';
 import { AbsoluteFilePath } from '../FileSystem/AbsoluteFilePath';
@@ -86,11 +87,11 @@ export class SidebarProvider implements vscode.WebviewViewProvider {
 
   public handleLoadCSharpProjectChildFilesResponse(webviewView: vscode.WebviewView, data: any, siblingFiles: any[]) {
     siblingFiles = siblingFiles
-      .filter(x => x !== data.value.absoluteFilePath.fileNameWithExtension);
+      .filter(x => x !== data.value.absoluteFilePath.filenameWithExtension);
 
     let siblingAbsoluteFilePaths: AbsoluteFilePath[] = siblingFiles
       .map(x => data.value.absoluteFilePath.initialAbsoluteFilePathStringInput
-        .replace(data.value.absoluteFilePath.fileNameWithExtension, x))
+        .replace(data.value.absoluteFilePath.filenameWithExtension, x))
       .map(x => new AbsoluteFilePath(x, FileSystemReader.isDir(x), null, null));
 
     data.value.childFiles = siblingAbsoluteFilePaths
@@ -181,13 +182,14 @@ export class SidebarProvider implements vscode.WebviewViewProvider {
     }
     
     writePath += data.filename;
+
+    let absoluteFilePath = new AbsoluteFilePath(writePath, false, null, null);
     
     fs.writeFile(writePath, 
-                 "", 
+                 ConstantsFileTemplates.getFileTemplate(absoluteFilePath), 
                  { flag: 'a+' }, 
                  (err: any) => {
         if (!err) {
-          let absoluteFilePath = new AbsoluteFilePath(writePath, false, null, null);
           data.directory.childFiles.push(IdeFileFactory.constructIdeFile(absoluteFilePath));
           
           webviewView.webview.postMessage(ConstantsMessages.ConstructMessage(ConstantsMessages.ADD_EMPTY_FILE_TO_DIRECTORY, 

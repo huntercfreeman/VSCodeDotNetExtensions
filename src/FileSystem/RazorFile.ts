@@ -4,7 +4,7 @@ import { AbsoluteFilePath } from "./AbsoluteFilePath";
 import { FileKind } from "./FileKind";
 import { IdeFile } from "./IdeFile";
 
-// TODO: Directories should always end in a '/' except when accessing fileNameWithoutExtension
+// TODO: Directories should always end in a '/' except when accessing filenameWithoutExtension
 export class RazorFile extends IdeFile {
     constructor(givenAbsoluteFilePath: AbsoluteFilePath) {
         super(givenAbsoluteFilePath);
@@ -27,16 +27,16 @@ export class RazorFile extends IdeFile {
     }
 
     public virtualChildMatchPattern(sibling: IdeFile): boolean {
-        if(sibling.absoluteFilePath.fileNameWithExtension === 
-            this.absoluteFilePath.fileNameWithExtension + ".cs") {
+        if(sibling.absoluteFilePath.filenameWithExtension === 
+            this.absoluteFilePath.filenameWithExtension + ".cs") {
             
             return true;
         }
 
         // I think combining these two if statements with an ||
         // would be a bit hard to read as such they are separate.
-        if(sibling.absoluteFilePath.fileNameWithExtension === 
-            this.absoluteFilePath.fileNameWithExtension + ".css") {
+        if(sibling.absoluteFilePath.filenameWithExtension === 
+            this.absoluteFilePath.filenameWithExtension + ".css") {
             
             return true;
         }

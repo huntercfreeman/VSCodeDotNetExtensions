@@ -24,8 +24,8 @@ export class CshtmlFile extends IdeFile {
     }
 
     public virtualChildMatchPattern(sibling: IdeFile): boolean {
-        if(sibling.absoluteFilePath.fileNameWithExtension === 
-            this.absoluteFilePath.fileNameWithExtension + ".cs") {
+        if(sibling.absoluteFilePath.filenameWithExtension === 
+            this.absoluteFilePath.filenameWithExtension + ".cs") {
             
             return true;
         }

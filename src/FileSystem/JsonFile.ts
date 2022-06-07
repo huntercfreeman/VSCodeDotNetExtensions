@@ -24,13 +24,13 @@ export class JsonFile extends IdeFile {
     }
 
     public virtualChildMatchPattern(sibling: IdeFile): boolean {
-        if(sibling.absoluteFilePath.fileNameWithExtension === 
-            this.absoluteFilePath.fileNameWithExtension) {
+        if(sibling.absoluteFilePath.filenameWithExtension === 
+            this.absoluteFilePath.filenameWithExtension) {
                 return false;
         }
 
-        let siblingSplit = sibling.absoluteFilePath.fileNameWithExtension.split('.');
-        let selfSplit = this.absoluteFilePath.fileNameWithExtension.split('.');
+        let siblingSplit = sibling.absoluteFilePath.filenameWithExtension.split('.');
+        let selfSplit = this.absoluteFilePath.filenameWithExtension.split('.');
 
         if(selfSplit.length > siblingSplit.length) {
             return false;

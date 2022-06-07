@@ -64,10 +64,10 @@
 
 	function getTitleText() {
 		if (data.absoluteFilePath) {
-			return data.absoluteFilePath.fileNameWithExtension;
+			return data.absoluteFilePath.filenameWithExtension;
 		}
-		else if (data.fileNameWithExtension) {
-			return data.fileNameWithExtension;
+		else if (data.filenameWithExtension) {
+			return data.filenameWithExtension;
 		}
 		else {
 			
