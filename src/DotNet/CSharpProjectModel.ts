@@ -1,6 +1,6 @@
 import { ConstantsContextualInformation } from "../Constants/ConstantsContextualInformation";
 import { AbsoluteFilePath } from "../FileSystem/AbsoluteFilePath";
-import { IFile } from "../FileSystem/IFile";
+import { IdeFile } from "../FileSystem/IdeFile";
 import { SolutionModel } from "./SolutionModel";
 
 export class CSharpProjectModel {
@@ -17,7 +17,7 @@ export class CSharpProjectModel {
 
     public readonly absoluteFilePath: AbsoluteFilePath;
     public solutionFolderEntries: CSharpProjectModel[] | undefined;
-	public childFiles: IFile[] | undefined;
+	public childFiles: IdeFile[] | undefined;
     public solutionFolderParentSecondGuid: string | undefined;
 
     public contextualInformation: string = ConstantsContextualInformation.TREE_VIEW_CSHARP_PROJECT_CONTEXT;

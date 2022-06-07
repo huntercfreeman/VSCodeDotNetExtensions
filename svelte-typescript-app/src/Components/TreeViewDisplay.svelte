@@ -11,6 +11,7 @@
 	import { json } from "stream/consumers";
 	import ContextMenu from './ContextMenu.svelte';
 	import FileIconDisplay from './FileIconDisplay.svelte';
+	import { contextMenuTarget } from './menu.js';
 
 	export let data: any;
 	
@@ -25,7 +26,7 @@
 			data.projects
 			// solution folder
 			?? data.solutionFolderEntries
-			// .csproj || IFile
+			// .csproj || IdeFile
 			?? data.childFiles;
 
 		if(!children) {
@@ -74,7 +75,7 @@
 		}
 	}	
 	
-	function titleOnClick() {
+	function titleOnClick(e: MouseEvent) {
 		if (!data.solutionFolderEntries) {
 			let absoluteFilePath = data.absoluteFilePath ??
 				data;
@@ -114,7 +115,8 @@
 <div class="dni_tree-view">
 	<div class="dni_tree-view-title" 
 	     title="{getTitleText()}"
-		 on:click="{titleOnClick}">
+		 on:click="{(e) => titleOnClick(e)}"
+		 on:contextmenu="{(e) => contextMenuTarget.set(data)}">
 		{#if data.hideExpansionChevronWhenNoChildFiles && (((children ?? getDataChildren())?.length ?? 0) === 0)}
 			<span style="visibility: hidden;" 
 					tabindex="-1"

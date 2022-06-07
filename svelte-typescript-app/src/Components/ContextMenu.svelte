@@ -5,10 +5,19 @@
 	import ContextMenuForSolutionTreeView from './ContextMenus/ContextMenuForSolutionTreeView.svelte';
 	import ContextMenuForSolutionFolderTreeView from './ContextMenus/ContextMenuForSolutionFolderTreeView.svelte';
 	import ContextMenuForCSharpProjectTreeView from './ContextMenus/ContextMenuForCSharpProjectTreeView.svelte';
+	import ContextMenuForDirectoryTreeView from './ContextMenus/ContextMenuForDirectoryTreeView.svelte';
+	import ContextMenuForDefaultFileTreeView from './ContextMenus/ContextMenuForDefaultFileTreeView.svelte';
     import { ConstantsContextualInformation } from "../../../out/Constants/ConstantsContextualInformation";
+	import { contextMenuTarget } from './menu.js';
 
     let pos = { x: 0, y: 0 };
     let showMenu = false;
+
+	let contextMenuTargetValue;
+	
+	contextMenuTarget.subscribe(value => {
+		contextMenuTargetValue = value;
+	});
 
     export async function onRightClick(e) {
 		if (showMenu) {
@@ -26,22 +35,27 @@
 </script>
 
 {#if showMenu}
-	<Menu {...pos} on:click={closeMenu} on:clickoutside={closeMenu}>
-		<MenuOption 
-			on:click={console.log} 
-			text="C# Project Tree View" />
-		<MenuOption 
-			on:click={console.log} 
-			text="Do nothing, but twice" />
-		<MenuDivider />
-		<MenuOption 
-			isDisabled={true} 
-			on:click={console.log} 
-			text="Whoops, disabled!" />
-		<MenuOption on:click={console.log}>
-			<span>Look! An icon!</span>
-		</MenuOption>
-	</Menu>
+	{#if contextMenuTargetValue.contextualInformation === 
+	     ConstantsContextualInformation.TREE_VIEW_SOLUTION_CONTEXT}
+
+		 <ContextMenuForSolutionTreeView {...pos} closeMenu={closeMenu} />
+	{:else if contextMenuTargetValue.contextualInformation === 
+		ConstantsContextualInformation.TREE_VIEW_SOLUTION_FOLDER_CONTEXT}
+		
+		<ContextMenuForSolutionFolderTreeView {...pos} closeMenu={closeMenu} />
+	{:else if contextMenuTargetValue.contextualInformation === 
+		ConstantsContextualInformation.TREE_VIEW_CSHARP_PROJECT_CONTEXT}
+		
+		<ContextMenuForCSharpProjectTreeView {...pos} closeMenu={closeMenu} />
+	{:else if contextMenuTargetValue.contextualInformation === 
+		ConstantsContextualInformation.TREE_VIEW_DIRECTORY_CONTEXT}
+		
+		<ContextMenuForDirectoryTreeView {...pos} closeMenu={closeMenu} />
+	{:else if contextMenuTargetValue.contextualInformation === 
+		ConstantsContextualInformation.TREE_VIEW_DEFAULT_FILE_CONTEXT}
+		
+		<ContextMenuForDefaultFileTreeView {...pos} closeMenu={closeMenu} />
+	{/if}
 {/if}
 
 <svelte:body on:contextmenu|preventDefault={onRightClick} />

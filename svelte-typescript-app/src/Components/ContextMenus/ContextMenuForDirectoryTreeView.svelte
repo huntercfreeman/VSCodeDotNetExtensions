@@ -13,11 +13,10 @@
 	}
 </script>
 
-
 <Menu {...pos} on:click={closeMenu} on:clickoutside={closeMenu}>
 		<MenuOption 
 			on:click={console.log} 
-			text="Solution Folder Tree View" />
+			text="Directory Tree View" />
 		<MenuOption 
 			on:click={console.log} 
 			text="Do nothing, but twice" />

@@ -18,6 +18,7 @@
 		"node_modules",
 		".vscode-test",
 		"webviews",
-		"my-app"
+		"my-app",
+		"svelte-typescript-app"
 	]
 }
