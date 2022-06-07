@@ -46,8 +46,7 @@
 				ConstantsMessages.ConstructMessage(ConstantsMessages.ADD_FILE_WITH_TEMPLATE_TO_DIRECTORY, 
 					{ 
 						directory: contextMenuTargetValue,
-						filename: addFileWithTemplateFilename,
-						shouldAddCodeBehind: shouldAddCodeBehind
+						filename: addFileWithTemplateFilename
 					}));
 
 			if (shouldAddCodeBehind) {

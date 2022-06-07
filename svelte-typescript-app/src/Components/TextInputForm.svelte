@@ -3,6 +3,7 @@
     export let onCancel: any = () => value = undefined;
     export let onValidSubmit: any;
     export let onInvalidSubmit: any = undefined;
+    export let placeholder: string = "";
 
     function validate() {
         if (value) {
@@ -25,7 +26,7 @@
 </script>
 
 {#if value !== undefined}
-    <input placeholder="Give Solution Folder Name" 
+    <input placeholder="{placeholder}" 
            bind:value="{value}"
            on:keydown|stopPropagation="{(e) => extendOnKeyDown(e)}" />
     <button on:click="{validate}">Confirm</button>
