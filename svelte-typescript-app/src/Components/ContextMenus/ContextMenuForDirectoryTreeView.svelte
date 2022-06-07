@@ -14,7 +14,7 @@
 	let contextMenuTargetValue;
 	let addFileWithTemplateFilename: string | undefined;
 	let addEmptyFileFilename: string | undefined;
-	let shouldAddCodeBehind: boolean = true;
+	let shouldAddCodeBehind: boolean = false;
 	
 	contextMenuTarget.subscribe(value => {
 		contextMenuTargetValue = value;
@@ -76,6 +76,15 @@
 			closeMenu();
 		}
 	}
+	
+	function refreshOnClick() {
+		tsVscode.postMessage(
+			ConstantsMessages
+				.ConstructMessage(ConstantsMessages.LOAD_DIRECTORY_CHILD_FILES, 
+					contextMenuTargetValue));
+			
+		closeMenu();
+	}
 
 </script>
 
@@ -95,11 +104,15 @@
 			   shouldAddCodeBehind: {shouldAddCodeBehind}
 	{/if}
 
-	<MenuDivider />
-
 	<MenuOption onClickStopPropagation="{true}"
 		onClick={beginFormAddEmptyFileOnClick} 
 		text="Add empty file." />
 	<TextInputForm bind:value="{addEmptyFileFilename}"
 	               onValidSubmit="{addEmptyFileToFolderOnClick}" />
+
+	<MenuDivider />
+
+	<MenuOption onClickStopPropagation="{true}"
+		onClick={refreshOnClick} 
+		text="Refresh." />
 </Menu>

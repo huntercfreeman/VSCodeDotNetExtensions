@@ -6,6 +6,7 @@ import { SolutionModel } from '../DotNet/SolutionModel';
 import { AbsoluteFilePath } from '../FileSystem/AbsoluteFilePath';
 import { DefaultFile } from '../FileSystem/DefaultFile';
 import { DirectoryFile } from '../FileSystem/DirectoryFile';
+import { FileSorter } from '../FileSystem/FileSorter';
 import { FileSystemReader } from '../FileSystem/FileSystemReader';
 import { IdeFileFactory } from '../FileSystem/IdeFileFactory';
 
@@ -97,6 +98,8 @@ export class SidebarProvider implements vscode.WebviewViewProvider {
     data.value.childFiles = siblingAbsoluteFilePaths
       .map(absoluteFilePath => IdeFileFactory.constructIdeFile(absoluteFilePath, data.value.absoluteFilePath));
 
+    FileSorter.organizeContainer(data.value.childFiles);
+
     for (let i = data.value.childFiles.length - 1; i > -1; i--) {
       if (data.value.childFiles[i].fosterVirtualChildFiles) {
         data.value.childFiles[i].fosterVirtualChildFiles(data.value.childFiles);
@@ -115,6 +118,8 @@ export class SidebarProvider implements vscode.WebviewViewProvider {
 
     data.value.childFiles = childAbsoluteFilePaths
       .map(absoluteFilePath => IdeFileFactory.constructIdeFile(absoluteFilePath, data.value.containingCSharpProjectModelAbsoluteFilePath));
+
+    FileSorter.organizeContainer(data.value.childFiles);
 
     for (let i = data.value.childFiles.length - 1; i > -1; i--) {
       if (data.value.childFiles[i].fosterVirtualChildFiles) {
