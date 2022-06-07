@@ -10,7 +10,7 @@ export class AbsoluteFilePath {
      * @param isDirectory 
      * @param initialParentDirectories If passed as a null array the parentDirectories will be parsed from the initialAbsoluteFilePathStringInput. If passed with entries parent directories will not be parsed from initialAbsoluteFilePathStringInput as this could cause an infinite loop of parsing for parent directories.
      */
-    constructor(public absoluteFilePathString: string,
+    constructor(absoluteFilePathString: string,
         public readonly isDirectory: boolean,
         initialParentDirectories: AbsoluteFilePath[] | null,
         public readonly nonce: string | null) {

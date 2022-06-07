@@ -1,23 +1,24 @@
 import { AbsoluteFilePath } from "../FileSystem/AbsoluteFilePath";
+import { IdeFile } from "../FileSystem/IdeFile";
 import { ConstantsFileExtensionsNoPeriod } from "./ConstantsFileExtensionsNoPeriod";
 
 /* eslint-disable @typescript-eslint/naming-convention */
 export class ConstantsFileTemplates {
-    public static getFileTemplate(absoluteFilePath: AbsoluteFilePath): string {
-        if(absoluteFilePath.isDirectory) {
+    public static getFileTemplate(ideFile: IdeFile): string {
+        if(ideFile.absoluteFilePath.isDirectory) {
             return "";
         }
 
-        switch (absoluteFilePath.extensionNoPeriod) {
+        switch (ideFile.absoluteFilePath.extensionNoPeriod) {
             case ConstantsFileExtensionsNoPeriod.C_SHARP_FILE_EXTENSION: {
-                if(absoluteFilePath.filenameWithExtension.indexOf(ConstantsFileExtensionsNoPeriod.RAZOR__CODEBEHIND_FILE_EXTENSION)) {
-                    return this.razorCodebehindFileTemplate(absoluteFilePath.filenameWithExtension, this.getNamespace(absoluteFilePath));
+                if(ideFile.absoluteFilePath.filenameWithExtension.indexOf(ConstantsFileExtensionsNoPeriod.RAZOR__CODEBEHIND_FILE_EXTENSION)) {
+                    return this.razorCodebehindFileTemplate(ideFile.absoluteFilePath.filenameWithExtension, this.getNamespace(ideFile));
                 }
                 
-                return this.csFileTemplate(absoluteFilePath.filenameWithExtension, this.getNamespace(absoluteFilePath));
+                return this.csFileTemplate(ideFile.absoluteFilePath.filenameWithExtension, this.getNamespace(ideFile));
             }
             case ConstantsFileExtensionsNoPeriod.RAZOR_FILE_EXTENSION: {
-                return this.razorMarkupFileTemplate(absoluteFilePath.filenameWithExtension);
+                return this.razorMarkupFileTemplate(ideFile.absoluteFilePath.filenameWithExtension);
             }
             default:
                 return "";
@@ -25,21 +26,33 @@ export class ConstantsFileTemplates {
     }
 
     // TODO: Read base namespace of .csproj in case user alters default
-    private static getNamespace(absoluteFilePath: AbsoluteFilePath): string {
+    private static getNamespace(ideFile: IdeFile): string {
         let namespace = "";
         
-        for (let i = absoluteFilePath.parentDirectories.length - 1; i > -1; i--) {
-            let currentFileContainer = absoluteFilePath.parentDirectories[i];
+        for (let i = ideFile.absoluteFilePath.parentDirectories.length - 1; i > -1; i--) {
+            let currentFileContainer = ideFile.absoluteFilePath.parentDirectories[i];
 
-            if (namespace) {
-                namespace = `${currentFileContainer.filenameNoExtension}.${namespace}`;
+            // If the directory the C# Project is in, is the directory that is being looked at
+            // we are done calculating namespace.
+            if(currentFileContainer.initialAbsoluteFilePathStringInput ===
+                ideFile.containingCSharpProjectModelAbsoluteFilePath.parentDirectories
+                        [ideFile.containingCSharpProjectModelAbsoluteFilePath.parentDirectories.length - 1]
+                            .initialAbsoluteFilePathStringInput) {
+                if (namespace) {
+                    namespace = `${ideFile.containingCSharpProjectModelAbsoluteFilePath.filenameNoExtension}.${namespace}`;
+                }
+                else {
+                    namespace = ideFile.containingCSharpProjectModelAbsoluteFilePath.filenameNoExtension;
+                }
             }
-            else {
-                namespace = currentFileContainer.filenameNoExtension;
-            }
-
-            if (currentFileContainer.extensionNoPeriod === ConstantsFileExtensionsNoPeriod.C_SHARP_PROJECT_FILE_EXTENSION) {
-                break;
+            else
+            {
+                if (namespace) {
+                    namespace = `${currentFileContainer.filenameNoExtension}.${namespace}`;
+                }
+                else {
+                    namespace = currentFileContainer.filenameNoExtension;
+                }
             }
         }
 

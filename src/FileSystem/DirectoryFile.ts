@@ -1,4 +1,5 @@
 import { ConstantsContextualInformation } from "../Constants/ConstantsContextualInformation";
+import { CSharpProjectModel } from "../DotNet/CSharpProjectModel";
 import { getNonce } from "../IdGeneration/getNonce";
 import { AbsoluteFilePath } from "./AbsoluteFilePath";
 import { FileKind } from "./FileKind";
@@ -6,8 +7,8 @@ import { IdeFile } from "./IdeFile";
 
 // TODO: Directories should always end in a '/' except when accessing filenameWithoutExtension
 export class DirectoryFile extends IdeFile {
-    constructor(givenAbsoluteFilePath: AbsoluteFilePath) {
-        super(givenAbsoluteFilePath);
+    constructor(givenAbsoluteFilePath: AbsoluteFilePath, containingCSharpProjectModel: CSharpProjectModel) {
+        super(givenAbsoluteFilePath, containingCSharpProjectModel);
     }
     
     public nonce: string = getNonce();

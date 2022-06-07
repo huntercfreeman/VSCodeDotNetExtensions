@@ -1,12 +1,13 @@
 import { ConstantsContextualInformation } from "../Constants/ConstantsContextualInformation";
+import { CSharpProjectModel } from "../DotNet/CSharpProjectModel";
 import { AbsoluteFilePath } from "./AbsoluteFilePath";
 import { FileKind } from "./FileKind";
 import { FileKindMatcher } from "./FileKindMatcher";
 import { IdeFile } from "./IdeFile";
 
 export class CSharpFile extends IdeFile {
-    constructor(givenAbsoluteFilePath: AbsoluteFilePath) {
-        super(givenAbsoluteFilePath);
+    constructor(givenAbsoluteFilePath: AbsoluteFilePath, containingCSharpProjectModel: CSharpProjectModel) {
+        super(givenAbsoluteFilePath, containingCSharpProjectModel);
     }
     
     public childFiles: any[] | undefined;

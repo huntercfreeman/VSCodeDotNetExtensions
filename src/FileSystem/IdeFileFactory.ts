@@ -10,28 +10,29 @@ import { RazorFile } from "./RazorFile";
 import { JsonFile } from "./JsonFile";
 import { DefaultFile } from "./DefaultFile";
 import { IdeFile } from "./IdeFile";
+import { CSharpProjectModel } from "../DotNet/CSharpProjectModel";
 
 export class IdeFileFactory {
-    public static constructIdeFile(absoluteFilePath: AbsoluteFilePath): IdeFile {
+    public static constructIdeFile(absoluteFilePath: AbsoluteFilePath, containingCSharpProjectModel: CSharpProjectModel): IdeFile {
         switch (FileKindMatcher.getFileKind(absoluteFilePath.extensionNoPeriod)) {
             // case FileKind.cSharpProject:
             //     return ;
             // case FileKind.solution:
             //     return ;
             case FileKind.cSharp:
-                return new CSharpFile(absoluteFilePath);
+                return new CSharpFile(absoluteFilePath, containingCSharpProjectModel);
             case FileKind.cshtml:
-                return new CshtmlFile(absoluteFilePath);
+                return new CshtmlFile(absoluteFilePath, containingCSharpProjectModel);
             case FileKind.css:
-                return new CssFile(absoluteFilePath);
+                return new CssFile(absoluteFilePath, containingCSharpProjectModel);
             case FileKind.directory:
-                return new DirectoryFile(absoluteFilePath);
+                return new DirectoryFile(absoluteFilePath, containingCSharpProjectModel);
             case FileKind.razor:
-                return new RazorFile(absoluteFilePath);
+                return new RazorFile(absoluteFilePath, containingCSharpProjectModel);
             case FileKind.json:
-                return new JsonFile(absoluteFilePath);
+                return new JsonFile(absoluteFilePath, containingCSharpProjectModel);
             default:
-                return new DefaultFile(absoluteFilePath);
+                return new DefaultFile(absoluteFilePath, containingCSharpProjectModel);
         }
     }
 }
