@@ -44,5 +44,5 @@ export class RazorFile extends IdeFile {
         return false;
     }
     
-    public readonly contextualInformation: string = ConstantsContextualInformation.TREE_VIEW_DIRECTORY_CONTEXT;
+    public readonly contextualInformation: string = ConstantsContextualInformation.TREE_VIEW_DEFAULT_FILE_CONTEXT;
 }
