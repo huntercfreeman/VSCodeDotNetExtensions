@@ -136,7 +136,7 @@
 		{#if isExpanded}
 			{#each (children ?? getDataChildren()) as child}
 				{#if !hasDifferentParentContainer(child)}
-					<svelte:self data={child} />
+					<svelte:self ideFile={child} />
 				{/if}
 			{/each}
 		{/if}
