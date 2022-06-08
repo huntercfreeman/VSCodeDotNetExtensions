@@ -7,7 +7,7 @@ import { ReadMessageHandler } from "./ReadMessageHandler";
 import { UpdateMessageHandler } from "./UpdateMessageHandler";
 
 export class SidebarProviderMessageHandler {
-    public static handleMessage(webviewView: vscode.WebviewView, untypedMessage: any): void {
+    public static async handleMessage(webviewView: vscode.WebviewView, untypedMessage: any): Promise<void> {
 
         let message = untypedMessage as IMessage;
 
@@ -15,7 +15,7 @@ export class SidebarProviderMessageHandler {
             case MessageCategory.create:
               return CreateMessageHandler.handleMessage(webviewView, message);
             case MessageCategory.read: 
-              return ReadMessageHandler.handleMessage(webviewView, message);
+              return await ReadMessageHandler.handleMessage(webviewView, message);
             case MessageCategory.update:
               return UpdateMessageHandler.handleMessage(webviewView, message);
             case MessageCategory.delete:              

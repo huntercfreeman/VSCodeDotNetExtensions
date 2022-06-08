@@ -28,6 +28,8 @@
 					switch(message.messageReadKind) {
 						case MessageReadKind.solutionsInWorkspace:
 							dotNetSolutionFiles = message.dotNetSolutionFiles;
+						case MessageReadKind.solutionIntoTreeView:
+							selectedDotNetSolutionFile = message.dotNetSolutionFile;
 					}
 			}
 		});
@@ -44,7 +46,7 @@
 	<SelectDotNetSolutionFileForm dotNetSolutionFiles={dotNetSolutionFiles} />
 
 	{#if selectedDotNetSolutionFile}
-		<TreeViewDisplay data={selectedDotNetSolutionFile} />	
+		<TreeViewDisplay ideFile={selectedDotNetSolutionFile} />	
 	{/if}
 </div>
 

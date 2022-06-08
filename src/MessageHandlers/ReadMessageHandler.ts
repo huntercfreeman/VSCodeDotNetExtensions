@@ -1,6 +1,7 @@
 import * as vscode from 'vscode';
 import { SolutionModel } from '../DotNet/SolutionModel';
 import { AbsoluteFilePath } from '../FileSystem/AbsoluteFilePath';
+import { CSharpProjectFile } from '../FileSystem/Files/CSharpProjectFile';
 import { DotNetSolutionFile } from '../FileSystem/Files/DotNetSolutionFile';
 import { IMessage } from "../Messages/IMessage";
 import { IMessageRead } from "../Messages/Read/IMessageRead";
@@ -65,7 +66,7 @@ export class ReadMessageHandler {
             .map(x => new SolutionModel(x));
 
         message.dotNetSolutionFiles = solutionModels
-            .map(x => new DotNetSolutionFile(x.absoluteFilePath));
+            .map(x => new DotNetSolutionFile(x));
 
         webviewView.webview.postMessage(message);
     }
@@ -74,6 +75,9 @@ export class ReadMessageHandler {
         let message = iMessage as MessageReadSolutionIntoTreeView;
 
         return await SolutionModel.parseSolution(message.dotNetSolutionFile.solutionModel!, () => {
+            message.dotNetSolutionFile.virtualChildFiles = message.dotNetSolutionFile.solutionModel!.projects
+                .map(x => new CSharpProjectFile(x));
+            
             webviewView.webview.postMessage(message);
         });
     }

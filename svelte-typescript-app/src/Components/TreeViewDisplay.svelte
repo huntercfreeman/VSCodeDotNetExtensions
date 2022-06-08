@@ -2,21 +2,12 @@
 	import { onMount } from "svelte";
     import type { IdeFile } from "../../../out/FileSystem/Files/IdeFile";
     import { FileKind } from "../../../out/FileSystem/FileKind";
-    import type { DotNetSolutionFile } from "../../../out/FileSystem/Files/DotNetSolutionFile";
     import { MessageReadFilesInDirectory } from "../../../out/Messages/Read/MessageReadFilesInDirectory";
     import { MessageReadFileIntoEditor } from "../../../out/Messages/Read/MessageReadFileIntoEditor";
     import { MessageReadVirtualFilesInCSharpProject } from "../../../out/Messages/Read/MessageReadVirtualFilesInCSharpProject";
 	import { MessageCategory } from "../../../out/Messages/MessageCategory";
 	import { MessageReadKind } from "../../../out/Messages/Read/MessageReadKind";
-	import type { AbsoluteFilePath } from "../../../out/FileSystem/AbsoluteFilePath";
-	import type { SolutionModel } from "../../../out/DotNet/SolutionModel";
-	import type { CSharpProjectModel } from "../../../out/DotNet/CSharpProjectModel";
-	import { ConstantsMessages } from "../../../out/Constants/ConstantsMessages";
-	import { ConstantsTreeView } from "../../../out/Constants/ConstantsTreeView";
-	import { ConstantsContextualInformation } from "../../../out/Constants/ConstantsContextualInformation";
 	import ExpansionChevron from "./ExpansionChevron.svelte";
-	import { json } from "stream/consumers";
-	import ContextMenu from './ContextMenu.svelte';
 	import FileIconDisplay from './FileIconDisplay.svelte';
 	import { contextMenuTarget } from './menu.js';
 
