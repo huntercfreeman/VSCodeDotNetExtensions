@@ -118,7 +118,7 @@
 							let messageReadFilesInDirectory = message as MessageReadFilesInDirectory;
                             if(ideFile.nonce === messageReadFilesInDirectory.directoryFile.nonce) {
 								ideFile = messageReadFilesInDirectory.directoryFile;
-								children = ideFile.virtualChildFiles;
+								children = ideFile.childFiles;
                             }
 						case MessageReadKind.virtualFilesInCSharpProject:
 							let messageReadVirtualFilesInCSharpProject = message as MessageReadVirtualFilesInCSharpProject;

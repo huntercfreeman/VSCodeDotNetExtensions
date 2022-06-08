@@ -8,6 +8,7 @@ import { FileSystemReader } from '../FileSystem/FileSystemReader';
 import { IdeFileFactory } from '../FileSystem/IdeFileFactory';
 import { IMessage } from "../Messages/IMessage";
 import { IMessageRead } from "../Messages/Read/IMessageRead";
+import { MessageReadFilesInDirectory } from '../Messages/Read/MessageReadFilesInDirectory';
 import { MessageReadKind } from "../Messages/Read/MessageReadKind";
 import { MessageReadSolutionIntoTreeView } from '../Messages/Read/MessageReadSolutionIntoTreeView';
 import { MessageReadSolutionsInWorkspace } from '../Messages/Read/MessageReadSolutionsInWorkspace';
@@ -21,6 +22,7 @@ export class ReadMessageHandler {
             case MessageReadKind.fileIntoEditor:
                 break;
             case MessageReadKind.filesInDirectory:
+                await this.handleMessageReadFilesInDirectory(webviewView, message);
                 break;
             case MessageReadKind.virtualFilesInCSharpProject:
                 await this.handleMessageReadVirtualFilesInCSharpProjectAsync(webviewView, message);
@@ -106,6 +108,28 @@ export class ReadMessageHandler {
                     .constructIdeFile(absoluteFilePath, message.cSharpProjectFile.absoluteFilePath));
 
             FileSorter.organizeContainer(message.cSharpProjectFile.virtualChildFiles);
+
+            webviewView.webview.postMessage(message);
+        });
+    }
+    
+    public static async handleMessageReadFilesInDirectory(webviewView: vscode.WebviewView, iMessage: IMessage) {
+        let message = iMessage as MessageReadFilesInDirectory;
+
+        await FileSystemReader.getChildFilesOfDirectory(message.directoryFile.absoluteFilePath, (childFiles: string[]) => {
+            childFiles = childFiles
+                .filter(x => x !== message.directoryFile.absoluteFilePath.filenameWithExtension);
+
+            let childAbsoluteFilePaths: AbsoluteFilePath[] = childFiles
+                .map(x => message.directoryFile.absoluteFilePath.initialAbsoluteFilePathStringInput
+                    .replace(message.directoryFile.absoluteFilePath.filenameWithExtension, x))
+                .map(x => new AbsoluteFilePath(x, FileSystemReader.isDir(x), null));
+
+            message.directoryFile.childFiles = childAbsoluteFilePaths
+                .map(absoluteFilePath => IdeFileFactory
+                    .constructIdeFile(absoluteFilePath, message.directoryFile.absoluteFilePath));
+
+            FileSorter.organizeContainer(message.directoryFile.childFiles);
 
             webviewView.webview.postMessage(message);
         });
