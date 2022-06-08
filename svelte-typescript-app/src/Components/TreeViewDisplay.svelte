@@ -99,7 +99,7 @@
         }
 
         let messageReadFileIntoEditor = 
-            new MessageReadFileIntoEditor(ideFile.absoluteFilePath);
+            new MessageReadFileIntoEditor(ideFile);
 
         tsVscode.postMessage({
             type: undefined,

@@ -8,6 +8,7 @@ import { FileSystemReader } from '../FileSystem/FileSystemReader';
 import { IdeFileFactory } from '../FileSystem/IdeFileFactory';
 import { IMessage } from "../Messages/IMessage";
 import { IMessageRead } from "../Messages/Read/IMessageRead";
+import { MessageReadFileIntoEditor } from '../Messages/Read/MessageReadFileIntoEditor';
 import { MessageReadFilesInDirectory } from '../Messages/Read/MessageReadFilesInDirectory';
 import { MessageReadKind } from "../Messages/Read/MessageReadKind";
 import { MessageReadSolutionIntoTreeView } from '../Messages/Read/MessageReadSolutionIntoTreeView';
@@ -20,6 +21,7 @@ export class ReadMessageHandler {
 
         switch (readMessage.messageReadKind) {
             case MessageReadKind.fileIntoEditor:
+                await this.handleMessageReadFileIntoEditor(webviewView, message);
                 break;
             case MessageReadKind.filesInDirectory:
                 await this.handleMessageReadFilesInDirectory(webviewView, message);
@@ -132,6 +134,22 @@ export class ReadMessageHandler {
             FileSorter.organizeContainer(message.directoryFile.childFiles);
 
             webviewView.webview.postMessage(message);
+        });
+    }
+    
+    public static async handleMessageReadFileIntoEditor(webviewView: vscode.WebviewView, iMessage: IMessage) {
+        let message = iMessage as MessageReadFileIntoEditor;
+
+        const openPath = vscode.Uri.file(message.ideFile.absoluteFilePath.initialAbsoluteFilePathStringInput);
+
+        vscode.workspace.openTextDocument(openPath).then(doc => {
+            let textDocumentShowOptions: vscode.TextDocumentShowOptions = {
+                "preserveFocus": false,
+                "preview": false,
+                "viewColumn": vscode.ViewColumn.One
+            };
+
+            vscode.window.showTextDocument(doc, textDocumentShowOptions);
         });
     }
 }
