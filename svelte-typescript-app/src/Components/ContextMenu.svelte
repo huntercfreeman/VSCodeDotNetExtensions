@@ -5,7 +5,7 @@
     import { ConstantsContextualInformation } from "../../../out/Constants/ConstantsContextualInformation";
     import { ContextualInformationDatum } from "../../../out/ContextMenus/ContextualInformationDatum";
 	import { contextMenuTarget } from './menu.js';
-	import MenuOptionCreateNewTemplatedFile from './ContextMenuOptions/ContextMenuOptions/MenuOptionCreateNewTemplatedFile.svelte';
+	import MenuOptionCreateNewTemplatedFile from './ContextMenuOptions/MenuOptionCreateNewTemplatedFile.svelte';
 	import MenuOptionCreateNewEmptyFile from './ContextMenuOptions/MenuOptionCreateNewEmptyFile.svelte';
 
     let pos = { x: 0, y: 0 };

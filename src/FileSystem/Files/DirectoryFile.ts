@@ -9,8 +9,8 @@ export class DirectoryFile extends IdeFile {
     public setVirtualChildFiles(siblingFiles: IdeFile[]): void {
         throw new Error("Method not implemented.");
     }
-    constructor(givenAbsoluteFilePath: AbsoluteFilePath) {
-        super(givenAbsoluteFilePath, "");
+    constructor(givenAbsoluteFilePath: AbsoluteFilePath, currentNamespaceString: string) {
+        super(givenAbsoluteFilePath, currentNamespaceString + '.' + givenAbsoluteFilePath.filenameNoExtension);
     }
     
     public nonce: string = getNonce();

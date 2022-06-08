@@ -6,7 +6,7 @@ import { FileKindMatcher } from "../FileKindMatcher";
 
 export abstract class IdeFile {
     constructor(public readonly absoluteFilePath: AbsoluteFilePath,
-        public namespace: string | undefined) {
+        public namespace: string) {
         
         this.fileKind = FileKindMatcher.getFileKind(absoluteFilePath.extensionNoPeriod);
     }

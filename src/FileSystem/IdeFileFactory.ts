@@ -11,20 +11,20 @@ import { JsonFile } from "./Files/JsonFile";
 import { RazorFile } from "./Files/RazorFile";
 
 export class IdeFileFactory {
-    public static constructIdeFile(absoluteFilePath: AbsoluteFilePath): IdeFile {
+    public static constructIdeFile(absoluteFilePath: AbsoluteFilePath, currentNamespaceString: string): IdeFile {
         switch (FileKindMatcher.getFileKind(absoluteFilePath.extensionNoPeriod)) {
             // case FileKind.cSharpProject:
             //     return ;
             // case FileKind.solution:
             //     return ;
             case FileKind.cSharp:
-                return new CSharpFile(absoluteFilePath);
+                return new CSharpFile(absoluteFilePath, currentNamespaceString);
             case FileKind.cshtml:
                 return new CshtmlFile(absoluteFilePath);
             case FileKind.css:
                 return new CssFile(absoluteFilePath);
             case FileKind.directory:
-                return new DirectoryFile(absoluteFilePath);
+                return new DirectoryFile(absoluteFilePath, currentNamespaceString);
             case FileKind.razor:
                 return new RazorFile(absoluteFilePath);
             case FileKind.json:

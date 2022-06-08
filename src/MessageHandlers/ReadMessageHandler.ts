@@ -107,7 +107,7 @@ export class ReadMessageHandler {
 
             message.cSharpProjectFile.virtualChildFiles = siblingAbsoluteFilePaths
                 .map(absoluteFilePath => IdeFileFactory
-                    .constructIdeFile(absoluteFilePath, message.cSharpProjectFile.absoluteFilePath));
+                    .constructIdeFile(absoluteFilePath, message.cSharpProjectFile.namespace));
 
             FileSorter.organizeContainer(message.cSharpProjectFile.virtualChildFiles);
 
@@ -129,7 +129,7 @@ export class ReadMessageHandler {
 
             message.directoryFile.childFiles = childAbsoluteFilePaths
                 .map(absoluteFilePath => IdeFileFactory
-                    .constructIdeFile(absoluteFilePath, message.directoryFile.absoluteFilePath));
+                    .constructIdeFile(absoluteFilePath, message.directoryFile.namespace));
 
             FileSorter.organizeContainer(message.directoryFile.childFiles);
 

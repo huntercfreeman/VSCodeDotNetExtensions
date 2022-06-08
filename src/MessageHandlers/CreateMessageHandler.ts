@@ -42,7 +42,7 @@ export class CreateMessageHandler {
 
         let absoluteFilePath = new AbsoluteFilePath(writePath, false, null);
 
-        let ideFile = IdeFileFactory.constructIdeFile(absoluteFilePath);
+        let ideFile = IdeFileFactory.constructIdeFile(absoluteFilePath, message.directoryFile.namespace);
 
         fs.writeFile(writePath,
             ConstantsFileTemplates.getFileTemplate(ideFile),

@@ -5,8 +5,8 @@ import { AbsoluteFilePath } from "../AbsoluteFilePath";
 import { IdeFile } from "./IdeFile";
 
 export class CSharpFile extends IdeFile {
-    constructor(givenAbsoluteFilePath: AbsoluteFilePath) {
-        super(givenAbsoluteFilePath, "");
+    constructor(givenAbsoluteFilePath: AbsoluteFilePath, currentNamespaceString: string) {
+        super(givenAbsoluteFilePath, currentNamespaceString);
     }
     
     public childFiles: any[] | undefined;
