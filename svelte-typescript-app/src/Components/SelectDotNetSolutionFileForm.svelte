@@ -8,7 +8,7 @@
 	
 	function handleSelectOnChange() {
 		if(selectedDotNetSolutionFile) {
-            let messageReadSolutionIntoTreeView = new MessageReadSolutionIntoTreeView();
+            let messageReadSolutionIntoTreeView = new MessageReadSolutionIntoTreeView(selectedDotNetSolutionFile);
 
             tsVscode.postMessage({
                 type: undefined,

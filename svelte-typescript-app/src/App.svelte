@@ -5,8 +5,10 @@
 	import { MessageReadKind } from "../../out/Messages/Read/MessageReadKind";
 	import { MessageReadSolutionsInWorkspace } from "../../out/Messages/Read/MessageReadSolutionsInWorkspace";
 	import SelectDotNetSolutionFileForm from "./Components/SelectDotNetSolutionFileForm.svelte";
+	import TreeViewDisplay from "./Components/TreeViewDisplay.svelte";
 
 	let dotNetSolutionFiles: DotNetSolutionFile[] = [];
+	let selectedDotNetSolutionFile: DotNetSolutionFile | undefined;
 
 	function getSolutionFilesInWorkspace() {
 		let messageReadSolutionsInWorkspace = new MessageReadSolutionsInWorkspace();
@@ -40,6 +42,10 @@
 	</button>
 	
 	<SelectDotNetSolutionFileForm dotNetSolutionFiles={dotNetSolutionFiles} />
+
+	{#if selectedDotNetSolutionFile}
+		<TreeViewDisplay data={selectedDotNetSolutionFile} />	
+	{/if}
 </div>
 
 <style>

@@ -26,7 +26,7 @@ export class FilePathParser {
         let previouslySeenParentDirectories: AbsoluteFilePath[] = [];
 
         parentDirectoriesAbsoluteFilePathStrings.forEach(element => {
-            let parentAbsoluteFilePath = new AbsoluteFilePath(element, true, [...previouslySeenParentDirectories], null);
+            let parentAbsoluteFilePath = new AbsoluteFilePath(element, true, [...previouslySeenParentDirectories]);
 
             previouslySeenParentDirectories.push(parentAbsoluteFilePath);
         });

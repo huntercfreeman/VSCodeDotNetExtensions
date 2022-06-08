@@ -12,11 +12,7 @@ export class AbsoluteFilePath {
      */
     constructor(absoluteFilePathString: string,
         public readonly isDirectory: boolean,
-        initialParentDirectories: AbsoluteFilePath[] | null,
-        public readonly nonce: string | null) {
-        if (nonce === null) {
-            nonce = getNonce();
-        }
+        initialParentDirectories: AbsoluteFilePath[] | null) {
 
         this.initialAbsoluteFilePathStringInput = FilePathStandardizer.standardizeFilePath(absoluteFilePathString);
 
@@ -65,8 +61,7 @@ export class AbsoluteFilePath {
 
             return new AbsoluteFilePath(joinedAbsolutePathString,
                 isDirectory,
-                parentDirectories,
-                null);
+                parentDirectories);
         }
         else {
 
@@ -78,7 +73,6 @@ export class AbsoluteFilePath {
                 .replace(absoluteFilePath.filenameWithExtension,
                     normalizedRelativePath),
                 isDirectory,
-                null,
                 null);
         }
     }
@@ -118,6 +112,7 @@ export class AbsoluteFilePath {
     public extensionNoPeriod!: string;
     public readonly parentDirectories: AbsoluteFilePath[];
     public readonly initialAbsoluteFilePathStringInput: string;
+    public readonly nonce: string = getNonce();
 
     public static readonly filenameException = 'Malformed absolute path could not parse filename';
 }

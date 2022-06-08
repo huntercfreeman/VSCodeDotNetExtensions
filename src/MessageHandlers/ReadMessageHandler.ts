@@ -5,10 +5,11 @@ import { DotNetSolutionFile } from '../FileSystem/Files/DotNetSolutionFile';
 import { IMessage } from "../Messages/IMessage";
 import { IMessageRead } from "../Messages/Read/IMessageRead";
 import { MessageReadKind } from "../Messages/Read/MessageReadKind";
+import { MessageReadSolutionIntoTreeView } from '../Messages/Read/MessageReadSolutionIntoTreeView';
 import { MessageReadSolutionsInWorkspace } from '../Messages/Read/MessageReadSolutionsInWorkspace';
 
 export class ReadMessageHandler {
-    public static handleMessage(webviewView: vscode.WebviewView, message: IMessage): void {
+    public static async handleMessage(webviewView: vscode.WebviewView, message: IMessage): Promise<void> {
         let readMessage = message as unknown as IMessageRead;
 
         switch (readMessage.messageReadKind) {
@@ -17,9 +18,10 @@ export class ReadMessageHandler {
             case MessageReadKind.filesInDirectory:
                 break;
             case MessageReadKind.solutionIntoTreeView:
+                await this.handleMessageReadSolutionIntoTreeViewAsync(webviewView, message);
                 break;
             case MessageReadKind.solutionsInWorkspace:
-                this.handleMessageReadSolutionsInWorkspaceAsync(webviewView, message);
+                await this.handleMessageReadSolutionsInWorkspaceAsync(webviewView, message);
                 break;
         }
     }
@@ -57,7 +59,7 @@ export class ReadMessageHandler {
         });
 
         let solutionAbsoluteFilePaths = solutionFsPaths
-            .map(x => new AbsoluteFilePath(x, false, null, null));
+            .map(x => new AbsoluteFilePath(x, false, null));
 
         let solutionModels = solutionAbsoluteFilePaths
             .map(x => new SolutionModel(x));
@@ -66,5 +68,13 @@ export class ReadMessageHandler {
             .map(x => new DotNetSolutionFile(x.absoluteFilePath));
 
         webviewView.webview.postMessage(message);
+    }
+
+    public static async handleMessageReadSolutionIntoTreeViewAsync(webviewView: vscode.WebviewView, iMessage: IMessage) {
+        let message = iMessage as MessageReadSolutionIntoTreeView;
+
+        return await SolutionModel.parseSolution(message.dotNetSolutionFile.solutionModel!, () => {
+            webviewView.webview.postMessage(message);
+        });
     }
 }
