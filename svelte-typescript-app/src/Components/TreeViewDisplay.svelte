@@ -19,7 +19,7 @@
 
 	let children: any[] | undefined;
 
-	function getDataChildren(): any[] {
+	function getChildFiles(): any[] {
         switch (ideFile.fileKind) {
             case FileKind.directory:
                 children = ideFile.childFiles;
@@ -118,11 +118,13 @@
 							let messageReadFilesInDirectory = message as MessageReadFilesInDirectory;
                             if(ideFile.nonce === messageReadFilesInDirectory.directoryFile.nonce) {
 								ideFile = messageReadFilesInDirectory.directoryFile;
+								children = ideFile.virtualChildFiles;
                             }
 						case MessageReadKind.virtualFilesInCSharpProject:
 							let messageReadVirtualFilesInCSharpProject = message as MessageReadVirtualFilesInCSharpProject;
                             if(ideFile.nonce === messageReadVirtualFilesInCSharpProject.cSharpProjectFile.nonce) {
 								ideFile = messageReadVirtualFilesInCSharpProject.cSharpProjectFile;
+								children = ideFile.virtualChildFiles;
                             }
 					}
 			}
@@ -135,7 +137,7 @@
 	     title="{getTitleText()}"
 		 on:click="{(e) => titleOnClick(e)}"
 		 on:contextmenu="{(e) => contextMenuTarget.set(ideFile)}">
-		{#if ideFile.hideExpansionChevronWhenNoChildFiles && (((children ?? getDataChildren())?.length ?? 0) === 0)}
+		{#if ideFile.hideExpansionChevronWhenNoChildFiles && (((children ?? getChildFiles())?.length ?? 0) === 0)}
 			<span style="visibility: hidden;" 
 					tabindex="-1"
 					class="dni_unselectable">
@@ -156,7 +158,7 @@
 	
 	<div class="dni_tree-view-children">
 		{#if isExpanded}
-			{#each (children ?? getDataChildren()) as child}
+			{#each (children ?? getChildFiles()) as child}
 				{#if !hasDifferentParentContainer(child)}
 					<svelte:self ideFile={child} />
 				{/if}

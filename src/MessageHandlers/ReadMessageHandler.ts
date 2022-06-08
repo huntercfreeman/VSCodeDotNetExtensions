@@ -3,6 +3,9 @@ import { SolutionModel } from '../DotNet/SolutionModel';
 import { AbsoluteFilePath } from '../FileSystem/AbsoluteFilePath';
 import { CSharpProjectFile } from '../FileSystem/Files/CSharpProjectFile';
 import { DotNetSolutionFile } from '../FileSystem/Files/DotNetSolutionFile';
+import { FileSorter } from '../FileSystem/FileSorter';
+import { FileSystemReader } from '../FileSystem/FileSystemReader';
+import { IdeFileFactory } from '../FileSystem/IdeFileFactory';
 import { IMessage } from "../Messages/IMessage";
 import { IMessageRead } from "../Messages/Read/IMessageRead";
 import { MessageReadKind } from "../Messages/Read/MessageReadKind";
@@ -81,14 +84,30 @@ export class ReadMessageHandler {
         return await SolutionModel.parseSolution(message.dotNetSolutionFile.solutionModel!, () => {
             message.dotNetSolutionFile.virtualChildFiles = message.dotNetSolutionFile.solutionModel!.projects
                 .map(x => new CSharpProjectFile(x));
-            
+
             webviewView.webview.postMessage(message);
         });
     }
-    
+
     public static async handleMessageReadVirtualFilesInCSharpProjectAsync(webviewView: vscode.WebviewView, iMessage: IMessage) {
         let message = iMessage as MessageReadVirtualFilesInCSharpProject;
 
-        console.log(message);
+        await FileSystemReader.getSiblingFiles(message.cSharpProjectFile.absoluteFilePath, (siblingFiles: string[]) => {
+            siblingFiles = siblingFiles
+                .filter(x => x !== message.cSharpProjectFile.absoluteFilePath.filenameWithExtension);
+
+            let siblingAbsoluteFilePaths: AbsoluteFilePath[] = siblingFiles
+                .map(x => message.cSharpProjectFile.absoluteFilePath.initialAbsoluteFilePathStringInput
+                    .replace(message.cSharpProjectFile.absoluteFilePath.filenameWithExtension, x))
+                .map(x => new AbsoluteFilePath(x, FileSystemReader.isDir(x), null));
+
+            message.cSharpProjectFile.virtualChildFiles = siblingAbsoluteFilePaths
+                .map(absoluteFilePath => IdeFileFactory
+                    .constructIdeFile(absoluteFilePath, message.cSharpProjectFile.absoluteFilePath));
+
+            FileSorter.organizeContainer(message.cSharpProjectFile.virtualChildFiles);
+
+            webviewView.webview.postMessage(message);
+        });
     }
 }
