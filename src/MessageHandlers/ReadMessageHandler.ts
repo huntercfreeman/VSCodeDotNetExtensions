@@ -8,6 +8,7 @@ import { IMessageRead } from "../Messages/Read/IMessageRead";
 import { MessageReadKind } from "../Messages/Read/MessageReadKind";
 import { MessageReadSolutionIntoTreeView } from '../Messages/Read/MessageReadSolutionIntoTreeView';
 import { MessageReadSolutionsInWorkspace } from '../Messages/Read/MessageReadSolutionsInWorkspace';
+import { MessageReadVirtualFilesInCSharpProject } from '../Messages/Read/MessageReadVirtualFilesInCSharpProject';
 
 export class ReadMessageHandler {
     public static async handleMessage(webviewView: vscode.WebviewView, message: IMessage): Promise<void> {
@@ -17,6 +18,9 @@ export class ReadMessageHandler {
             case MessageReadKind.fileIntoEditor:
                 break;
             case MessageReadKind.filesInDirectory:
+                break;
+            case MessageReadKind.virtualFilesInCSharpProject:
+                await this.handleMessageReadVirtualFilesInCSharpProjectAsync(webviewView, message);
                 break;
             case MessageReadKind.solutionIntoTreeView:
                 await this.handleMessageReadSolutionIntoTreeViewAsync(webviewView, message);
@@ -80,5 +84,11 @@ export class ReadMessageHandler {
             
             webviewView.webview.postMessage(message);
         });
+    }
+    
+    public static async handleMessageReadVirtualFilesInCSharpProjectAsync(webviewView: vscode.WebviewView, iMessage: IMessage) {
+        let message = iMessage as MessageReadVirtualFilesInCSharpProject;
+
+        console.log(message);
     }
 }

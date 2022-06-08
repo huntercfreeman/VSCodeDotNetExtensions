@@ -2,6 +2,7 @@
 	import { onMount } from "svelte";
     import type { IdeFile } from "../../../out/FileSystem/Files/IdeFile";
     import { FileKind } from "../../../out/FileSystem/FileKind";
+    import type { CSharpProjectFile } from "../../../out/FileSystem/Files/CSharpProjectFile";
     import { MessageReadFilesInDirectory } from "../../../out/Messages/Read/MessageReadFilesInDirectory";
     import { MessageReadFileIntoEditor } from "../../../out/Messages/Read/MessageReadFileIntoEditor";
     import { MessageReadVirtualFilesInCSharpProject } from "../../../out/Messages/Read/MessageReadVirtualFilesInCSharpProject";
@@ -55,14 +56,35 @@
 	}
 
 	function hasDifferentParentContainer(childIdeFile: IdeFile): boolean {
+		if (childIdeFile.fileKind === FileKind.cSharpProject) {
+			let cSharpProjectFile = childIdeFile as CSharpProjectFile;
+
+			if (cSharpProjectFile.cSharpProjectModel.solutionFolderParentSecondGuid !== undefined) {
+
+				if(ideFile.fileKind === FileKind.solution) {
+					return true;
+				}
+
+				let solutionFolderFile = ideFile as CSharpProjectFile;
+
+				if(solutionFolderFile.cSharpProjectModel.secondGuid === 
+					cSharpProjectFile.cSharpProjectModel.solutionFolderParentSecondGuid) {
+					
+						return false;
+				}
+
+				return true;
+			}
+		}
+
 		if(childIdeFile.virtualParentNonce) {
 			if(childIdeFile.virtualParentNonce !==
 				ideFile.nonce) {
 					return true;
 			}
-
-			return false;
 		}
+
+		return false;
 	}
 
 	function getTitleText() {
@@ -83,7 +105,7 @@
             type: undefined,
             value: messageReadFileIntoEditor
         });
-	}	
+	}
 
 	onMount(async () => {
 		window.addEventListener("message", async (event) => {
@@ -97,7 +119,7 @@
                             if(ideFile.nonce === messageReadFilesInDirectory.directoryFile.nonce) {
 								ideFile = messageReadFilesInDirectory.directoryFile;
                             }
-						case MessageReadKind.filesInDirectory:
+						case MessageReadKind.virtualFilesInCSharpProject:
 							let messageReadVirtualFilesInCSharpProject = message as MessageReadVirtualFilesInCSharpProject;
                             if(ideFile.nonce === messageReadVirtualFilesInCSharpProject.cSharpProjectFile.nonce) {
 								ideFile = messageReadVirtualFilesInCSharpProject.cSharpProjectFile;

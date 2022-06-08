@@ -2,16 +2,24 @@ import { ConstantsContextualInformation } from "../../Constants/ConstantsContext
 import { AbsoluteFilePath } from "../AbsoluteFilePath";
 import { IdeFile } from "./IdeFile";
 import { CSharpProjectModel } from "../../DotNet/CSharpProjectModel";
+import { FileKind } from "../FileKind";
 
 export class CSharpProjectFile extends IdeFile {
 
-    constructor(public readonly csharpProjectModel: CSharpProjectModel) {
-        super(csharpProjectModel.absoluteFilePath, "");
+    constructor(public readonly cSharpProjectModel: CSharpProjectModel) {
+        super(cSharpProjectModel.absoluteFilePath, "");
+
+        if(cSharpProjectModel.solutionFolderEntries !== undefined) {
+            this.fileKind = FileKind.solutionFolder;
+
+            this.virtualChildFiles = cSharpProjectModel.solutionFolderEntries
+                .map(x => new CSharpProjectFile(x));
+        }
     }
     
+
+
     public childFiles: any[] | undefined;
-    
-    public hideExpansionChevronWhenNoChildFiles: boolean = true;
     
     public setVirtualChildFiles(siblingFiles: IdeFile[]): void {
         return;
