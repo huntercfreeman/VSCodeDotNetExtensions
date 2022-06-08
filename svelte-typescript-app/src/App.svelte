@@ -49,9 +49,9 @@
 	{#if selectedDotNetSolutionFile}
 		<TreeViewDisplay ideFile={selectedDotNetSolutionFile} />	
 	{/if}
-</div>
 
-<ContextMenu />
+	<ContextMenu />
+</div>
 
 <style>
 	.dni_app {

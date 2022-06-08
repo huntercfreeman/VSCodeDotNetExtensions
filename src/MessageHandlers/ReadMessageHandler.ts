@@ -1,4 +1,5 @@
 import * as vscode from 'vscode';
+import { ConstantsFilePath } from '../Constants/ConstantsFilePath';
 import { SolutionModel } from '../DotNet/SolutionModel';
 import { AbsoluteFilePath } from '../FileSystem/AbsoluteFilePath';
 import { CSharpProjectFile } from '../FileSystem/Files/CSharpProjectFile';
@@ -123,8 +124,9 @@ export class ReadMessageHandler {
                 .filter(x => x !== message.directoryFile.absoluteFilePath.filenameWithExtension);
 
             let childAbsoluteFilePaths: AbsoluteFilePath[] = childFiles
-                .map(x => message.directoryFile.absoluteFilePath.initialAbsoluteFilePathStringInput
-                    .replace(message.directoryFile.absoluteFilePath.filenameWithExtension, x))
+                .map(x => message.directoryFile.absoluteFilePath.initialAbsoluteFilePathStringInput + 
+                          ConstantsFilePath.STANDARDIZED_FILE_DELIMITER +
+                          x)
                 .map(x => new AbsoluteFilePath(x, FileSystemReader.isDir(x), null));
 
             message.directoryFile.childFiles = childAbsoluteFilePaths
