@@ -8,6 +8,7 @@
 	import ContextMenuForDirectoryTreeView from './ContextMenus/ContextMenuForDirectoryTreeView.svelte';
 	import ContextMenuForDefaultFileTreeView from './ContextMenus/ContextMenuForDefaultFileTreeView.svelte';
     import { ConstantsContextualInformation } from "../../../out/Constants/ConstantsContextualInformation";
+    import { ContextualInformationDatum } from "../../../out/ContextMenus/ContextualInformationDatum";
 	import { contextMenuTarget } from './menu.js';
 
     let pos = { x: 0, y: 0 };
@@ -41,27 +42,21 @@
 </script>
 
 {#if showMenu}
-	{#if contextMenuTargetValue.contextualInformation === 
-	     ConstantsContextualInformation.TREE_VIEW_SOLUTION_CONTEXT}
-
-		 <ContextMenuForSolutionTreeView {...pos} closeMenu={closeMenu} />
-	{:else if contextMenuTargetValue.contextualInformation === 
-		ConstantsContextualInformation.TREE_VIEW_SOLUTION_FOLDER_CONTEXT}
-		
-		<ContextMenuForSolutionFolderTreeView {...pos} closeMenu={closeMenu} />
-	{:else if contextMenuTargetValue.contextualInformation === 
-		ConstantsContextualInformation.TREE_VIEW_CSHARP_PROJECT_CONTEXT}
-		
-		<ContextMenuForCSharpProjectTreeView {...pos} closeMenu={closeMenu} />
-	{:else if contextMenuTargetValue.contextualInformation === 
-		ConstantsContextualInformation.TREE_VIEW_DIRECTORY_CONTEXT}
-		
-		<ContextMenuForDirectoryTreeView {...pos} closeMenu={closeMenu} />
-	{:else if contextMenuTargetValue.contextualInformation === 
-		ConstantsContextualInformation.TREE_VIEW_DEFAULT_FILE_CONTEXT}
-		
-		<ContextMenuForDefaultFileTreeView {...pos} closeMenu={closeMenu} />
-	{/if}
+	<Menu {...pos} on:click={closeMenu} on:clickoutside={closeMenu}>
+		{#if (contextMenuTargetValue.contextualInformation?.length ?? 0) === 0}
+			<MenuOption text="No Context Menu Options for this item." />
+		{:else}
+			{#each contextMenuTargetValue.contextualInformation as contextualInformationDatum}
+				{#if ContextualInformationDatum.checkDatumEquality(ContextualInformationDatum.createNewTemplatedFile,
+																	contextualInformationDatum)}
+					<MenuOption text="createNewTemplatedFile." />
+				{:else if ContextualInformationDatum.checkDatumEquality(ContextualInformationDatum.createNewEmptyFile,
+																		contextualInformationDatum)}
+					<MenuOption text="createNewEmptyFile." />
+				{/if}
+			{/each}
+		{/if}
+	</Menu>
 {/if}
 
 <svelte:body on:contextmenu|preventDefault={onRightClick} on:keydown={extendOnKeyDown} />

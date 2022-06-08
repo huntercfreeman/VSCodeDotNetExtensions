@@ -6,7 +6,8 @@
 	import { MessageReadSolutionsInWorkspace } from "../../out/Messages/Read/MessageReadSolutionsInWorkspace";
 	import SelectDotNetSolutionFileForm from "./Components/SelectDotNetSolutionFileForm.svelte";
 	import TreeViewDisplay from "./Components/TreeViewDisplay.svelte";
-
+	import ContextMenu from "./Components/ContextMenu.svelte";
+	
 	let dotNetSolutionFiles: DotNetSolutionFile[] = [];
 	let selectedDotNetSolutionFile: DotNetSolutionFile | undefined;
 
@@ -49,6 +50,8 @@
 		<TreeViewDisplay ideFile={selectedDotNetSolutionFile} />	
 	{/if}
 </div>
+
+<ContextMenu />
 
 <style>
 	.dni_app {

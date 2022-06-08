@@ -3,6 +3,7 @@ import { AbsoluteFilePath } from "../AbsoluteFilePath";
 import { IdeFile } from "./IdeFile";
 import { CSharpProjectModel } from "../../DotNet/CSharpProjectModel";
 import { FileKind } from "../FileKind";
+import { ContextualInformationDatum } from "../../ContextMenus/ContextualInformationDatum";
 
 export class CSharpProjectFile extends IdeFile {
 
@@ -15,16 +16,19 @@ export class CSharpProjectFile extends IdeFile {
             this.virtualChildFiles = cSharpProjectModel.solutionFolderEntries
                 .map(x => new CSharpProjectFile(x));
         }
+        else {
+            this.contextualInformation = [
+                ContextualInformationDatum.createNewTemplatedFile,
+                ContextualInformationDatum.createNewEmptyFile,
+            ];
+        }
     }
     
-
-
     public childFiles: any[] | undefined;
     
     public setVirtualChildFiles(siblingFiles: IdeFile[]): void {
         return;
     }
 
-    public readonly contextualInformation: string = ConstantsContextualInformation.TREE_VIEW_DEFAULT_FILE_CONTEXT;
-    
+    public readonly contextualInformation: ContextualInformationDatum[];
 }

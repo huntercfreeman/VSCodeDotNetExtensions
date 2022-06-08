@@ -1,4 +1,5 @@
 import { ConstantsContextualInformation } from "../../Constants/ConstantsContextualInformation";
+import { ContextualInformationDatum } from "../../ContextMenus/ContextualInformationDatum";
 import { getNonce } from "../../IdGeneration/getNonce";
 import { AbsoluteFilePath } from "../AbsoluteFilePath";
 import { IdeFile } from "./IdeFile";
@@ -15,5 +16,8 @@ export class DirectoryFile extends IdeFile {
     public nonce: string = getNonce();
     public childFiles: any[] | undefined;
     
-    public readonly contextualInformation: string = ConstantsContextualInformation.TREE_VIEW_DIRECTORY_CONTEXT;
+    public readonly contextualInformation: ContextualInformationDatum[] = [
+        ContextualInformationDatum.createNewTemplatedFile,
+        ContextualInformationDatum.createNewEmptyFile,
+    ];
 }

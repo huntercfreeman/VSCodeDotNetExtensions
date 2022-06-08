@@ -1,4 +1,5 @@
 import { ConstantsContextualInformation } from "../../Constants/ConstantsContextualInformation";
+import { ContextualInformationDatum } from "../../ContextMenus/ContextualInformationDatum";
 import { AbsoluteFilePath } from "../AbsoluteFilePath";
 import { IdeFile } from "./IdeFile";
 
@@ -49,5 +50,7 @@ export class JsonFile extends IdeFile {
                (selfSplit[selfSplit.length - 1] === siblingSplit[siblingSplit.length - 1]);
     }
     
-    public readonly contextualInformation: string = ConstantsContextualInformation.TREE_VIEW_DEFAULT_FILE_CONTEXT;
+    public readonly contextualInformation: ContextualInformationDatum[] = [
+        
+    ];
 }

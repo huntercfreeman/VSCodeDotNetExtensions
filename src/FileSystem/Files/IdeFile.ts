@@ -1,3 +1,4 @@
+import { ContextualInformationDatum } from "../../ContextMenus/ContextualInformationDatum";
 import { getNonce } from "../../IdGeneration/getNonce";
 import { AbsoluteFilePath } from "../AbsoluteFilePath";
 import { FileKind } from "../FileKind";
@@ -18,7 +19,7 @@ export abstract class IdeFile {
     public virtualParent: IdeFile[] | undefined = undefined;
     public hideExpansionChevronWhenNoChildFiles: boolean = false;
 
-    public abstract readonly contextualInformation: string;
+    public abstract readonly contextualInformation: ContextualInformationDatum[];
 
     public abstract setVirtualChildFiles(siblingFiles: IdeFile[]): void;
 }

@@ -10,7 +10,9 @@ export class CSharpFile extends IdeFile {
     }
     
     public childFiles: any[] | undefined;
-    public contextualInformation: string = "";
+    public readonly contextualInformation: ContextualInformationDatum[] = [
+        
+    ];
     
     public hideExpansionChevronWhenNoChildFiles: boolean = true;
     

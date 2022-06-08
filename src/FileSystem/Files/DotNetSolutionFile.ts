@@ -2,6 +2,7 @@ import { ConstantsContextualInformation } from "../../Constants/ConstantsContext
 import { AbsoluteFilePath } from "../AbsoluteFilePath";
 import { IdeFile } from "./IdeFile";
 import { SolutionModel } from "../../DotNet/SolutionModel";
+import { ContextualInformationDatum } from "../../ContextMenus/ContextualInformationDatum";
 
 export class DotNetSolutionFile extends IdeFile {
 
@@ -17,6 +18,7 @@ export class DotNetSolutionFile extends IdeFile {
         return;
     }
 
-    public readonly contextualInformation: string = ConstantsContextualInformation.TREE_VIEW_DEFAULT_FILE_CONTEXT;
-    
+    public readonly contextualInformation: ContextualInformationDatum[] = [
+        
+    ];
 }

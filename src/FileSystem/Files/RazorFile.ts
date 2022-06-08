@@ -1,4 +1,5 @@
 import { ConstantsContextualInformation } from "../../Constants/ConstantsContextualInformation";
+import { ContextualInformationDatum } from "../../ContextMenus/ContextualInformationDatum";
 import { AbsoluteFilePath } from "../AbsoluteFilePath";
 import { IdeFile } from "./IdeFile";
 
@@ -42,5 +43,7 @@ export class RazorFile extends IdeFile {
         return false;
     }
     
-    public readonly contextualInformation: string = ConstantsContextualInformation.TREE_VIEW_DEFAULT_FILE_CONTEXT;
+    public readonly contextualInformation: ContextualInformationDatum[] = [
+        
+    ];
 }
