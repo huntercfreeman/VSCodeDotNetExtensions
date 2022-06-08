@@ -1,6 +1,5 @@
-import { ConstantsContextualInformation } from "../Constants/ConstantsContextualInformation";
-import { CSharpProjectModel } from "../DotNet/CSharpProjectModel";
-import { AbsoluteFilePath } from "./AbsoluteFilePath";
+import { ConstantsContextualInformation } from "../../Constants/ConstantsContextualInformation";
+import { AbsoluteFilePath } from "../AbsoluteFilePath";
 import { IdeFile } from "./IdeFile";
 
 export class CssFile extends IdeFile {
@@ -12,5 +11,9 @@ export class CssFile extends IdeFile {
     
     public hideExpansionChevronWhenNoChildFiles: boolean = true;
     
+    public setVirtualChildFiles(siblingFiles: IdeFile[]): void {
+        throw new Error("Method not implemented.");
+    }
+
     public readonly contextualInformation: string = ConstantsContextualInformation.TREE_VIEW_DEFAULT_FILE_CONTEXT;
 }

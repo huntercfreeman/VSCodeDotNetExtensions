@@ -4,11 +4,11 @@ import { ConstantsFileTemplates } from '../Constants/ConstantsFileTemplates';
 import { ConstantsMessages } from '../Constants/ConstantsMessages';
 import { SolutionModel } from '../DotNet/SolutionModel';
 import { AbsoluteFilePath } from '../FileSystem/AbsoluteFilePath';
-import { DefaultFile } from '../FileSystem/DefaultFile';
-import { DirectoryFile } from '../FileSystem/DirectoryFile';
 import { FileSorter } from '../FileSystem/FileSorter';
 import { FileSystemReader } from '../FileSystem/FileSystemReader';
+import { IdeFile } from '../FileSystem/Files/IdeFile';
 import { IdeFileFactory } from '../FileSystem/IdeFileFactory';
+import { SidebarProviderMessageHandler } from '../MessageHandlers/SidebarProviderMessageHandler';
 
 const fs = require('fs');
 
@@ -33,190 +33,15 @@ export class SidebarProvider implements vscode.WebviewViewProvider {
 
     webviewView.webview.html = this.getWebviewContent(webviewView.webview);
 
-    webviewView.webview.onDidReceiveMessage(async (data) => {
-      switch (data.type) {
-        case ConstantsMessages.LOAD_SOLUTIONS_IN_WORKSPACE: {
-          return await loadSolutionsInWorkspace(webviewView, data);
-        }
-        case ConstantsMessages.PARSE_SOLUTION: {
-          return await SolutionModel.parseSolution(data.value, () => {
-            webviewView.webview.postMessage(data);
-          });
-        }
-        case ConstantsMessages.LOAD_CSHARP_PROJECT_CHILD_FILES: {
-          return await FileSystemReader.getSiblingFiles(data.value.absoluteFilePath, (siblingFiles: any[]) => {
-            this.handleLoadCSharpProjectChildFilesResponse(webviewView, data, siblingFiles);
-          });
-        }
-        case ConstantsMessages.LOAD_DIRECTORY_CHILD_FILES: {
-          return await FileSystemReader.getChildFilesOfDirectory(data.value.absoluteFilePath, (childFiles: any[]) => {
-            this.handleGetChildFilesOfDirectoryResponse(webviewView, data, childFiles);
-          });
-        }
-        case ConstantsMessages.ADD_EMPTY_FILE_TO_DIRECTORY: {
-          return this.handleAddEmptyFileToDirectoryRequest(webviewView, data.value);
-        }
-        case ConstantsMessages.ADD_FILE_WITH_TEMPLATE_TO_DIRECTORY: {
-          return this.handleAddFileWithTemplateToDirectoryRequest(webviewView, data.value);
-        }
-        case ConstantsMessages.OPEN_FILE: {
-          return this.handleOpenFileRequest(data);
-        }
-        case ConstantsMessages.ADD_SOLUTION_FOLDER: {
-          return await SolutionModel.addSolutionFolder(data.value.solutionModel,
-            data.value.solutionFolderName, () => {
-              webviewView.webview.postMessage(data);
-            });
-        }
-        case ConstantsMessages.ADD_PROJECT_TO_SOLUTION: {
-          let z = 2;
-          console.log();
-          break;
-        }
-        case ConstantsMessages.ADD_PROJECT_TO_SOLUTION_FOLDER: {
-          let z = 2;
-          console.log();
-          break;
-        }
-      }
-    });
+    webviewView.webview.onDidReceiveMessage(async (data) => 
+      SidebarProviderMessageHandler.handleMessage(webviewView.webview, data));
   }
 
   public revive(panel: vscode.WebviewView) {
     this._view = panel;
   }
 
-  public handleLoadCSharpProjectChildFilesResponse(webviewView: vscode.WebviewView, data: any, siblingFiles: any[]) {
-    siblingFiles = siblingFiles
-      .filter(x => x !== data.value.absoluteFilePath.filenameWithExtension);
-
-    let siblingAbsoluteFilePaths: AbsoluteFilePath[] = siblingFiles
-      .map(x => data.value.absoluteFilePath.initialAbsoluteFilePathStringInput
-        .replace(data.value.absoluteFilePath.filenameWithExtension, x))
-      .map(x => new AbsoluteFilePath(x, FileSystemReader.isDir(x), null, null));
-
-    data.value.childFiles = siblingAbsoluteFilePaths
-      .map(absoluteFilePath => IdeFileFactory.constructIdeFile(absoluteFilePath, data.value.absoluteFilePath));
-
-    FileSorter.organizeContainer(data.value.childFiles);
-
-    for (let i = data.value.childFiles.length - 1; i > -1; i--) {
-      if (data.value.childFiles[i].fosterVirtualChildFiles) {
-        data.value.childFiles[i].fosterVirtualChildFiles(data.value.childFiles);
-      }
-    }
-
-    webviewView.webview.postMessage(data);
-  }
-
-  public handleGetChildFilesOfDirectoryResponse(webviewView: vscode.WebviewView, data: any, childFiles: any[]) {
-    let childAbsoluteFilePaths: AbsoluteFilePath[] = childFiles
-      .map(x => data.value.absoluteFilePath.initialAbsoluteFilePathStringInput +
-        ConstantsFilePath.STANDARDIZED_FILE_DELIMITER +
-        x)
-      .map(x => new AbsoluteFilePath(x, FileSystemReader.isDir(x), null, null));
-
-    data.value.childFiles = childAbsoluteFilePaths
-      .map(absoluteFilePath => IdeFileFactory.constructIdeFile(absoluteFilePath, data.value.containingCSharpProjectModelAbsoluteFilePath));
-
-    FileSorter.organizeContainer(data.value.childFiles);
-
-    for (let i = data.value.childFiles.length - 1; i > -1; i--) {
-      if (data.value.childFiles[i].fosterVirtualChildFiles) {
-        data.value.childFiles[i].fosterVirtualChildFiles(data.value.childFiles);
-      }
-    }
-
-    webviewView.webview.postMessage(data);
-  }
-
-  public handleOpenFileRequest(data: any) {
-    const openPath = vscode.Uri.file(data.value.initialAbsoluteFilePathStringInput);
-
-    vscode.workspace.openTextDocument(openPath).then(doc => {
-      let textDocumentShowOptions: vscode.TextDocumentShowOptions = {
-        "preserveFocus": false,
-        "preview": false,
-        "viewColumn": vscode.ViewColumn.One
-      };
-
-      vscode.window.showTextDocument(doc, textDocumentShowOptions);
-    });
-  }
   
-  public handleAddEmptyFileToDirectoryRequest(webviewView: vscode.WebviewView, data: any) {
-    let writePath: string = data.directory.absoluteFilePath.initialAbsoluteFilePathStringInput;
-
-    if(!writePath.endsWith(ConstantsFilePath.STANDARDIZED_FILE_DELIMITER)) {
-      writePath += ConstantsFilePath.STANDARDIZED_FILE_DELIMITER;
-    }
-    
-    writePath += data.filename;
-    
-    fs.writeFile(writePath, 
-                 "", 
-                 { flag: 'a+' }, 
-                 (err: any) => {
-        if (!err) {
-          let absoluteFilePath = new AbsoluteFilePath(writePath, false, null, null);
-          data.directory.childFiles.push(IdeFileFactory.constructIdeFile(absoluteFilePath, data.directory.containingCSharpProjectModelAbsoluteFilePath));
-          
-          webviewView.webview.postMessage(ConstantsMessages.ConstructMessage(ConstantsMessages.ADD_EMPTY_FILE_TO_DIRECTORY, 
-              data.directory));
-
-          const openPath = vscode.Uri.file(absoluteFilePath.initialAbsoluteFilePathStringInput);
-
-          vscode.workspace.openTextDocument(openPath).then(doc => {
-            let textDocumentShowOptions: vscode.TextDocumentShowOptions = {
-              "preserveFocus": false,
-              "preview": false,
-              "viewColumn": vscode.ViewColumn.One
-            };
-            
-            vscode.window.showTextDocument(doc, textDocumentShowOptions);
-          });
-        }
-    });
-  }
-  
-  public handleAddFileWithTemplateToDirectoryRequest(webviewView: vscode.WebviewView, data: any) {
-    let writePath: string = data.directory.absoluteFilePath.initialAbsoluteFilePathStringInput;
-
-    if(!writePath.endsWith(ConstantsFilePath.STANDARDIZED_FILE_DELIMITER)) {
-      writePath += ConstantsFilePath.STANDARDIZED_FILE_DELIMITER;
-    }
-    
-    writePath += data.filename;
-
-    let absoluteFilePath = new AbsoluteFilePath(writePath, false, null, null);
-    
-    let ideFile = IdeFileFactory.constructIdeFile(absoluteFilePath, data.directory.containingCSharpProjectModelAbsoluteFilePath);
-
-    fs.writeFile(writePath, 
-                 ConstantsFileTemplates.getFileTemplate(ideFile), 
-                 { flag: 'a+' }, 
-                 (err: any) => {
-        if (!err) {
-          data.directory.childFiles.push(ideFile);
-          
-          webviewView.webview.postMessage(ConstantsMessages.ConstructMessage(ConstantsMessages.ADD_EMPTY_FILE_TO_DIRECTORY, 
-              data.directory));
-
-          const openPath = vscode.Uri.file(absoluteFilePath.initialAbsoluteFilePathStringInput);
-
-          vscode.workspace.openTextDocument(openPath).then(doc => {
-            let textDocumentShowOptions: vscode.TextDocumentShowOptions = {
-              "preserveFocus": false,
-              "preview": false,
-              "viewColumn": vscode.ViewColumn.One
-            };
-            
-            vscode.window.showTextDocument(doc, textDocumentShowOptions);
-          });
-        }
-    });
-  }
-
   private getWebviewContent(webview: vscode.Webview) {
     const dotNetIdeSvelteAppJavaScriptUri = webview.asWebviewUri(vscode.Uri.joinPath(
       this.context.extensionUri, 'out/SvelteApp/build', 'bundle.js'));
@@ -257,43 +82,3 @@ export class SidebarProvider implements vscode.WebviewViewProvider {
   }
 }
 
-async function loadSolutionsInWorkspace(webviewView: vscode.WebviewView, data: any): Promise<void> {
-  let workspaceFolderAbsolutePath: string;
-
-  let workspaceFolderFsPaths = vscode.workspace.workspaceFolders?.map(folder => folder.uri.fsPath);
-
-  if (workspaceFolderFsPaths === null ||
-    workspaceFolderFsPaths === undefined ||
-    workspaceFolderFsPaths.length === 0) {
-    return;
-  }
-  else {
-    workspaceFolderAbsolutePath = workspaceFolderFsPaths[0];
-  }
-
-  if (!workspaceFolderAbsolutePath) {
-    vscode.window.showInformationMessage('No files in empty workspace');
-  }
-
-  let solutionFsPaths = (await vscode.workspace.findFiles("**/*.sln"))
-    .map(x => x.fsPath);
-
-  if (solutionFsPaths.length === 0) {
-    vscode.window.showErrorMessage("No .sln files were found within workspace");
-    return;
-  }
-
-  solutionFsPaths.sort((solutionOne, solutionTwo) => {
-    return solutionOne.localeCompare(solutionTwo);
-  });
-
-  let solutionAbsoluteFilePaths = solutionFsPaths.map(x =>
-    new AbsoluteFilePath(x, false, null, null));
-
-  let solutions = solutionAbsoluteFilePaths.map(x =>
-    new SolutionModel(x));
-
-  data.value = solutions;
-
-  webviewView.webview.postMessage(data);
-}

@@ -1,5 +1,5 @@
 import { AbsoluteFilePath } from "../FileSystem/AbsoluteFilePath";
-import { IdeFile } from "../FileSystem/IdeFile";
+import { IdeFile } from "../FileSystem/Files/IdeFile";
 import { ConstantsFileExtensionsNoPeriod } from "./ConstantsFileExtensionsNoPeriod";
 
 /* eslint-disable @typescript-eslint/naming-convention */

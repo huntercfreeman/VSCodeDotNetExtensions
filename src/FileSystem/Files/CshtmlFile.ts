@@ -1,21 +1,17 @@
-import { ConstantsContextualInformation } from "../Constants/ConstantsContextualInformation";
-import { CSharpProjectModel } from "../DotNet/CSharpProjectModel";
-import { getNonce } from "../IdGeneration/getNonce";
-import { AbsoluteFilePath } from "./AbsoluteFilePath";
-import { FileKind } from "./FileKind";
+import { ConstantsContextualInformation } from "../../Constants/ConstantsContextualInformation";
+import { AbsoluteFilePath } from "../AbsoluteFilePath";
 import { IdeFile } from "./IdeFile";
 
-// TODO: Directories should always end in a '/' except when accessing filenameWithoutExtension
-export class RazorFile extends IdeFile {
+export class CshtmlFile extends IdeFile {
     constructor(givenAbsoluteFilePath: AbsoluteFilePath, containingCSharpProjectModelAbsoluteFilePath: AbsoluteFilePath) {
         super(givenAbsoluteFilePath, containingCSharpProjectModelAbsoluteFilePath);
     }
     
-    public childFiles: IdeFile[] | undefined;
+    public childFiles: any[] | undefined;
 
     public hideExpansionChevronWhenNoChildFiles: boolean = true;
 
-    public fosterVirtualChildFiles(siblingFiles: IdeFile[]) {
+    public setVirtualChildFiles(siblingFiles: IdeFile[]) {
         for(let i = siblingFiles.length - 1; i > -1; i--) {
             if(this.virtualChildMatchPattern(siblingFiles[i])) {
                 if(!this.childFiles) {
@@ -27,17 +23,9 @@ export class RazorFile extends IdeFile {
         }
     }
 
-    public virtualChildMatchPattern(sibling: IdeFile): boolean {
+    private virtualChildMatchPattern(sibling: IdeFile): boolean {
         if(sibling.absoluteFilePath.filenameWithExtension === 
             this.absoluteFilePath.filenameWithExtension + ".cs") {
-            
-            return true;
-        }
-
-        // I think combining these two if statements with an ||
-        // would be a bit hard to read as such they are separate.
-        if(sibling.absoluteFilePath.filenameWithExtension === 
-            this.absoluteFilePath.filenameWithExtension + ".css") {
             
             return true;
         }

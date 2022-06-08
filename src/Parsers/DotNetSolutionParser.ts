@@ -4,8 +4,8 @@ import { ConstantsStringReader } from "../Constants/ConstantsStringReader";
 import { CSharpProjectModel } from "../DotNet/CSharpProjectModel";
 import { SolutionModel } from "../DotNet/SolutionModel";
 import { AbsoluteFilePath } from "../FileSystem/AbsoluteFilePath";
-import { Guid } from "../IdGeneration/Guid";
 import { StringReader } from "./StringReader";
+
 const fs = require('fs');
 
 export class DotNetSolutionParser {

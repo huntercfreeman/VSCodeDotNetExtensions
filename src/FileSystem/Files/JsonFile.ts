@@ -1,6 +1,5 @@
-import { ConstantsContextualInformation } from "../Constants/ConstantsContextualInformation";
-import { CSharpProjectModel } from "../DotNet/CSharpProjectModel";
-import { AbsoluteFilePath } from "./AbsoluteFilePath";
+import { ConstantsContextualInformation } from "../../Constants/ConstantsContextualInformation";
+import { AbsoluteFilePath } from "../AbsoluteFilePath";
 import { IdeFile } from "./IdeFile";
 
 export class JsonFile extends IdeFile {
@@ -12,7 +11,7 @@ export class JsonFile extends IdeFile {
     
     public hideExpansionChevronWhenNoChildFiles: boolean = true;
 
-    public fosterVirtualChildFiles(siblingFiles: IdeFile[]) {
+    public setVirtualChildFiles(siblingFiles: IdeFile[]) {
         for(let i = siblingFiles.length - 1; i > -1; i--) {
             if(this.virtualChildMatchPattern(siblingFiles[i])) {
                 if(!this.childFiles) {
@@ -24,7 +23,7 @@ export class JsonFile extends IdeFile {
         }
     }
 
-    public virtualChildMatchPattern(sibling: IdeFile): boolean {
+    private virtualChildMatchPattern(sibling: IdeFile): boolean {
         if(sibling.absoluteFilePath.filenameWithExtension === 
             this.absoluteFilePath.filenameWithExtension) {
                 return false;

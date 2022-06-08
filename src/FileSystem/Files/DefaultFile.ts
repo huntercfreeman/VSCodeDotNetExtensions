@@ -1,11 +1,11 @@
-import { ConstantsContextualInformation } from "../Constants/ConstantsContextualInformation";
-import { CSharpProjectModel } from "../DotNet/CSharpProjectModel";
-import { AbsoluteFilePath } from "./AbsoluteFilePath";
-import { FileKind } from "./FileKind";
-import { FileKindMatcher } from "./FileKindMatcher";
+import { ConstantsContextualInformation } from "../../Constants/ConstantsContextualInformation";
+import { AbsoluteFilePath } from "../AbsoluteFilePath";
 import { IdeFile } from "./IdeFile";
 
-export class CSharpFile extends IdeFile {
+export class DefaultFile extends IdeFile {
+    public setVirtualChildFiles(siblingFiles: IdeFile[]): void {
+        throw new Error("Method not implemented.");
+    }
     constructor(givenAbsoluteFilePath: AbsoluteFilePath, containingCSharpProjectModelAbsoluteFilePath: AbsoluteFilePath) {
         super(givenAbsoluteFilePath, containingCSharpProjectModelAbsoluteFilePath);
     }

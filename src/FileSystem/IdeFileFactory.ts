@@ -1,16 +1,14 @@
-import { ConstantsFileExtensionsNoPeriod } from "../Constants/ConstantsFileExtensionsNoPeriod";
 import { FileKindMatcher } from "./FileKindMatcher";
 import { FileKind } from "./FileKind";
 import { AbsoluteFilePath } from "./AbsoluteFilePath";
-import { CSharpFile } from "./CSharpFile";
-import { CshtmlFile } from "./CshtmlFile";
-import { CssFile } from "./CssFile";
-import { DirectoryFile } from "./DirectoryFile";
-import { RazorFile } from "./RazorFile";
-import { JsonFile } from "./JsonFile";
-import { DefaultFile } from "./DefaultFile";
-import { IdeFile } from "./IdeFile";
-import { CSharpProjectModel } from "../DotNet/CSharpProjectModel";
+import { CSharpFile } from "./Files/CSharpFile";
+import { IdeFile } from "./Files/IdeFile";
+import { CshtmlFile } from "./Files/CshtmlFile";
+import { CssFile } from "./Files/CssFile";
+import { DefaultFile } from "./Files/DefaultFile";
+import { DirectoryFile } from "./Files/DirectoryFile";
+import { JsonFile } from "./Files/JsonFile";
+import { RazorFile } from "./Files/RazorFile";
 
 export class IdeFileFactory {
     public static constructIdeFile(absoluteFilePath: AbsoluteFilePath, containingCSharpProjectModelAbsoluteFilePath: AbsoluteFilePath): IdeFile {
