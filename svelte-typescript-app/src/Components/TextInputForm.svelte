@@ -3,7 +3,7 @@
     export let onCancel: any = () => value = undefined;
     export let onValidSubmit: any;
     export let onInvalidSubmit: any = undefined;
-    export let placeholder: string = "";
+    export let placeholder: string;
 
     function validate() {
         if (value) {

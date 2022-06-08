@@ -10,6 +10,8 @@
     import { ConstantsContextualInformation } from "../../../out/Constants/ConstantsContextualInformation";
     import { ContextualInformationDatum } from "../../../out/ContextMenus/ContextualInformationDatum";
 	import { contextMenuTarget } from './menu.js';
+import MenuOptionCreateNewTemplatedFile from './ContextMenus/ContextMenuOptions/MenuOptionCreateNewTemplatedFile.svelte';
+import MenuOptionCreateNewEmptyFile from './ContextMenus/ContextMenuOptions/MenuOptionCreateNewEmptyFile.svelte';
 
     let pos = { x: 0, y: 0 };
     let showMenu = false;
@@ -49,10 +51,10 @@
 			{#each contextMenuTargetValue.contextualInformation as contextualInformationDatum}
 				{#if ContextualInformationDatum.checkDatumEquality(ContextualInformationDatum.createNewTemplatedFile,
 																	contextualInformationDatum)}
-					<MenuOption text="createNewTemplatedFile." />
+					<MenuOptionCreateNewTemplatedFile />
 				{:else if ContextualInformationDatum.checkDatumEquality(ContextualInformationDatum.createNewEmptyFile,
 																		contextualInformationDatum)}
-					<MenuOption text="createNewEmptyFile." />
+					<MenuOptionCreateNewEmptyFile />
 				{/if}
 			{/each}
 		{/if}
