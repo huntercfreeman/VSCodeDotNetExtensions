@@ -8,8 +8,8 @@ export class DirectoryFile extends IdeFile {
     public setVirtualChildFiles(siblingFiles: IdeFile[]): void {
         throw new Error("Method not implemented.");
     }
-    constructor(givenAbsoluteFilePath: AbsoluteFilePath, containingCSharpProjectModelAbsoluteFilePath: AbsoluteFilePath) {
-        super(givenAbsoluteFilePath, containingCSharpProjectModelAbsoluteFilePath);
+    constructor(givenAbsoluteFilePath: AbsoluteFilePath) {
+        super(givenAbsoluteFilePath, "");
     }
     
     public nonce: string = getNonce();

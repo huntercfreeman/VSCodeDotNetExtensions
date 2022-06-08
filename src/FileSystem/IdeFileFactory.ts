@@ -18,19 +18,19 @@ export class IdeFileFactory {
             // case FileKind.solution:
             //     return ;
             case FileKind.cSharp:
-                return new CSharpFile(absoluteFilePath, containingCSharpProjectModelAbsoluteFilePath);
+                return new CSharpFile(absoluteFilePath);
             case FileKind.cshtml:
-                return new CshtmlFile(absoluteFilePath, containingCSharpProjectModelAbsoluteFilePath);
+                return new CshtmlFile(absoluteFilePath);
             case FileKind.css:
-                return new CssFile(absoluteFilePath, containingCSharpProjectModelAbsoluteFilePath);
+                return new CssFile(absoluteFilePath);
             case FileKind.directory:
-                return new DirectoryFile(absoluteFilePath, containingCSharpProjectModelAbsoluteFilePath);
+                return new DirectoryFile(absoluteFilePath);
             case FileKind.razor:
-                return new RazorFile(absoluteFilePath, containingCSharpProjectModelAbsoluteFilePath);
+                return new RazorFile(absoluteFilePath);
             case FileKind.json:
-                return new JsonFile(absoluteFilePath, containingCSharpProjectModelAbsoluteFilePath);
+                return new JsonFile(absoluteFilePath);
             default:
-                return new DefaultFile(absoluteFilePath, containingCSharpProjectModelAbsoluteFilePath);
+                return new DefaultFile(absoluteFilePath);
         }
     }
 }

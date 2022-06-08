@@ -29,35 +29,35 @@ export class ConstantsFileTemplates {
     private static getNamespace(ideFile: IdeFile): string {
         let namespace = "";
 
-        for (let i = ideFile.absoluteFilePath.parentDirectories.length - 1; i > -1; i--) {
-            let currentFileContainer = ideFile.absoluteFilePath.parentDirectories[i];
+        // for (let i = ideFile.absoluteFilePath.parentDirectories.length - 1; i > -1; i--) {
+        //     let currentFileContainer = ideFile.absoluteFilePath.parentDirectories[i];
 
-            // If the directory the C# Project is in, is the directory that is being looked at
-            // we are done calculating namespace.
-            if (currentFileContainer.initialAbsoluteFilePathStringInput ===
-                ideFile.containingCSharpProjectModelAbsoluteFilePath.parentDirectories
-                [ideFile.containingCSharpProjectModelAbsoluteFilePath.parentDirectories.length - 1]
-                    .initialAbsoluteFilePathStringInput) {
-                if (namespace) {
-                    let containingCSharpProjectFilenameNoExtension = ideFile.containingCSharpProjectModelAbsoluteFilePath.filenameWithExtension
-                        .replace(`.${ideFile.containingCSharpProjectModelAbsoluteFilePath.extensionNoPeriod}`, "");
-                    namespace = `${containingCSharpProjectFilenameNoExtension}.${namespace}`;
-                }
-                else {
-                    namespace = ideFile.containingCSharpProjectModelAbsoluteFilePath.filenameNoExtension;
-                }
+        //     // If the directory the C# Project is in, is the directory that is being looked at
+        //     // we are done calculating namespace.
+        //     if (currentFileContainer.initialAbsoluteFilePathStringInput ===
+        //         ideFile.containingCSharpProjectModelAbsoluteFilePath.parentDirectories
+        //         [ideFile.containingCSharpProjectModelAbsoluteFilePath.parentDirectories.length - 1]
+        //             .initialAbsoluteFilePathStringInput) {
+        //         if (namespace) {
+        //             let containingCSharpProjectFilenameNoExtension = ideFile.containingCSharpProjectModelAbsoluteFilePath.filenameWithExtension
+        //                 .replace(`.${ideFile.containingCSharpProjectModelAbsoluteFilePath.extensionNoPeriod}`, "");
+        //             namespace = `${containingCSharpProjectFilenameNoExtension}.${namespace}`;
+        //         }
+        //         else {
+        //             namespace = ideFile.containingCSharpProjectModelAbsoluteFilePath.filenameNoExtension;
+        //         }
 
-                break;
-            }
-            else {
-                if (namespace) {
-                    namespace = `${currentFileContainer.filenameNoExtension}.${namespace}`;
-                }
-                else {
-                    namespace = currentFileContainer.filenameNoExtension;
-                }
-            }
-        }
+        //         break;
+        //     }
+        //     else {
+        //         if (namespace) {
+        //             namespace = `${currentFileContainer.filenameNoExtension}.${namespace}`;
+        //         }
+        //         else {
+        //             namespace = currentFileContainer.filenameNoExtension;
+        //         }
+        //     }
+        // }
 
         return namespace;
     }

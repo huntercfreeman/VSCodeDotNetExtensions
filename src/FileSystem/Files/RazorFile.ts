@@ -4,8 +4,8 @@ import { IdeFile } from "./IdeFile";
 
 // TODO: Directories should always end in a '/' except when accessing filenameWithoutExtension
 export class RazorFile extends IdeFile {
-    constructor(givenAbsoluteFilePath: AbsoluteFilePath, containingCSharpProjectModelAbsoluteFilePath: AbsoluteFilePath) {
-        super(givenAbsoluteFilePath, containingCSharpProjectModelAbsoluteFilePath);
+    constructor(givenAbsoluteFilePath: AbsoluteFilePath) {
+        super(givenAbsoluteFilePath, "");
     }
     
     public childFiles: IdeFile[] | undefined;

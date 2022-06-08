@@ -1,9 +1,10 @@
+import * as vscode from 'vscode';
 import { IMessageDelete } from "../Messages/Delete/IMessageDelete";
 import { MessageDeleteKind } from "../Messages/Delete/MessageDeleteKind";
-import { MessageBase } from "../Messages/MessageBase";
+import { IMessage } from "../Messages/IMessage";
 
 export class DeleteMessageHandler {
-    public static handleMessage(message: MessageBase): void {
+    public static handleMessage(webviewView: vscode.WebviewView, message: IMessage): void {
         let deleteMessage = message as unknown as IMessageDelete;
 
         switch (deleteMessage.messageDeleteKind) {

@@ -1,13 +1,4 @@
 import * as vscode from 'vscode';
-import { ConstantsFilePath } from '../Constants/ConstantsFilePath';
-import { ConstantsFileTemplates } from '../Constants/ConstantsFileTemplates';
-import { ConstantsMessages } from '../Constants/ConstantsMessages';
-import { SolutionModel } from '../DotNet/SolutionModel';
-import { AbsoluteFilePath } from '../FileSystem/AbsoluteFilePath';
-import { FileSorter } from '../FileSystem/FileSorter';
-import { FileSystemReader } from '../FileSystem/FileSystemReader';
-import { IdeFile } from '../FileSystem/Files/IdeFile';
-import { IdeFileFactory } from '../FileSystem/IdeFileFactory';
 import { SidebarProviderMessageHandler } from '../MessageHandlers/SidebarProviderMessageHandler';
 
 const fs = require('fs');
@@ -34,7 +25,7 @@ export class SidebarProvider implements vscode.WebviewViewProvider {
     webviewView.webview.html = this.getWebviewContent(webviewView.webview);
 
     webviewView.webview.onDidReceiveMessage(async (data) => 
-      SidebarProviderMessageHandler.handleMessage(webviewView.webview, data));
+      SidebarProviderMessageHandler.handleMessage(webviewView, data.value));
   }
 
   public revive(panel: vscode.WebviewView) {
@@ -81,4 +72,3 @@ export class SidebarProvider implements vscode.WebviewViewProvider {
   </html>`;
   }
 }
-

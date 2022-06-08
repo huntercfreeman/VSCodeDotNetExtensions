@@ -5,16 +5,12 @@ import { AbsoluteFilePath } from "../AbsoluteFilePath";
 import { IdeFile } from "./IdeFile";
 
 export class CSharpFile extends IdeFile {
-    public readonly contextualInformationData: ContextualInformationDatum[] = [
-        new ContextualInformationDatum(ContextualInformationDatumKind.delete,
-            Message)
-    ];
-    
-    constructor(givenAbsoluteFilePath: AbsoluteFilePath, containingCSharpProjectModelAbsoluteFilePath: AbsoluteFilePath) {
-        super(givenAbsoluteFilePath, containingCSharpProjectModelAbsoluteFilePath);
+    constructor(givenAbsoluteFilePath: AbsoluteFilePath) {
+        super(givenAbsoluteFilePath, "");
     }
     
     public childFiles: any[] | undefined;
+    public contextualInformation: string = "";
     
     public hideExpansionChevronWhenNoChildFiles: boolean = true;
     

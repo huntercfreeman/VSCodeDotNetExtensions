@@ -3,8 +3,8 @@ import { FileKind } from "../FileKind";
 import { FileKindMatcher } from "../FileKindMatcher";
 
 export abstract class IdeFile {
-    constructor(public readonly absoluteFilePath: AbsoluteFilePath, 
-        public containingCSharpProjectModelAbsoluteFilePath: AbsoluteFilePath) {
+    constructor(public readonly absoluteFilePath: AbsoluteFilePath,
+        public namespace: string | undefined) {
         
         this.fileKind = FileKindMatcher.getFileKind(absoluteFilePath.extensionNoPeriod);
     }

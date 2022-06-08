@@ -1,36 +1,32 @@
 <script lang="ts">
 	import { onMount } from "svelte";
+	import type { DotNetSolutionFile } from "../../out/FileSystem/Files/DotNetSolutionFile";
+	import { MessageCategory } from "../../out/Messages/MessageCategory";
+	import { MessageReadKind } from "../../out/Messages/Read/MessageReadKind";
+	import { MessageReadSolutionsInWorkspace } from "../../out/Messages/Read/MessageReadSolutionsInWorkspace";
+	import SelectDotNetSolutionFileForm from "./Components/SelectDotNetSolutionFileForm.svelte";
 
-	import CustomMenu from './Components/ContextMenu.svelte';
-
-	import type { AbsoluteFilePath } from "../../out/FileSystem/AbsoluteFilePath";
-	import type { SolutionModel } from "../../out/DotNet/SolutionModel";
-	import type { CSharpProjectModel } from "../../out/DotNet/CSharpProjectModel";
-
-	import { ConstantsMessages } from "../../out/Constants/ConstantsMessages";
-	import SelectSolutionForm from "./Components/SelectSolutionForm.svelte";
-	import TreeViewDisplay from "./Components/TreeViewDisplay.svelte";
-	import ContextMenu from "./Components/ContextMenu.svelte";
-
-	let solutionModels: SolutionModel[] = [];
-
-	let selectedSolution: SolutionModel;
+	let dotNetSolutionFiles: DotNetSolutionFile[] = [];
 
 	function getSolutionFilesInWorkspace() {
-		tsVscode.postMessage(
-			ConstantsMessages.ConstructMessage(ConstantsMessages.LOAD_SOLUTIONS_IN_WORKSPACE, null));
+		let messageReadSolutionsInWorkspace = new MessageReadSolutionsInWorkspace();
+
+		tsVscode.postMessage({
+			type: undefined,
+			value: messageReadSolutionsInWorkspace
+		});
 	}
 
 	onMount(async () => {
 		window.addEventListener("message", async (event) => {
 			const message = event.data;
-			switch (message.type) {
-				case ConstantsMessages.LOAD_SOLUTIONS_IN_WORKSPACE:
-					solutionModels = message.value;
-					break;
-				case ConstantsMessages.PARSE_SOLUTION:
-					selectedSolution = message.value;
-					break;
+
+			switch (message.messageCategory) {
+            	case MessageCategory.read:
+					switch(message.messageReadKind) {
+						case MessageReadKind.solutionsInWorkspace:
+							dotNetSolutionFiles = message.dotNetSolutionFiles;
+					}
 			}
 		});
 		
@@ -43,14 +39,8 @@
 		Reload Solutions In Workspace
 	</button>
 	
-	<SelectSolutionForm solutionModels={solutionModels} />
-
-	{#if selectedSolution}
-		<TreeViewDisplay data={selectedSolution} />	
-	{/if}
+	<SelectDotNetSolutionFileForm dotNetSolutionFiles={dotNetSolutionFiles} />
 </div>
-
-<ContextMenu />
 
 <style>
 	.dni_app {

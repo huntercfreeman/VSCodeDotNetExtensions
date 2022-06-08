@@ -5,9 +5,8 @@ import { CSharpProjectModel } from "../../DotNet/CSharpProjectModel";
 
 export class CSharpProjectFile extends IdeFile {
 
-    constructor(givenAbsoluteFilePath: AbsoluteFilePath, 
-        containingCSharpProjectModelAbsoluteFilePath: AbsoluteFilePath) {
-        super(givenAbsoluteFilePath, containingCSharpProjectModelAbsoluteFilePath);
+    constructor(givenAbsoluteFilePath: AbsoluteFilePath) {
+        super(givenAbsoluteFilePath, "");
     }
     
     public childFiles: any[] | undefined;

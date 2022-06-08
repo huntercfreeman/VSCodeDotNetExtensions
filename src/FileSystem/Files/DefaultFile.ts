@@ -6,8 +6,8 @@ export class DefaultFile extends IdeFile {
     public setVirtualChildFiles(siblingFiles: IdeFile[]): void {
         throw new Error("Method not implemented.");
     }
-    constructor(givenAbsoluteFilePath: AbsoluteFilePath, containingCSharpProjectModelAbsoluteFilePath: AbsoluteFilePath) {
-        super(givenAbsoluteFilePath, containingCSharpProjectModelAbsoluteFilePath);
+    constructor(givenAbsoluteFilePath: AbsoluteFilePath) {
+        super(givenAbsoluteFilePath, "");
     }
     
     public childFiles: any[] | undefined;

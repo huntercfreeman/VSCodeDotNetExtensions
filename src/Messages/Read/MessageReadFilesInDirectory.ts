@@ -1,14 +1,12 @@
 import { AbsoluteFilePath } from "../../FileSystem/AbsoluteFilePath";
-import { MessageBase } from "../MessageBase";
+import { IMessage } from "../IMessage";
 import { MessageCategory } from "../MessageCategory";
 import { IMessageRead } from "./IMessageRead";
 import { MessageReadKind } from "./MessageReadKind";
 
-export class MessageReadFilesInDirectory extends MessageBase implements IMessageRead {
+export class MessageReadFilesInDirectory implements IMessage, IMessageRead {
     constructor(public readonly filenameWithExtension: string, 
                 public readonly directoryAbsoluteFilePath: AbsoluteFilePath) {
-        super();
-        
     }
 
     public readonly messageCategory: MessageCategory = MessageCategory.read;

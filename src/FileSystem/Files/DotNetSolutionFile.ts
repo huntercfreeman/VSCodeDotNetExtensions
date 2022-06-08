@@ -5,14 +5,15 @@ import { SolutionModel } from "../../DotNet/SolutionModel";
 
 export class DotNetSolutionFile extends IdeFile {
 
-    constructor(givenAbsoluteFilePath: AbsoluteFilePath, 
-        containingCSharpProjectModelAbsoluteFilePath: AbsoluteFilePath) {
-        super(givenAbsoluteFilePath, containingCSharpProjectModelAbsoluteFilePath);
+    constructor(givenAbsoluteFilePath: AbsoluteFilePath) {
+        super(givenAbsoluteFilePath, "");
     }
     
     public childFiles: any[] | undefined;
     
     public hideExpansionChevronWhenNoChildFiles: boolean = true;
+
+    public solutionModel: SolutionModel | undefined = undefined;
     
     public setVirtualChildFiles(siblingFiles: IdeFile[]): void {
         return;
