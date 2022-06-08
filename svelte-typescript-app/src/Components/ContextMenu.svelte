@@ -2,16 +2,11 @@
     import Menu from './Menu.svelte'
     import MenuOption from './MenuOption.svelte';
 	import MenuDivider from './MenuDivider.svelte';
-	import ContextMenuForSolutionTreeView from './ContextMenus/ContextMenuForSolutionTreeView.svelte';
-	import ContextMenuForSolutionFolderTreeView from './ContextMenus/ContextMenuForSolutionFolderTreeView.svelte';
-	import ContextMenuForCSharpProjectTreeView from './ContextMenus/ContextMenuForCSharpProjectTreeView.svelte';
-	import ContextMenuForDirectoryTreeView from './ContextMenus/ContextMenuForDirectoryTreeView.svelte';
-	import ContextMenuForDefaultFileTreeView from './ContextMenus/ContextMenuForDefaultFileTreeView.svelte';
     import { ConstantsContextualInformation } from "../../../out/Constants/ConstantsContextualInformation";
     import { ContextualInformationDatum } from "../../../out/ContextMenus/ContextualInformationDatum";
 	import { contextMenuTarget } from './menu.js';
-import MenuOptionCreateNewTemplatedFile from './ContextMenus/ContextMenuOptions/MenuOptionCreateNewTemplatedFile.svelte';
-import MenuOptionCreateNewEmptyFile from './ContextMenus/ContextMenuOptions/MenuOptionCreateNewEmptyFile.svelte';
+	import MenuOptionCreateNewTemplatedFile from './ContextMenuOptions/ContextMenuOptions/MenuOptionCreateNewTemplatedFile.svelte';
+	import MenuOptionCreateNewEmptyFile from './ContextMenuOptions/MenuOptionCreateNewEmptyFile.svelte';
 
     let pos = { x: 0, y: 0 };
     let showMenu = false;
@@ -51,10 +46,10 @@ import MenuOptionCreateNewEmptyFile from './ContextMenus/ContextMenuOptions/Menu
 			{#each contextMenuTargetValue.contextualInformation as contextualInformationDatum}
 				{#if ContextualInformationDatum.checkDatumEquality(ContextualInformationDatum.createNewTemplatedFile,
 																	contextualInformationDatum)}
-					<MenuOptionCreateNewTemplatedFile />
+					<MenuOptionCreateNewTemplatedFile closeMenu={closeMenu} />
 				{:else if ContextualInformationDatum.checkDatumEquality(ContextualInformationDatum.createNewEmptyFile,
 																		contextualInformationDatum)}
-					<MenuOptionCreateNewEmptyFile />
+					<MenuOptionCreateNewEmptyFile closeMenu={closeMenu} />
 				{/if}
 			{/each}
 		{/if}

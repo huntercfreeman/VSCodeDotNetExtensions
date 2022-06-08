@@ -8,13 +8,15 @@ import { ContextualInformationDatum } from "../../ContextMenus/ContextualInforma
 export class CSharpProjectFile extends IdeFile {
 
     constructor(public readonly cSharpProjectModel: CSharpProjectModel) {
-        super(cSharpProjectModel.absoluteFilePath, "");
+        super(cSharpProjectModel.absoluteFilePath, cSharpProjectModel.displayName);
 
         if(cSharpProjectModel.solutionFolderEntries !== undefined) {
             this.fileKind = FileKind.solutionFolder;
 
             this.virtualChildFiles = cSharpProjectModel.solutionFolderEntries
                 .map(x => new CSharpProjectFile(x));
+            
+            this.contextualInformation = [];
         }
         else {
             this.contextualInformation = [

@@ -11,7 +11,7 @@ import { JsonFile } from "./Files/JsonFile";
 import { RazorFile } from "./Files/RazorFile";
 
 export class IdeFileFactory {
-    public static constructIdeFile(absoluteFilePath: AbsoluteFilePath, containingCSharpProjectModelAbsoluteFilePath: AbsoluteFilePath): IdeFile {
+    public static constructIdeFile(absoluteFilePath: AbsoluteFilePath): IdeFile {
         switch (FileKindMatcher.getFileKind(absoluteFilePath.extensionNoPeriod)) {
             // case FileKind.cSharpProject:
             //     return ;

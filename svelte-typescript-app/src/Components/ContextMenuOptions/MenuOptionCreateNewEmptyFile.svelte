@@ -1,8 +1,8 @@
 <script lang="ts">
-    import { ConstantsFileExtensionsNoPeriod } from '../../../../../out/Constants/ConstantsFileExtensionsNoPeriod';
-	import { contextMenuTarget } from '../../menu';
-    import MenuOption from '../../MenuOption.svelte';
-    import TextInputForm from '../../TextInputForm.svelte';
+    import { ConstantsFileExtensionsNoPeriod } from '../../../../out/Constants/ConstantsFileExtensionsNoPeriod';
+	import { contextMenuTarget } from '../menu';
+    import MenuOption from '../MenuOption.svelte';
+    import TextInputForm from '../TextInputForm.svelte';
 
 	export let closeMenu;
 
