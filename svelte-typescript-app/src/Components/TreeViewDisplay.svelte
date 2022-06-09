@@ -158,7 +158,7 @@
 	
 	<div class="dni_tree-view-children">
 		{#if isExpanded}
-			{#each (children ?? getChildFiles()) as child}
+			{#each (children ?? getChildFiles()) as child (child.nonce)}
 				{#if !hasDifferentParentContainer(child)}
 					<svelte:self ideFile={child} />
 				{/if}

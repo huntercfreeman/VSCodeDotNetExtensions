@@ -4,8 +4,10 @@
     import MenuOption from '../MenuOption.svelte';
     import TextInputForm from '../TextInputForm.svelte';
     import { MessageCreateTemplatedFileInDirectory } from "../../../../out/Messages/Create/MessageCreateTemplatedFileInDirectory";
-    import type { DirectoryFile } from '../../../../out/FileSystem/DirectoryFile';
+    import { DirectoryFile } from '../../../../out/FileSystem/DirectoryFile';
     import { FileKind } from '../../../../out/FileSystem/FileKind';
+import { MessageReadVirtualFilesInCSharpProject } from '../../../../out/Messages/Read/MessageReadVirtualFilesInCSharpProject';
+import { MessageReadFilesInDirectory } from '../../../../out/Messages/Read/MessageReadFilesInDirectory';
 
 	export let closeMenu;
 
@@ -16,6 +18,31 @@
 	contextMenuTarget.subscribe(value => {
 		contextMenuTargetValue = value;
 	});
+
+    function refreshOnClick() {
+        switch (contextMenuTargetValue.fileKind) {
+            case FileKind.cSharpProject:
+                let messageReadVirtualFilesInCSharpProject = 
+                    new MessageReadVirtualFilesInCSharpProject(contextMenuTargetValue);
+
+                tsVscode.postMessage({
+                    type: undefined,
+                    value: messageReadVirtualFilesInCSharpProject
+                });
+            case FileKind.directory:
+                let messageReadFilesInDirectory = 
+                    new MessageReadFilesInDirectory(contextMenuTargetValue);
+
+                tsVscode.postMessage({
+                    type: undefined,
+                    value: messageReadFilesInDirectory
+                });
+        }
+
+        closeMenu();
+	}
 </script>
 
-<MenuOption text="Refresh Child Files" />
+<MenuOption onClickStopPropagation="{true}"
+            onClick={refreshOnClick} 
+            text="Refresh Child Files." />
