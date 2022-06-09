@@ -4,8 +4,8 @@
     import MenuOption from '../MenuOption.svelte';
     import TextInputForm from '../TextInputForm.svelte';
     import { MessageCreateTemplatedFileInDirectory } from "../../../../out/Messages/Create/MessageCreateTemplatedFileInDirectory";
-import type { DirectoryFile } from '../../../../out/FileSystem/DirectoryFile';
-import { FileKind } from '../../../../out/FileSystem/FileKind';
+    import type { DirectoryFile } from '../../../../out/FileSystem/DirectoryFile';
+    import { FileKind } from '../../../../out/FileSystem/FileKind';
 
 	export let closeMenu;
 
@@ -29,7 +29,7 @@ import { FileKind } from '../../../../out/FileSystem/FileKind';
                 case FileKind.directory:
                     directoryFile = contextMenuTargetValue;
                     break;
-                case FileKind.directory:
+                case FileKind.cSharpProject:
                     directoryFile = contextMenuTargetValue.absoluteFilePath
                         .parentDirectories[contextMenuTargetValue.absoluteFilePath.parentDirectories.length - 1];
                     break;

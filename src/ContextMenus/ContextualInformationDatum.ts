@@ -16,6 +16,14 @@ export class ContextualInformationDatum {
     public static readonly createNewTemplatedFile: ContextualInformationDatum = 
         new ContextualInformationDatum(ContextualInformationDatumKind.create,
             "createNewTemplatedFile");
+    
+    public static readonly createDirectory: ContextualInformationDatum = 
+        new ContextualInformationDatum(ContextualInformationDatumKind.create,
+            "createDirectory");
+    
+    public static readonly refreshChildFiles: ContextualInformationDatum = 
+        new ContextualInformationDatum(ContextualInformationDatumKind.read,
+            "refreshChildFiles");
 
     public static checkDatumEquality(datumOne: ContextualInformationDatum, datumTwo: ContextualInformationDatum) {
         return (datumOne.contextualInformationDatumKind === datumTwo.contextualInformationDatumKind) &&

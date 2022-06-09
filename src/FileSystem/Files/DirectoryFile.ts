@@ -19,5 +19,7 @@ export class DirectoryFile extends IdeFile {
     public readonly contextualInformation: ContextualInformationDatum[] = [
         ContextualInformationDatum.createNewTemplatedFile,
         ContextualInformationDatum.createNewEmptyFile,
+        ContextualInformationDatum.createDirectory,
+        ContextualInformationDatum.refreshChildFiles,
     ];
 }

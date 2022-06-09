@@ -11,5 +11,6 @@ export enum MessageCreateKind {
     solutionFolderInSolution,
     templatedFileInDirectory,
     projectInSolution,
-    projectInSolutionFolder
+    projectInSolutionFolder,
+    directoryInDirectory
 }

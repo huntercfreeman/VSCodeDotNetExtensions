@@ -5,11 +5,11 @@ import { MessageCategory } from "../MessageCategory";
 import { IMessageCreate } from "./IMessageCreate";
 import { MessageCreateKind } from "./MessageCreateKind";
 
-export class MessageCreateEmptyFileInDirectory implements IMessage, IMessageCreate {
+export class MessageCreateDirectoryInDirectory implements IMessage, IMessageCreate {
     constructor(public readonly filenameWithExtension: string, 
         public readonly directoryFile: DirectoryFile) {
-}
+    }
 
     public readonly messageCategory: MessageCategory = MessageCategory.create;
-    public readonly messageCreateKind: MessageCreateKind = MessageCreateKind.emptyFileInDirectory;
+    public readonly messageCreateKind: MessageCreateKind = MessageCreateKind.directoryInDirectory;
 }

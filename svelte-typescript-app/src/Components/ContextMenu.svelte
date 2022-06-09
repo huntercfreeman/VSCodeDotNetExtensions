@@ -7,6 +7,8 @@
 	import { contextMenuTarget } from './menu.js';
 	import MenuOptionCreateNewTemplatedFile from './ContextMenuOptions/MenuOptionCreateNewTemplatedFile.svelte';
 	import MenuOptionCreateNewEmptyFile from './ContextMenuOptions/MenuOptionCreateNewEmptyFile.svelte';
+import MenuOptionRefreshChildFiles from './ContextMenuOptions/MenuOptionRefreshChildFiles.svelte';
+import MenuOptionCreateDirectory from './ContextMenuOptions/MenuOptionCreateDirectory.svelte';
 
     let pos = { x: 0, y: 0 };
     let showMenu = false;
@@ -50,6 +52,12 @@
 				{:else if ContextualInformationDatum.checkDatumEquality(ContextualInformationDatum.createNewEmptyFile,
 																		contextualInformationDatum)}
 					<MenuOptionCreateNewEmptyFile closeMenu={closeMenu} />
+				{:else if ContextualInformationDatum.checkDatumEquality(ContextualInformationDatum.refreshChildFiles,
+																		contextualInformationDatum)}
+					<MenuOptionRefreshChildFiles closeMenu={closeMenu} />
+				{:else if ContextualInformationDatum.checkDatumEquality(ContextualInformationDatum.createDirectory,
+																		contextualInformationDatum)}
+					<MenuOptionCreateDirectory closeMenu={closeMenu} />
 				{/if}
 			{/each}
 		{/if}

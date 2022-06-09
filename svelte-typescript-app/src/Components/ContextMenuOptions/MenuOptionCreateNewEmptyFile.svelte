@@ -8,7 +8,6 @@
 
 	let contextMenuTargetValue;
 	let addEmptyFileFilename: string | undefined;
-	let shouldAddCodeBehind: boolean = false;
 	
 	contextMenuTarget.subscribe(value => {
 		contextMenuTargetValue = value;
@@ -31,10 +30,3 @@
 <TextInputForm bind:value="{addEmptyFileFilename}"
                 onValidSubmit="{addEmptyFileToFolderOnClick}"
                 placeholder="Filename with extension" />
-{#if addEmptyFileFilename && addEmptyFileFilename.endsWith(ConstantsFileExtensionsNoPeriod.RAZOR_FILE_EXTENSION)}
-    Add a code behind? 
-    
-    <input style="display: inline;" 
-            type="checkbox"
-            bind:checked="{shouldAddCodeBehind}" />
-{/if}

@@ -22,6 +22,8 @@ export class CSharpProjectFile extends IdeFile {
             this.contextualInformation = [
                 ContextualInformationDatum.createNewTemplatedFile,
                 ContextualInformationDatum.createNewEmptyFile,
+                ContextualInformationDatum.createDirectory,
+                ContextualInformationDatum.refreshChildFiles,
             ];
         }
     }

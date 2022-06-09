@@ -4,6 +4,7 @@ import { ConstantsFileTemplates } from '../Constants/ConstantsFileTemplates';
 import { AbsoluteFilePath } from '../FileSystem/AbsoluteFilePath';
 import { IdeFileFactory } from '../FileSystem/IdeFileFactory';
 import { IMessageCreate } from "../Messages/Create/IMessageCreate";
+import { MessageCreateDirectoryInDirectory } from '../Messages/Create/MessageCreateDirectoryInDirectory';
 import { MessageCreateKind } from "../Messages/Create/MessageCreateKind";
 import { MessageCreateTemplatedFileInDirectory } from '../Messages/Create/MessageCreateTemplatedFileInDirectory';
 import { IMessage } from "../Messages/IMessage";
@@ -22,6 +23,9 @@ export class CreateMessageHandler {
             case MessageCreateKind.projectInSolutionFolder:
                 break;
             case MessageCreateKind.solutionFolderInSolution:
+                break;
+            case MessageCreateKind.directoryInDirectory:
+                await this.handleMessageCreateDirectoryInDirectory(webviewView, message);
                 break;
             case MessageCreateKind.templatedFileInDirectory:
                 await this.handleMessageCreateTemplatedFileInDirectory(webviewView, message);
@@ -68,5 +72,24 @@ export class CreateMessageHandler {
                     });
                 }
             });
+    }
+    
+    public static async handleMessageCreateDirectoryInDirectory(webviewView: vscode.WebviewView, iMessage: IMessage) {
+        let message = iMessage as MessageCreateDirectoryInDirectory;
+
+        let writePath: string = message.directoryFile.absoluteFilePath.initialAbsoluteFilePathStringInput;
+
+        if (!writePath.endsWith(ConstantsFilePath.STANDARDIZED_FILE_DELIMITER)) {
+            writePath += ConstantsFilePath.STANDARDIZED_FILE_DELIMITER;
+        }
+
+        writePath += message.filenameWithExtension;
+
+        let absoluteFilePath = new AbsoluteFilePath(writePath, false, null);
+
+        let ideFile = IdeFileFactory.constructIdeFile(absoluteFilePath, message.directoryFile.namespace);
+
+        fs.mkdir(ideFile.absoluteFilePath.initialAbsoluteFilePathStringInput, { recursive: true }, (err: any) => {
+        });
     }
 }
