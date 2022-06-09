@@ -1,6 +1,7 @@
 {
 	"name": "dot-net-ide",
 	"displayName": ".NET Ide",
+	"publisher": "HunterFreeman",
 	"description": "Add common IDE (Integrated Development environment features to Visual Studio Code for the .NET environment.",
 	"version": "0.0.1",
 	"engines": {

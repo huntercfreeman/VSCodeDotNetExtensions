@@ -14,7 +14,14 @@ export class AbsoluteFilePath {
         public readonly isDirectory: boolean,
         initialParentDirectories: AbsoluteFilePath[] | null) {
 
-        this.initialAbsoluteFilePathStringInput = FilePathStandardizer.standardizeFilePath(absoluteFilePathString);
+        if (absoluteFilePathString.startsWith(ConstantsFilePath.STANDARDIZED_FILE_DELIMITER)) {
+            this.initialAbsoluteFilePathStringInput = FilePathStandardizer.standardizeFilePath(absoluteFilePathString);
+        }
+        else
+        {
+            this.initialAbsoluteFilePathStringInput = ConstantsFilePath.STANDARDIZED_FILE_DELIMITER + FilePathStandardizer.standardizeFilePath(absoluteFilePathString);
+        }
+
 
         this.filenameWithExtension = AbsoluteFilePath.getFilenameWithExtension(this.initialAbsoluteFilePathStringInput);
 
@@ -83,7 +90,7 @@ export class AbsoluteFilePath {
             .pop();
 
         if (!possibleFilenameWithExtension) {
-            throw this.filenameException;
+            return "";
         }
 
         return possibleFilenameWithExtension;
