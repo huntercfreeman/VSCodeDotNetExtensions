@@ -7,6 +7,7 @@
 	import SelectDotNetSolutionFileForm from "./Components/SelectDotNetSolutionFileForm.svelte";
 	import TreeViewDisplay from "./Components/TreeViewDisplay.svelte";
 	import ContextMenu from "./Components/ContextMenu.svelte";
+	import SolutionFileControlButtons from "./Components/SolutionFileControlButtons.svelte";
 	
 	let dotNetSolutionFiles: DotNetSolutionFile[] = [];
 	let selectedDotNetSolutionFile: DotNetSolutionFile | undefined;
@@ -40,11 +41,12 @@
 </script>
 
 <div class="dni_app">
-	<button on:click={getSolutionFilesInWorkspace}>
-		Reload Solutions In Workspace
-	</button>
+
+	<SolutionFileControlButtons getSolutionFilesInWorkspace={getSolutionFilesInWorkspace} />
 	
 	<SelectDotNetSolutionFileForm dotNetSolutionFiles={dotNetSolutionFiles} />
+
+	<div style="margin-bottom: 5px;"></div>
 
 	{#if selectedDotNetSolutionFile}
 		<TreeViewDisplay ideFile={selectedDotNetSolutionFile} />	

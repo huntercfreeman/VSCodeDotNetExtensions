@@ -12,5 +12,6 @@ export enum MessageCreateKind {
     templatedFileInDirectory,
     cSharpProjectInSolution,
     projectInSolutionFolder,
-    directoryInDirectory
+    directoryInDirectory,
+    dotNetSolutionInWorkspace
 }

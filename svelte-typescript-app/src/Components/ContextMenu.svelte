@@ -35,6 +35,8 @@
 	
 	function closeMenu() {
 		showMenu = false;
+
+		contextMenuTarget.set(undefined);
 	}
 
 	function extendOnKeyDown(keyboardEvent) {
@@ -65,7 +67,7 @@
 	}
 </script>
 
-{#if showMenu}
+{#if showMenu && contextMenuTargetValue}
 	<Menu {...pos} on:click={closeMenu} on:clickoutside={closeMenu}>
 		{#if (contextMenuTargetValue.contextualInformation?.length ?? 0) === 0}
 			<MenuOption text="No Context Menu Options for this item." />
