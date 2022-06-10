@@ -25,6 +25,10 @@ export class ContextualInformationDatum {
         new ContextualInformationDatum(ContextualInformationDatumKind.read,
             "refreshChildFiles");
 
+    public static readonly startWithoutDebugging: ContextualInformationDatum = 
+        new ContextualInformationDatum(ContextualInformationDatumKind.read,
+            "startWithoutDebugging");
+
     public static checkDatumEquality(datumOne: ContextualInformationDatum, datumTwo: ContextualInformationDatum) {
         return (datumOne.contextualInformationDatumKind === datumTwo.contextualInformationDatumKind) &&
             (datumOne.contextualInformationIdentifier === datumTwo.contextualInformationIdentifier);
