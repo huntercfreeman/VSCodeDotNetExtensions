@@ -35,6 +35,8 @@ export class CshtmlFile extends IdeFile {
     }
     
     public readonly contextualInformation: ContextualInformationDatum[] = [
-        
+        ContextualInformationDatum.copyFile,
+        ContextualInformationDatum.cutFile,
+        ContextualInformationDatum.rename,
     ];
 }

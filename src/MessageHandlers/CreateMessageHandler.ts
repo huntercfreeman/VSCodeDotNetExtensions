@@ -18,7 +18,8 @@ export class CreateMessageHandler {
         switch (createMessage.messageCreateKind) {
             case MessageCreateKind.emptyFileInDirectory:
                 break;
-            case MessageCreateKind.projectInSolution:
+            case MessageCreateKind.cSharpProjectInSolution:
+                await this.handleMessageCreateCSharpProjectInSolution(webviewView, message);
                 break;
             case MessageCreateKind.projectInSolutionFolder:
                 break;
@@ -91,5 +92,25 @@ export class CreateMessageHandler {
 
         fs.mkdir(ideFile.absoluteFilePath.initialAbsoluteFilePathStringInput, { recursive: true }, (err: any) => {
         });
+    }
+    
+    
+    public static async handleMessageCreateCSharpProjectInSolution(webviewView: vscode.WebviewView, iMessage: IMessage) {
+        // let message = iMessage as MessageCreateDirectoryInDirectory;
+
+        // let writePath: string = message.directoryFile.absoluteFilePath.initialAbsoluteFilePathStringInput;
+
+        // if (!writePath.endsWith(ConstantsFilePath.STANDARDIZED_FILE_DELIMITER)) {
+        //     writePath += ConstantsFilePath.STANDARDIZED_FILE_DELIMITER;
+        // }
+
+        // writePath += message.filenameWithExtension;
+
+        // let absoluteFilePath = new AbsoluteFilePath(writePath, false, null);
+
+        // let ideFile = IdeFileFactory.constructIdeFile(absoluteFilePath, message.directoryFile.namespace);
+
+        // fs.mkdir(ideFile.absoluteFilePath.initialAbsoluteFilePathStringInput, { recursive: true }, (err: any) => {
+        // });
     }
 }

@@ -16,6 +16,8 @@ export class DefaultFile extends IdeFile {
     public hideExpansionChevronWhenNoChildFiles: boolean = true;
     
     public readonly contextualInformation: ContextualInformationDatum[] = [
-        
+        ContextualInformationDatum.copyFile,
+        ContextualInformationDatum.cutFile,
+        ContextualInformationDatum.rename,
     ];
 }

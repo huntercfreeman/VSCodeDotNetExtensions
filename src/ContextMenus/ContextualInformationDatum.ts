@@ -20,6 +20,14 @@ export class ContextualInformationDatum {
     public static readonly createDirectory: ContextualInformationDatum = 
         new ContextualInformationDatum(ContextualInformationDatumKind.create,
             "createDirectory");
+
+    public static readonly createNewCSharpProject: ContextualInformationDatum = 
+        new ContextualInformationDatum(ContextualInformationDatumKind.create,
+            "createNewCSharpProject");
+    
+    public static readonly addExistingCSharpProject: ContextualInformationDatum = 
+        new ContextualInformationDatum(ContextualInformationDatumKind.create,
+            "addExistingCSharpProject");
     
     public static readonly refreshChildFiles: ContextualInformationDatum = 
         new ContextualInformationDatum(ContextualInformationDatumKind.read,
@@ -28,6 +36,26 @@ export class ContextualInformationDatum {
     public static readonly startWithoutDebugging: ContextualInformationDatum = 
         new ContextualInformationDatum(ContextualInformationDatumKind.execute,
             "startWithoutDebugging");
+    
+    public static readonly rename: ContextualInformationDatum = 
+        new ContextualInformationDatum(ContextualInformationDatumKind.update,
+            "rename");
+    
+    public static readonly deleteFile: ContextualInformationDatum = 
+        new ContextualInformationDatum(ContextualInformationDatumKind.delete,
+            "deleteFile");
+    
+    public static readonly copyFile: ContextualInformationDatum = 
+        new ContextualInformationDatum(ContextualInformationDatumKind.control,
+            "copyFile");
+    
+    public static readonly cutFile: ContextualInformationDatum = 
+        new ContextualInformationDatum(ContextualInformationDatumKind.control,
+            "cutFile");
+
+    public static readonly paste: ContextualInformationDatum = 
+            new ContextualInformationDatum(ContextualInformationDatumKind.control,
+                "paste");
 
     public static checkDatumEquality(datumOne: ContextualInformationDatum, datumTwo: ContextualInformationDatum) {
         return (datumOne.contextualInformationDatumKind === datumTwo.contextualInformationDatumKind) &&

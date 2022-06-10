@@ -27,8 +27,6 @@ export class ExecuteMessageHandler {
             .formatDotNetRunCSharpProject(message.cSharpProjectFile.absoluteFilePath));
 
         messageExecuteTerminal.show();
-
-        webviewView.webview.postMessage(message);
     }
 
     private static getMessageExecuteTerminal() {

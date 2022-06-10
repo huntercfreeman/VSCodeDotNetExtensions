@@ -21,5 +21,9 @@ export class DirectoryFile extends IdeFile {
         ContextualInformationDatum.createNewEmptyFile,
         ContextualInformationDatum.createDirectory,
         ContextualInformationDatum.refreshChildFiles,
+        ContextualInformationDatum.copyFile,
+        ContextualInformationDatum.cutFile,
+        ContextualInformationDatum.paste,
+        ContextualInformationDatum.rename,
     ];
 }

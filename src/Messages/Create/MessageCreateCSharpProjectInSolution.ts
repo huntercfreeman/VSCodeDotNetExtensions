@@ -4,7 +4,7 @@ import { MessageCategory } from "../MessageCategory";
 import { IMessageCreate } from "./IMessageCreate";
 import { MessageCreateKind } from "./MessageCreateKind";
 
-export class MessageCreateProjectInSolution implements IMessage, IMessageCreate {
+export class MessageCreateCSharpProjectInSolution implements IMessage, IMessageCreate {
     /**
      *
      */
@@ -13,5 +13,5 @@ export class MessageCreateProjectInSolution implements IMessage, IMessageCreate 
     }
 
     public readonly messageCategory: MessageCategory = MessageCategory.create;
-    public readonly messageCreateKind: MessageCreateKind = MessageCreateKind.projectInSolution;
+    public readonly messageCreateKind: MessageCreateKind = MessageCreateKind.cSharpProjectInSolution;
 }

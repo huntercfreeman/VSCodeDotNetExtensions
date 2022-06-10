@@ -3,5 +3,6 @@ export enum ContextualInformationDatumKind {
     read,
     execute,
     update,
+    control,
     delete
 }
