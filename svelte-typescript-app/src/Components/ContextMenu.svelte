@@ -48,6 +48,7 @@
 
 		categories.push(ContextualInformationDatumKind.create);
 		categories.push(ContextualInformationDatumKind.read);
+		categories.push(ContextualInformationDatumKind.execute);
 		categories.push(ContextualInformationDatumKind.update);
 		categories.push(ContextualInformationDatumKind.delete);
 

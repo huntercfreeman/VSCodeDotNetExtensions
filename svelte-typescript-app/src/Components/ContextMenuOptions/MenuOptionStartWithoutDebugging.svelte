@@ -8,6 +8,7 @@
     import { FileKind } from '../../../../out/FileSystem/FileKind';
     import { MessageReadVirtualFilesInCSharpProject } from '../../../../out/Messages/Read/MessageReadVirtualFilesInCSharpProject';
     import { MessageReadFilesInDirectory } from '../../../../out/Messages/Read/MessageReadFilesInDirectory';
+    import { MessageExecuteCSharpProjectWithoutDebugging } from '../../../../out/Messages/Execute/MessageExecuteCSharpProjectWithoutDebugging';
 
 	export let closeMenu;
 
@@ -19,23 +20,15 @@
 		contextMenuTargetValue = value;
 	});
 
-    function refreshOnClick() {
+    function startWithoutDebugging() {
         switch (contextMenuTargetValue.fileKind) {
             case FileKind.cSharpProject:
-                let messageReadVirtualFilesInCSharpProject = 
-                    new MessageReadVirtualFilesInCSharpProject(contextMenuTargetValue);
+                let messageExecuteCSharpProjectWithoutDebugging = 
+                    new MessageExecuteCSharpProjectWithoutDebugging(contextMenuTargetValue);
 
                 tsVscode.postMessage({
                     type: undefined,
-                    value: messageReadVirtualFilesInCSharpProject
-                });
-            case FileKind.directory:
-                let messageReadFilesInDirectory = 
-                    new MessageReadFilesInDirectory(contextMenuTargetValue);
-
-                tsVscode.postMessage({
-                    type: undefined,
-                    value: messageReadFilesInDirectory
+                    value: messageExecuteCSharpProjectWithoutDebugging
                 });
         }
 
@@ -44,5 +37,5 @@
 </script>
 
 <MenuOption onClickStopPropagation="{true}"
-            onClick={refreshOnClick} 
-            text="Refresh Child Files." />
+            onClick={startWithoutDebugging} 
+            text="Start without debugging." />

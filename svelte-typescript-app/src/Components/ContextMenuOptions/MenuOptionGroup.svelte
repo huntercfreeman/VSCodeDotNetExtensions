@@ -4,6 +4,7 @@
     import MenuOptionCreateNewEmptyFile from "./MenuOptionCreateNewEmptyFile.svelte";
     import MenuOptionCreateNewTemplatedFile from "./MenuOptionCreateNewTemplatedFile.svelte";
     import MenuOptionRefreshChildFiles from "./MenuOptionRefreshChildFiles.svelte";
+import MenuOptionStartWithoutDebugging from "./MenuOptionStartWithoutDebugging.svelte";
 
     export let contextualInformation: ContextualInformationDatum[];
     export let closeMenu;
@@ -22,5 +23,8 @@
     {:else if ContextualInformationDatum.checkDatumEquality(ContextualInformationDatum.createDirectory,
                                                             contextualInformationDatum)}
         <MenuOptionCreateDirectory closeMenu={closeMenu} />
+    {:else if ContextualInformationDatum.checkDatumEquality(ContextualInformationDatum.startWithoutDebugging,
+                                                            contextualInformationDatum)}
+        <MenuOptionStartWithoutDebugging closeMenu={closeMenu} />
     {/if}
 {/each}
