@@ -29,7 +29,7 @@
 			await new Promise(res => setTimeout(res, 100));
 		}
 		
-		pos = { x: e.clientX, y: e.clientY };
+		pos = { x: e.pageX, y: e.pageY };
 		showMenu = true;
 	}
 	
