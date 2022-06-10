@@ -1,5 +1,7 @@
 import * as vscode from 'vscode';
+import { ConstantsDotNetCli } from '../Constants/ConstantsDotNetCli';
 import { ConstantsFilePath } from '../Constants/ConstantsFilePath';
+import { ConstantsTerminal } from '../Constants/ConstantsTerminal';
 import { SolutionModel } from '../DotNet/SolutionModel';
 import { AbsoluteFilePath } from '../FileSystem/AbsoluteFilePath';
 import { CSharpProjectFile } from '../FileSystem/Files/CSharpProjectFile';
@@ -12,6 +14,7 @@ import { IMessageRead } from "../Messages/Read/IMessageRead";
 import { MessageReadFileIntoEditor } from '../Messages/Read/MessageReadFileIntoEditor';
 import { MessageReadFilesInDirectory } from '../Messages/Read/MessageReadFilesInDirectory';
 import { MessageReadKind } from "../Messages/Read/MessageReadKind";
+import { MessageReadNewProjectTemplatesOnComputer } from '../Messages/Read/MessageReadNewProjectTemplatesOnComputer';
 import { MessageReadSolutionIntoTreeView } from '../Messages/Read/MessageReadSolutionIntoTreeView';
 import { MessageReadSolutionsInWorkspace } from '../Messages/Read/MessageReadSolutionsInWorkspace';
 import { MessageReadVirtualFilesInCSharpProject } from '../Messages/Read/MessageReadVirtualFilesInCSharpProject';
@@ -35,6 +38,9 @@ export class ReadMessageHandler {
                 break;
             case MessageReadKind.solutionsInWorkspace:
                 await this.handleMessageReadSolutionsInWorkspaceAsync(webviewView, message);
+                break;
+            case MessageReadKind.newProjectTemplatesOnComputer:
+                await this.handleMessageReadNewProjectTemplatesOnComputer(webviewView, message);
                 break;
         }
     }
@@ -153,5 +159,25 @@ export class ReadMessageHandler {
 
             vscode.window.showTextDocument(doc, textDocumentShowOptions);
         });
+    }
+    
+    public static async handleMessageReadNewProjectTemplatesOnComputer(webviewView: vscode.WebviewView, iMessage: IMessage) {
+        let message = iMessage as MessageReadNewProjectTemplatesOnComputer;
+        
+        let messageExecuteTerminal = this.getMessageReadTerminal();
+
+        messageExecuteTerminal.sendText(ConstantsDotNetCli.DOT_NET_NEW_LIST);
+
+        messageExecuteTerminal.show();
+    }
+
+    private static getMessageReadTerminal() {
+        let messageReadTerminal = vscode.window.terminals.find(x => x.name === ConstantsTerminal.MESSAGE_READ_TERMINAL_NAME);
+
+        if (!messageReadTerminal) {
+            messageReadTerminal = vscode.window.createTerminal(ConstantsTerminal.MESSAGE_READ_TERMINAL_NAME);
+        }
+
+        return messageReadTerminal;
     }
 }

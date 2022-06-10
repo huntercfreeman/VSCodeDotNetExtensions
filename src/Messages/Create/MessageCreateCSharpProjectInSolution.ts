@@ -5,9 +5,6 @@ import { IMessageCreate } from "./IMessageCreate";
 import { MessageCreateKind } from "./MessageCreateKind";
 
 export class MessageCreateCSharpProjectInSolution implements IMessage, IMessageCreate {
-    /**
-     *
-     */
     constructor(public readonly filenameWithExtension: string, 
                 public readonly directoryAbsoluteFilePath: AbsoluteFilePath) {
     }

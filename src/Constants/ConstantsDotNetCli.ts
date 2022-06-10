@@ -13,4 +13,6 @@ export class ConstantsDotNetCli {
 
         return `dotnet new sln`;
     }
+    
+    public static DOT_NET_NEW_LIST = "dotnet new --list";
 }
