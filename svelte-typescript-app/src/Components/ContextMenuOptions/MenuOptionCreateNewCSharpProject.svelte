@@ -10,6 +10,7 @@
     import { MessageReadFilesInDirectory } from '../../../../out/Messages/Read/MessageReadFilesInDirectory';
     import { MessageExecuteCSharpProjectWithoutDebugging } from '../../../../out/Messages/Execute/MessageExecuteCSharpProjectWithoutDebugging';
     import { MessageReadNewProjectTemplatesOnComputer } from '../../../../out/Messages/Read/MessageReadNewProjectTemplatesOnComputer';
+    import { MessageCreateCSharpProjectInSolution } from '../../../../out/Messages/Create/MessageCreateCSharpProjectInSolution';
 
 	export let closeMenu;
 
@@ -24,12 +25,14 @@
     function createNewCSharpProject() {
         switch (contextMenuTargetValue.fileKind) {
             case FileKind.solution:
-                let messageExecuteCSharpProjectWithoutDebugging = 
-                    new MessageExecuteCSharpProjectWithoutDebugging(contextMenuTargetValue);
+                let messageCreateCSharpProjectInSolution = 
+                    new MessageCreateCSharpProjectInSolution(contextMenuTargetValue,
+                        addCSharpProjectFilename,
+                        addCSharpProjectTemplate);
 
                 tsVscode.postMessage({
                     type: undefined,
-                    value: messageExecuteCSharpProjectWithoutDebugging
+                    value: messageCreateCSharpProjectInSolution
                 });
         }
 

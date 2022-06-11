@@ -6,6 +6,7 @@ import { ConstantsTerminal } from '../Constants/ConstantsTerminal';
 import { AbsoluteFilePath } from '../FileSystem/AbsoluteFilePath';
 import { IdeFileFactory } from '../FileSystem/IdeFileFactory';
 import { IMessageCreate } from "../Messages/Create/IMessageCreate";
+import { MessageCreateCSharpProjectInSolution } from '../Messages/Create/MessageCreateCSharpProjectInSolution';
 import { MessageCreateDirectoryInDirectory } from '../Messages/Create/MessageCreateDirectoryInDirectory';
 import { MessageCreateDotNetSolutionInWorkspace } from '../Messages/Create/MessageCreateDotNetSolutionInWorkspace';
 import { MessageCreateKind } from "../Messages/Create/MessageCreateKind";
@@ -112,22 +113,16 @@ export class CreateMessageHandler {
     }
     
     public static async handleMessageCreateCSharpProjectInSolution(webviewView: vscode.WebviewView, iMessage: IMessage) {
-        // let message = iMessage as MessageCreateDirectoryInDirectory;
+        let message = iMessage as MessageCreateCSharpProjectInSolution;
 
-        // let writePath: string = message.directoryFile.absoluteFilePath.initialAbsoluteFilePathStringInput;
+        let messageCreateTerminal = this.getMessageCreateTerminal();
 
-        // if (!writePath.endsWith(ConstantsFilePath.STANDARDIZED_FILE_DELIMITER)) {
-        //     writePath += ConstantsFilePath.STANDARDIZED_FILE_DELIMITER;
-        // }
+        messageCreateTerminal.sendText(
+            ConstantsDotNetCli.formatDotNetNewCSharpProject(message.cSharpProjectNameNoExtension, message.templateName) +
+            ` ${ConstantsTerminal.TERMINAL_RUN_IF_PREVIOUS_COMMAND_SUCCESSFUL_OPERATOR} ` +
+            ConstantsDotNetCli.formatDotNetAddCSharpProjectToSolution(message.cSharpProjectNameNoExtension));
 
-        // writePath += message.filenameWithExtension;
-
-        // let absoluteFilePath = new AbsoluteFilePath(writePath, false, null);
-
-        // let ideFile = IdeFileFactory.constructIdeFile(absoluteFilePath, message.directoryFile.namespace);
-
-        // fs.mkdir(ideFile.absoluteFilePath.initialAbsoluteFilePathStringInput, { recursive: true }, (err: any) => {
-        // });
+        messageCreateTerminal.show();
     }
 
     private static getMessageCreateTerminal() {

@@ -14,5 +14,16 @@ export class ConstantsDotNetCli {
         return `dotnet new sln`;
     }
     
+    public static formatDotNetNewCSharpProject(projectNameWithoutExtension: string,
+        templateName: string): string {
+
+        return `dotnet new ${templateName} -o ${projectNameWithoutExtension}`;
+    }
+    
+    public static formatDotNetAddCSharpProjectToSolution(projectNameWithoutExtension: string): string {
+
+        return `dotnet sln add ${projectNameWithoutExtension}/${projectNameWithoutExtension}.csproj`;
+    }
+    
     public static DOT_NET_NEW_LIST = "dotnet new --list";
 }
