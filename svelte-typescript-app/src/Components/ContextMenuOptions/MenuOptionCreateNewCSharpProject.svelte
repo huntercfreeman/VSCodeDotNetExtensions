@@ -69,15 +69,22 @@
     <div>
         <div>
             <div>Create C# Project:</div>
-            <div style="margin-left: 12px;">{addCSharpProjectFilename}.csproj</div>
+            <div style="margin-left: 12px;"><em>{addCSharpProjectFilename}</em>.csproj</div>
         </div>
         
         <div>
             <div>Use Template:</div>
-            <div style="margin-left: 12px;">{addCSharpProjectTemplate}</div>
+            <div style="margin-left: 12px;"><em>{addCSharpProjectTemplate}</em></div>
         </div>
     </div>
 
     <button on:click={createNewCSharpProject}>Accept</button>
     <button on:click={closeMenu}>Decline</button>
 {/if}
+
+<style>
+    em {
+        font-style: normal;
+        color: var(--vscode-editorInfo-foreground);
+    }
+</style>
