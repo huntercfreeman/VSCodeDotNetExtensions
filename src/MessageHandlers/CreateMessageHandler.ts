@@ -120,7 +120,7 @@ export class CreateMessageHandler {
         messageCreateTerminal.sendText(
             ConstantsDotNetCli.formatDotNetNewCSharpProject(message.cSharpProjectNameNoExtension, message.templateName) +
             ` ${ConstantsTerminal.TERMINAL_RUN_IF_PREVIOUS_COMMAND_SUCCESSFUL_OPERATOR} ` +
-            ConstantsDotNetCli.formatDotNetAddCSharpProjectToSolution(message.cSharpProjectNameNoExtension));
+            ConstantsDotNetCli.formatDotNetAddCSharpProjectToSolutionUsingProjectName(message.cSharpProjectNameNoExtension, message.dotNetSolutionFile));
 
         messageCreateTerminal.show();
     }

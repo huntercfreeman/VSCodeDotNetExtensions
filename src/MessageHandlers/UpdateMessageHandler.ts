@@ -26,20 +26,19 @@ export class UpdateMessageHandler {
             canSelectFiles: true,
             canSelectFolders: false
         };
-       
-       vscode.window.showOpenDialog(options).then(fileUri => {
-           if (fileUri && fileUri[0]) {
-               console.log('Selected file: ' + fileUri[0].fsPath);
 
-               let messageUpdateTerminal = this.getMessageUpdateTerminal();
+        vscode.window.showOpenDialog(options).then(fileUri => {
+            if (fileUri && fileUri[0]) {
+                console.log('Selected file: ' + fileUri[0].fsPath);
 
-               messageUpdateTerminal.sendText(
-                    ConstantsDotNetCli.formatDotNetNewCSharpProject(message.cSharpProjectNameNoExtension, message.templateName) +
-                    ` ${ConstantsTerminal.TERMINAL_RUN_IF_PREVIOUS_COMMAND_SUCCESSFUL_OPERATOR} ` +
-                    ConstantsDotNetCli.formatDotNetAddCSharpProjectToSolution(message.cSharpProjectNameNoExtension));
+                let messageUpdateTerminal = this.getMessageUpdateTerminal();
 
-                    messageUpdateTerminal.show();
-           }
+                messageUpdateTerminal.sendText(
+                    ConstantsDotNetCli.formatDotNetAddCSharpProjectToSolutionUsingProjectFsPath(fileUri[0].fsPath,
+                        message.dotNetSolutionFile));
+
+                messageUpdateTerminal.show();
+            }
         });
     }
 

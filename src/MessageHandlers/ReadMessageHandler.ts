@@ -73,7 +73,6 @@ export class ReadMessageHandler {
 
         if (solutionFsPaths.length === 0) {
             vscode.window.showErrorMessage("No .sln files were found within workspace");
-            return;
         }
 
         solutionFsPaths.sort((solutionOne, solutionTwo) => {

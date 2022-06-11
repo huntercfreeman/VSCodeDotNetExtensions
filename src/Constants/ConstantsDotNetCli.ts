@@ -1,4 +1,5 @@
 import { AbsoluteFilePath } from "../FileSystem/AbsoluteFilePath";
+import { DotNetSolutionFile } from "../FileSystem/Files/DotNetSolutionFile";
 
 /* eslint-disable @typescript-eslint/naming-convention */
 export class ConstantsDotNetCli {
@@ -20,14 +21,14 @@ export class ConstantsDotNetCli {
         return `dotnet new ${templateName} -o ${projectNameWithoutExtension}`;
     }
     
-    public static formatDotNetAddCSharpProjectToSolution(projectNameWithoutExtension: string): string {
+    public static formatDotNetAddCSharpProjectToSolutionUsingProjectName(projectNameWithoutExtension: string, dotNetSolutionFile: DotNetSolutionFile): string {
 
-        return `dotnet sln add ${projectNameWithoutExtension}/${projectNameWithoutExtension}.csproj`;
+        return `dotnet sln ${dotNetSolutionFile.absoluteFilePath.initialAbsoluteFilePathStringInput} add ${projectNameWithoutExtension}/${projectNameWithoutExtension}.csproj`;
     }
     
-    public static formatDotNetAddCSharpProjectToSolutionWithSolutionParameter(solutionAbsoluteFilePathString: string, projectNameWithoutExtension: string): string {
+    public static formatDotNetAddCSharpProjectToSolutionUsingProjectFsPath(projectFsPath: string, dotNetSolutionFile: DotNetSolutionFile): string {
 
-        return `dotnet sln add ${projectNameWithoutExtension}/${projectNameWithoutExtension}.csproj`;
+        return `dotnet sln ${dotNetSolutionFile.absoluteFilePath.initialAbsoluteFilePathStringInput} add ${projectFsPath}`;
     }
     
     public static DOT_NET_NEW_LIST = "dotnet new --list";
