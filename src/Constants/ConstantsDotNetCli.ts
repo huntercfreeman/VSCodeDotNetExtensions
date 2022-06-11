@@ -25,5 +25,10 @@ export class ConstantsDotNetCli {
         return `dotnet sln add ${projectNameWithoutExtension}/${projectNameWithoutExtension}.csproj`;
     }
     
+    public static formatDotNetAddCSharpProjectToSolutionWithSolutionParameter(solutionAbsoluteFilePathString: string, projectNameWithoutExtension: string): string {
+
+        return `dotnet sln add ${projectNameWithoutExtension}/${projectNameWithoutExtension}.csproj`;
+    }
+    
     public static DOT_NET_NEW_LIST = "dotnet new --list";
 }

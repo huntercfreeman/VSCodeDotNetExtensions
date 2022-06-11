@@ -9,12 +9,11 @@
     import { MessageReadVirtualFilesInCSharpProject } from '../../../../out/Messages/Read/MessageReadVirtualFilesInCSharpProject';
     import { MessageReadFilesInDirectory } from '../../../../out/Messages/Read/MessageReadFilesInDirectory';
     import { MessageExecuteCSharpProjectWithoutDebugging } from '../../../../out/Messages/Execute/MessageExecuteCSharpProjectWithoutDebugging';
+    import { MessageUpdateExistingCSharpProjectIntoSolution } from '../../../../out/Messages/Update/MessageUpdateExistingCSharpProjectIntoSolution';
 
 	export let closeMenu;
 
 	let contextMenuTargetValue;
-    let addFileWithTemplateFilename: string | undefined;
-	let shouldAddCodeBehind: boolean = false;
 	
 	contextMenuTarget.subscribe(value => {
 		contextMenuTargetValue = value;
@@ -23,13 +22,13 @@
     function createNewCSharpProject() {
         switch (contextMenuTargetValue.fileKind) {
             case FileKind.solution:
-                // let messageExecuteCSharpProjectWithoutDebugging = 
-                //     new MessageExecuteCSharpProjectWithoutDebugging(contextMenuTargetValue);
+                let messageUpdateExistingCSharpProjectIntoSolution = 
+                    new MessageUpdateExistingCSharpProjectIntoSolution(contextMenuTargetValue);
 
-                // tsVscode.postMessage({
-                //     type: undefined,
-                //     value: messageExecuteCSharpProjectWithoutDebugging
-                // });
+                tsVscode.postMessage({
+                    type: undefined,
+                    value: messageUpdateExistingCSharpProjectIntoSolution
+                });
         }
 
         closeMenu();
