@@ -30,6 +30,7 @@
                     type: undefined,
                     value: messageExecuteCSharpProjectWithoutDebugging
                 });
+                break;
         }
 
         closeMenu();

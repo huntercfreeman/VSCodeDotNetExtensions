@@ -8,6 +8,8 @@
     import { FileKind } from '../../../../out/FileSystem/FileKind';
     import { MessageReadVirtualFilesInCSharpProject } from '../../../../out/Messages/Read/MessageReadVirtualFilesInCSharpProject';
     import { MessageReadFilesInDirectory } from '../../../../out/Messages/Read/MessageReadFilesInDirectory';
+    import { MessageReadSolutionIntoTreeView } from '../../../../out/Messages/Read/MessageReadSolutionIntoTreeView';
+    import { MessageReadVirtualFilesInSolution } from '../../../../out/Messages/Read/MessageReadVirtualFilesInSolution';
 
 	export let closeMenu;
 
@@ -21,6 +23,14 @@
 
     function refreshOnClick() {
         switch (contextMenuTargetValue.fileKind) {
+            case FileKind.solution:
+                let messageReadVirtualFilesInSolution = new MessageReadVirtualFilesInSolution(contextMenuTargetValue);
+
+                tsVscode.postMessage({
+                    type: undefined,
+                    value: messageReadVirtualFilesInSolution
+                });
+                break;
             case FileKind.cSharpProject:
                 let messageReadVirtualFilesInCSharpProject = 
                     new MessageReadVirtualFilesInCSharpProject(contextMenuTargetValue);
@@ -29,6 +39,7 @@
                     type: undefined,
                     value: messageReadVirtualFilesInCSharpProject
                 });
+                break;
             case FileKind.directory:
                 let messageReadFilesInDirectory = 
                     new MessageReadFilesInDirectory(contextMenuTargetValue);
@@ -37,6 +48,7 @@
                     type: undefined,
                     value: messageReadFilesInDirectory
                 });
+                break;
         }
 
         closeMenu();

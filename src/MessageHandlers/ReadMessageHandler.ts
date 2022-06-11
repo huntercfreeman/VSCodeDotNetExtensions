@@ -36,6 +36,9 @@ export class ReadMessageHandler {
             case MessageReadKind.solutionIntoTreeView:
                 await this.handleMessageReadSolutionIntoTreeViewAsync(webviewView, message);
                 break;
+            case MessageReadKind.virtualFilesInSolution:
+                await this.handleMessageReadVirtualFilesInSolution(webviewView, message);
+                break;
             case MessageReadKind.solutionsInWorkspace:
                 await this.handleMessageReadSolutionsInWorkspaceAsync(webviewView, message);
                 break;
@@ -90,6 +93,17 @@ export class ReadMessageHandler {
     }
 
     public static async handleMessageReadSolutionIntoTreeViewAsync(webviewView: vscode.WebviewView, iMessage: IMessage) {
+        let message = iMessage as MessageReadSolutionIntoTreeView;
+
+        return await SolutionModel.parseSolution(message.dotNetSolutionFile.solutionModel!, () => {
+            message.dotNetSolutionFile.virtualChildFiles = message.dotNetSolutionFile.solutionModel!.projects
+                .map(x => new CSharpProjectFile(x));
+
+            webviewView.webview.postMessage(message);
+        });
+    }
+    
+    public static async handleMessageReadVirtualFilesInSolution(webviewView: vscode.WebviewView, iMessage: IMessage) {
         let message = iMessage as MessageReadSolutionIntoTreeView;
 
         return await SolutionModel.parseSolution(message.dotNetSolutionFile.solutionModel!, () => {

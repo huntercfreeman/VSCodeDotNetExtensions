@@ -6,11 +6,13 @@
     import { MessageReadFilesInDirectory } from "../../../out/Messages/Read/MessageReadFilesInDirectory";
     import { MessageReadFileIntoEditor } from "../../../out/Messages/Read/MessageReadFileIntoEditor";
     import { MessageReadVirtualFilesInCSharpProject } from "../../../out/Messages/Read/MessageReadVirtualFilesInCSharpProject";
+    import type { MessageReadVirtualFilesInSolution } from "../../../out/Messages/Read/MessageReadVirtualFilesInSolution";
 	import { MessageCategory } from "../../../out/Messages/MessageCategory";
 	import { MessageReadKind } from "../../../out/Messages/Read/MessageReadKind";
 	import ExpansionChevron from "./ExpansionChevron.svelte";
 	import FileIconDisplay from './FileIconDisplay.svelte';
 	import { contextMenuTarget } from './menu.js';
+import type { DotNetSolutionFile } from "../../../out/FileSystem/Files/DotNetSolutionFile";
 
 	export let ideFile: IdeFile;
 	
@@ -42,6 +44,7 @@
                         type: undefined,
                         value: messageReadVirtualFilesInCSharpProject
                     });
+					break;
                 case FileKind.directory:
                     let messageReadFilesInDirectory = 
                         new MessageReadFilesInDirectory(ideFile);
@@ -50,6 +53,7 @@
                         type: undefined,
                         value: messageReadFilesInDirectory
                     });
+					break;
             }
 			
 			return [];
@@ -123,6 +127,7 @@
 								ideFile = messageReadFilesInDirectory.directoryFile;
 								children = ideFile.childFiles;
                             }
+							break;
 						case MessageReadKind.virtualFilesInCSharpProject:
 							let messageReadVirtualFilesInCSharpProject = message as MessageReadVirtualFilesInCSharpProject;
                             if(ideFile.nonce === messageReadVirtualFilesInCSharpProject.cSharpProjectFile.nonce) {
@@ -132,6 +137,16 @@
 								children = ideFile.constantChildFiles;
 								children = children.concat(ideFile.virtualChildFiles);
                             }
+							break;
+						case MessageReadKind.virtualFilesInSolution:
+							let messageReadVirtualFilesInSolution = message as MessageReadVirtualFilesInSolution;
+
+							if (ideFile.fileKind === FileKind.solution) {
+								ideFile = messageReadVirtualFilesInSolution.dotNetSolutionFile;
+
+								children = ideFile.virtualChildFiles;
+							}
+							break;
 					}
 			}
 		});

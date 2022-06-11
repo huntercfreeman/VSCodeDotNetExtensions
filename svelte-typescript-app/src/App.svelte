@@ -30,8 +30,11 @@
 					switch(message.messageReadKind) {
 						case MessageReadKind.solutionsInWorkspace:
 							dotNetSolutionFiles = message.dotNetSolutionFiles;
+							selectedDotNetSolutionFile = undefined;
+							break;
 						case MessageReadKind.solutionIntoTreeView:
 							selectedDotNetSolutionFile = message.dotNetSolutionFile;
+							break;
 					}
 			}
 		});

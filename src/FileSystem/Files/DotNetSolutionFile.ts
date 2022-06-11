@@ -22,5 +22,6 @@ export class DotNetSolutionFile extends IdeFile {
         ContextualInformationDatum.createNewCSharpProject,
         ContextualInformationDatum.addExistingCSharpProject,
         ContextualInformationDatum.rename,
+        ContextualInformationDatum.refreshChildFiles,
     ];
 }
