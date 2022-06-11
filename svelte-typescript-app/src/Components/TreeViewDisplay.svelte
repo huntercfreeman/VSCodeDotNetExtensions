@@ -24,6 +24,9 @@
             case FileKind.directory:
                 children = ideFile.childFiles;
                 break;
+            case FileKind.projectDependencies:
+                children = ideFile.constantChildFiles;
+                break;
             default:
                 children = ideFile.virtualChildFiles;
                 break;
@@ -88,7 +91,7 @@
 	}
 
 	function getTitleText() {
-        return ideFile.absoluteFilePath.filenameWithExtension;
+		return ideFile.absoluteFilePath.filenameWithExtension;
 	}	
 	
 	function titleOnClick(e: MouseEvent) {
@@ -123,8 +126,11 @@
 						case MessageReadKind.virtualFilesInCSharpProject:
 							let messageReadVirtualFilesInCSharpProject = message as MessageReadVirtualFilesInCSharpProject;
                             if(ideFile.nonce === messageReadVirtualFilesInCSharpProject.cSharpProjectFile.nonce) {
+
 								ideFile = messageReadVirtualFilesInCSharpProject.cSharpProjectFile;
-								children = ideFile.virtualChildFiles;
+
+								children = ideFile.constantChildFiles;
+								children = children.concat(ideFile.virtualChildFiles);
                             }
 					}
 			}

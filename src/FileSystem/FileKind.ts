@@ -8,5 +8,8 @@ export enum FileKind {
     cshtml,
     razor,
     css,
-    json
+    json,
+    projectDependencies,
+    nugetPackageDependency,
+    nugetPackageDependencies
 }

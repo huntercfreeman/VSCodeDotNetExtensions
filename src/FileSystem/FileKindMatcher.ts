@@ -20,6 +20,8 @@ export class FileKindMatcher {
                 return FileKind.razor;
             case ConstantsFileExtensionsNoPeriod.JSON_FILE_EXTENSION:
                 return FileKind.json;
+            case ConstantsFileExtensionsNoPeriod.PROJECT_DEPENDENCIES_FILE_EXTENSION:
+                return FileKind.projectDependencies;
             default:
                 return FileKind.default;
         }

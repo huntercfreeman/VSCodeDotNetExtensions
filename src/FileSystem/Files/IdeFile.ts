@@ -7,7 +7,6 @@ import { FileKindMatcher } from "../FileKindMatcher";
 export abstract class IdeFile {
     constructor(public readonly absoluteFilePath: AbsoluteFilePath,
         public namespace: string) {
-        
         this.fileKind = FileKindMatcher.getFileKind(absoluteFilePath.extensionNoPeriod);
     }
 
@@ -15,6 +14,7 @@ export abstract class IdeFile {
     public virtualParentNonce: string | undefined = undefined;
     public fileKind: FileKind;
     public childFiles: IdeFile[] | undefined = undefined;
+    public constantChildFiles: any[] | undefined = undefined;
     public virtualChildFiles: IdeFile[] | undefined = undefined;
     public virtualParent: IdeFile[] | undefined = undefined;
     public hideExpansionChevronWhenNoChildFiles: boolean = false;

@@ -4,6 +4,7 @@ import { IdeFile } from "./IdeFile";
 import { CSharpProjectModel } from "../../DotNet/CSharpProjectModel";
 import { FileKind } from "../FileKind";
 import { ContextualInformationDatum } from "../../ContextMenus/ContextualInformationDatum";
+import { CSharpProjectDependenciesFile } from "./CSharpProjectDependenciesFile";
 
 export class CSharpProjectFile extends IdeFile {
 
@@ -29,8 +30,14 @@ export class CSharpProjectFile extends IdeFile {
                 ContextualInformationDatum.rename,
             ];
         }
+
+        this.constantChildFiles = [
+            new CSharpProjectDependenciesFile(this.cSharpProjectModel.absoluteFilePath),
+        ];
     }
     
+    public constantChildFiles: any[] | undefined;
+
     public childFiles: any[] | undefined;
     
     public setVirtualChildFiles(siblingFiles: IdeFile[]): void {

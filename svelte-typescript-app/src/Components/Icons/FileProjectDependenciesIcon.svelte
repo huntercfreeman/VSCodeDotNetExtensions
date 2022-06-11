@@ -1,17 +1,1 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16">
-    <g id="outline">
-        <path class="st0" 
-              opacity="0"
-              d="M0 0h16v16H0z" />
-        <path class="st1"
-            opacity="0"
-            d="M9.586 16L8 14.414 6.414 16H1.586L0 14.414v-3.828L1.586 9H3.53l1.333-2h-.278L3 5.414V1.586L4.585 0h6.829L13 1.586v3.828L11.414 7h-.278l1.334 2h1.944L16 10.586v3.828L14.414 16H9.586zM8 10.586l1.152-1.152L8 7.705 6.847 9.434 8 10.586z" />
-    </g>
-    <path class="st2"
-        fill="var(--dni_file-project-dependencies-st2-fill)"
-        d="M14 10h-2.065L9.268 6H11l1-1V2l-1-1H5L4 2v3l1 1h1.733l-2.667 4H2l-1 1v3l1 1h4l1-1v-3l-1-1h-.732l2.667-4h.131l2.667 4H10l-1 1v3l1 1h4l1-1v-3l-1-1zm-8 1v3H2v-3h4zM5 5V2h6v3H5zm9 9h-4v-3h4v3z"
-        id="icon_x5F_bg" />
-    <path class="st3" 
-          fill="var(--dni_file-project-dependencies-st3-fill)"
-          d="M14 11v3h-4v-3h4zM2 14h4v-3H2v3zm9-12H5v3h6V2z" id="icon_x5F_fg" />
-</svg>
+<svg width="16" height="16" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" fill="currentColor"><path d="M13.5 12h-1.793L10 10.293V6.5L9.5 6H8V4h.5l.5-.5v-2L8.5 1h-2l-.5.5v2l.5.5H7v2H5.5l-.5.5v3.793L3.293 12H1.5l-.5.5v2l.5.5h2l.5-.5v-1.793L5.707 11h3.586L11 12.707V14.5l.5.5h2l.5-.5v-2l-.5-.5zM7 2h1v1H7V2zM6 7h3v3H6V7zm-3 7H2v-1h1v1zm10 0h-1v-1h1v1z"/></svg>

@@ -10,4 +10,7 @@ export class ConstantsFileExtensionsNoPeriod {
     public static readonly RAZOR_FILE_EXTENSION: string = "razor";
     public static readonly RAZOR__CODEBEHIND_FILE_EXTENSION: string = "razor.cs";
     public static readonly JSON_FILE_EXTENSION: string = "json";
+    public static readonly PROJECT_DEPENDENCIES_FILE_EXTENSION: string = "dependencies";
+    public static readonly NUGET_PACKAGE_DEPENDENCIES_FILE_EXTENSION: string = "nugetPackages";
+    public static readonly NUGET_PACKAGE_DEPENDENCY_FILE_EXTENSION: string = "nugetPackageEntry";
 }

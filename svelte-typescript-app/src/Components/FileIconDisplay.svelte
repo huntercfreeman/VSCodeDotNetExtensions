@@ -10,6 +10,9 @@
     import FileTxtIcon from "./Icons/FileTxtIcon.svelte";
     import FileSolutionFolderIcon from "./Icons/FileSolutionFolderIcon.svelte";
     import FileJsonIcon from "./Icons/FileJsonIcon.svelte";
+import FileProjectDependenciesIcon from "./Icons/FileProjectDependenciesIcon.svelte";
+import FileNugetPackageDependencyIcon from "./Icons/FileNugetPackageDependencyIcon.svelte";
+import FileNugetPackageDependenciesIcon from "./Icons/FileNugetPackageDependenciesIcon.svelte";
 
     export let fileKind: typeof FileKind;
 </script>
@@ -34,4 +37,10 @@
     <FileCssIcon />
 {:else if fileKind === FileKind.json}
     <FileJsonIcon />
+{:else if fileKind === FileKind.projectDependencies}
+    <FileProjectDependenciesIcon />
+{:else if fileKind === FileKind.nugetPackageDependencies}
+    <FileNugetPackageDependenciesIcon />
+{:else if fileKind === FileKind.nugetPackageDependency}
+    <FileNugetPackageDependencyIcon />
 {/if}
