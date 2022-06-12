@@ -29,6 +29,7 @@ export class CSharpProjectProjectReferencesFile extends IdeFile {
     public hideExpansionChevronWhenNoChildFiles: boolean = false;
     
     public readonly contextualInformation: ContextualInformationDatum[] = [
-        ContextualInformationDatum.addProjectReference
+        ContextualInformationDatum.addProjectReference,
+        ContextualInformationDatum.refreshChildFiles,
     ];
 }

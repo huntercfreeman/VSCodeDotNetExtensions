@@ -30,6 +30,8 @@ export class CSharpProjectModel {
         cSharpProjectProjectReferencesFile: CSharpProjectProjectReferencesFile,
         callback: any) : Promise<void> {
 
+        cSharpProjectProjectReferencesFile.virtualChildFiles = [];
+
         let cSharpProjectParser = new CSharpProjectParser(cSharpProjectAbsoluteFilePath, cSharpProjectProjectReferencesFile);
         
         cSharpProjectParser.parse(callback);

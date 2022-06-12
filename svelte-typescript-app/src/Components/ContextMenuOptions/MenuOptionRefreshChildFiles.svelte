@@ -10,6 +10,7 @@
     import { MessageReadFilesInDirectory } from '../../../../out/Messages/Read/MessageReadFilesInDirectory';
     import { MessageReadSolutionIntoTreeView } from '../../../../out/Messages/Read/MessageReadSolutionIntoTreeView';
     import { MessageReadVirtualFilesInSolution } from '../../../../out/Messages/Read/MessageReadVirtualFilesInSolution';
+import { MessageReadProjectReferencesInProject } from '../../../../out/Messages/Read/MessageReadProjectReferencesInProject';
 
 	export let closeMenu;
 
@@ -38,6 +39,15 @@
                 tsVscode.postMessage({
                     type: undefined,
                     value: messageReadVirtualFilesInCSharpProject
+                });
+                break;
+            case FileKind.projectReferences:
+                let messageReadProjectReferencesInProject = 
+                    new MessageReadProjectReferencesInProject(contextMenuTargetValue);
+
+                tsVscode.postMessage({
+                    type: undefined,
+                    value: messageReadProjectReferencesInProject
                 });
                 break;
             case FileKind.directory:
