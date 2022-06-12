@@ -6,6 +6,7 @@ import { CSharpProjectModel } from "../DotNet/CSharpProjectModel";
 import { SolutionModel } from "../DotNet/SolutionModel";
 import { AbsoluteFilePath } from "../FileSystem/AbsoluteFilePath";
 import { CSharpProjectNugetPackageDependenciesFile } from "../FileSystem/Files/CSharpProjectNugetPackageDependenciesFile";
+import { CSharpProjectNugetPackageDependencyFile } from "../FileSystem/Files/CSharpProjectNugetPackageDependencyFile";
 import { CSharpProjectProjectReferenceFile } from "../FileSystem/Files/CSharpProjectProjectReferenceFile";
 import { CSharpProjectProjectReferencesFile } from "../FileSystem/Files/CSharpProjectProjectReferencesFile";
 import { StringReader } from "./StringReader";
@@ -144,15 +145,67 @@ export class CSharpProjectParser {
         
         if (ConstantsCSharpProjectFile.START_OF_NUGET_PACKAGE_REFERENCE_INCLUDE_DEFINITION.startsWith(currentCharacter)) {
           if (ConstantsCSharpProjectFile.START_OF_NUGET_PACKAGE_REFERENCE_INCLUDE_DEFINITION.substring(1) ===
-          this._stringReader.peek(ConstantsCSharpProjectFile.START_OF_NUGET_PACKAGE_REFERENCE_INCLUDE_DEFINITION.length - 1)) {
+            this._stringReader.peek(ConstantsCSharpProjectFile.START_OF_NUGET_PACKAGE_REFERENCE_INCLUDE_DEFINITION.length - 1)) {
             
             _ = this._stringReader.consume(ConstantsCSharpProjectFile.START_OF_NUGET_PACKAGE_REFERENCE_INCLUDE_DEFINITION.length - 1);
 
           while ((currentCharacter = this._stringReader.consume(1)) !==
-              ConstantsStringReader.END_OF_FILE_MARKER &&
-              currentCharacter !== ) {
-                
-
+              ConstantsStringReader.END_OF_FILE_MARKER) {
+                if (ConstantsCSharpProjectFile.END_OF_NUGET_PACKAGE_REFERENCE_INCLUDE_DEFINITION.startsWith(currentCharacter)) {
+                  if (ConstantsCSharpProjectFile.END_OF_NUGET_PACKAGE_REFERENCE_INCLUDE_DEFINITION.substring(1) ===
+                      this._stringReader.peek(ConstantsCSharpProjectFile.END_OF_NUGET_PACKAGE_REFERENCE_INCLUDE_DEFINITION.length - 1)) {
+                    
+                        // done with title start parsing nuget package version
+                        while ((currentCharacter = this._stringReader.consume(1)) !==
+                        ConstantsStringReader.END_OF_FILE_MARKER) {
+                          if (ConstantsCSharpProjectFile.START_OF_NUGET_PACKAGE_REFERENCE_VERSION_DEFINITION.startsWith(currentCharacter)) {
+                            if (ConstantsCSharpProjectFile.START_OF_NUGET_PACKAGE_REFERENCE_VERSION_DEFINITION.substring(1) ===
+                              this._stringReader.peek(ConstantsCSharpProjectFile.START_OF_NUGET_PACKAGE_REFERENCE_VERSION_DEFINITION.length - 1)) {
+                              
+                              _ = this._stringReader.consume(ConstantsCSharpProjectFile.START_OF_NUGET_PACKAGE_REFERENCE_VERSION_DEFINITION.length - 1);
+                  
+                            while ((currentCharacter = this._stringReader.consume(1)) !==
+                                ConstantsStringReader.END_OF_FILE_MARKER) {
+                                  if (ConstantsCSharpProjectFile.END_OF_NUGET_PACKAGE_REFERENCE_VERSION_DEFINITION.startsWith(currentCharacter)) {
+                                    if (ConstantsCSharpProjectFile.END_OF_NUGET_PACKAGE_REFERENCE_VERSION_DEFINITION.substring(1) ===
+                                        this._stringReader.peek(ConstantsCSharpProjectFile.END_OF_NUGET_PACKAGE_REFERENCE_VERSION_DEFINITION.length - 1)) {
+                                      
+                                          // done with version
+                                          if (!this.cSharpProjectNugetPackageDependenciesFile.virtualChildFiles) {
+                                            this.cSharpProjectNugetPackageDependenciesFile.virtualChildFiles = [];
+                                          }
+                    
+                                          this.cSharpProjectNugetPackageDependenciesFile.virtualChildFiles.push(
+                                            new CSharpProjectNugetPackageDependencyFile(this.cSharpProjectAbsoluteFilePath, 
+                                              this.cSharpProjectNugetPackageDependenciesFile.absoluteFilePath,
+                                              nugetPackageTitle,
+                                              nugetPackageVersion));
+                                          
+                                          return;
+                                    }
+                                    else
+                                    {
+                                      nugetPackageVersion += currentCharacter;
+                                    }
+                                  }
+                                  else
+                                  {
+                                    nugetPackageVersion += currentCharacter;
+                                  }
+                              }
+                            }
+                          }
+                      }
+                  }
+                  else
+                  {
+                    nugetPackageTitle += currentCharacter;
+                  }
+                }
+                else
+                {
+                  nugetPackageTitle += currentCharacter;
+                }
             }
           }
         }
