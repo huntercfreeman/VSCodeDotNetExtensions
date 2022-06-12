@@ -1,4 +1,5 @@
 import * as vscode from 'vscode';
+import { ActiveDotNetSolutionFileContainer } from '../ActiveDotNetSolutionFileContainer';
 import { ConstantsDotNetCli } from '../Constants/ConstantsDotNetCli';
 import { ConstantsFilePath } from '../Constants/ConstantsFilePath';
 import { ConstantsTerminal } from '../Constants/ConstantsTerminal';
@@ -13,6 +14,7 @@ import { FileSystemReader } from '../FileSystem/FileSystemReader';
 import { IdeFileFactory } from '../FileSystem/IdeFileFactory';
 import { IMessage } from "../Messages/IMessage";
 import { IMessageRead } from "../Messages/Read/IMessageRead";
+import { MessageReadActiveDotNetSolutionFile } from '../Messages/Read/MessageReadActiveDotNetSolutionFile';
 import { MessageReadFileIntoEditor } from '../Messages/Read/MessageReadFileIntoEditor';
 import { MessageReadFilesInDirectory } from '../Messages/Read/MessageReadFilesInDirectory';
 import { MessageReadKind } from "../Messages/Read/MessageReadKind";
@@ -38,6 +40,9 @@ export class ReadMessageHandler {
                 break;
             case MessageReadKind.solutionIntoTreeView:
                 await this.handleMessageReadSolutionIntoTreeViewAsync(webviewView, message);
+                break;
+            case MessageReadKind.activeDotNetSolutionFile:
+                await this.handleMessageReadActiveDotNetSolutionFile(webviewView, message);
                 break;
             case MessageReadKind.projectReferencesInProject:
                 await this.handleMessageReadProjectReferencesInProjectAsync(webviewView, message);
@@ -95,6 +100,8 @@ export class ReadMessageHandler {
         message.dotNetSolutionFiles = solutionModels
             .map(x => new DotNetSolutionFile(x));
 
+        ActiveDotNetSolutionFileContainer.activeDotNetSolutionFile = undefined;
+
         webviewView.webview.postMessage(message);
     }
 
@@ -105,8 +112,18 @@ export class ReadMessageHandler {
             message.dotNetSolutionFile.virtualChildFiles = message.dotNetSolutionFile.solutionModel!.projects
                 .map(x => new CSharpProjectFile(x));
 
+            ActiveDotNetSolutionFileContainer.activeDotNetSolutionFile = message.dotNetSolutionFile;
+
             webviewView.webview.postMessage(message);
         });
+    }
+    
+    public static async handleMessageReadActiveDotNetSolutionFile(webviewView: vscode.WebviewView, iMessage: IMessage) {
+        let message = iMessage as MessageReadActiveDotNetSolutionFile;
+
+        message.activeDotNetSolutionFile = ActiveDotNetSolutionFileContainer.activeDotNetSolutionFile;
+
+        webviewView.webview.postMessage(message);
     }
     
     public static async handleMessageReadProjectReferencesInProjectAsync(webviewView: vscode.WebviewView, iMessage: IMessage) {

@@ -38,6 +38,12 @@
 					"id": "dot-net-ide.unit-test-explorer-webview",
 					"name": "Unit Test Explorer",
 					"icon": "media/dotNetIdeUnitTestExplorer.svg"
+				},
+				{
+					"type": "webview",
+					"id": "dot-net-ide.nuget-package-manager-webview",
+					"name": "Nuget Package Manager",
+					"icon": "media/dotNetIdeNugetPackageManager.svg"
 				}
 			]
 		}

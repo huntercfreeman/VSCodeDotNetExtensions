@@ -4,8 +4,13 @@
 	import { MessageCategory } from "../../../out/Messages/MessageCategory";
 	import { MessageReadKind } from "../../../out/Messages/Read/MessageReadKind";
 	import { MessageReadActiveDotNetSolutionFile } from "../../../out/Messages/Read/MessageReadActiveDotNetSolutionFile";
+	import { ConstantsFileExtensionsNoPeriod } from "../../../out/Constants/ConstantsFileExtensionsNoPeriod";
+	import type { CSharpProjectFile } from "../../../out/FileSystem/Files/CSharpProjectFile";
+	import SelectProjectFileForm from "./Components/SelectProjectFileForm.svelte";
 
     let selectedDotNetSolutionFile: DotNetSolutionFile | undefined;
+	let selectedProjectFile: CSharpProjectFile;
+
 
     function syncActiveDotNetSolutionFile() {
 		let messageReadActiveDotNetSolutionFile = new MessageReadActiveDotNetSolutionFile(undefined);
@@ -36,12 +41,15 @@
 </script>
 
 <div class="dni_app">
-    Unit Test Explorer
+    Nuget Package Manager
 
 	<button on:click={syncActiveDotNetSolutionFile}>Sync Active .NET Solution from Solution Explorer</button>
 
 	{#if selectedDotNetSolutionFile}
-    	<div>{selectedDotNetSolutionFile.absoluteFilePath.filenameWithExtension}</div>
+    	<div>Active solution: <em>{selectedDotNetSolutionFile.absoluteFilePath.filenameWithExtension}</em></div>
+
+		<SelectProjectFileForm bind:selectedProjectFile={selectedProjectFile} 
+		                       projectFiles={selectedDotNetSolutionFile.solutionModel.projects} />
 	{:else}
 		<div>Select a .NET solution using the Solution Explorer then sync this webview</div>
 	{/if}
@@ -51,4 +59,9 @@
 	.dni_app {
 		height: calc(100vh - var(--input-margin-vertical) * 2);
 	}
+
+	em {
+        font-style: normal;
+        color: var(--vscode-editorInfo-foreground);
+    }
 </style>

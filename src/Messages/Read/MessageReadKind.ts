@@ -6,5 +6,6 @@ export enum MessageReadKind {
     virtualFilesInCSharpProject,
     newProjectTemplatesOnComputer,
     virtualFilesInSolution,
-    projectReferencesInProject
+    projectReferencesInProject,
+    activeDotNetSolutionFile
 }

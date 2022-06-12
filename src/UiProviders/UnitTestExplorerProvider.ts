@@ -1,5 +1,7 @@
 import * as vscode from 'vscode';
 import { SidebarProviderMessageHandler } from '../MessageHandlers/SidebarProviderMessageHandler';
+import { UnitTestExplorerMessageHandler } from '../MessageHandlers/UnitTestExplorerMessageHandler';
+import { MessageReadSolutionIntoTreeView } from '../Messages/Read/MessageReadSolutionIntoTreeView';
 
 const fs = require('fs');
 
@@ -21,12 +23,16 @@ export class UnitTestExplorerProvider implements vscode.WebviewViewProvider {
 
     webviewView.webview.html = this.getWebviewContent(webviewView.webview);
 
-    // webviewView.webview.onDidReceiveMessage(async (data) => 
-    //   SidebarProviderMessageHandler.handleMessage(webviewView, data.value));
+    webviewView.webview.onDidReceiveMessage(async (data) => 
+      UnitTestExplorerMessageHandler.handleMessage(webviewView, data.value, undefined));
   }
 
   public revive(panel: vscode.WebviewView) {
     this._view = panel;
+  }
+  
+  public notifyActiveSolutionChanged(messageReadSolutionIntoTreeView: MessageReadSolutionIntoTreeView) {
+    this._view?.webview.postMessage(messageReadSolutionIntoTreeView);
   }
   
   private getWebviewContent(webview: vscode.Webview) {
