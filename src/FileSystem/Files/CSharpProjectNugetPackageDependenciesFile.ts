@@ -29,5 +29,6 @@ export class CSharpProjectNugetPackageDependenciesFile extends IdeFile {
     public hideExpansionChevronWhenNoChildFiles: boolean = false;
     
     public readonly contextualInformation: ContextualInformationDatum[] = [
+        ContextualInformationDatum.refreshChildFiles,
     ];
 }

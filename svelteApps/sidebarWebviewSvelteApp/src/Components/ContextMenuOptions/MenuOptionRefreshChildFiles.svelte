@@ -11,6 +11,7 @@
     import { MessageReadSolutionIntoTreeView } from '../../../../../out/Messages/Read/MessageReadSolutionIntoTreeView';
     import { MessageReadVirtualFilesInSolution } from '../../../../../out/Messages/Read/MessageReadVirtualFilesInSolution';
 import { MessageReadProjectReferencesInProject } from '../../../../../out/Messages/Read/MessageReadProjectReferencesInProject';
+import { MessageReadNugetPackageReferencesInProject } from '../../../../../out/Messages/Read/MessageReadNugetPackageReferencesInProject';
 
 	export let closeMenu;
 
@@ -48,6 +49,15 @@ import { MessageReadProjectReferencesInProject } from '../../../../../out/Messag
                 tsVscode.postMessage({
                     type: undefined,
                     value: messageReadProjectReferencesInProject
+                });
+                break;
+            case FileKind.nugetPackageDependencies:
+                let messageReadNugetPackageReferencesInProject = 
+                    new MessageReadNugetPackageReferencesInProject(contextMenuTargetValue);
+
+                tsVscode.postMessage({
+                    type: undefined,
+                    value: messageReadNugetPackageReferencesInProject
                 });
                 break;
             case FileKind.directory:
