@@ -8,6 +8,7 @@ import { MessageUpdateKind } from '../Messages/Update/MessageUpdateKind';
 import { MessageUpdateAddProjectReference } from '../Messages/Update/MessageUpdateAddProjectReference';
 import { MessageUpdateRemoveProjectReference } from '../Messages/Update/MessageUpdateRemoveProjectReference';
 import { MessageUpdateAddNugetPackageReference } from '../Messages/Update/MessageUpdateAddNugetPackageReference';
+import { MessageUpdateRemoveNugetPackageReference } from '../Messages/Update/MessageUpdateRemoveNugetPackageReference';
 
 export class UpdateMessageHandler {
     public static async handleMessage(webviewView: vscode.WebviewView, message: IMessage): Promise<void> {
@@ -25,6 +26,9 @@ export class UpdateMessageHandler {
                 break;
             case MessageUpdateKind.addNugetPackageReference:
                 await this.handleMessageUpdateAddNugetPackageReference(webviewView, message);
+                break;
+            case MessageUpdateKind.removeNugetPackageReference:
+                await this.handleMessageUpdateRemoveNugetPackageReference(webviewView, message);
                 break;
         }
     }
@@ -98,6 +102,18 @@ export class UpdateMessageHandler {
             ConstantsDotNetCli.formatDotNetAddNugetPackageReferenceToCSharpProject(message.cSharpProjectFile.absoluteFilePath, 
                 message.nugetPackageModel,
                 message.nugetPackageVersionModel));
+
+        messageUpdateTerminal.show();
+    }
+    
+    public static async handleMessageUpdateRemoveNugetPackageReference(webviewView: vscode.WebviewView, iMessage: IMessage) {
+        let message = iMessage as MessageUpdateRemoveNugetPackageReference;
+
+        let messageUpdateTerminal = this.getMessageUpdateTerminal();
+
+        messageUpdateTerminal.sendText(
+            ConstantsDotNetCli.formatDotNetReferenceNugetPackageReferenceFromCSharpProject(message.cSharpProjectNugetPackageDependencyFile.absoluteFilePath, 
+                message.cSharpProjectNugetPackageDependencyFile.nugetPackageTitle));
 
         messageUpdateTerminal.show();
     }

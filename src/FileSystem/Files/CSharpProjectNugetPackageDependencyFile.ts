@@ -8,8 +8,8 @@ import { IdeFile } from "./IdeFile";
 export class CSharpProjectNugetPackageDependencyFile extends IdeFile {
     constructor(cSharpProjectParentAbsoluteFilePath: AbsoluteFilePath, 
         nugetPackageDependenciesParentAbsoluteFilePath: AbsoluteFilePath,
-        nugetPackageTitle: string,
-        nugetPackageVersion: string) {
+        public readonly nugetPackageTitle: string,
+        public readonly nugetPackageVersion: string) {
         
         let myAbsoluteFilePath = new AbsoluteFilePath(`${nugetPackageTitle}--${nugetPackageVersion}`,
             false,
@@ -33,5 +33,6 @@ export class CSharpProjectNugetPackageDependencyFile extends IdeFile {
     public hideExpansionChevronWhenNoChildFiles: boolean = true;
     
     public readonly contextualInformation: ContextualInformationDatum[] = [
+        ContextualInformationDatum.removeNugetPackageReference
     ];
 }
