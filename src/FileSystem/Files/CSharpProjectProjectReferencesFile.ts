@@ -5,15 +5,15 @@ import { AbsoluteFilePath } from "../AbsoluteFilePath";
 import { FileKind } from "../FileKind";
 import { IdeFile } from "./IdeFile";
 
-export class CSharpProjectNugetPackageDependenciesFile extends IdeFile {
+export class CSharpProjectProjectReferencesFile extends IdeFile {
     constructor(cSharpProjectParentAbsoluteFilePath: AbsoluteFilePath, projectDependenciesParentAbsoluteFilePath: AbsoluteFilePath) {
-        let myAbsoluteFilePath = new AbsoluteFilePath(ConstantsFileExtensionsNoPeriod.NUGET_PACKAGE_DEPENDENCIES_FILE_EXTENSION,
+        let myAbsoluteFilePath = new AbsoluteFilePath(ConstantsFileExtensionsNoPeriod.PROJECT_REFERENCES_FILE_EXTENSION,
         false,
         projectDependenciesParentAbsoluteFilePath.parentDirectories);
 
         super(myAbsoluteFilePath, "");
         
-        this.fileKind = FileKind.nugetPackageDependencies;
+        this.fileKind = FileKind.projectReferences;
 
         this.parentCSharpProjectInitialAbsoluteFilePath = cSharpProjectParentAbsoluteFilePath;
     }
@@ -29,5 +29,6 @@ export class CSharpProjectNugetPackageDependenciesFile extends IdeFile {
     public hideExpansionChevronWhenNoChildFiles: boolean = true;
     
     public readonly contextualInformation: ContextualInformationDatum[] = [
+        ContextualInformationDatum.addProjectReference
     ];
 }

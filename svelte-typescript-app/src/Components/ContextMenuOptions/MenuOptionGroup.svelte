@@ -2,6 +2,7 @@
 import { copyFile } from "fs";
 
     import { ContextualInformationDatum } from "../../../../out/ContextMenus/ContextualInformationDatum";
+import MenuOptionAddCSharpProjectReference from "./MenuOptionAddCSharpProjectReference.svelte";
 import MenuOptionAddExistingCSharpProject from "./MenuOptionAddExistingCSharpProject.svelte";
 import MenuOptionCopyFile from "./MenuOptionCopyFile.svelte";
     import MenuOptionCreateDirectory from "./MenuOptionCreateDirectory.svelte";
@@ -52,5 +53,8 @@ import MenuOptionStartWithoutDebugging from "./MenuOptionStartWithoutDebugging.s
     {:else if ContextualInformationDatum.checkDatumEquality(ContextualInformationDatum.rename,
                                                             contextualInformationDatum)}
         <MenuOptionRenameFile closeMenu={closeMenu} />
+    {:else if ContextualInformationDatum.checkDatumEquality(ContextualInformationDatum.addProjectReference,
+                                                            contextualInformationDatum)}
+        <MenuOptionAddCSharpProjectReference closeMenu={closeMenu} />
     {/if}
 {/each}

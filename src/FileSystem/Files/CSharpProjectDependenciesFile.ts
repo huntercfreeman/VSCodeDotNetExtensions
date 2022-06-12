@@ -4,6 +4,7 @@ import { ContextualInformationDatum } from "../../ContextMenus/ContextualInforma
 import { AbsoluteFilePath } from "../AbsoluteFilePath";
 import { FileKind } from "../FileKind";
 import { CSharpProjectNugetPackageDependenciesFile } from "./CSharpProjectNugetPackageDependenciesFile";
+import { CSharpProjectProjectReferencesFile } from "./CSharpProjectProjectReferencesFile";
 import { IdeFile } from "./IdeFile";
 
 export class CSharpProjectDependenciesFile extends IdeFile {
@@ -15,10 +16,13 @@ export class CSharpProjectDependenciesFile extends IdeFile {
         super(myAbsoluteFilePath, "");
 
         this.constantChildFiles = [
-            new CSharpProjectNugetPackageDependenciesFile(myAbsoluteFilePath),
+            new CSharpProjectNugetPackageDependenciesFile(cSharpProjectParentAbsoluteFilePath, myAbsoluteFilePath),
+            new CSharpProjectProjectReferencesFile(cSharpProjectParentAbsoluteFilePath, myAbsoluteFilePath),
         ];
 
         this.fileKind = FileKind.projectDependencies;
+        
+        this.parentCSharpProjectInitialAbsoluteFilePath = cSharpProjectParentAbsoluteFilePath;
     }
 
     public setVirtualChildFiles(siblingFiles: IdeFile[]): void {
@@ -26,6 +30,8 @@ export class CSharpProjectDependenciesFile extends IdeFile {
     }
     
     public childFiles: any[] | undefined;
+
+    public parentCSharpProjectInitialAbsoluteFilePath: AbsoluteFilePath;
     
     public hideExpansionChevronWhenNoChildFiles: boolean = false;
     

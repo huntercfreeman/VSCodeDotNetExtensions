@@ -41,6 +41,10 @@ export class ContextualInformationDatum {
         new ContextualInformationDatum(ContextualInformationDatumKind.update,
             "rename");
     
+    public static readonly addProjectReference: ContextualInformationDatum = 
+        new ContextualInformationDatum(ContextualInformationDatumKind.update,
+            "addProjectReference");
+    
     public static readonly deleteFile: ContextualInformationDatum = 
         new ContextualInformationDatum(ContextualInformationDatumKind.delete,
             "deleteFile");

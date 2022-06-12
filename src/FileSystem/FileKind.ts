@@ -11,5 +11,7 @@ export enum FileKind {
     json,
     projectDependencies,
     nugetPackageDependency,
-    nugetPackageDependencies
+    nugetPackageDependencies,
+    projectReferences,
+    projectReference
 }

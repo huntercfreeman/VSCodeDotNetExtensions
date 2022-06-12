@@ -13,4 +13,6 @@ export class ConstantsFileExtensionsNoPeriod {
     public static readonly PROJECT_DEPENDENCIES_FILE_EXTENSION: string = "dependencies";
     public static readonly NUGET_PACKAGE_DEPENDENCIES_FILE_EXTENSION: string = "nugetPackages";
     public static readonly NUGET_PACKAGE_DEPENDENCY_FILE_EXTENSION: string = "nugetPackageEntry";
+    public static readonly PROJECT_REFERENCES_FILE_EXTENSION: string = "projectReferences";
+    public static readonly PROJECT_REFERENCE_FILE_EXTENSION: string = "projectReference";
 }

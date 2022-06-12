@@ -5,6 +5,7 @@ import { IMessage } from "../Messages/IMessage";
 import { IMessageUpdate } from "../Messages/Update/IMessageUpdate";
 import { MessageUpdateExistingCSharpProjectIntoSolution } from '../Messages/Update/MessageUpdateExistingCSharpProjectIntoSolution';
 import { MessageUpdateKind } from '../Messages/Update/MessageUpdateKind';
+import { MessageUpdateProjectReferencesOfProject } from '../Messages/Update/MessageUpdateProjectReferencesOfProject';
 
 export class UpdateMessageHandler {
     public static async handleMessage(webviewView: vscode.WebviewView, message: IMessage): Promise<void> {
@@ -13,6 +14,9 @@ export class UpdateMessageHandler {
         switch (updateMessage.messageUpdateKind) {
             case MessageUpdateKind.existingCSharpProjectIntoSolution:
                 await this.handleMessageUpdateExistingCSharpProjectIntoSolution(webviewView, message);
+                break;
+            case MessageUpdateKind.projectReferencesOfProject:
+                await this.handleMessageUpdateProjectReferencesOfProject(webviewView, message);
                 break;
         }
     }
@@ -36,6 +40,29 @@ export class UpdateMessageHandler {
                 messageUpdateTerminal.sendText(
                     ConstantsDotNetCli.formatDotNetAddCSharpProjectToSolutionUsingProjectFsPath(fileUri[0].fsPath,
                         message.dotNetSolutionFile));
+
+                messageUpdateTerminal.show();
+            }
+        });
+    }
+    
+    public static async handleMessageUpdateProjectReferencesOfProject(webviewView: vscode.WebviewView, iMessage: IMessage) {
+        let message = iMessage as MessageUpdateProjectReferencesOfProject;
+
+        const options: vscode.OpenDialogOptions = {
+            canSelectMany: false,
+            openLabel: 'Existing C# Project',
+            canSelectFiles: true,
+            canSelectFolders: false
+        };
+
+        vscode.window.showOpenDialog(options).then(fileUri => {
+            if (fileUri && fileUri[0]) {
+                let messageUpdateTerminal = this.getMessageUpdateTerminal();
+
+                messageUpdateTerminal.sendText(
+                    ConstantsDotNetCli.formatDotNetAddCSharpProjectReferenceToCSharpProject(message.cSharpProjectProjectReferencesFile.parentCSharpProjectInitialAbsoluteFilePath, 
+                        fileUri[0].fsPath));
 
                 messageUpdateTerminal.show();
             }
