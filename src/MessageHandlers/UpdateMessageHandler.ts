@@ -5,7 +5,8 @@ import { IMessage } from "../Messages/IMessage";
 import { IMessageUpdate } from "../Messages/Update/IMessageUpdate";
 import { MessageUpdateExistingCSharpProjectIntoSolution } from '../Messages/Update/MessageUpdateExistingCSharpProjectIntoSolution';
 import { MessageUpdateKind } from '../Messages/Update/MessageUpdateKind';
-import { MessageUpdateProjectReferencesOfProject } from '../Messages/Update/MessageUpdateProjectReferencesOfProject';
+import { MessageUpdateAddProjectReference } from '../Messages/Update/MessageUpdateAddProjectReference';
+import { MessageUpdateRemoveProjectReference } from '../Messages/Update/MessageUpdateRemoveProjectReference';
 
 export class UpdateMessageHandler {
     public static async handleMessage(webviewView: vscode.WebviewView, message: IMessage): Promise<void> {
@@ -15,8 +16,11 @@ export class UpdateMessageHandler {
             case MessageUpdateKind.existingCSharpProjectIntoSolution:
                 await this.handleMessageUpdateExistingCSharpProjectIntoSolution(webviewView, message);
                 break;
-            case MessageUpdateKind.projectReferencesOfProject:
-                await this.handleMessageUpdateProjectReferencesOfProject(webviewView, message);
+            case MessageUpdateKind.addProjectReference:
+                await this.handleMessageUpdateAddProjectReference(webviewView, message);
+                break;
+            case MessageUpdateKind.removeProjectReference:
+                await this.handleMessageUpdateRemoveProjectReference(webviewView, message);
                 break;
         }
     }
@@ -46,8 +50,8 @@ export class UpdateMessageHandler {
         });
     }
     
-    public static async handleMessageUpdateProjectReferencesOfProject(webviewView: vscode.WebviewView, iMessage: IMessage) {
-        let message = iMessage as MessageUpdateProjectReferencesOfProject;
+    public static async handleMessageUpdateAddProjectReference(webviewView: vscode.WebviewView, iMessage: IMessage) {
+        let message = iMessage as MessageUpdateAddProjectReference;
 
         const options: vscode.OpenDialogOptions = {
             canSelectMany: false,
@@ -67,6 +71,18 @@ export class UpdateMessageHandler {
                 messageUpdateTerminal.show();
             }
         });
+    }
+    
+    public static async handleMessageUpdateRemoveProjectReference(webviewView: vscode.WebviewView, iMessage: IMessage) {
+        let message = iMessage as MessageUpdateRemoveProjectReference;
+
+        let messageUpdateTerminal = this.getMessageUpdateTerminal();
+
+        messageUpdateTerminal.sendText(
+            ConstantsDotNetCli.formatDotNetRemoveCSharpProjectReferenceFromCSharpProject(message.cSharpProjectProjectReferenceFile.parentCSharpProjectInitialAbsoluteFilePath, 
+                message.cSharpProjectProjectReferenceFile.cSharpProjectReferenceAbsoluteFilePath));
+
+        messageUpdateTerminal.show();
     }
 
     private static getMessageUpdateTerminal() {

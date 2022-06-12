@@ -1,4 +1,5 @@
 export enum MessageUpdateKind {
     existingCSharpProjectIntoSolution,
-    projectReferencesOfProject
+    addProjectReference,
+    removeProjectReference,
 }

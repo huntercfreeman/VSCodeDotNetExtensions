@@ -36,5 +36,10 @@ export class ConstantsDotNetCli {
         return `dotnet add ${receivingProjectAbsoluteFilePath.initialAbsoluteFilePathStringInput} reference ${referenceProjectAbsoluteFilePathString}`;
     }
     
+    public static formatDotNetRemoveCSharpProjectReferenceFromCSharpProject(parentCSharpProjectInitialAbsoluteFilePath: AbsoluteFilePath, cSharpProjectReferenceAbsoluteFilePath: AbsoluteFilePath): string {
+
+        return `dotnet remove ${parentCSharpProjectInitialAbsoluteFilePath.initialAbsoluteFilePathStringInput} reference ${cSharpProjectReferenceAbsoluteFilePath.initialAbsoluteFilePathStringInput}`;
+    }
+    
     public static DOT_NET_NEW_LIST = "dotnet new --list";
 }

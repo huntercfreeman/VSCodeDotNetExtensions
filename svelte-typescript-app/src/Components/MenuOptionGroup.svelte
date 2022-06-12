@@ -7,6 +7,7 @@
     import MenuOptionCreateNewEmptyFile from "./ContextMenuOptions/MenuOptionCreateNewEmptyFile.svelte";
     import MenuOptionCreateNewTemplatedFile from "./ContextMenuOptions/MenuOptionCreateNewTemplatedFile.svelte";
     import MenuOptionRefreshChildFiles from "./ContextMenuOptions/MenuOptionRefreshChildFiles.svelte";
+import MenuOptionRemoveCSharpProjectReference from "./ContextMenuOptions/MenuOptionRemoveCSharpProjectReference.svelte";
     import MenuOptionStartDebugging from "./ContextMenuOptions/MenuOptionStartDebugging.svelte";
     import MenuOptionStartWithoutDebugging from "./ContextMenuOptions/MenuOptionStartWithoutDebugging.svelte";
 
@@ -42,5 +43,8 @@
     {:else if ContextualInformationDatum.checkDatumEquality(ContextualInformationDatum.addProjectReference,
                                                             contextualInformationDatum)}
         <MenuOptionAddCSharpProjectReference closeMenu={closeMenu} />
+    {:else if ContextualInformationDatum.checkDatumEquality(ContextualInformationDatum.removeProjectReference,
+                                                            contextualInformationDatum)}
+        <MenuOptionRemoveCSharpProjectReference closeMenu={closeMenu} />
     {/if}
 {/each}
