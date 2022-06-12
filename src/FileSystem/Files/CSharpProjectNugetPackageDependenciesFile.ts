@@ -26,7 +26,7 @@ export class CSharpProjectNugetPackageDependenciesFile extends IdeFile {
 
     public parentCSharpProjectInitialAbsoluteFilePath: AbsoluteFilePath;
     
-    public hideExpansionChevronWhenNoChildFiles: boolean = true;
+    public hideExpansionChevronWhenNoChildFiles: boolean = false;
     
     public readonly contextualInformation: ContextualInformationDatum[] = [
     ];

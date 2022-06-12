@@ -65,7 +65,7 @@
                         value: messageReadProjectReferencesInProject
                     });
 					break;
-                case FileKind.projectReferences:
+                case FileKind.nugetPackageDependencies:
                     let messageReadNugetPackageReferencesInProject = 
                         new MessageReadNugetPackageReferencesInProject(ideFile);
 
@@ -121,6 +121,8 @@
 	function titleOnClick(e: MouseEvent) {
         switch (ideFile.fileKind) {
             case FileKind.solutionFolder:
+			case FileKind.projectReferences:
+			case FileKind.nugetPackageDependencies:
                 return;
         }
 
