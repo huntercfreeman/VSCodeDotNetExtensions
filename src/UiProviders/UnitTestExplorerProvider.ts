@@ -1,17 +1,13 @@
 import * as vscode from 'vscode';
 import { SidebarProviderMessageHandler } from '../MessageHandlers/SidebarProviderMessageHandler';
-import { UnitTestExplorerProvider } from './UnitTestExplorerProvider';
 
 const fs = require('fs');
 
-/**
- * SidebarProvider renders the Solution Explorer webview
- */
-export class SidebarProvider implements vscode.WebviewViewProvider {
+export class UnitTestExplorerProvider implements vscode.WebviewViewProvider {
   _view?: vscode.WebviewView;
   _doc?: vscode.TextDocument;
 
-  constructor(private readonly context: vscode.ExtensionContext, private readonly unitTestExplorerProvider: UnitTestExplorerProvider) { }
+  constructor(private readonly context: vscode.ExtensionContext) { }
 
   public resolveWebviewView(webviewView: vscode.WebviewView) {
     this._view = webviewView;
@@ -25,21 +21,20 @@ export class SidebarProvider implements vscode.WebviewViewProvider {
 
     webviewView.webview.html = this.getWebviewContent(webviewView.webview);
 
-    webviewView.webview.onDidReceiveMessage(async (data) => 
-      SidebarProviderMessageHandler.handleMessage(webviewView, data.value));
+    // webviewView.webview.onDidReceiveMessage(async (data) => 
+    //   SidebarProviderMessageHandler.handleMessage(webviewView, data.value));
   }
 
   public revive(panel: vscode.WebviewView) {
     this._view = panel;
   }
-
   
   private getWebviewContent(webview: vscode.Webview) {
     const dotNetIdeSvelteAppJavaScriptUri = webview.asWebviewUri(vscode.Uri.joinPath(
-      this.context.extensionUri, 'out/sidebarWebview', 'sidebarWebview.js'));
+      this.context.extensionUri, 'out/unitTestExplorerWebview', 'unitTestExplorerWebview.js'));
 
     const dotNetIdeSvelteAppCssUri = webview.asWebviewUri(vscode.Uri.joinPath(
-      this.context.extensionUri, 'out/sidebarWebview', 'sidebarWebview.css'));
+      this.context.extensionUri, 'out/unitTestExplorerWebview', 'unitTestExplorerWebview.css'));
 
     const resetCssUri = webview.asWebviewUri(
       vscode.Uri.joinPath(this.context.extensionUri, "media", "reset.css")

@@ -11,7 +11,8 @@
 		"Other"
 	],
 	"activationEvents": [
-		"onView:dot-net-ide.sidebar-webview"
+		"onView:dot-net-ide.sidebar-webview",
+		"onView:dot-net-ide.unit-test-explorer-webview"
 	],
 	"main": "./out/extension.js",
 	"contributes": {
@@ -29,9 +30,14 @@
 				{
 					"type": "webview",
 					"id": "dot-net-ide.sidebar-webview",
-					"name": ".NET IDE",
-					"icon": "media/dotNetIdeSidebarIcon.svg",
-					"contextualTitle": ".NET IDE"
+					"name": "Solution Explorer",
+					"icon": "media/dotNetIdeSidebarIcon.svg"
+				},
+				{
+					"type": "webview",
+					"id": "dot-net-ide.unit-test-explorer-webview",
+					"name": "Unit Test Explorer",
+					"icon": "media/dotNetIdeUnitTestExplorer.svg"
 				}
 			]
 		}
