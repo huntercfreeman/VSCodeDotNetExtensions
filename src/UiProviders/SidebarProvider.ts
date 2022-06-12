@@ -35,10 +35,10 @@ export class SidebarProvider implements vscode.WebviewViewProvider {
   
   private getWebviewContent(webview: vscode.Webview) {
     const dotNetIdeSvelteAppJavaScriptUri = webview.asWebviewUri(vscode.Uri.joinPath(
-      this.context.extensionUri, 'out/SvelteApp/build', 'bundle.js'));
+      this.context.extensionUri, 'out/sidebarWebview', 'sidebarWebview.js'));
 
     const dotNetIdeSvelteAppCssUri = webview.asWebviewUri(vscode.Uri.joinPath(
-      this.context.extensionUri, 'out/SvelteApp/build', 'bundle.css'));
+      this.context.extensionUri, 'out/sidebarWebview', 'sidebarWebview.css'));
 
     const resetCssUri = webview.asWebviewUri(
       vscode.Uri.joinPath(this.context.extensionUri, "media", "reset.css")

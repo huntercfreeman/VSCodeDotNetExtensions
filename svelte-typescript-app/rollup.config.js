@@ -36,7 +36,7 @@ export default {
 		sourcemap: true,
 		format: 'iife',
 		name: 'app',
-		file: '../out/SvelteApp/build/bundle.js'
+		file: '../out/sidebarWebview/sidebarWebview.js'
 	},
 	plugins: [
 		svelte({
@@ -48,7 +48,7 @@ export default {
 		}),
 		// we'll extract any component CSS out into
 		// a separate file - better for performance
-		css({ output: 'bundle.css' }),
+		css({ output: 'sidebarWebview.css' }),
 
 		// If you have external dependencies installed from
 		// npm, you'll most likely need these plugins. In

@@ -41,37 +41,7 @@ export class ExecuteMessageHandler {
     public static async handleMessageExecuteCSharpProjectDebugging(webviewView: vscode.WebviewView, iMessage: IMessage) {
         let message = iMessage as MessageExecuteCSharpProjectWithoutDebugging;
         
-        let workspaceFolderAbsolutePath: string;
-
-        let workspaceFolderFsPaths = vscode.workspace.workspaceFolders?.map(folder => folder.uri.fsPath);
-
-        if (workspaceFolderFsPaths === null ||
-            workspaceFolderFsPaths === undefined ||
-            workspaceFolderFsPaths.length === 0) {
-            return;
-        }
-        else {
-            workspaceFolderAbsolutePath = workspaceFolderFsPaths[0];
-        }
-
-        if (!workspaceFolderAbsolutePath) {
-            vscode.window.showInformationMessage('No files in empty workspace');
-            return;
-        }
-
-        let vSCodeLaunchJsonFileAbsoluteFilePath = new AbsoluteFilePath(workspaceFolderAbsolutePath
-                + ConstantsVSCode.V_S_CODE_LAUNCH_SETTING_FOLDER_FILE_NAME
-                + ConstantsVSCode.V_S_CODE_LAUNCH_JSON_FILE_NAME,
-            false,
-            null);
-
-        return await fs.readFile(vSCodeLaunchJsonFileAbsoluteFilePath.initialAbsoluteFilePathStringInput, 'utf8', (err: any, data: any) => {
-            if (err) {
-                vscode.commands.executeCommand(ConstantsOmniSharp.OMNI_SHARP_GENERATE_ASSETS).then((result: any) => {
-                    let sz = 2;
-                });
-            }
-        });
+       vscode.commands.executeCommand(ConstantsOmniSharp.OMNI_SHARP_GENERATE_ASSETS);
     }
 
     private static getMessageExecuteTerminal() {
