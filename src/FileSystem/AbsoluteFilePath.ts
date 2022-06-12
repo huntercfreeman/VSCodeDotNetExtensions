@@ -5,7 +5,6 @@ import { FilePathStandardizer } from "./FilePathStandardizer";
 
 export class AbsoluteFilePath {
     /**
-     * 
      * @param absoluteFilePathString 
      * @param isDirectory 
      * @param initialParentDirectories If passed as a null array the parentDirectories will be parsed from the initialAbsoluteFilePathStringInput. If passed with entries parent directories will not be parsed from initialAbsoluteFilePathStringInput as this could cause an infinite loop of parsing for parent directories.
@@ -48,20 +47,27 @@ export class AbsoluteFilePath {
             .standardizeFilePath(relativePathFromGivenAbsoluteFilePath);
 
         if (normalizedRelativePath.startsWith("..")) {
-            // Check how many times '../' occurs in path. 
-            // Example: "../../MyDirectory" is 2
-            var count = (normalizedRelativePath.match(`/..${ConstantsFilePath.STANDARDIZED_FILE_DELIMITER}/g`) || [])
-                .length;
+            let numberOfMoveUpDirectoryOperations: number = 0;
 
-            var parentDirectories = absoluteFilePath.parentDirectories
-                .slice(0, absoluteFilePath.parentDirectories.length - count);
+            while (normalizedRelativePath.startsWith("../")) {
+                normalizedRelativePath = normalizedRelativePath.substring(3);
+                numberOfMoveUpDirectoryOperations++;
+            }
 
-            let joinedAbsolutePathString = parentDirectories
+            var parentDirectories: AbsoluteFilePath[] = absoluteFilePath.parentDirectories
+                .slice(0, absoluteFilePath.parentDirectories.length - numberOfMoveUpDirectoryOperations);
+
+            let joinedParentDirectoriesAbsolutePathString = parentDirectories
+                .map(pd => pd.filenameWithExtension)
                 .join(ConstantsFilePath.STANDARDIZED_FILE_DELIMITER);
+
+            let joinedAbsolutePathString = joinedParentDirectoriesAbsolutePathString +
+                ConstantsFilePath.STANDARDIZED_FILE_DELIMITER +
+                normalizedRelativePath;
 
             return new AbsoluteFilePath(joinedAbsolutePathString,
                 isDirectory,
-                parentDirectories);
+                null);
         }
         else {
 
