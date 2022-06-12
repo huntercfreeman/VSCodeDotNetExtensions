@@ -112,7 +112,7 @@ export class UpdateMessageHandler {
         let messageUpdateTerminal = this.getMessageUpdateTerminal();
 
         messageUpdateTerminal.sendText(
-            ConstantsDotNetCli.formatDotNetReferenceNugetPackageReferenceFromCSharpProject(message.cSharpProjectNugetPackageDependencyFile.absoluteFilePath, 
+            ConstantsDotNetCli.formatDotNetRemoveNugetPackageReferenceFromCSharpProject(message.cSharpProjectNugetPackageDependencyFile.parentCSharpProjectInitialAbsoluteFilePath, 
                 message.cSharpProjectNugetPackageDependencyFile.nugetPackageTitle));
 
         messageUpdateTerminal.show();

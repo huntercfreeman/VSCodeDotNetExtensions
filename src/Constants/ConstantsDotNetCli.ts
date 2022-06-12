@@ -50,7 +50,7 @@ export class ConstantsDotNetCli {
         return `dotnet add ${cSharpProjectInitialAbsoluteFilePath.initialAbsoluteFilePathStringInput} package ${nugetPackageModel.title} --version ${nugetPackageVersionModel.version}`;
     }
     
-    public static formatDotNetReferenceNugetPackageReferenceFromCSharpProject(cSharpProjectInitialAbsoluteFilePath: AbsoluteFilePath, nugetPackageTitle: string): string {
+    public static formatDotNetRemoveNugetPackageReferenceFromCSharpProject(cSharpProjectInitialAbsoluteFilePath: AbsoluteFilePath, nugetPackageTitle: string): string {
 
         return `dotnet remove ${cSharpProjectInitialAbsoluteFilePath.initialAbsoluteFilePathStringInput} package ${nugetPackageTitle}`;
     }

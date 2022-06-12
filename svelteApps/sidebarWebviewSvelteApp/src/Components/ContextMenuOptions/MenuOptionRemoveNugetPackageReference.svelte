@@ -11,6 +11,7 @@
     import { MessageExecuteCSharpProjectWithoutDebugging } from '../../../../../out/Messages/Execute/MessageExecuteCSharpProjectWithoutDebugging';
     import { MessageUpdateExistingCSharpProjectIntoSolution } from '../../../../../out/Messages/Update/MessageUpdateExistingCSharpProjectIntoSolution';
     import { MessageUpdateRemoveProjectReference } from '../../../../../out/Messages/Update/MessageUpdateRemoveProjectReference';
+    import { MessageUpdateRemoveNugetPackageReference } from '../../../../../out/Messages/Update/MessageUpdateRemoveNugetPackageReference';
 
 	export let closeMenu;
 
@@ -21,13 +22,13 @@
 		contextMenuTargetValue = value;
 	});
 
-    function addProjectReference() {
-        let messageUpdateRemoveProjectReference = 
-            new MessageUpdateRemoveProjectReference(contextMenuTargetValue);
+    function removeNugetPackageReference() {
+        let messageUpdateRemoveNugetPackageReference = 
+            new MessageUpdateRemoveNugetPackageReference(contextMenuTargetValue);
 
         tsVscode.postMessage({
             type: undefined,
-            value: messageUpdateRemoveProjectReference
+            value: messageUpdateRemoveNugetPackageReference
         });
 
         performCloseMenu();
@@ -63,7 +64,7 @@
         </div>
     </div>
 
-    <button on:click="{addProjectReference}">Accept</button>
+    <button on:click="{removeNugetPackageReference}">Accept</button>
     <button on:click="{performCloseMenu}">Decline</button>
 {/if}
 
