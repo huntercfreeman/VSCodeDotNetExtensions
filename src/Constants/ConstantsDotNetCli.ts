@@ -1,3 +1,5 @@
+import { NugetPackageModel } from "../DotNet/NugetPackageModel";
+import { NugetPackageVersionModel } from "../DotNet/NugetPackageVersionModel";
 import { AbsoluteFilePath } from "../FileSystem/AbsoluteFilePath";
 import { DotNetSolutionFile } from "../FileSystem/Files/DotNetSolutionFile";
 
@@ -39,6 +41,13 @@ export class ConstantsDotNetCli {
     public static formatDotNetRemoveCSharpProjectReferenceFromCSharpProject(parentCSharpProjectInitialAbsoluteFilePath: AbsoluteFilePath, cSharpProjectReferenceAbsoluteFilePath: AbsoluteFilePath): string {
 
         return `dotnet remove ${parentCSharpProjectInitialAbsoluteFilePath.initialAbsoluteFilePathStringInput} reference ${cSharpProjectReferenceAbsoluteFilePath.initialAbsoluteFilePathStringInput}`;
+    }
+    
+    public static formatDotNetAddNugetPackageReferenceToCSharpProject(cSharpProjectInitialAbsoluteFilePath: AbsoluteFilePath, 
+        nugetPackageModel: NugetPackageModel,
+        nugetPackageVersionModel: NugetPackageVersionModel): string {
+
+        return `dotnet add ${cSharpProjectInitialAbsoluteFilePath.initialAbsoluteFilePathStringInput} package ${nugetPackageModel.title} --version ${nugetPackageVersionModel.version}`;
     }
     
     public static DOT_NET_NEW_LIST = "dotnet new --list";

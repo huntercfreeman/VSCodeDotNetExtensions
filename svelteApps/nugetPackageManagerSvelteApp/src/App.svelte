@@ -7,9 +7,9 @@
 	import { ConstantsFileExtensionsNoPeriod } from "../../../out/Constants/ConstantsFileExtensionsNoPeriod";
 	import type { CSharpProjectFile } from "../../../out/FileSystem/Files/CSharpProjectFile";
 	import SelectProjectFileForm from "./Components/SelectProjectFileForm.svelte";
-import { NugetPackageModel } from "../../../out/DotNet/NugetPackageModel";
-import { NugetPackageVersionModel } from "../../../out/DotNet/NugetPackageVersionModel";
-import NugetResultsDisplay from "./Components/NugetResultsDisplay.svelte";
+	import { NugetPackageModel } from "../../../out/DotNet/NugetPackageModel";
+	import { NugetPackageVersionModel } from "../../../out/DotNet/NugetPackageVersionModel";
+	import NugetResultsDisplay from "./Components/NugetResultsDisplay.svelte";
 
     let selectedDotNetSolutionFile: DotNetSolutionFile | undefined;
 	let selectedProjectFile: CSharpProjectFile;
@@ -154,7 +154,8 @@ import NugetResultsDisplay from "./Components/NugetResultsDisplay.svelte";
 		<button on:click={sendGetRequest}>Send GET Request</button>
 
 		{#if nugetResults}
-			<NugetResultsDisplay nugetPackageModels={nugetResults} />
+			<NugetResultsDisplay nugetPackageModels={nugetResults}
+					             selectedProjectFile={selectedProjectFile} />
 		{/if}
 	{:else}
 		<div>Select a .NET solution using the Solution Explorer then sync this webview</div>

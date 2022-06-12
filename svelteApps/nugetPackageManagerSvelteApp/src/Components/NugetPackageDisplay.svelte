@@ -1,10 +1,13 @@
 <script lang="ts">
     import type { NugetPackageModel } from "../../../../out/DotNet/NugetPackageModel";
-import type { NugetPackageVersionModel } from "../../../../out/DotNet/NugetPackageVersionModel";
-import ExpansionChevron from "./ExpansionChevron.svelte";
-import SelectNugetPackageVersionForm from "./SelectNugetPackageVersionForm.svelte";
+    import type { NugetPackageVersionModel } from "../../../../out/DotNet/NugetPackageVersionModel";
+    import type { CSharpProjectFile } from "../../../../out/FileSystem/Files/CSharpProjectFile";
+    import ExpansionChevron from "./ExpansionChevron.svelte";
+    import SelectNugetPackageVersionForm from "./SelectNugetPackageVersionForm.svelte";
+	import { MessageUpdateAddNugetPackageReference } from "../../../../out/Messages/Update/MessageUpdateAddNugetPackageReference";
 
 	export let nugetPackageModel: NugetPackageModel;
+	export let selectedProjectFile: CSharpProjectFile;
 
 	let selectedVersionModel: NugetPackageVersionModel;
 
@@ -13,10 +16,21 @@ import SelectNugetPackageVersionForm from "./SelectNugetPackageVersionForm.svelt
     let descriptionIsExpanded = false;
     let summaryIsExpanded = false;
 	
+    function addNugetPackageReference() {
+		let messageUpdateAddNugetPackageReference = new MessageUpdateAddNugetPackageReference(selectedProjectFile,
+            nugetPackageModel,
+            selectedVersionModel);
+
+		tsVscode.postMessage({
+			type: undefined,
+			value: messageUpdateAddNugetPackageReference
+		});
+	}
+
 </script>
 
 <div>
-    <div on:click={() => nugetPackageIsExpanded = !nugetPackageIsExpanded}>
+    <div>
         <ExpansionChevron bind:isExpanded={nugetPackageIsExpanded} />
 
         <span>{nugetPackageModel.title} ({nugetPackageModel.totalDownloads.toLocaleString()}: downloads)</span>
@@ -31,6 +45,10 @@ import SelectNugetPackageVersionForm from "./SelectNugetPackageVersionForm.svelt
                     ({selectedVersionModel.downloads.toLocaleString()}: downloads)
                 {/if}
             </div>
+
+            <button on:click={addNugetPackageReference}>
+                Add to {selectedProjectFile.absoluteFilePath.filenameWithExtension}
+            </button>
 
             <div><ExpansionChevron bind:isExpanded={descriptionIsExpanded} />
                 <span>description:</span> 
