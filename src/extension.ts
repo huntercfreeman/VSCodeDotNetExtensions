@@ -1,24 +1,8 @@
 import * as vscode from 'vscode';
 import { NugetPackageManagerProvider } from './UiProviders/NugetPackageManagerProvider';
 import { SidebarProvider } from './UiProviders/SidebarProvider';
-import { UnitTestExplorerProvider } from './UiProviders/UnitTestExplorerProvider';
 
 export function activate(context: vscode.ExtensionContext) {
-	const unitTestExplorerProvider = new UnitTestExplorerProvider(context);
-
-	context.subscriptions.push(
-		vscode.window.registerWebviewViewProvider(
-			"dot-net-ide.unit-test-explorer-webview",
-			unitTestExplorerProvider,
-			{
-				"webviewOptions": {
-					// retainContextWhenHidden is resource intensive and should be used sparingly
-					retainContextWhenHidden: true
-				}
-			}
-		)
-	);
-
 	const nugetPackageManagerProvider = new NugetPackageManagerProvider(context);
 	
 	context.subscriptions.push(

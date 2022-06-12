@@ -2,7 +2,6 @@ import * as vscode from 'vscode';
 import { SidebarProviderMessageHandler } from '../MessageHandlers/SidebarProviderMessageHandler';
 import { IMessage } from '../Messages/IMessage';
 import { MessageCategory } from '../Messages/MessageCategory';
-import { UnitTestExplorerProvider } from './UnitTestExplorerProvider';
 
 const fs = require('fs');
 
