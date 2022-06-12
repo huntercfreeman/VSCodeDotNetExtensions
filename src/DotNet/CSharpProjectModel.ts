@@ -1,5 +1,6 @@
 import { ConstantsContextualInformation } from "../Constants/ConstantsContextualInformation";
 import { AbsoluteFilePath } from "../FileSystem/AbsoluteFilePath";
+import { CSharpProjectNugetPackageDependenciesFile } from "../FileSystem/Files/CSharpProjectNugetPackageDependenciesFile";
 import { CSharpProjectProjectReferenceFile } from "../FileSystem/Files/CSharpProjectProjectReferenceFile";
 import { CSharpProjectProjectReferencesFile } from "../FileSystem/Files/CSharpProjectProjectReferencesFile";
 import { IdeFile } from "../FileSystem/Files/IdeFile";
@@ -26,13 +27,28 @@ export class CSharpProjectModel {
         });
     }
     
-    public static async parseCSharpProject(cSharpProjectAbsoluteFilePath: AbsoluteFilePath,
+    public static async parseCSharpProjectProjectReferences(cSharpProjectAbsoluteFilePath: AbsoluteFilePath,
         cSharpProjectProjectReferencesFile: CSharpProjectProjectReferencesFile,
         callback: any) : Promise<void> {
 
         cSharpProjectProjectReferencesFile.virtualChildFiles = [];
 
-        let cSharpProjectParser = new CSharpProjectParser(cSharpProjectAbsoluteFilePath, cSharpProjectProjectReferencesFile);
+        let cSharpProjectParser = new CSharpProjectParser(cSharpProjectAbsoluteFilePath, 
+            cSharpProjectProjectReferencesFile,
+            undefined);
+        
+        cSharpProjectParser.parse(callback);
+    }
+    
+    public static async parseCSharpProjectNugetPackageReferences(cSharpProjectAbsoluteFilePath: AbsoluteFilePath,
+        cSharpProjectNugetPackageDependenciesFile: CSharpProjectNugetPackageDependenciesFile,
+        callback: any) : Promise<void> {
+
+            cSharpProjectNugetPackageDependenciesFile.virtualChildFiles = [];
+
+            let cSharpProjectParser = new CSharpProjectParser(cSharpProjectAbsoluteFilePath, 
+                undefined,
+                cSharpProjectNugetPackageDependenciesFile);
         
         cSharpProjectParser.parse(callback);
     }

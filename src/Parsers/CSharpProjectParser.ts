@@ -5,6 +5,7 @@ import { ConstantsStringReader } from "../Constants/ConstantsStringReader";
 import { CSharpProjectModel } from "../DotNet/CSharpProjectModel";
 import { SolutionModel } from "../DotNet/SolutionModel";
 import { AbsoluteFilePath } from "../FileSystem/AbsoluteFilePath";
+import { CSharpProjectNugetPackageDependenciesFile } from "../FileSystem/Files/CSharpProjectNugetPackageDependenciesFile";
 import { CSharpProjectProjectReferenceFile } from "../FileSystem/Files/CSharpProjectProjectReferenceFile";
 import { CSharpProjectProjectReferencesFile } from "../FileSystem/Files/CSharpProjectProjectReferencesFile";
 import { StringReader } from "./StringReader";
@@ -13,7 +14,8 @@ const fs = require('fs');
 
 export class CSharpProjectParser {
   constructor(public readonly cSharpProjectAbsoluteFilePath: AbsoluteFilePath,
-    public readonly cSharpProjectProjectReferencesFile: CSharpProjectProjectReferencesFile) {
+    public readonly cSharpProjectProjectReferencesFile: CSharpProjectProjectReferencesFile | undefined,
+    public readonly cSharpProjectNugetPackageDependenciesFile: CSharpProjectNugetPackageDependenciesFile | undefined) {
   }
 
   private _stringReader!: StringReader;
@@ -44,6 +46,13 @@ export class CSharpProjectParser {
             this.readInProjectReference();
           }
         }
+        if (!handledToken && ConstantsCSharpProjectFile.START_OF_PROJECT_REFERENCE_DEFINITION.startsWith(currentCharacter)) {
+          if (ConstantsCSharpProjectFile.START_OF_PROJECT_REFERENCE_DEFINITION.substring(1) ===
+            this._stringReader.peek(ConstantsCSharpProjectFile.START_OF_PROJECT_REFERENCE_DEFINITION.length - 1)) {
+            handledToken = true;
+            this.readInNugetPackageReference();
+          }
+        }
       }
 
       callback();
@@ -60,6 +69,10 @@ export class CSharpProjectParser {
      *         <ProjectReference Include="..\ClassLibraryStuff\ClassLibraryStuff.csproj" />
      *     </ItemGroup>
      */
+
+    if (!this.cSharpProjectProjectReferencesFile) {
+      return;
+    }
 
     let currentCharacter = "";
 
@@ -89,6 +102,65 @@ export class CSharpProjectParser {
                         new CSharpProjectProjectReferenceFile(this.cSharpProjectAbsoluteFilePath, 
                           this.cSharpProjectProjectReferencesFile.absoluteFilePath,
                           cSharpProjectReferenceRelativePathFromReceivingCSharpProject));
+                      
+                      return;
+                  }
+                  else {
+                    cSharpProjectReferenceRelativePathFromReceivingCSharpProject += currentCharacter;
+                  }
+                }
+                else {
+                  cSharpProjectReferenceRelativePathFromReceivingCSharpProject += currentCharacter;
+                }
+              }
+          }
+        }
+      }
+  }
+  
+  public readInNugetPackageReference() {
+    // In this file dashes are used to mark on the line above and below a comment what INTENDS to be parsed.
+
+    /**
+     * Example text:
+     * 
+     *     <ItemGroup>
+     *         <PackageReference Include="Fluxor" Version="5.4.0" />
+     *     </ItemGroup>
+     */
+
+    if (!this.cSharpProjectNugetPackageDependenciesFile) {
+      return;
+    }
+
+    let currentCharacter = "";
+
+    while ((currentCharacter = this._stringReader.consume(1)) !==
+        ConstantsStringReader.END_OF_FILE_MARKER) {
+
+        if (ConstantsCSharpProjectFile.START_OF_PROJECT_REFERENCE_INCLUDE_DEFINITION.startsWith(currentCharacter)) {
+          if (ConstantsCSharpProjectFile.START_OF_PROJECT_REFERENCE_INCLUDE_DEFINITION.substring(1) ===
+            this._stringReader.peek(ConstantsCSharpProjectFile.START_OF_PROJECT_REFERENCE_INCLUDE_DEFINITION.length - 1)) {
+            
+              let _ = this._stringReader.consume(ConstantsCSharpProjectFile.START_OF_PROJECT_REFERENCE_INCLUDE_DEFINITION.length - 1);
+              
+              let cSharpProjectReferenceRelativePathFromReceivingCSharpProject = "";
+
+              while ((currentCharacter = this._stringReader.consume(1)) !==
+                ConstantsStringReader.END_OF_FILE_MARKER) {
+
+                if (ConstantsCSharpProjectFile.END_OF_PROJECT_REFERENCE_INCLUDE_DEFINITION.startsWith(currentCharacter)) {
+                  if (ConstantsCSharpProjectFile.END_OF_PROJECT_REFERENCE_INCLUDE_DEFINITION.substring(1) ===
+                    this._stringReader.peek(ConstantsCSharpProjectFile.END_OF_PROJECT_REFERENCE_INCLUDE_DEFINITION.length - 1)) {
+                    
+                      if (!this.cSharpProjectNugetPackageDependenciesFile.virtualChildFiles) {
+                        this.cSharpProjectNugetPackageDependenciesFile.virtualChildFiles = [];
+                      }
+
+                      // this.cSharpProjectProjectReferencesFile.virtualChildFiles.push(
+                      //   new CSharpProjectProjectReferenceFile(this.cSharpProjectAbsoluteFilePath, 
+                      //     this.cSharpProjectProjectReferencesFile.absoluteFilePath,
+                      //     cSharpProjectReferenceRelativePathFromReceivingCSharpProject));
                       
                       return;
                   }

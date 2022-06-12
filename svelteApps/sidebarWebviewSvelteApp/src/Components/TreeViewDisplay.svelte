@@ -8,6 +8,7 @@
     import { MessageReadVirtualFilesInCSharpProject } from "../../../../out/Messages/Read/MessageReadVirtualFilesInCSharpProject";
     import { MessageReadProjectReferencesInProject } from "../../../../out/Messages/Read/MessageReadProjectReferencesInProject";
     import type { MessageReadVirtualFilesInSolution } from "../../../../out/Messages/Read/MessageReadVirtualFilesInSolution";
+    import { MessageReadNugetPackageReferencesInProject } from "../../../../out/Messages/Read/MessageReadNugetPackageReferencesInProject";
 	import { MessageCategory } from "../../../../out/Messages/MessageCategory";
 	import { MessageReadKind } from "../../../../out/Messages/Read/MessageReadKind";
 	import ExpansionChevron from "./ExpansionChevron.svelte";
@@ -62,6 +63,15 @@
                     tsVscode.postMessage({
                         type: undefined,
                         value: messageReadProjectReferencesInProject
+                    });
+					break;
+                case FileKind.projectReferences:
+                    let messageReadNugetPackageReferencesInProject = 
+                        new MessageReadNugetPackageReferencesInProject(ideFile);
+
+                    tsVscode.postMessage({
+                        type: undefined,
+                        value: messageReadNugetPackageReferencesInProject
                     });
 					break;
             }
@@ -161,6 +171,15 @@
 
 							if (ideFile.fileKind === FileKind.projectReferences) {
 								ideFile = messageReadProjectReferencesInProject.cSharpProjectProjectReferencesFile;
+
+								children = ideFile.virtualChildFiles;
+							}
+							break;
+						case MessageReadKind.nugetPackageReferencesInProject:
+							let messageReadNugetPackageReferencesInProject = message as MessageReadNugetPackageReferencesInProject;
+
+							if (ideFile.fileKind === FileKind.nugetPackageDependencies) {
+								ideFile = messageReadNugetPackageReferencesInProject.cSharpProjectNugetPackageDependenciesFile;
 
 								children = ideFile.virtualChildFiles;
 							}
