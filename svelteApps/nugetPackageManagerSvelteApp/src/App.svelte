@@ -51,14 +51,21 @@ import NugetResultsDisplay from "./Components/NugetResultsDisplay.svelte";
 												x.totalDownloads,
 												x.verified,
 												x.packageTypes,
-												x.versions.map(v => 
-													new NugetPackageVersionModel(v.version, v.downloads, undefined))));
+												sortWrapper(x.versions)
+													.map(v => 
+														new NugetPackageVersionModel(v.version, v.downloads, undefined))));
 				})
 				.catch((error) => {
 					console.log(error);
 					return [];
 				});
 		}
+	}
+
+	function sortWrapper(objects: any[]): any[] {
+		objects.sort((a: any, b: any) => -1 * a.version.localeCompare(b.version));
+
+		return objects;
 	}
 
 	function validateGetRequest(): boolean {

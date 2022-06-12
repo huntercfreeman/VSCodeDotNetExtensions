@@ -1,8 +1,12 @@
 <script lang="ts">
     import type { NugetPackageModel } from "../../../../out/DotNet/NugetPackageModel";
+import type { NugetPackageVersionModel } from "../../../../out/DotNet/NugetPackageVersionModel";
 import ExpansionChevron from "./ExpansionChevron.svelte";
+import SelectNugetPackageVersionForm from "./SelectNugetPackageVersionForm.svelte";
 
 	export let nugetPackageModel: NugetPackageModel;
+
+	let selectedVersionModel: NugetPackageVersionModel;
 
     let nugetPackageIsExpanded = false;
     let metaDataIsExpanded = false;
@@ -19,7 +23,14 @@ import ExpansionChevron from "./ExpansionChevron.svelte";
     </div>
     {#if nugetPackageIsExpanded}
         <div class="dni_tree-view-children">
-            <div>Latest version: {nugetPackageModel.version}</div>
+            <div><SelectNugetPackageVersionForm bind:selectedVersionModel={selectedVersionModel} 
+                                                versionModels={nugetPackageModel.versions} /></div>
+            <div>
+                Chosen Version: {selectedVersionModel?.version ?? "undefined"}&nbsp;
+                {#if selectedVersionModel}
+                    ({selectedVersionModel.downloads.toLocaleString()}: downloads)
+                {/if}
+            </div>
 
             <div><ExpansionChevron bind:isExpanded={descriptionIsExpanded} />
                 <span>description:</span> 
@@ -65,11 +76,6 @@ import ExpansionChevron from "./ExpansionChevron.svelte";
 </div>
 
 <style>
-	.dni_select {
-		color: var(--vscode-input-foreground);
-		background-color: var(--vscode-input-background);
-	}
-
     .dni_tree-view-children {
 		margin-left: 10px;
 		padding-left: 3px;

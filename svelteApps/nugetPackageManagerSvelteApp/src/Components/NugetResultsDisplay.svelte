@@ -7,7 +7,7 @@
 </script>
 
 <div>
-    {#each nugetPackageModels as nugetPackageModel}
+    {#each nugetPackageModels as nugetPackageModel (nugetPackageModel.id)}
         <NugetPackageDisplay nugetPackageModel={nugetPackageModel} />
     {/each}
 </div>
