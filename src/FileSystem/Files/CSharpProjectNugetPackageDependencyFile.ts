@@ -6,7 +6,7 @@ import { FileKind } from "../FileKind";
 import { IdeFile } from "./IdeFile";
 
 export class CSharpProjectNugetPackageDependencyFile extends IdeFile {
-    constructor(nugetPackageDependenciesParentAbsoluteFilePath: AbsoluteFilePath) {
+    constructor(cSharpProjectParentAbsoluteFilePath: AbsoluteFilePath, nugetPackageDependenciesParentAbsoluteFilePath: AbsoluteFilePath) {
         
         let myAbsoluteFilePath = new AbsoluteFilePath(ConstantsFileExtensionsNoPeriod.NUGET_PACKAGE_DEPENDENCIES_FILE_EXTENSION,
             false,
@@ -15,6 +15,8 @@ export class CSharpProjectNugetPackageDependencyFile extends IdeFile {
         super(myAbsoluteFilePath, "");
         
         this.fileKind = FileKind.nugetPackageDependency;
+
+        this.parentCSharpProjectInitialAbsoluteFilePath = cSharpProjectParentAbsoluteFilePath;
     }
 
     public setVirtualChildFiles(siblingFiles: IdeFile[]): void {
@@ -22,6 +24,8 @@ export class CSharpProjectNugetPackageDependencyFile extends IdeFile {
     }
     
     public childFiles: any[] | undefined;
+
+    public parentCSharpProjectInitialAbsoluteFilePath: AbsoluteFilePath;
     
     public hideExpansionChevronWhenNoChildFiles: boolean = true;
     

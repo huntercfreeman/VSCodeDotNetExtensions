@@ -14,6 +14,7 @@ import FileProjectDependenciesIcon from "./Icons/FileProjectDependenciesIcon.sve
 import FileNugetPackageDependencyIcon from "./Icons/FileNugetPackageDependencyIcon.svelte";
 import FileNugetPackageDependenciesIcon from "./Icons/FileNugetPackageDependenciesIcon.svelte";
 import FileProjectReferencesIcon from "./Icons/FileProjectReferencesIcon.svelte";
+import FileProjectReferenceIcon from "./Icons/FileProjectReferenceIcon.svelte";
 
     export let fileKind: typeof FileKind;
 </script>
@@ -46,4 +47,6 @@ import FileProjectReferencesIcon from "./Icons/FileProjectReferencesIcon.svelte"
     <FileNugetPackageDependencyIcon />
 {:else if fileKind === FileKind.projectReferences}
     <FileProjectReferencesIcon />
+{:else if fileKind === FileKind.projectReference}
+    <FileProjectReferenceIcon />
 {/if}

@@ -6,13 +6,14 @@
     import { MessageReadFilesInDirectory } from "../../../out/Messages/Read/MessageReadFilesInDirectory";
     import { MessageReadFileIntoEditor } from "../../../out/Messages/Read/MessageReadFileIntoEditor";
     import { MessageReadVirtualFilesInCSharpProject } from "../../../out/Messages/Read/MessageReadVirtualFilesInCSharpProject";
+    import { MessageReadProjectReferencesInProject } from "../../../out/Messages/Read/MessageReadProjectReferencesInProject";
     import type { MessageReadVirtualFilesInSolution } from "../../../out/Messages/Read/MessageReadVirtualFilesInSolution";
 	import { MessageCategory } from "../../../out/Messages/MessageCategory";
 	import { MessageReadKind } from "../../../out/Messages/Read/MessageReadKind";
 	import ExpansionChevron from "./ExpansionChevron.svelte";
 	import FileIconDisplay from './FileIconDisplay.svelte';
 	import { contextMenuTarget } from './menu.js';
-import type { DotNetSolutionFile } from "../../../out/FileSystem/Files/DotNetSolutionFile";
+	import type { DotNetSolutionFile } from "../../../out/FileSystem/Files/DotNetSolutionFile";
 
 	export let ideFile: IdeFile;
 	
@@ -52,6 +53,15 @@ import type { DotNetSolutionFile } from "../../../out/FileSystem/Files/DotNetSol
                     tsVscode.postMessage({
                         type: undefined,
                         value: messageReadFilesInDirectory
+                    });
+					break;
+                case FileKind.projectReferences:
+                    let messageReadProjectReferencesInProject = 
+                        new MessageReadProjectReferencesInProject(ideFile);
+
+                    tsVscode.postMessage({
+                        type: undefined,
+                        value: messageReadProjectReferencesInProject
                     });
 					break;
             }
@@ -143,6 +153,15 @@ import type { DotNetSolutionFile } from "../../../out/FileSystem/Files/DotNetSol
 
 							if (ideFile.fileKind === FileKind.solution) {
 								ideFile = messageReadVirtualFilesInSolution.dotNetSolutionFile;
+
+								children = ideFile.virtualChildFiles;
+							}
+							break;
+						case MessageReadKind.projectReferencesInProject:
+							let messageReadProjectReferencesInProject = message as MessageReadProjectReferencesInProject;
+
+							if (ideFile.fileKind === FileKind.projectReferences) {
+								ideFile = messageReadProjectReferencesInProject.cSharpProjectProjectReferencesFile;
 
 								children = ideFile.virtualChildFiles;
 							}

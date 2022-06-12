@@ -5,5 +5,6 @@ export enum MessageReadKind {
     solutionIntoTreeView,
     virtualFilesInCSharpProject,
     newProjectTemplatesOnComputer,
-    virtualFilesInSolution
+    virtualFilesInSolution,
+    projectReferencesInProject
 }

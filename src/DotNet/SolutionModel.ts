@@ -2,6 +2,7 @@ import { ConstantsContextualInformation } from "../Constants/ConstantsContextual
 import { AbsoluteFilePath } from "../FileSystem/AbsoluteFilePath";
 import { DotNetSolutionParser } from "../Parsers/DotNetSolutionParser";
 import { CSharpProjectModel } from "./CSharpProjectModel";
+
 const fs = require('fs');
 
 export class SolutionModel {
