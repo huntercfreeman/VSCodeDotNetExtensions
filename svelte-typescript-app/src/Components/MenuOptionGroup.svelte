@@ -1,19 +1,14 @@
 <script lang="ts">
-import { copyFile } from "fs";
-
-    import { ContextualInformationDatum } from "../../../../out/ContextMenus/ContextualInformationDatum";
-import MenuOptionAddCSharpProjectReference from "./MenuOptionAddCSharpProjectReference.svelte";
-import MenuOptionAddExistingCSharpProject from "./MenuOptionAddExistingCSharpProject.svelte";
-import MenuOptionCopyFile from "./MenuOptionCopyFile.svelte";
-    import MenuOptionCreateDirectory from "./MenuOptionCreateDirectory.svelte";
-import MenuOptionCreateNewCSharpProject from "./MenuOptionCreateNewCSharpProject.svelte";
-    import MenuOptionCreateNewEmptyFile from "./MenuOptionCreateNewEmptyFile.svelte";
-    import MenuOptionCreateNewTemplatedFile from "./MenuOptionCreateNewTemplatedFile.svelte";
-import MenuOptionCutFile from "./MenuOptionCutFile.svelte";
-import MenuOptionPaste from "./MenuOptionPaste.svelte";
-    import MenuOptionRefreshChildFiles from "./MenuOptionRefreshChildFiles.svelte";
-import MenuOptionRenameFile from "./MenuOptionRenameFile.svelte";
-import MenuOptionStartWithoutDebugging from "./MenuOptionStartWithoutDebugging.svelte";
+    import { ContextualInformationDatum } from "../../../out/ContextMenus/ContextualInformationDatum";
+    import MenuOptionAddCSharpProjectReference from "./ContextMenuOptions/MenuOptionAddCSharpProjectReference.svelte";
+    import MenuOptionAddExistingCSharpProject from "./ContextMenuOptions/MenuOptionAddExistingCSharpProject.svelte";
+    import MenuOptionCreateDirectory from "./ContextMenuOptions/MenuOptionCreateDirectory.svelte";
+    import MenuOptionCreateNewCSharpProject from "./ContextMenuOptions/MenuOptionCreateNewCSharpProject.svelte";
+    import MenuOptionCreateNewEmptyFile from "./ContextMenuOptions/MenuOptionCreateNewEmptyFile.svelte";
+    import MenuOptionCreateNewTemplatedFile from "./ContextMenuOptions/MenuOptionCreateNewTemplatedFile.svelte";
+    import MenuOptionRefreshChildFiles from "./ContextMenuOptions/MenuOptionRefreshChildFiles.svelte";
+    import MenuOptionStartDebugging from "./ContextMenuOptions/MenuOptionStartDebugging.svelte";
+    import MenuOptionStartWithoutDebugging from "./ContextMenuOptions/MenuOptionStartWithoutDebugging.svelte";
 
     export let contextualInformation: ContextualInformationDatum[];
     export let closeMenu;
@@ -35,24 +30,15 @@ import MenuOptionStartWithoutDebugging from "./MenuOptionStartWithoutDebugging.s
     {:else if ContextualInformationDatum.checkDatumEquality(ContextualInformationDatum.startWithoutDebugging,
                                                             contextualInformationDatum)}
         <MenuOptionStartWithoutDebugging closeMenu={closeMenu} />
+    {:else if ContextualInformationDatum.checkDatumEquality(ContextualInformationDatum.startDebugging,
+                                                            contextualInformationDatum)}
+        <MenuOptionStartDebugging closeMenu={closeMenu} />
     {:else if ContextualInformationDatum.checkDatumEquality(ContextualInformationDatum.createNewCSharpProject,
                                                             contextualInformationDatum)}
         <MenuOptionCreateNewCSharpProject closeMenu={closeMenu} />
     {:else if ContextualInformationDatum.checkDatumEquality(ContextualInformationDatum.addExistingCSharpProject,
                                                             contextualInformationDatum)}
         <MenuOptionAddExistingCSharpProject closeMenu={closeMenu} />
-    {:else if ContextualInformationDatum.checkDatumEquality(ContextualInformationDatum.copyFile,
-                                                            contextualInformationDatum)}
-        <MenuOptionCopyFile closeMenu={closeMenu} />
-    {:else if ContextualInformationDatum.checkDatumEquality(ContextualInformationDatum.cutFile,
-                                                            contextualInformationDatum)}
-        <MenuOptionCutFile closeMenu={closeMenu} />
-    {:else if ContextualInformationDatum.checkDatumEquality(ContextualInformationDatum.paste,
-                                                            contextualInformationDatum)}
-        <MenuOptionPaste closeMenu={closeMenu} />
-    {:else if ContextualInformationDatum.checkDatumEquality(ContextualInformationDatum.rename,
-                                                            contextualInformationDatum)}
-        <MenuOptionRenameFile closeMenu={closeMenu} />
     {:else if ContextualInformationDatum.checkDatumEquality(ContextualInformationDatum.addProjectReference,
                                                             contextualInformationDatum)}
         <MenuOptionAddCSharpProjectReference closeMenu={closeMenu} />

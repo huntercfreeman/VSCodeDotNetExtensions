@@ -11,9 +11,6 @@ export class CSharpFile extends IdeFile {
     
     public childFiles: any[] | undefined;
     public readonly contextualInformation: ContextualInformationDatum[] = [
-        ContextualInformationDatum.copyFile,
-        ContextualInformationDatum.cutFile,
-        ContextualInformationDatum.rename,
     ];
     
     public hideExpansionChevronWhenNoChildFiles: boolean = true;

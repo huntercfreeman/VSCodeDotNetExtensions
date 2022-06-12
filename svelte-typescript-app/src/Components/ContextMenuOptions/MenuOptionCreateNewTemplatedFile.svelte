@@ -50,7 +50,7 @@
 
 <MenuOption onClickStopPropagation="{true}"
     onClick={beginFormAddFileWithTemplateNameOnClick} 
-    text="Add file with template." />
+    text="Create templated file." />
 <TextInputForm bind:value="{addFileWithTemplateFilename}"
                 onValidSubmit="{addFileWithTemplateToFolderOnClick}"
                 placeholder="Filename with extension" />

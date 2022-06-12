@@ -9,7 +9,7 @@
 	import MenuOptionRefreshChildFiles from './ContextMenuOptions/MenuOptionRefreshChildFiles.svelte';
 	import MenuOptionCreateDirectory from './ContextMenuOptions/MenuOptionCreateDirectory.svelte';
 	import { ContextualInformationDatumKind } from '../../../out/ContextMenus/ContextualInformationDatumKind';
-	import MenuOptionGroup from './ContextMenuOptions/MenuOptionGroup.svelte';
+	import MenuOptionGroup from './MenuOptionGroup.svelte';
 	import type { ContextualInformationDatum } from '../../../out/ContextMenus/ContextualInformationDatum';
 
     let pos = { x: 0, y: 0 };

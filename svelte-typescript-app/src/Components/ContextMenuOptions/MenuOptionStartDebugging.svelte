@@ -8,20 +8,28 @@
     import { FileKind } from '../../../../out/FileSystem/FileKind';
     import { MessageReadVirtualFilesInCSharpProject } from '../../../../out/Messages/Read/MessageReadVirtualFilesInCSharpProject';
     import { MessageReadFilesInDirectory } from '../../../../out/Messages/Read/MessageReadFilesInDirectory';
+    import { MessageExecuteCSharpProjectWithoutDebugging } from '../../../../out/Messages/Execute/MessageExecuteCSharpProjectWithoutDebugging';
+    import { MessageExecuteCSharpProjectDebugging } from '../../../../out/Messages/Execute/MessageExecuteCSharpProjectDebugging';
 
 	export let closeMenu;
 
 	let contextMenuTargetValue;
-    let addFileWithTemplateFilename: string | undefined;
-	let shouldAddCodeBehind: boolean = false;
 	
 	contextMenuTarget.subscribe(value => {
 		contextMenuTargetValue = value;
 	});
 
-    function copyFileOnClick() {
+    function startWithoutDebugging() {
         switch (contextMenuTargetValue.fileKind) {
-            
+            case FileKind.cSharpProject:
+                let messageExecuteCSharpProjectDebugging = 
+                    new MessageExecuteCSharpProjectDebugging(contextMenuTargetValue);
+
+                tsVscode.postMessage({
+                    type: undefined,
+                    value: messageExecuteCSharpProjectDebugging
+                });
+                break;
         }
 
         closeMenu();
@@ -29,5 +37,5 @@
 </script>
 
 <MenuOption onClickStopPropagation="{true}"
-            onClick={copyFileOnClick} 
-            text="Copy." />
+            onClick={startWithoutDebugging} 
+            text="Start debugging." />

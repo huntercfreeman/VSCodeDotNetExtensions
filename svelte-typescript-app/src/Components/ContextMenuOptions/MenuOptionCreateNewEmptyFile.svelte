@@ -26,7 +26,7 @@
 
 <MenuOption onClickStopPropagation="{true}"
     onClick={beginFormAddEmptyFileOnClick} 
-    text="Add an empty file." />
+    text="Create empty file." />
 <TextInputForm bind:value="{addEmptyFileFilename}"
                 onValidSubmit="{addEmptyFileToFolderOnClick}"
                 placeholder="Filename with extension" />

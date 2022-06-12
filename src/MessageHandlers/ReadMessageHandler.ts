@@ -5,6 +5,7 @@ import { ConstantsTerminal } from '../Constants/ConstantsTerminal';
 import { CSharpProjectModel } from '../DotNet/CSharpProjectModel';
 import { SolutionModel } from '../DotNet/SolutionModel';
 import { AbsoluteFilePath } from '../FileSystem/AbsoluteFilePath';
+import { FileKind } from '../FileSystem/FileKind';
 import { CSharpProjectFile } from '../FileSystem/Files/CSharpProjectFile';
 import { DotNetSolutionFile } from '../FileSystem/Files/DotNetSolutionFile';
 import { FileSorter } from '../FileSystem/FileSorter';
@@ -71,6 +72,7 @@ export class ReadMessageHandler {
 
         if (!workspaceFolderAbsolutePath) {
             vscode.window.showInformationMessage('No files in empty workspace');
+            return;
         }
 
         let solutionFsPaths = (await vscode.workspace.findFiles("**/*.sln"))
@@ -178,15 +180,23 @@ export class ReadMessageHandler {
 
         const openPath = vscode.Uri.file(message.ideFile.absoluteFilePath.initialAbsoluteFilePathStringInput);
 
-        vscode.workspace.openTextDocument(openPath).then(doc => {
-            let textDocumentShowOptions: vscode.TextDocumentShowOptions = {
-                "preserveFocus": false,
-                "preview": false,
-                "viewColumn": vscode.ViewColumn.One
-            };
-
-            vscode.window.showTextDocument(doc, textDocumentShowOptions);
-        });
+        switch (message.ideFile.fileKind) {
+            case FileKind.directory:
+                // TODO: Track the clicked directory in vscode folder explorer I did not get this to work yet.
+                // vscode.window.showTextDocument(vscode.Uri.from(openPath));
+                break;
+            default:
+                vscode.workspace.openTextDocument(openPath).then(doc => {
+                    let textDocumentShowOptions: vscode.TextDocumentShowOptions = {
+                        "preserveFocus": false,
+                        "preview": false,
+                        "viewColumn": vscode.ViewColumn.One
+                    };
+        
+                    vscode.window.showTextDocument(doc, textDocumentShowOptions);
+                });
+                break;
+        }
     }
     
     public static async handleMessageReadNewProjectTemplatesOnComputer(webviewView: vscode.WebviewView, iMessage: IMessage) {

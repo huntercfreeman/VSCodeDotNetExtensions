@@ -7,7 +7,12 @@ export function activate(context: vscode.ExtensionContext) {
 	context.subscriptions.push(
 		vscode.window.registerWebviewViewProvider(
 			"dot-net-ide.sidebar-webview",
-			sidebarProvider
+			sidebarProvider,
+			{
+				"webviewOptions": {
+					retainContextWhenHidden: true
+				}
+			}
 		)
 	);
 }

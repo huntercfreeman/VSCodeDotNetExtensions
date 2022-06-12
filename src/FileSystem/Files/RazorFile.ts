@@ -44,8 +44,5 @@ export class RazorFile extends IdeFile {
     }
     
     public readonly contextualInformation: ContextualInformationDatum[] = [
-        ContextualInformationDatum.copyFile,
-        ContextualInformationDatum.cutFile,
-        ContextualInformationDatum.rename,
     ];
 }
