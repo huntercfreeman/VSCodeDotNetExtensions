@@ -1,5 +1,5 @@
 <script lang="ts">
-    import { FileKind } from "../../../out/FileSystem/FileKind";
+    import { FileKind } from "../../../../out/FileSystem/FileKind";
     import FileProjectIcon from "./Icons/FileProjectIcon.svelte";
     import FileSolutionIcon from "./Icons/FileSolutionIcon.svelte";
     import FileDirectoryIcon from "./Icons/FileDirectoryIcon.svelte";

@@ -19,6 +19,6 @@
 		".vscode-test",
 		"webviews",
 		"my-app",
-		"svelte-typescript-app"
+		"svelteApps"
 	]
 }

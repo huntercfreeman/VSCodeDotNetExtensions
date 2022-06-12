@@ -1,5 +1,5 @@
 <script lang="ts">
-    import { ContextualInformationDatum } from "../../../out/ContextMenus/ContextualInformationDatum";
+    import { ContextualInformationDatum } from "../../../../out/ContextMenus/ContextualInformationDatum";
     import MenuOptionAddCSharpProjectReference from "./ContextMenuOptions/MenuOptionAddCSharpProjectReference.svelte";
     import MenuOptionAddExistingCSharpProject from "./ContextMenuOptions/MenuOptionAddExistingCSharpProject.svelte";
     import MenuOptionCreateDirectory from "./ContextMenuOptions/MenuOptionCreateDirectory.svelte";

@@ -36,7 +36,7 @@ export default {
 		sourcemap: true,
 		format: 'iife',
 		name: 'app',
-		file: '../out/sidebarWebview/sidebarWebview.js'
+		file: '../../out/sidebarWebview/sidebarWebview.js'
 	},
 	plugins: [
 		svelte({

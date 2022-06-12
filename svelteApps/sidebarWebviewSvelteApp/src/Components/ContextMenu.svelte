@@ -2,15 +2,15 @@
     import Menu from './Menu.svelte'
     import MenuOption from './MenuOption.svelte';
 	import MenuDivider from './MenuDivider.svelte';
-    import { ConstantsContextualInformation } from "../../../out/Constants/ConstantsContextualInformation";
+    import { ConstantsContextualInformation } from "../../../../out/Constants/ConstantsContextualInformation";
 	import { contextMenuTarget } from './menu.js';
 	import MenuOptionCreateNewTemplatedFile from './ContextMenuOptions/MenuOptionCreateNewTemplatedFile.svelte';
 	import MenuOptionCreateNewEmptyFile from './ContextMenuOptions/MenuOptionCreateNewEmptyFile.svelte';
 	import MenuOptionRefreshChildFiles from './ContextMenuOptions/MenuOptionRefreshChildFiles.svelte';
 	import MenuOptionCreateDirectory from './ContextMenuOptions/MenuOptionCreateDirectory.svelte';
-	import { ContextualInformationDatumKind } from '../../../out/ContextMenus/ContextualInformationDatumKind';
+	import { ContextualInformationDatumKind } from '../../../../out/ContextMenus/ContextualInformationDatumKind';
 	import MenuOptionGroup from './MenuOptionGroup.svelte';
-	import type { ContextualInformationDatum } from '../../../out/ContextMenus/ContextualInformationDatum';
+	import type { ContextualInformationDatum } from '../../../../out/ContextMenus/ContextualInformationDatum';
 
     let pos = { x: 0, y: 0 };
     let showMenu = false;

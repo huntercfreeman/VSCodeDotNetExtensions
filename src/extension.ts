@@ -10,6 +10,7 @@ export function activate(context: vscode.ExtensionContext) {
 			sidebarProvider,
 			{
 				"webviewOptions": {
+					// retainContextWhenHidden is resource intensive and should be used sparingly
 					retainContextWhenHidden: true
 				}
 			}

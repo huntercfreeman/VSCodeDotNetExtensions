@@ -1,16 +1,16 @@
 <script lang="ts">
-    import { ConstantsFileExtensionsNoPeriod } from '../../../../out/Constants/ConstantsFileExtensionsNoPeriod';
+    import { ConstantsFileExtensionsNoPeriod } from '../../../../../out/Constants/ConstantsFileExtensionsNoPeriod';
     import { contextMenuTarget } from '../menu';
     import MenuOption from '../MenuOption.svelte';
     import TextInputForm from '../TextInputForm.svelte';
-    import { MessageCreateTemplatedFileInDirectory } from "../../../../out/Messages/Create/MessageCreateTemplatedFileInDirectory";
-    import { DirectoryFile } from '../../../../out/FileSystem/Files/DirectoryFile';
-    import { FileKind } from '../../../../out/FileSystem/FileKind';
-    import { MessageReadVirtualFilesInCSharpProject } from '../../../../out/Messages/Read/MessageReadVirtualFilesInCSharpProject';
-    import { MessageReadFilesInDirectory } from '../../../../out/Messages/Read/MessageReadFilesInDirectory';
-    import { MessageReadSolutionIntoTreeView } from '../../../../out/Messages/Read/MessageReadSolutionIntoTreeView';
-    import { MessageReadVirtualFilesInSolution } from '../../../../out/Messages/Read/MessageReadVirtualFilesInSolution';
-import { MessageReadProjectReferencesInProject } from '../../../../out/Messages/Read/MessageReadProjectReferencesInProject';
+    import { MessageCreateTemplatedFileInDirectory } from "../../../../../out/Messages/Create/MessageCreateTemplatedFileInDirectory";
+    import { DirectoryFile } from '../../../../../out/FileSystem/Files/DirectoryFile';
+    import { FileKind } from '../../../../../out/FileSystem/FileKind';
+    import { MessageReadVirtualFilesInCSharpProject } from '../../../../../out/Messages/Read/MessageReadVirtualFilesInCSharpProject';
+    import { MessageReadFilesInDirectory } from '../../../../../out/Messages/Read/MessageReadFilesInDirectory';
+    import { MessageReadSolutionIntoTreeView } from '../../../../../out/Messages/Read/MessageReadSolutionIntoTreeView';
+    import { MessageReadVirtualFilesInSolution } from '../../../../../out/Messages/Read/MessageReadVirtualFilesInSolution';
+import { MessageReadProjectReferencesInProject } from '../../../../../out/Messages/Read/MessageReadProjectReferencesInProject';
 
 	export let closeMenu;
 

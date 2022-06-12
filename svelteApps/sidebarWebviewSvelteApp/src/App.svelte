@@ -1,9 +1,9 @@
 <script lang="ts">
 	import { onMount } from "svelte";
-	import type { DotNetSolutionFile } from "../../out/FileSystem/Files/DotNetSolutionFile";
-	import { MessageCategory } from "../../out/Messages/MessageCategory";
-	import { MessageReadKind } from "../../out/Messages/Read/MessageReadKind";
-	import { MessageReadSolutionsInWorkspace } from "../../out/Messages/Read/MessageReadSolutionsInWorkspace";
+	import type { DotNetSolutionFile } from "../../../out/FileSystem/Files/DotNetSolutionFile";
+	import { MessageCategory } from "../../../out/Messages/MessageCategory";
+	import { MessageReadKind } from "../../../out/Messages/Read/MessageReadKind";
+	import { MessageReadSolutionsInWorkspace } from "../../../out/Messages/Read/MessageReadSolutionsInWorkspace";
 	import SelectDotNetSolutionFileForm from "./Components/SelectDotNetSolutionFileForm.svelte";
 	import TreeViewDisplay from "./Components/TreeViewDisplay.svelte";
 	import ContextMenu from "./Components/ContextMenu.svelte";

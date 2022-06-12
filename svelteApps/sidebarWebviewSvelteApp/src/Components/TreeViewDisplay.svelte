@@ -1,19 +1,19 @@
 <script lang="ts">
 	import { onMount } from "svelte";
-    import type { IdeFile } from "../../../out/FileSystem/Files/IdeFile";
-    import { FileKind } from "../../../out/FileSystem/FileKind";
-    import type { CSharpProjectFile } from "../../../out/FileSystem/Files/CSharpProjectFile";
-    import { MessageReadFilesInDirectory } from "../../../out/Messages/Read/MessageReadFilesInDirectory";
-    import { MessageReadFileIntoEditor } from "../../../out/Messages/Read/MessageReadFileIntoEditor";
-    import { MessageReadVirtualFilesInCSharpProject } from "../../../out/Messages/Read/MessageReadVirtualFilesInCSharpProject";
-    import { MessageReadProjectReferencesInProject } from "../../../out/Messages/Read/MessageReadProjectReferencesInProject";
-    import type { MessageReadVirtualFilesInSolution } from "../../../out/Messages/Read/MessageReadVirtualFilesInSolution";
-	import { MessageCategory } from "../../../out/Messages/MessageCategory";
-	import { MessageReadKind } from "../../../out/Messages/Read/MessageReadKind";
+    import type { IdeFile } from "../../../../out/FileSystem/Files/IdeFile";
+    import { FileKind } from "../../../../out/FileSystem/FileKind";
+    import type { CSharpProjectFile } from "../../../../out/FileSystem/Files/CSharpProjectFile";
+    import { MessageReadFilesInDirectory } from "../../../../out/Messages/Read/MessageReadFilesInDirectory";
+    import { MessageReadFileIntoEditor } from "../../../../out/Messages/Read/MessageReadFileIntoEditor";
+    import { MessageReadVirtualFilesInCSharpProject } from "../../../../out/Messages/Read/MessageReadVirtualFilesInCSharpProject";
+    import { MessageReadProjectReferencesInProject } from "../../../../out/Messages/Read/MessageReadProjectReferencesInProject";
+    import type { MessageReadVirtualFilesInSolution } from "../../../../out/Messages/Read/MessageReadVirtualFilesInSolution";
+	import { MessageCategory } from "../../../../out/Messages/MessageCategory";
+	import { MessageReadKind } from "../../../../out/Messages/Read/MessageReadKind";
 	import ExpansionChevron from "./ExpansionChevron.svelte";
 	import FileIconDisplay from './FileIconDisplay.svelte';
 	import { contextMenuTarget } from './menu.js';
-	import type { DotNetSolutionFile } from "../../../out/FileSystem/Files/DotNetSolutionFile";
+	import type { DotNetSolutionFile } from "../../../../out/FileSystem/Files/DotNetSolutionFile";
 
 	export let ideFile: IdeFile;
 	

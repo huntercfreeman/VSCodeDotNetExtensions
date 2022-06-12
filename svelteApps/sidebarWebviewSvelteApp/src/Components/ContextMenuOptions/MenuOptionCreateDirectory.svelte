@@ -1,11 +1,11 @@
 <script lang="ts">
-    import { ConstantsFileExtensionsNoPeriod } from '../../../../out/Constants/ConstantsFileExtensionsNoPeriod';
+    import { ConstantsFileExtensionsNoPeriod } from '../../../../../out/Constants/ConstantsFileExtensionsNoPeriod';
     import { contextMenuTarget } from '../menu';
     import MenuOption from '../MenuOption.svelte';
     import TextInputForm from '../TextInputForm.svelte';
-    import { MessageCreateDirectoryInDirectory } from "../../../../out/Messages/Create/MessageCreateDirectoryInDirectory";
-    import { DirectoryFile } from '../../../../out/FileSystem/Files/DirectoryFile';
-    import { FileKind } from '../../../../out/FileSystem/FileKind';
+    import { MessageCreateDirectoryInDirectory } from "../../../../../out/Messages/Create/MessageCreateDirectoryInDirectory";
+    import { DirectoryFile } from '../../../../../out/FileSystem/Files/DirectoryFile';
+    import { FileKind } from '../../../../../out/FileSystem/FileKind';
 
 	export let closeMenu;
 

@@ -1,16 +1,16 @@
 <script lang="ts">
-    import { ConstantsFileExtensionsNoPeriod } from '../../../../out/Constants/ConstantsFileExtensionsNoPeriod';
+    import { ConstantsFileExtensionsNoPeriod } from '../../../../../out/Constants/ConstantsFileExtensionsNoPeriod';
     import { contextMenuTarget } from '../menu';
     import MenuOption from '../MenuOption.svelte';
     import TextInputForm from '../TextInputForm.svelte';
-    import { MessageCreateTemplatedFileInDirectory } from "../../../../out/Messages/Create/MessageCreateTemplatedFileInDirectory";
-    import { DirectoryFile } from '../../../../out/FileSystem/Files/DirectoryFile';
-    import { FileKind } from '../../../../out/FileSystem/FileKind';
-    import { MessageReadVirtualFilesInCSharpProject } from '../../../../out/Messages/Read/MessageReadVirtualFilesInCSharpProject';
-    import { MessageReadFilesInDirectory } from '../../../../out/Messages/Read/MessageReadFilesInDirectory';
-    import { MessageExecuteCSharpProjectWithoutDebugging } from '../../../../out/Messages/Execute/MessageExecuteCSharpProjectWithoutDebugging';
-    import { MessageReadNewProjectTemplatesOnComputer } from '../../../../out/Messages/Read/MessageReadNewProjectTemplatesOnComputer';
-    import { MessageCreateCSharpProjectInSolution } from '../../../../out/Messages/Create/MessageCreateCSharpProjectInSolution';
+    import { MessageCreateTemplatedFileInDirectory } from "../../../../../out/Messages/Create/MessageCreateTemplatedFileInDirectory";
+    import { DirectoryFile } from '../../../../../out/FileSystem/Files/DirectoryFile';
+    import { FileKind } from '../../../../../out/FileSystem/FileKind';
+    import { MessageReadVirtualFilesInCSharpProject } from '../../../../../out/Messages/Read/MessageReadVirtualFilesInCSharpProject';
+    import { MessageReadFilesInDirectory } from '../../../../../out/Messages/Read/MessageReadFilesInDirectory';
+    import { MessageExecuteCSharpProjectWithoutDebugging } from '../../../../../out/Messages/Execute/MessageExecuteCSharpProjectWithoutDebugging';
+    import { MessageReadNewProjectTemplatesOnComputer } from '../../../../../out/Messages/Read/MessageReadNewProjectTemplatesOnComputer';
+    import { MessageCreateCSharpProjectInSolution } from '../../../../../out/Messages/Create/MessageCreateCSharpProjectInSolution';
 
 	export let closeMenu;
 

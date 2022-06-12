@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { MessageCreateDotNetSolutionInWorkspace } from "../../../out/Messages/Create/MessageCreateDotNetSolutionInWorkspace";
+	import { MessageCreateDotNetSolutionInWorkspace } from "../../../../out/Messages/Create/MessageCreateDotNetSolutionInWorkspace";
     import TextInputForm from "./TextInputForm.svelte";
 
     export let getSolutionFilesInWorkspace;

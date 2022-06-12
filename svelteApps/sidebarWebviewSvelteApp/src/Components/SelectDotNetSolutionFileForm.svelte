@@ -1,6 +1,6 @@
 <script lang="ts">
-    import type { DotNetSolutionFile } from "../../../out/FileSystem/Files/DotNetSolutionFile";
-    import { MessageReadSolutionIntoTreeView } from "../../../out/Messages/Read/MessageReadSolutionIntoTreeView";
+    import type { DotNetSolutionFile } from "../../../../out/FileSystem/Files/DotNetSolutionFile";
+    import { MessageReadSolutionIntoTreeView } from "../../../../out/Messages/Read/MessageReadSolutionIntoTreeView";
 
 	export let dotNetSolutionFiles: DotNetSolutionFile[] = [];
 
