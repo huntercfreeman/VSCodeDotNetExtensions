@@ -1,83 +1,30 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 export class ConstantsCSharpProjectFile {
+    public static readonly START_OF_XML_TAG: string = "<";
+    public static readonly ENDINGS_OF_XML_TAG: string[] = [">", "/>"];
+    public static readonly START_OF_XML_TAG_ATTRIBUTE: string = "\"";
+    public static readonly END_OF_XML_TAG_ATTRIBUTE: string = "/>";
+    public static readonly START_OF_XML_INCLUDE_ATTRIBUTE: string = "Include";
+    public static readonly START_OF_VERSION_ATTRIBUTE: string = "Version";
+
     /**
-     * Example text:
+     * ProjectReference Example text:
      * 
      *     <ItemGroup>
      *         <ProjectReference Include="..\ClassLibraryStuff\ClassLibraryStuff.csproj" />
      *     </ItemGroup>
      */
-    public static readonly START_OF_PROJECT_REFERENCE_DEFINITION: string = "<ProjectReference";
+    public static readonly PROJECT_REFERENCE_TAG_NAME: string = "ProjectReference";
     /**
-     * Example text:
-     * 
-     *     <ItemGroup>
-     *         <ProjectReference Include="..\ClassLibraryStuff\ClassLibraryStuff.csproj" />
-     *     </ItemGroup>
-     */
-    public static readonly END_OF_PROJECT_REFERENCE_DEFINITION: string = "/>";
-    /**
-     * Example text:
-     * 
-     *     <ItemGroup>
-     *         <ProjectReference Include="..\ClassLibraryStuff\ClassLibraryStuff.csproj" />
-     *     </ItemGroup>
-     */
-    public static readonly START_OF_PROJECT_REFERENCE_INCLUDE_DEFINITION: string = "Include=\"";
-    /**
-     * Example text:
-     * 
-     *     <ItemGroup>
-     *         <ProjectReference Include="..\ClassLibraryStuff\ClassLibraryStuff.csproj" />
-     *     </ItemGroup>
-     */
-    public static readonly END_OF_PROJECT_REFERENCE_INCLUDE_DEFINITION: string = "\"";
-    /**
-     * Example text:
+     * Nuget Package Reference Example text:
      * 
      *     <ItemGroup>
      *         <PackageReference Include="Fluxor" Version="5.4.0" />
+     *         <PackageReference Include="xunit.runner.visualstudio" Version="2.4.3">
+     *             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+     *             <PrivateAssets>all</PrivateAssets>
+     *         </PackageReference>
      *     </ItemGroup>
      */
-    public static readonly START_OF_NUGET_PACKAGE_REFERENCE_DEFINITION: string = "<PackageReference";
-    /**
-     * Example text:
-     * 
-     *     <ItemGroup>
-     *         <PackageReference Include="Fluxor" Version="5.4.0" />
-     *     </ItemGroup>
-     */
-    public static readonly END_OF_NUGET_PACKAGE_REFERENCE_DEFINITION: string = "/>";
-    /**
-     * Example text:
-     * 
-     *     <ItemGroup>
-     *         <PackageReference Include="Fluxor" Version="5.4.0" />
-     *     </ItemGroup>
-     */
-    public static readonly START_OF_NUGET_PACKAGE_REFERENCE_INCLUDE_DEFINITION: string = "Include=\"";
-    /**
-     * Example text:
-     * 
-     *     <ItemGroup>
-     *         <PackageReference Include="Fluxor" Version="5.4.0" />
-     *     </ItemGroup>
-     */
-    public static readonly END_OF_NUGET_PACKAGE_REFERENCE_INCLUDE_DEFINITION: string = "\" ";
-    /**
-     * Example text:
-     * 
-     *     <ItemGroup>
-     *         <PackageReference Include="Fluxor" Version="5.4.0" />
-     *     </ItemGroup>
-     */
-    public static readonly START_OF_NUGET_PACKAGE_REFERENCE_VERSION_DEFINITION: string = "Version=\"";
-    /**
-     * Example text:
-     * 
-     *     <ItemGroup>
-     *         <PackageReference Include="Fluxor" Version="5.4.0" />
-     *     </ItemGroup>
-     */
-    public static readonly END_OF_NUGET_PACKAGE_REFERENCE_VERSION_DEFINITION: string = "\" ";
+    public static readonly START_OF_NUGET_PACKAGE_REFERENCE_DEFINITION: string = "PackageReference";
 }

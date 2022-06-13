@@ -4,6 +4,7 @@ import { ConstantsStringReader } from "../Constants/ConstantsStringReader";
 import { CSharpProjectModel } from "../DotNet/CSharpProjectModel";
 import { SolutionModel } from "../DotNet/SolutionModel";
 import { AbsoluteFilePath } from "../FileSystem/AbsoluteFilePath";
+import { endOfFile } from "./CommonParserUtility";
 import { StringReader } from "./StringReader";
 
 const fs = require('fs');
@@ -31,8 +32,7 @@ export class DotNetSolutionParser {
 
       let currentCharacter = "";
 
-      while ((currentCharacter = this._stringReader.consume(1)) !==
-        ConstantsStringReader.END_OF_FILE_MARKER) {
+      while (!endOfFile(currentCharacter = this._stringReader.consume(1))) {
 
         var handledToken = false;
 
@@ -93,8 +93,7 @@ export class DotNetSolutionParser {
     //  ---------
     // Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyCrudApp", "MyCrudApp\MyCrudApp.csproj", "{8257B361-20EC-4D50-8987-169E8BEC46E4}"
     //  ---------
-    while ((currentCharacter = this._stringReader.consume(1)) !==
-            ConstantsStringReader.END_OF_FILE_MARKER) {
+    while (!endOfFile(currentCharacter = this._stringReader.consume(1))) {
 
         if (currentCharacter === ConstantsSolutionFile.START_OF_GUID) {
           break;
@@ -111,8 +110,7 @@ export class DotNetSolutionParser {
     //                                                -
     // Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyCrudApp", "MyCrudApp\MyCrudApp.csproj", "{8257B361-20EC-4D50-8987-169E8BEC46E4}"
     //                                                -
-    while ((currentCharacter = this._stringReader.consume(1)) !==
-            ConstantsStringReader.END_OF_FILE_MARKER) {
+    while (!endOfFile(currentCharacter = this._stringReader.consume(1))) {
 
         if (currentCharacter === '"') {
           break;
@@ -123,8 +121,7 @@ export class DotNetSolutionParser {
     //                                                 -----
     // Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyCrudApp", "MyCrudApp\MyCrudApp.csproj", "{8257B361-20EC-4D50-8987-169E8BEC46E4}"
     //                                                 -----
-    while ((currentCharacter = this._stringReader.consume(1)) !==
-      ConstantsStringReader.END_OF_FILE_MARKER) {
+    while (!endOfFile(currentCharacter = this._stringReader.consume(1))) {
         
         if (currentCharacter === '"') {
           break;
@@ -138,8 +135,7 @@ export class DotNetSolutionParser {
     let displayName = "";
 
     // Read text into displayName variable until quote that terminates the Project display name
-    while ((currentCharacter = this._stringReader.consume(1)) !==
-      ConstantsStringReader.END_OF_FILE_MARKER &&
+    while (!endOfFile(currentCharacter = this._stringReader.consume(1)) &&
       currentCharacter !== '"') {
       
         displayName += currentCharacter;
@@ -149,8 +145,7 @@ export class DotNetSolutionParser {
     //                                                                ---
     // Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyCrudApp", "MyCrudApp\MyCrudApp.csproj", "{8257B361-20EC-4D50-8987-169E8BEC46E4}"
     //                                                                ---
-    while ((currentCharacter = this._stringReader.consume(1)) !==
-      ConstantsStringReader.END_OF_FILE_MARKER) {
+    while (!endOfFile(currentCharacter = this._stringReader.consume(1))) {
 
         if (currentCharacter === '"') {
           break;
@@ -164,8 +159,7 @@ export class DotNetSolutionParser {
     let projectRelativePathFromSolution = "";
 
     // Read text into projectRelativePathFromSolution variable until quote that terminates the Project relative path from solution
-    while ((currentCharacter = this._stringReader.consume(1)) !==
-      ConstantsStringReader.END_OF_FILE_MARKER &&
+    while (!endOfFile(currentCharacter = this._stringReader.consume(1)) &&
       currentCharacter !== '"') {
 
       projectRelativePathFromSolution += currentCharacter;
@@ -175,8 +169,7 @@ export class DotNetSolutionParser {
     //                                                                                              ----
     // Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyCrudApp", "MyCrudApp\MyCrudApp.csproj", "{8257B361-20EC-4D50-8987-169E8BEC46E4}"
     //                                                                                              ----
-    while ((currentCharacter = this._stringReader.consume(1)) !==
-      ConstantsStringReader.END_OF_FILE_MARKER) {
+    while (!endOfFile(currentCharacter = this._stringReader.consume(1))) {
 
         if (currentCharacter === ConstantsSolutionFile.START_OF_GUID) {
           break;
@@ -219,8 +212,7 @@ export class DotNetSolutionParser {
     let projectGuid: string | undefined = undefined;
     let solutionFolderGuid: string | undefined = undefined;
 
-    while ((currentCharacter = this._stringReader.consume(1)) !==
-      ConstantsStringReader.END_OF_FILE_MARKER) {
+    while (!endOfFile(currentCharacter = this._stringReader.consume(1))) {
 
       switch (currentCharacter) {
         case ConstantsSolutionFile.START_OF_GUID:
@@ -272,8 +264,7 @@ export class DotNetSolutionParser {
     let currentCharacter = "";
     let guid = "";
 
-    while ((currentCharacter = this._stringReader.consume(1)) !==
-      ConstantsStringReader.END_OF_FILE_MARKER &&
+    while (!endOfFile(currentCharacter = this._stringReader.consume(1)) &&
       currentCharacter !== ConstantsSolutionFile.END_OF_GUID) {
 
       guid += currentCharacter;

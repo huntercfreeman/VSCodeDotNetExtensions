@@ -9,6 +9,7 @@ import { CSharpProjectNugetPackageDependenciesFile } from "../FileSystem/Files/C
 import { CSharpProjectNugetPackageDependencyFile } from "../FileSystem/Files/CSharpProjectNugetPackageDependencyFile";
 import { CSharpProjectProjectReferenceFile } from "../FileSystem/Files/CSharpProjectProjectReferenceFile";
 import { CSharpProjectProjectReferencesFile } from "../FileSystem/Files/CSharpProjectProjectReferencesFile";
+import { endOfFile } from "./CommonParserUtility";
 import { StringReader } from "./StringReader";
 
 const fs = require('fs');
@@ -35,8 +36,7 @@ export class CSharpProjectParser {
 
       let currentCharacter = "";
 
-      while ((currentCharacter = this._stringReader.consume(1)) !==
-        ConstantsStringReader.END_OF_FILE_MARKER) {
+      while (!endOfFile(currentCharacter = this._stringReader.consume(1))) {
 
         var handledToken = false;
 
@@ -59,8 +59,6 @@ export class CSharpProjectParser {
   }
 
   public readInProjectReference() {
-    // In this file dashes are used to mark on the line above and below a comment what INTENDS to be parsed.
-
     /**
      * Example text:
      * 
@@ -75,8 +73,7 @@ export class CSharpProjectParser {
 
     let currentCharacter = "";
 
-    while ((currentCharacter = this._stringReader.consume(1)) !==
-      ConstantsStringReader.END_OF_FILE_MARKER) {
+    while (!endOfFile(currentCharacter = this._stringReader.consume(1))) {
 
       if (this._stringReader
         .isStartOfToken(ConstantsCSharpProjectFile.START_OF_PROJECT_REFERENCE_INCLUDE_DEFINITION, currentCharacter)) {
@@ -85,8 +82,7 @@ export class CSharpProjectParser {
 
         let cSharpProjectReferenceRelativePathFromReceivingCSharpProject = "";
 
-        while ((currentCharacter = this._stringReader.consume(1)) !==
-          ConstantsStringReader.END_OF_FILE_MARKER) {
+        while (!endOfFile(currentCharacter = this._stringReader.consume(1))) {
 
           if (this._stringReader
             .isStartOfToken(ConstantsCSharpProjectFile.END_OF_PROJECT_REFERENCE_INCLUDE_DEFINITION, currentCharacter)) {
@@ -111,13 +107,15 @@ export class CSharpProjectParser {
   }
 
   public readInNugetPackageReference() {
-    // In this file dashes are used to mark on the line above and below a comment what INTENDS to be parsed.
-
     /**
      * Example text:
      * 
      *     <ItemGroup>
      *         <PackageReference Include="Fluxor" Version="5.4.0" />
+     *         <PackageReference Include="xunit.runner.visualstudio" Version="2.4.3">
+     *             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+     *             <PrivateAssets>all</PrivateAssets>
+     *         </PackageReference>
      *     </ItemGroup>
      */
 
@@ -132,8 +130,7 @@ export class CSharpProjectParser {
     let nugetPackageVersion = "";
 
     // Skip to start of nuget package Id
-    while ((currentCharacter = this._stringReader.consume(1)) !==
-      ConstantsStringReader.END_OF_FILE_MARKER) {
+    while (!endOfFile(currentCharacter = this._stringReader.consume(1))) {
 
       if (this._stringReader
         .isStartOfToken(ConstantsCSharpProjectFile.START_OF_NUGET_PACKAGE_REFERENCE_INCLUDE_DEFINITION, currentCharacter)) {
@@ -145,8 +142,7 @@ export class CSharpProjectParser {
     _ = this._stringReader.consume(ConstantsCSharpProjectFile.START_OF_NUGET_PACKAGE_REFERENCE_INCLUDE_DEFINITION.length - 1);
 
     // Read in nuget package Id
-    while ((currentCharacter = this._stringReader.consume(1)) !==
-      ConstantsStringReader.END_OF_FILE_MARKER) {
+    while (!endOfFile(currentCharacter = this._stringReader.consume(1))) {
       if (this._stringReader
         .isStartOfToken(ConstantsCSharpProjectFile.END_OF_NUGET_PACKAGE_REFERENCE_INCLUDE_DEFINITION, currentCharacter)) {
 
@@ -158,8 +154,7 @@ export class CSharpProjectParser {
     }
 
     // Skip to start of nuget package Version
-    while ((currentCharacter = this._stringReader.consume(1)) !==
-      ConstantsStringReader.END_OF_FILE_MARKER) {
+    while (!endOfFile(currentCharacter = this._stringReader.consume(1))) {
 
       if (this._stringReader
         .isStartOfToken(ConstantsCSharpProjectFile.START_OF_NUGET_PACKAGE_REFERENCE_VERSION_DEFINITION, currentCharacter)) {
@@ -171,8 +166,7 @@ export class CSharpProjectParser {
     _ = this._stringReader.consume(ConstantsCSharpProjectFile.START_OF_NUGET_PACKAGE_REFERENCE_VERSION_DEFINITION.length - 1);
 
     // Read in nuget package Version
-    while ((currentCharacter = this._stringReader.consume(1)) !==
-      ConstantsStringReader.END_OF_FILE_MARKER) {
+    while (!endOfFile(currentCharacter = this._stringReader.consume(1))) {
 
       if (this._stringReader
         .isStartOfToken(ConstantsCSharpProjectFile.END_OF_NUGET_PACKAGE_REFERENCE_VERSION_DEFINITION, currentCharacter)) {
