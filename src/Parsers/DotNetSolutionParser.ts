@@ -9,9 +9,11 @@ import { StringReader } from "./StringReader";
 const fs = require('fs');
 
 export class DotNetSolutionParser {
-  constructor(public readonly absoluteFilePath: AbsoluteFilePath,
-    public readonly solutionModel: SolutionModel) {
+  constructor(public readonly solutionModel: SolutionModel) {
+    this.solutionAbsoluteFilePath = solutionModel.absoluteFilePath;
   }
+
+  public readonly solutionAbsoluteFilePath: AbsoluteFilePath;
 
   private _stringReader!: StringReader;
 
@@ -24,7 +26,7 @@ export class DotNetSolutionParser {
         console.error(err);
         return;
       }
-      
+
       this._stringReader = new StringReader(data);
 
       let currentCharacter = "";
@@ -34,61 +36,51 @@ export class DotNetSolutionParser {
 
         var handledToken = false;
 
-        if (!handledToken && ConstantsSolutionFile.START_OF_PROJECT_DEFINITION.startsWith(currentCharacter)) {
-          if (ConstantsSolutionFile.START_OF_PROJECT_DEFINITION.substring(1) ===
-            this._stringReader.peek(ConstantsSolutionFile.START_OF_PROJECT_DEFINITION.length - 1)) {
-            handledToken = true;
-            this.readInProjectDefinition();
-          }
+        if (!handledToken && this._stringReader
+            .isStartOfToken(ConstantsSolutionFile.START_OF_PROJECT_DEFINITION, currentCharacter)) {
+          handledToken = true;
+          this.readInProjectDefinition();
         }
-        if (!handledToken && ConstantsSolutionFile.START_OF_GLOBAL_SECTION.startsWith(currentCharacter)) {
-          if (ConstantsSolutionFile.START_OF_GLOBAL_SECTION.substring(1) ===
-            this._stringReader.peek(ConstantsSolutionFile.START_OF_GLOBAL_SECTION.length - 1)) {
-            handledToken = true;
-            this.readInGlobalSection();
-          }
+        if (!handledToken && this._stringReader
+            .isStartOfToken(ConstantsSolutionFile.START_OF_GLOBAL_SECTION, currentCharacter)) {
+          handledToken = true;
+          this.readInGlobalSection();
         }
-        if (!handledToken && ConstantsSolutionFile.START_OF_GLOBAL.startsWith(currentCharacter)) {
-          if (ConstantsSolutionFile.START_OF_GLOBAL.substring(1) ===
-            this._stringReader.peek(ConstantsSolutionFile.START_OF_GLOBAL.length - 1)) {
-            handledToken = true;
-            this.readInGlobalDefinition();
-          }
+        if (!handledToken && this._stringReader
+            .isStartOfToken(ConstantsSolutionFile.START_OF_GLOBAL, currentCharacter)) {
+          handledToken = true;
+          this.readInGlobalDefinition();
         }
-        if (!handledToken && ConstantsSolutionFile.START_OF_SOLUTION_PROPERTIES.startsWith(currentCharacter)) {
-          if (ConstantsSolutionFile.START_OF_SOLUTION_PROPERTIES.substring(1) ===
-            this._stringReader.peek(ConstantsSolutionFile.START_OF_SOLUTION_PROPERTIES.length - 1)) {
-            handledToken = true;
-            this.readInSolutionProperties();
-          }
+        if (!handledToken && this._stringReader
+            .isStartOfToken(ConstantsSolutionFile.START_OF_SOLUTION_PROPERTIES, currentCharacter)) {
+          handledToken = true;
+          this.readInSolutionProperties();
         }
-        if (!handledToken && ConstantsSolutionFile.START_OF_SOLUTION_FOLDERS.startsWith(currentCharacter)) {
-          if (ConstantsSolutionFile.START_OF_SOLUTION_FOLDERS.substring(1) ===
-            this._stringReader.peek(ConstantsSolutionFile.START_OF_SOLUTION_FOLDERS.length - 1)) {
-            handledToken = true;
-            this.readInSolutionFolders();
-          }
+        if (!handledToken && this._stringReader
+            .isStartOfToken(ConstantsSolutionFile.START_OF_SOLUTION_FOLDERS, currentCharacter)) {
+          handledToken = true;
+          this.readInSolutionFolders();
         }
-        if (!handledToken && ConstantsSolutionFile.START_OF_EXTENSIBILITY_GLOBALS.startsWith(currentCharacter)) {
-          if (ConstantsSolutionFile.START_OF_EXTENSIBILITY_GLOBALS.substring(1) ===
-            this._stringReader.peek(ConstantsSolutionFile.START_OF_EXTENSIBILITY_GLOBALS.length - 1)) {
-            handledToken = true;
-            this.readInExtensibilityGlobals();
-          }
+        if (!handledToken && this._stringReader
+            .isStartOfToken(ConstantsSolutionFile.START_OF_EXTENSIBILITY_GLOBALS, currentCharacter)) {
+          handledToken = true;
+          this.readInExtensibilityGlobals();
         }
       }
 
-      callback();
+      if (callback) {
+        callback();
+      }
     });
   }
-  
+
   public async addSolutionFolder(solutionFolderName: string, callback: any) {
     await fs.readFile(this.solutionModel.absoluteFilePath.initialAbsoluteFilePathStringInput, 'utf8', (err: any, data: any) => {
       if (err) {
         console.error(err);
         return;
       }
-      
+
       this._stringReader = new StringReader(data);
 
       let currentCharacter = "";
@@ -128,7 +120,9 @@ export class DotNetSolutionParser {
         }
       }
 
-      callback();
+      if (callback) {
+        callback();
+      }
     });
   }
 

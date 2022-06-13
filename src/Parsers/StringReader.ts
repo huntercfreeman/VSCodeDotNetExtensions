@@ -39,6 +39,17 @@ export class StringReader {
         this._position += length;
     }
 
+    public isStartOfToken(startOfToken: string, currentCharacter: string): boolean {
+        if (startOfToken.startsWith(currentCharacter)) {
+          if (startOfToken === 
+                (currentCharacter + this.peek(startOfToken.length - 1))) {
+            return true;
+          }
+        }
+
+        return false;
+      }
+
     private peekCharacterAt(virtualPosition: number): string {
         if(virtualPosition < this._inputLength) {
             return this.input[virtualPosition];

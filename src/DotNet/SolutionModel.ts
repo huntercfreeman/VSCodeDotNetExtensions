@@ -20,15 +20,13 @@ export class SolutionModel {
     public static async parseSolution(solution: SolutionModel, callback: any) : Promise<void> {
         solution.projects = [];
         
-        let dotNetSolutionParser = new DotNetSolutionParser(solution.absoluteFilePath,
-            solution);
+        let dotNetSolutionParser = new DotNetSolutionParser(solution);
         
         dotNetSolutionParser.parse(callback);
     }
 
     public static async addSolutionFolder(solution: SolutionModel, solutionFolderName: string, callback: any) : Promise<void> {
-        let dotNetSolutionParser = new DotNetSolutionParser(solution.absoluteFilePath,
-            solution);
+        let dotNetSolutionParser = new DotNetSolutionParser(solution);
         
         dotNetSolutionParser.addSolutionFolder(solutionFolderName, callback);
     }
