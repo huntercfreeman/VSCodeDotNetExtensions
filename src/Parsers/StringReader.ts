@@ -35,8 +35,24 @@ export class StringReader {
         return substring;
     }
     
-    public skip(length: number): void {
+    public skipForwards(length: number): void {
         this._position += length;
+    }
+
+    /**
+     * 
+     * This method is used most often in the case where
+     * .consume(...) is called in a situation where two separate
+     * state machines end up needing access to the same character
+     * 
+     * @param length 
+     */
+    public skipBackwards(length: number): void {
+        this._position -= length;
+
+        this._position = this._position < 0
+            ? 0
+            : this._position;
     }
 
     public isStartOfToken(startOfToken: string, currentCharacter: string): boolean {

@@ -42,7 +42,7 @@ export class FileXmlParseStateMachine extends XmlParseStateMachineBase {
 
         while (!endOfFile(currentCharacter = this.stringReader.consume(1))) {
             switch (currentCharacter) {
-                case ConstantsXmlFile.START_OF_XML_TAG: {
+                case ConstantsXmlFile.START_OF_OPENING_XML_TAG: {
                     let xmlTagModel = new XmlTagModel();
 
                     this.xmlFileModel.xmlTagModels.push(xmlTagModel);
@@ -52,6 +52,18 @@ export class FileXmlParseStateMachine extends XmlParseStateMachineBase {
                             xmlTagModel);
 
                     tagXmlParseStateMachine.parseRecursively();
+                    break;
+                }
+                default: {
+                    let xmlTextModel = new XmlTextModel();
+
+                    this.xmlFileModel.xmlTagModels.push(xmlTextModel);
+
+                    let textXmlParseStateMachine =
+                        new TextXmlParseStateMachine(this.stringReader,
+                            xmlTextModel);
+
+                    textXmlParseStateMachine.parseRecursively();
                     break;
                 }
             }
@@ -66,15 +78,17 @@ export class TagXmlParseStateMachine extends XmlParseStateMachineBase {
     }
 
     public override parseRecursively() {
-        let tagNameXmlParseStateMachine = 
+        let tagNameXmlParseStateMachine =
             new TagNameXmlParseStateMachine(this.stringReader, this.xmlTagModel);
 
         tagNameXmlParseStateMachine.parseRecursively();
-        
+
+        this.stringReader.skipBackwards(1);
+
         let currentCharacter = "";
-        
+
         while (!endOfFile(currentCharacter = this.stringReader.consume(1))) {
-            
+
             let isTagEnding = false;
             for (let i = 0; i < ConstantsXmlFile.ENDINGS_OF_XML_TAG.length; i++) {
 
@@ -85,16 +99,33 @@ export class TagXmlParseStateMachine extends XmlParseStateMachineBase {
                     break;
                 }
             }
-            
-            if (isTagEnding) { 
+
+            if (isTagEnding) {
+                if (this.stringReader.isStartOfToken(ConstantsXmlFile.ENDING_OF_XML_TAG_FOR_CHILD_CONTENT_CONTAINING_TAGS,
+                    currentCharacter)) {
+
+                    let xmlFileModel = new XmlFileModel();
+
+                    this.xmlTagModel.children = xmlFileModel;
+
+                    let fileXmlParseStateMachine =
+                        new FileXmlParseStateMachine(this.stringReader,
+                            xmlFileModel);
+
+                    fileXmlParseStateMachine.parseRecursively();
+                }
                 break;
             }
 
             let xmlAttributeModel = new XmlAttributeModel();
 
-            let tagAttributeXmlParseStateMachine = 
+            this.xmlTagModel.xmlAttributeModels
+                .push(xmlAttributeModel);
+
+            let tagAttributeXmlParseStateMachine =
                 new TagAttributeXmlParseStateMachine(this.stringReader, xmlAttributeModel);
 
+            this.stringReader.skipBackwards(1);
             tagAttributeXmlParseStateMachine.parseRecursively();
         }
     }
@@ -116,11 +147,12 @@ export class TagNameXmlParseStateMachine extends XmlParseStateMachineBase {
                 let tagEnding = ConstantsXmlFile.ENDINGS_OF_XML_TAG[i];
 
                 if (this.stringReader.isStartOfToken(tagEnding, currentCharacter)) {
+                    isTagEnding = true;
                     break;
                 }
             }
 
-            if (isTagEnding) { 
+            if (isTagEnding) {
                 break;
             }
 
@@ -143,29 +175,30 @@ export class TagNameXmlParseStateMachine extends XmlParseStateMachineBase {
 
 export class TagAttributeXmlParseStateMachine extends XmlParseStateMachineBase {
     constructor(stringReader: StringReader,
-                private readonly xmlAttributeModel: XmlAttributeModel) {
+        private readonly xmlAttributeModel: XmlAttributeModel) {
         super(stringReader);
     }
 
     public override parseRecursively() {
         let currentCharacter = this.stringReader.peek(1);
-        
-        for (;;) {
+
+        for (; ;) {
             if (endOfFile(currentCharacter = this.stringReader.consume(1)) ||
                 currentCharacter !== ' ') {
-                    
-                    break;
+
+                break;
             }
         }
 
-        let tagAttibuteNameXmlParseStateMachine = 
-            new TagAttibuteNameXmlParseStateMachine(this.stringReader, 
+        let tagAttibuteNameXmlParseStateMachine =
+            new TagAttibuteNameXmlParseStateMachine(this.stringReader,
                 this.xmlAttributeModel);
 
+        this.stringReader.skipBackwards(1);
         tagAttibuteNameXmlParseStateMachine.parseRecursively();
 
-        let tagAttibuteValueXmlParseStateMachine = 
-            new TagAttibuteValueXmlParseStateMachine(this.stringReader, 
+        let tagAttibuteValueXmlParseStateMachine =
+            new TagAttibuteValueXmlParseStateMachine(this.stringReader,
                 this.xmlAttributeModel);
 
         tagAttibuteValueXmlParseStateMachine.parseRecursively();
@@ -192,15 +225,18 @@ export class TagAttibuteNameXmlParseStateMachine extends XmlParseStateMachineBas
                 }
             }
 
-            if (isTagEnding) { 
+            if (isTagEnding) {
                 break;
             }
 
             let attributeNameIsEnding = false;
             switch (currentCharacter) {
-                case '\"':
-                    attributeNameIsEnding = true;
-                    break;
+                case '=':
+                    if (this.stringReader.peek(1) === '"') {
+                        let _ = this.stringReader.consume(1);
+                        attributeNameIsEnding = true;
+                        break;
+                    }
                 default:
                     this.xmlAttributeModel.attributeName += currentCharacter;
                     break;
@@ -233,7 +269,7 @@ export class TagAttibuteValueXmlParseStateMachine extends XmlParseStateMachineBa
                 }
             }
 
-            if (isTagEnding) { 
+            if (isTagEnding) {
                 break;
             }
 
@@ -254,23 +290,57 @@ export class TagAttibuteValueXmlParseStateMachine extends XmlParseStateMachineBa
     }
 }
 
-export class TagChildContentXmlParseStateMachine extends XmlParseStateMachineBase {
-    constructor(stringReader: StringReader) {
-        super(stringReader);
-    }
-
-    public override parseRecursively() {
-    }
-}
-
 export class TextXmlParseStateMachine extends XmlParseStateMachineBase {
-    constructor(stringReader: StringReader) {
+    constructor(stringReader: StringReader,
+        private readonly xmlTextModel: XmlTextModel) {
+
         super(stringReader);
     }
 
     public override parseRecursively() {
+        let currentCharacter = "";
+
+        while (!endOfFile(currentCharacter = this.stringReader.consume(1))) {
+
+            if (this.stringReader.isStartOfToken(ConstantsXmlFile.START_OF_CLOSING_XML_TAG, currentCharacter)) {
+                break;
+            }
+
+            if (this.stringReader.isStartOfToken(ConstantsXmlFile.START_OF_OPENING_XML_TAG, currentCharacter)) {
+                return;
+            }
+
+            this.xmlTextModel.text += currentCharacter;
+        }
+
+        // Getting here indicates ConstantsXmlFile.START_OF_CLOSING_XML_TAG
+        // so skip until after the closing tag as closing tag has no data
+
+        while (!endOfFile(currentCharacter = this.stringReader.consume(1))) {
+
+            if (this.stringReader
+                    .isStartOfToken(ConstantsXmlFile.ENDING_OF_XML_TAG_FOR_CHILD_CONTENT_CONTAINING_TAGS, 
+                        currentCharacter)) {
+
+                // Consume an extra character as the case ConstantsXmlFile.START_OF_OPENING_XML_TAG
+                // will need to revert a character this consume evens things out
+                this.stringReader.consume(1);
+                return;
+            }
+        }
     }
 }
+
+// TODO: is TagChildContentXmlParseStateMachine dead code?
+
+// export class TagChildContentXmlParseStateMachine extends XmlParseStateMachineBase {
+//     constructor(stringReader: StringReader) {
+//         super(stringReader);
+//     }
+
+//     public override parseRecursively() {
+//     }
+// }
 
 export class XmlFileModel {
     public xmlTagModels: XmlTagModel[] = [];
@@ -279,14 +349,11 @@ export class XmlFileModel {
 export class XmlTagModel {
     public tagName: string = "";
     public xmlAttributeModels: XmlAttributeModel[] = [];
-    public children: XmlTagModel[] = [];
+    public children: XmlFileModel = new XmlFileModel();
 }
 
 export class XmlTextModel extends XmlTagModel {
-    constructor(public readonly text: string) {
-        super();
-
-    }
+    public text: string = "";
 }
 
 export class XmlAttributeModel {
