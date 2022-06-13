@@ -38,31 +38,37 @@ export class DotNetSolutionParser {
 
         if (!handledToken && this._stringReader
             .isStartOfToken(ConstantsSolutionFile.START_OF_PROJECT_DEFINITION, currentCharacter)) {
+
           handledToken = true;
           this.readInProjectDefinition();
         }
         if (!handledToken && this._stringReader
             .isStartOfToken(ConstantsSolutionFile.START_OF_GLOBAL_SECTION, currentCharacter)) {
+
           handledToken = true;
           this.readInGlobalSection();
         }
         if (!handledToken && this._stringReader
             .isStartOfToken(ConstantsSolutionFile.START_OF_GLOBAL, currentCharacter)) {
+
           handledToken = true;
           this.readInGlobalDefinition();
         }
         if (!handledToken && this._stringReader
             .isStartOfToken(ConstantsSolutionFile.START_OF_SOLUTION_PROPERTIES, currentCharacter)) {
+              
           handledToken = true;
           this.readInSolutionProperties();
         }
         if (!handledToken && this._stringReader
             .isStartOfToken(ConstantsSolutionFile.START_OF_SOLUTION_FOLDERS, currentCharacter)) {
+
           handledToken = true;
           this.readInSolutionFolders();
         }
         if (!handledToken && this._stringReader
             .isStartOfToken(ConstantsSolutionFile.START_OF_EXTENSIBILITY_GLOBALS, currentCharacter)) {
+              
           handledToken = true;
           this.readInExtensibilityGlobals();
         }
@@ -83,61 +89,101 @@ export class DotNetSolutionParser {
 
     let currentCharacter = "";
 
+    // Skip to start of firstGuid
+    //  ---------
+    // Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyCrudApp", "MyCrudApp\MyCrudApp.csproj", "{8257B361-20EC-4D50-8987-169E8BEC46E4}"
+    //  ---------
     while ((currentCharacter = this._stringReader.consume(1)) !==
-      ConstantsStringReader.END_OF_FILE_MARKER &&
-      currentCharacter !== ConstantsSolutionFile.START_OF_GUID) {
+            ConstantsStringReader.END_OF_FILE_MARKER) {
 
+        if (currentCharacter === ConstantsSolutionFile.START_OF_GUID) {
+          break;
+        }
     }
 
+    // Read firstGuid
     //           ------------------------------------
     // Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyCrudApp", "MyCrudApp\MyCrudApp.csproj", "{8257B361-20EC-4D50-8987-169E8BEC46E4}"
     //           ------------------------------------
     let firstGuid = this.readInGuid();
 
+    // Skip double quote
+    //                                                -
+    // Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyCrudApp", "MyCrudApp\MyCrudApp.csproj", "{8257B361-20EC-4D50-8987-169E8BEC46E4}"
+    //                                                -
     while ((currentCharacter = this._stringReader.consume(1)) !==
-      ConstantsStringReader.END_OF_FILE_MARKER &&
-      currentCharacter !== '"') {
+            ConstantsStringReader.END_OF_FILE_MARKER) {
+
+        if (currentCharacter === '"') {
+          break;
+        }
     }
 
+    // Skip to start of displayName
+    //                                                 -----
+    // Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyCrudApp", "MyCrudApp\MyCrudApp.csproj", "{8257B361-20EC-4D50-8987-169E8BEC46E4}"
+    //                                                 -----
     while ((currentCharacter = this._stringReader.consume(1)) !==
-      ConstantsStringReader.END_OF_FILE_MARKER &&
-      currentCharacter !== '"') {
+      ConstantsStringReader.END_OF_FILE_MARKER) {
+        
+        if (currentCharacter === '"') {
+          break;
+        }
     }
 
+    // Start reading displayName
     //                                                      ---------
     // Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyCrudApp", "MyCrudApp\MyCrudApp.csproj", "{8257B361-20EC-4D50-8987-169E8BEC46E4}"
     //                                                      ---------
     let displayName = "";
 
-    // Read until quote that terminates the Project display name
+    // Read text into displayName variable until quote that terminates the Project display name
     while ((currentCharacter = this._stringReader.consume(1)) !==
       ConstantsStringReader.END_OF_FILE_MARKER &&
       currentCharacter !== '"') {
-      displayName += currentCharacter;
+      
+        displayName += currentCharacter;
     }
 
+    // Skip to start of project relative path from solution
+    //                                                                ---
+    // Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyCrudApp", "MyCrudApp\MyCrudApp.csproj", "{8257B361-20EC-4D50-8987-169E8BEC46E4}"
+    //                                                                ---
     while ((currentCharacter = this._stringReader.consume(1)) !==
-      ConstantsStringReader.END_OF_FILE_MARKER &&
-      currentCharacter !== '"') {
+      ConstantsStringReader.END_OF_FILE_MARKER) {
+
+        if (currentCharacter === '"') {
+          break;
+        }
     }
 
+    // Start reading project relative path from solution
     //                                                                   --------------------------
     // Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyCrudApp", "MyCrudApp\MyCrudApp.csproj", "{8257B361-20EC-4D50-8987-169E8BEC46E4}"
     //                                                                   --------------------------
     let projectRelativePathFromSolution = "";
 
+    // Read text into projectRelativePathFromSolution variable until quote that terminates the Project relative path from solution
     while ((currentCharacter = this._stringReader.consume(1)) !==
       ConstantsStringReader.END_OF_FILE_MARKER &&
       currentCharacter !== '"') {
+
       projectRelativePathFromSolution += currentCharacter;
     }
 
+    // Skip to start of secondGuid
+    //                                                                                              ----
+    // Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyCrudApp", "MyCrudApp\MyCrudApp.csproj", "{8257B361-20EC-4D50-8987-169E8BEC46E4}"
+    //                                                                                              ----
     while ((currentCharacter = this._stringReader.consume(1)) !==
-      ConstantsStringReader.END_OF_FILE_MARKER &&
-      currentCharacter !== ConstantsSolutionFile.START_OF_GUID) {
+      ConstantsStringReader.END_OF_FILE_MARKER) {
 
+        if (currentCharacter === ConstantsSolutionFile.START_OF_GUID) {
+          break;
+        }
     }
 
+    // Read secondGuid
     //                                                                                                  ------------------------------------
     // Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyCrudApp", "MyCrudApp\MyCrudApp.csproj", "{8257B361-20EC-4D50-8987-169E8BEC46E4}"
     //                                                                                                  ------------------------------------
@@ -151,7 +197,6 @@ export class DotNetSolutionParser {
 
     this.solutionModel.projects.push(project);
   }
-
 
   public readInGlobalDefinition() {
     return;
@@ -220,6 +265,7 @@ export class DotNetSolutionParser {
   }
 
   public readInGuid(): string {
+    // Read in a any Guid from a file that starts at current position
     //           ------------------------------------
     // Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyCrudApp", "MyCrudApp\MyCrudApp.csproj", "{8257B361-20EC-4D50-8987-169E8BEC46E4}"
     //           ------------------------------------

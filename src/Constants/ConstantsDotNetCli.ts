@@ -47,12 +47,12 @@ export class ConstantsDotNetCli {
         nugetPackageModel: NugetPackageModel,
         nugetPackageVersionModel: NugetPackageVersionModel): string {
 
-        return `dotnet add ${cSharpProjectInitialAbsoluteFilePath.initialAbsoluteFilePathStringInput} package ${nugetPackageModel.title} --version ${nugetPackageVersionModel.version}`;
+        return `dotnet add ${cSharpProjectInitialAbsoluteFilePath.initialAbsoluteFilePathStringInput} package ${nugetPackageModel.id} --version ${nugetPackageVersionModel.version}`;
     }
     
-    public static formatDotNetRemoveNugetPackageReferenceFromCSharpProject(cSharpProjectInitialAbsoluteFilePath: AbsoluteFilePath, nugetPackageTitle: string): string {
+    public static formatDotNetRemoveNugetPackageReferenceFromCSharpProject(cSharpProjectInitialAbsoluteFilePath: AbsoluteFilePath, nugetPackageId: string): string {
 
-        return `dotnet remove ${cSharpProjectInitialAbsoluteFilePath.initialAbsoluteFilePathStringInput} package ${nugetPackageTitle}`;
+        return `dotnet remove ${cSharpProjectInitialAbsoluteFilePath.initialAbsoluteFilePathStringInput} package ${nugetPackageId}`;
     }
     
     public static DOT_NET_NEW_LIST = "dotnet new --list";
