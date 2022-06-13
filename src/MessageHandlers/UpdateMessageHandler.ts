@@ -113,7 +113,7 @@ export class UpdateMessageHandler {
 
         messageUpdateTerminal.sendText(
             ConstantsDotNetCli.formatDotNetRemoveNugetPackageReferenceFromCSharpProject(message.cSharpProjectNugetPackageDependencyFile.parentCSharpProjectInitialAbsoluteFilePath, 
-                message.cSharpProjectNugetPackageDependencyFile.nugetPackageTitle));
+                message.cSharpProjectNugetPackageDependencyFile.nugetPackageId));
 
         messageUpdateTerminal.show();
     }

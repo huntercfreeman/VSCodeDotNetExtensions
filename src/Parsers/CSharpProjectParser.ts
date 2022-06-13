@@ -128,80 +128,74 @@ export class CSharpProjectParser {
     let _ = this._stringReader.consume(ConstantsCSharpProjectFile.START_OF_NUGET_PACKAGE_REFERENCE_DEFINITION.length - 1);
 
     let currentCharacter = "";
-    let nugetPackageTitle = "";
+    let nugetPackageId = "";
     let nugetPackageVersion = "";
 
+    // Skip to start of nuget package Id
     while ((currentCharacter = this._stringReader.consume(1)) !==
       ConstantsStringReader.END_OF_FILE_MARKER) {
 
       if (this._stringReader
         .isStartOfToken(ConstantsCSharpProjectFile.START_OF_NUGET_PACKAGE_REFERENCE_INCLUDE_DEFINITION, currentCharacter)) {
 
-        _ = this._stringReader.consume(ConstantsCSharpProjectFile.START_OF_NUGET_PACKAGE_REFERENCE_INCLUDE_DEFINITION.length - 1);
-
-        while ((currentCharacter = this._stringReader.consume(1)) !==
-          ConstantsStringReader.END_OF_FILE_MARKER) {
-          if (this._stringReader
-            .isStartOfToken(ConstantsCSharpProjectFile.END_OF_NUGET_PACKAGE_REFERENCE_INCLUDE_DEFINITION, currentCharacter)) {
-
-            // done with title start parsing nuget package version
-            while ((currentCharacter = this._stringReader.consume(1)) !==
-              ConstantsStringReader.END_OF_FILE_MARKER) {
-
-              if (this._stringReader
-                .isStartOfToken(ConstantsCSharpProjectFile.START_OF_NUGET_PACKAGE_REFERENCE_VERSION_DEFINITION, currentCharacter)) {
-
-                _ = this._stringReader.consume(ConstantsCSharpProjectFile.START_OF_NUGET_PACKAGE_REFERENCE_VERSION_DEFINITION.length - 1);
-
-                while ((currentCharacter = this._stringReader.consume(1)) !==
-                  ConstantsStringReader.END_OF_FILE_MARKER) {
-
-                  if (this._stringReader
-                    .isStartOfToken(ConstantsCSharpProjectFile.END_OF_NUGET_PACKAGE_REFERENCE_VERSION_DEFINITION, currentCharacter)) {
-
-                    // done with version
-                    if (!this.cSharpProjectNugetPackageDependenciesFile.virtualChildFiles) {
-                      this.cSharpProjectNugetPackageDependenciesFile.virtualChildFiles = [];
-                    }
-
-                    this.cSharpProjectNugetPackageDependenciesFile.virtualChildFiles.push(
-                      new CSharpProjectNugetPackageDependencyFile(this.cSharpProjectAbsoluteFilePath,
-                        this.cSharpProjectNugetPackageDependenciesFile.absoluteFilePath,
-                        nugetPackageTitle,
-                        nugetPackageVersion));
-
-                    return;
-                  }
-                  else {
-                    nugetPackageVersion += currentCharacter;
-                  }
-                }
-              }
-            }
-          }
-          else {
-            nugetPackageTitle += currentCharacter;
-          }
-        }
+        break;
       }
     }
-  }
 
-  public readInGuid(): string {
-    //           ------------------------------------
-    // Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyCrudApp", "MyCrudApp\MyCrudApp.csproj", "{8257B361-20EC-4D50-8987-169E8BEC46E4}"
-    //           ------------------------------------
-    let currentCharacter = "";
-    let guid = "";
+    _ = this._stringReader.consume(ConstantsCSharpProjectFile.START_OF_NUGET_PACKAGE_REFERENCE_INCLUDE_DEFINITION.length - 1);
 
+    // Read in nuget package Id
     while ((currentCharacter = this._stringReader.consume(1)) !==
-      ConstantsStringReader.END_OF_FILE_MARKER &&
-      currentCharacter !== ConstantsSolutionFile.END_OF_GUID) {
+      ConstantsStringReader.END_OF_FILE_MARKER) {
+      if (this._stringReader
+        .isStartOfToken(ConstantsCSharpProjectFile.END_OF_NUGET_PACKAGE_REFERENCE_INCLUDE_DEFINITION, currentCharacter)) {
 
-      guid += currentCharacter;
+        break;
+      }
+      else {
+        nugetPackageId += currentCharacter;
+      }
     }
 
-    return guid;
+    // Skip to start of nuget package Version
+    while ((currentCharacter = this._stringReader.consume(1)) !==
+      ConstantsStringReader.END_OF_FILE_MARKER) {
+
+      if (this._stringReader
+        .isStartOfToken(ConstantsCSharpProjectFile.START_OF_NUGET_PACKAGE_REFERENCE_VERSION_DEFINITION, currentCharacter)) {
+
+        break;
+      }
+    }
+
+    _ = this._stringReader.consume(ConstantsCSharpProjectFile.START_OF_NUGET_PACKAGE_REFERENCE_VERSION_DEFINITION.length - 1);
+
+    // Read in nuget package Version
+    while ((currentCharacter = this._stringReader.consume(1)) !==
+      ConstantsStringReader.END_OF_FILE_MARKER) {
+
+      if (this._stringReader
+        .isStartOfToken(ConstantsCSharpProjectFile.END_OF_NUGET_PACKAGE_REFERENCE_VERSION_DEFINITION, currentCharacter)) {
+
+        break;
+      }
+      else {
+        nugetPackageVersion += currentCharacter;
+      }
+    }
+
+    // done with nuget package
+    if (!this.cSharpProjectNugetPackageDependenciesFile.virtualChildFiles) {
+      this.cSharpProjectNugetPackageDependenciesFile.virtualChildFiles = [];
+    }
+
+    this.cSharpProjectNugetPackageDependenciesFile.virtualChildFiles.push(
+      new CSharpProjectNugetPackageDependencyFile(this.cSharpProjectAbsoluteFilePath,
+        this.cSharpProjectNugetPackageDependenciesFile.absoluteFilePath,
+        nugetPackageId,
+        nugetPackageVersion));
+
+    return;
   }
 }
 

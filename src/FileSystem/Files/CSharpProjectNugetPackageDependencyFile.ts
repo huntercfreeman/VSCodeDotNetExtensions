@@ -8,10 +8,10 @@ import { IdeFile } from "./IdeFile";
 export class CSharpProjectNugetPackageDependencyFile extends IdeFile {
     constructor(cSharpProjectParentAbsoluteFilePath: AbsoluteFilePath, 
         nugetPackageDependenciesParentAbsoluteFilePath: AbsoluteFilePath,
-        public readonly nugetPackageTitle: string,
+        public readonly nugetPackageId: string,
         public readonly nugetPackageVersion: string) {
         
-        let myAbsoluteFilePath = new AbsoluteFilePath(`${nugetPackageTitle}--${nugetPackageVersion}`,
+        let myAbsoluteFilePath = new AbsoluteFilePath(`${nugetPackageId}--${nugetPackageVersion}`,
             false,
             nugetPackageDependenciesParentAbsoluteFilePath.parentDirectories);
     
