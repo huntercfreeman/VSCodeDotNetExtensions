@@ -75,55 +75,7 @@ export class DotNetSolutionParser {
   }
 
   public async addSolutionFolder(solutionFolderName: string, callback: any) {
-    await fs.readFile(this.solutionModel.absoluteFilePath.initialAbsoluteFilePathStringInput, 'utf8', (err: any, data: any) => {
-      if (err) {
-        console.error(err);
-        return;
-      }
-
-      this._stringReader = new StringReader(data);
-
-      let currentCharacter = "";
-
-      while ((currentCharacter = this._stringReader.consume(1)) !==
-        ConstantsStringReader.END_OF_FILE_MARKER) {
-
-        var handledToken = false;
-
-        if (!handledToken && ConstantsSolutionFile.START_OF_GLOBAL_SECTION.startsWith(currentCharacter)) {
-          if (ConstantsSolutionFile.START_OF_GLOBAL_SECTION.substring(1) ===
-            this._stringReader.peek(ConstantsSolutionFile.START_OF_GLOBAL_SECTION.length - 1)) {
-            handledToken = true;
-            this.readInGlobalSection();
-          }
-        }
-        if (!handledToken && ConstantsSolutionFile.START_OF_GLOBAL.startsWith(currentCharacter)) {
-          if (ConstantsSolutionFile.START_OF_GLOBAL.substring(1) ===
-            this._stringReader.peek(ConstantsSolutionFile.START_OF_GLOBAL.length - 1)) {
-            handledToken = true;
-            this.readInGlobalDefinition();
-          }
-        }
-        if (!handledToken && ConstantsSolutionFile.START_OF_SOLUTION_FOLDERS.startsWith(currentCharacter)) {
-          if (ConstantsSolutionFile.START_OF_SOLUTION_FOLDERS.substring(1) ===
-            this._stringReader.peek(ConstantsSolutionFile.START_OF_SOLUTION_FOLDERS.length - 1)) {
-            handledToken = true;
-            this.readInSolutionFolders();
-          }
-        }
-        if (!handledToken && ConstantsSolutionFile.START_OF_EXTENSIBILITY_GLOBALS.startsWith(currentCharacter)) {
-          if (ConstantsSolutionFile.START_OF_EXTENSIBILITY_GLOBALS.substring(1) ===
-            this._stringReader.peek(ConstantsSolutionFile.START_OF_EXTENSIBILITY_GLOBALS.length - 1)) {
-            handledToken = true;
-            this.readInExtensibilityGlobals();
-          }
-        }
-      }
-
-      if (callback) {
-        callback();
-      }
-    });
+    // TODO: addSolutionFolder function
   }
 
   public readInProjectDefinition() {
