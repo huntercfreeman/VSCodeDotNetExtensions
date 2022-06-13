@@ -1,12 +1,8 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 export class ConstantsCSharpProjectFile {
-    public static readonly START_OF_XML_TAG: string = "<";
-    public static readonly ENDINGS_OF_XML_TAG: string[] = [">", "/>"];
-    public static readonly START_OF_XML_TAG_ATTRIBUTE: string = "\"";
-    public static readonly END_OF_XML_TAG_ATTRIBUTE: string = "/>";
     public static readonly START_OF_XML_INCLUDE_ATTRIBUTE: string = "Include";
     public static readonly START_OF_VERSION_ATTRIBUTE: string = "Version";
-
+    
     /**
      * ProjectReference Example text:
      * 

@@ -11,6 +11,7 @@ import { CSharpProjectProjectReferenceFile } from "../FileSystem/Files/CSharpPro
 import { CSharpProjectProjectReferencesFile } from "../FileSystem/Files/CSharpProjectProjectReferencesFile";
 import { endOfFile } from "./CommonParserUtility";
 import { StringReader } from "./StringReader";
+import { XmlParser } from "./XmlParseStateMachines";
 
 const fs = require('fs');
 
@@ -19,8 +20,6 @@ export class CSharpProjectParser {
     public readonly cSharpProjectProjectReferencesFile: CSharpProjectProjectReferencesFile | undefined,
     public readonly cSharpProjectNugetPackageDependenciesFile: CSharpProjectNugetPackageDependenciesFile | undefined) {
   }
-
-  private _stringReader!: StringReader;
 
   public async parse(callback: any) {
     // The C# Project file will be parsed by means of reading in the entire file to memory instead of streaming the contents.
@@ -32,164 +31,12 @@ export class CSharpProjectParser {
         return;
       }
 
-      this._stringReader = new StringReader(data);
+      let xmlParser: XmlParser = new XmlParser(data);
 
-      let currentCharacter = "";
-
-      while (!endOfFile(currentCharacter = this._stringReader.consume(1))) {
-
-        var handledToken = false;
-
-        if (!handledToken && this._stringReader
-          .isStartOfToken(ConstantsCSharpProjectFile.START_OF_PROJECT_REFERENCE_DEFINITION, currentCharacter)) {
-
-          handledToken = true;
-          this.readInProjectReference();
-        }
-        if (!handledToken && this._stringReader
-          .isStartOfToken(ConstantsCSharpProjectFile.START_OF_NUGET_PACKAGE_REFERENCE_DEFINITION, currentCharacter)) {
-
-          handledToken = true;
-          this.readInNugetPackageReference();
-        }
-      }
+      let xmlFileModel = xmlParser.parse();
 
       callback();
     });
-  }
-
-  public readInProjectReference() {
-    /**
-     * Example text:
-     * 
-     *     <ItemGroup>
-     *         <ProjectReference Include="..\ClassLibraryStuff\ClassLibraryStuff.csproj" />
-     *     </ItemGroup>
-     */
-
-    if (!this.cSharpProjectProjectReferencesFile) {
-      return;
-    }
-
-    let currentCharacter = "";
-
-    while (!endOfFile(currentCharacter = this._stringReader.consume(1))) {
-
-      if (this._stringReader
-        .isStartOfToken(ConstantsCSharpProjectFile.START_OF_PROJECT_REFERENCE_INCLUDE_DEFINITION, currentCharacter)) {
-
-        let _ = this._stringReader.consume(ConstantsCSharpProjectFile.START_OF_PROJECT_REFERENCE_INCLUDE_DEFINITION.length - 1);
-
-        let cSharpProjectReferenceRelativePathFromReceivingCSharpProject = "";
-
-        while (!endOfFile(currentCharacter = this._stringReader.consume(1))) {
-
-          if (this._stringReader
-            .isStartOfToken(ConstantsCSharpProjectFile.END_OF_PROJECT_REFERENCE_INCLUDE_DEFINITION, currentCharacter)) {
-
-            if (!this.cSharpProjectProjectReferencesFile.virtualChildFiles) {
-              this.cSharpProjectProjectReferencesFile.virtualChildFiles = [];
-            }
-
-            this.cSharpProjectProjectReferencesFile.virtualChildFiles.push(
-              new CSharpProjectProjectReferenceFile(this.cSharpProjectAbsoluteFilePath,
-                this.cSharpProjectProjectReferencesFile.absoluteFilePath,
-                cSharpProjectReferenceRelativePathFromReceivingCSharpProject));
-
-            return;
-          }
-          else {
-            cSharpProjectReferenceRelativePathFromReceivingCSharpProject += currentCharacter;
-          }
-        }
-      }
-    }
-  }
-
-  public readInNugetPackageReference() {
-    /**
-     * Example text:
-     * 
-     *     <ItemGroup>
-     *         <PackageReference Include="Fluxor" Version="5.4.0" />
-     *         <PackageReference Include="xunit.runner.visualstudio" Version="2.4.3">
-     *             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-     *             <PrivateAssets>all</PrivateAssets>
-     *         </PackageReference>
-     *     </ItemGroup>
-     */
-
-    if (!this.cSharpProjectNugetPackageDependenciesFile) {
-      return;
-    }
-
-    let _ = this._stringReader.consume(ConstantsCSharpProjectFile.START_OF_NUGET_PACKAGE_REFERENCE_DEFINITION.length - 1);
-
-    let currentCharacter = "";
-    let nugetPackageId = "";
-    let nugetPackageVersion = "";
-
-    // Skip to start of nuget package Id
-    while (!endOfFile(currentCharacter = this._stringReader.consume(1))) {
-
-      if (this._stringReader
-        .isStartOfToken(ConstantsCSharpProjectFile.START_OF_NUGET_PACKAGE_REFERENCE_INCLUDE_DEFINITION, currentCharacter)) {
-
-        break;
-      }
-    }
-
-    _ = this._stringReader.consume(ConstantsCSharpProjectFile.START_OF_NUGET_PACKAGE_REFERENCE_INCLUDE_DEFINITION.length - 1);
-
-    // Read in nuget package Id
-    while (!endOfFile(currentCharacter = this._stringReader.consume(1))) {
-      if (this._stringReader
-        .isStartOfToken(ConstantsCSharpProjectFile.END_OF_NUGET_PACKAGE_REFERENCE_INCLUDE_DEFINITION, currentCharacter)) {
-
-        break;
-      }
-      else {
-        nugetPackageId += currentCharacter;
-      }
-    }
-
-    // Skip to start of nuget package Version
-    while (!endOfFile(currentCharacter = this._stringReader.consume(1))) {
-
-      if (this._stringReader
-        .isStartOfToken(ConstantsCSharpProjectFile.START_OF_NUGET_PACKAGE_REFERENCE_VERSION_DEFINITION, currentCharacter)) {
-
-        break;
-      }
-    }
-
-    _ = this._stringReader.consume(ConstantsCSharpProjectFile.START_OF_NUGET_PACKAGE_REFERENCE_VERSION_DEFINITION.length - 1);
-
-    // Read in nuget package Version
-    while (!endOfFile(currentCharacter = this._stringReader.consume(1))) {
-
-      if (this._stringReader
-        .isStartOfToken(ConstantsCSharpProjectFile.END_OF_NUGET_PACKAGE_REFERENCE_VERSION_DEFINITION, currentCharacter)) {
-
-        break;
-      }
-      else {
-        nugetPackageVersion += currentCharacter;
-      }
-    }
-
-    // done with nuget package
-    if (!this.cSharpProjectNugetPackageDependenciesFile.virtualChildFiles) {
-      this.cSharpProjectNugetPackageDependenciesFile.virtualChildFiles = [];
-    }
-
-    this.cSharpProjectNugetPackageDependenciesFile.virtualChildFiles.push(
-      new CSharpProjectNugetPackageDependencyFile(this.cSharpProjectAbsoluteFilePath,
-        this.cSharpProjectNugetPackageDependenciesFile.absoluteFilePath,
-        nugetPackageId,
-        nugetPackageVersion));
-
-    return;
   }
 }
 
