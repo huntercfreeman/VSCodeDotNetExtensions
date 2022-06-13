@@ -122,7 +122,9 @@
         switch (ideFile.fileKind) {
             case FileKind.solutionFolder:
 			case FileKind.projectReferences:
+			case FileKind.projectReference:
 			case FileKind.nugetPackageDependencies:
+			case FileKind.nugetPackageDependency:
                 return;
         }
 
