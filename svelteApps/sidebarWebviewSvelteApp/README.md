@@ -22,11 +22,84 @@ Many of the context menu options available wrap the already existing dotnet CLI 
 
 # Important ideas to follow when developing
 
+- [rollup.config.js](rollup.config.js) specifies where the compiled javascript should be output to. As of writing this README.md
+
+> ../../out/sidebarWebview/sidebarWebview.js
+
+- (continuation of previous bullet), is the path. The takeaway is not the exact relative path as that likely will change, instead the takeaway is that the extension output goes into a folder named, 'out' at the root of the repository.
+
+- The webview is rendered in Visual Studio Code by the following steps 
+
+1: The TypeScript class 'SidebarProvider.ts'
+
+``` typescript
+private getWebviewContent(webview: vscode.Webview) {
+    const dotNetIdeSvelteAppJavaScriptUri = webview.asWebviewUri(vscode.Uri.joinPath(
+      this.context.extensionUri, 'out/sidebarWebview', 'sidebarWebview.js'));
+
+    const dotNetIdeSvelteAppCssUri = webview.asWebviewUri(vscode.Uri.joinPath(
+      this.context.extensionUri, 'out/sidebarWebview', 'sidebarWebview.css'));
+
+    // take note that the compiled javascript is referenced here.
+
+    // More code follows but is ommitted in this snippet
+}
+```
+2: Inside 'extension.ts' is
+
+``` typescript
+const sidebarProvider = new SidebarProvider(context);
+
+context.subscriptions.push(
+    vscode.window.registerWebviewViewProvider(
+        "dot-net-ide.sidebar-webview",
+        sidebarProvider,
+        {
+            "webviewOptions": {
+                // retainContextWhenHidden is resource intensive and should be used sparingly
+                retainContextWhenHidden: true
+            }
+        }
+    )
+);
+```
+3: The root [package.json](/package.json) file. (this is the last step)
+
+``` json
+"activationEvents": [
+    "onView:dot-net-ide.sidebar-webview",
+    // others
+],
+"contributes": {
+    "viewsContainers": {
+        "activitybar": [
+            {
+                "id": "dot-net-ide",
+                "title": ".NET IDE",
+                "icon": "media/dotNetIdeSidebarIcon.svg"
+            }
+        ]
+    },
+    "views": {
+        "dot-net-ide": [
+            {
+                "type": "webview",
+                "id": "dot-net-ide.sidebar-webview",
+                "name": "Solution Explorer",
+                "icon": "media/dotNetIdeSidebarIcon.svg"
+            }
+        ]
+    }
+},
+```
+
 - When adding new context menu options it is important that the dotnet CLI perform the action when possible.
     - In otherwords, be sure to check the dotnet CLI before writing a feature.
+
 - What if dotnet CLI does not have ability to perform the desired action?
     - Ensure the implementation works with unit tests.
     - The context menu options are not UI based tests. The context menu is solely a user interface to the code. So, a unit test should be able to prove correctness.
+
 
 # Not yet implemented
 
