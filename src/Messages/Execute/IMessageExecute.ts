@@ -1,5 +1,3 @@
-import * as vscode from 'vscode';
-import { IMessage } from "../IMessage";
 import { MessageExecuteKind } from "./MessageExecuteKind";
 
 /**

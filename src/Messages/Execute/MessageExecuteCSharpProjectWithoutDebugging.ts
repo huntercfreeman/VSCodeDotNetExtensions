@@ -1,6 +1,4 @@
-import { AbsoluteFilePath } from "../../FileSystem/AbsoluteFilePath";
 import { CSharpProjectFile } from "../../FileSystem/Files/CSharpProjectFile";
-import { DotNetSolutionFile } from "../../FileSystem/Files/DotNetSolutionFile";
 import { IMessage } from "../IMessage";
 import { MessageCategory } from "../MessageCategory";
 import { IMessageExecute } from "./IMessageExecute";
