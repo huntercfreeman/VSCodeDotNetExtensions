@@ -120,7 +120,7 @@ export class ReadMessageHandler {
 
                 let cSharpProjectModel = message.dotNetSolutionFile.solutionModel!.projects[i];
 
-                if(cSharpProjectModel.solutionFolderEntries !== undefined) {
+                if (cSharpProjectModel.solutionFolderEntries !== undefined) {
                     parsedRootNamespaces.push(1);
                 }
                 else {
@@ -147,7 +147,7 @@ export class ReadMessageHandler {
             webviewView.webview.postMessage(message);
         });
     }
-    
+
     public static async handleMessageReadActiveDotNetSolutionFile(webviewView: vscode.WebviewView, iMessage: IMessage) {
         let message = iMessage as MessageReadActiveDotNetSolutionFile;
 
@@ -155,27 +155,27 @@ export class ReadMessageHandler {
 
         webviewView.webview.postMessage(message);
     }
-    
+
     public static async handleMessageReadProjectReferencesInProjectAsync(webviewView: vscode.WebviewView, iMessage: IMessage) {
         let message = iMessage as MessageReadProjectReferencesInProject;
 
         return await CSharpProjectModel.parseCSharpProjectProjectReferences(message.cSharpProjectProjectReferencesFile.parentCSharpProjectInitialAbsoluteFilePath,
             message.cSharpProjectProjectReferencesFile, () => {
 
-            webviewView.webview.postMessage(message);
-        });
+                webviewView.webview.postMessage(message);
+            });
     }
-    
+
     public static async handleMessageReadNugetPackageReferencesInProject(webviewView: vscode.WebviewView, iMessage: IMessage) {
         let message = iMessage as MessageReadNugetPackageReferencesInProject;
 
         return await CSharpProjectModel.parseCSharpProjectNugetPackageReferences(message.cSharpProjectNugetPackageDependenciesFile.parentCSharpProjectInitialAbsoluteFilePath,
             message.cSharpProjectNugetPackageDependenciesFile, () => {
 
-            webviewView.webview.postMessage(message);
-        });
+                webviewView.webview.postMessage(message);
+            });
     }
-    
+
     public static async handleMessageReadVirtualFilesInSolution(webviewView: vscode.WebviewView, iMessage: IMessage) {
         let message = iMessage as MessageReadSolutionIntoTreeView;
 
@@ -208,7 +208,7 @@ export class ReadMessageHandler {
             webviewView.webview.postMessage(message);
         });
     }
-    
+
     public static async handleMessageReadFilesInDirectory(webviewView: vscode.WebviewView, iMessage: IMessage) {
         let message = iMessage as MessageReadFilesInDirectory;
 
@@ -217,9 +217,9 @@ export class ReadMessageHandler {
                 .filter(x => x !== message.directoryFile.absoluteFilePath.filenameWithExtension);
 
             let childAbsoluteFilePaths: AbsoluteFilePath[] = childFiles
-                .map(x => message.directoryFile.absoluteFilePath.initialAbsoluteFilePathStringInput + 
-                          ConstantsFilePath.STANDARDIZED_FILE_DELIMITER +
-                          x)
+                .map(x => message.directoryFile.absoluteFilePath.initialAbsoluteFilePathStringInput +
+                    ConstantsFilePath.STANDARDIZED_FILE_DELIMITER +
+                    x)
                 .map(x => new AbsoluteFilePath(x, FileSystemReader.isDir(x), null));
 
             message.directoryFile.childFiles = childAbsoluteFilePaths
@@ -231,7 +231,7 @@ export class ReadMessageHandler {
             webviewView.webview.postMessage(message);
         });
     }
-    
+
     public static async handleMessageReadFileIntoEditor(webviewView: vscode.WebviewView, iMessage: IMessage) {
         let message = iMessage as MessageReadFileIntoEditor;
 
@@ -249,16 +249,16 @@ export class ReadMessageHandler {
                         "preview": false,
                         "viewColumn": vscode.ViewColumn.One
                     };
-        
+
                     vscode.window.showTextDocument(doc, textDocumentShowOptions);
                 });
                 break;
         }
     }
-    
+
     public static async handleMessageReadNewProjectTemplatesOnComputer(webviewView: vscode.WebviewView, iMessage: IMessage) {
         let message = iMessage as MessageReadNewProjectTemplatesOnComputer;
-        
+
         let messageExecuteTerminal = this.getMessageReadTerminal();
 
         messageExecuteTerminal.sendText(ConstantsDotNetCli.DOT_NET_NEW_LIST);
@@ -286,14 +286,14 @@ export class ReadMessageHandler {
 
         let sawUnfininshedCallback = false;
 
-        for (;;) {
+        for (; ;) {
 
-            sawUnfininshedCallback = false;   
+            sawUnfininshedCallback = false;
 
             for (let i = 0; i < finishedMarkers.length; i++) {
-               if (finishedMarkers[i] === 0) {
+                if (finishedMarkers[i] === 0) {
                     sawUnfininshedCallback = true;
-               } 
+                }
             }
 
             ++loopCount;

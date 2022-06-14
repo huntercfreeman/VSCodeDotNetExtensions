@@ -73,7 +73,7 @@ export class UpdateMessageHandler {
 
         messageUpdateTerminal.show();
     }
-    
+
     public static async handleMessageUpdateAddProjectReference(webviewView: vscode.WebviewView, iMessage: IMessage) {
         let message = iMessage as MessageUpdateAddProjectReference;
 
@@ -89,46 +89,46 @@ export class UpdateMessageHandler {
                 let messageUpdateTerminal = this.getMessageUpdateTerminal();
 
                 messageUpdateTerminal.sendText(
-                    ConstantsDotNetCli.formatDotNetAddCSharpProjectReferenceToCSharpProject(message.cSharpProjectProjectReferencesFile.parentCSharpProjectInitialAbsoluteFilePath, 
+                    ConstantsDotNetCli.formatDotNetAddCSharpProjectReferenceToCSharpProject(message.cSharpProjectProjectReferencesFile.parentCSharpProjectInitialAbsoluteFilePath,
                         fileUri[0].fsPath));
 
                 messageUpdateTerminal.show();
             }
         });
     }
-    
+
     public static async handleMessageUpdateRemoveProjectReference(webviewView: vscode.WebviewView, iMessage: IMessage) {
         let message = iMessage as MessageUpdateRemoveProjectReference;
 
         let messageUpdateTerminal = this.getMessageUpdateTerminal();
 
         messageUpdateTerminal.sendText(
-            ConstantsDotNetCli.formatDotNetRemoveCSharpProjectReferenceFromCSharpProject(message.cSharpProjectProjectReferenceFile.parentCSharpProjectInitialAbsoluteFilePath, 
+            ConstantsDotNetCli.formatDotNetRemoveCSharpProjectReferenceFromCSharpProject(message.cSharpProjectProjectReferenceFile.parentCSharpProjectInitialAbsoluteFilePath,
                 message.cSharpProjectProjectReferenceFile.cSharpProjectReferenceAbsoluteFilePath));
 
         messageUpdateTerminal.show();
     }
-    
+
     public static async handleMessageUpdateAddNugetPackageReference(webviewView: vscode.WebviewView, iMessage: IMessage) {
         let message = iMessage as MessageUpdateAddNugetPackageReference;
 
         let messageUpdateTerminal = this.getMessageUpdateTerminal();
 
         messageUpdateTerminal.sendText(
-            ConstantsDotNetCli.formatDotNetAddNugetPackageReferenceToCSharpProject(message.cSharpProjectFile.absoluteFilePath, 
+            ConstantsDotNetCli.formatDotNetAddNugetPackageReferenceToCSharpProject(message.cSharpProjectFile.absoluteFilePath,
                 message.nugetPackageModel,
                 message.nugetPackageVersionModel));
 
         messageUpdateTerminal.show();
     }
-    
+
     public static async handleMessageUpdateRemoveNugetPackageReference(webviewView: vscode.WebviewView, iMessage: IMessage) {
         let message = iMessage as MessageUpdateRemoveNugetPackageReference;
 
         let messageUpdateTerminal = this.getMessageUpdateTerminal();
 
         messageUpdateTerminal.sendText(
-            ConstantsDotNetCli.formatDotNetRemoveNugetPackageReferenceFromCSharpProject(message.cSharpProjectNugetPackageDependencyFile.parentCSharpProjectInitialAbsoluteFilePath, 
+            ConstantsDotNetCli.formatDotNetRemoveNugetPackageReferenceFromCSharpProject(message.cSharpProjectNugetPackageDependencyFile.parentCSharpProjectInitialAbsoluteFilePath,
                 message.cSharpProjectNugetPackageDependencyFile.nugetPackageId));
 
         messageUpdateTerminal.show();

@@ -1,7 +1,5 @@
 import * as vscode from 'vscode';
-import { ConstantsContextualInformation } from '../Constants/ConstantsContextualInformation';
 import { ConstantsDotNetCli } from '../Constants/ConstantsDotNetCli';
-import { ConstantsFileExtensionsNoPeriod } from '../Constants/ConstantsFileExtensionsNoPeriod';
 import { ConstantsFilePath } from '../Constants/ConstantsFilePath';
 import { ConstantsFileTemplates } from '../Constants/ConstantsFileTemplates';
 import { ConstantsTerminal } from '../Constants/ConstantsTerminal';
@@ -50,7 +48,7 @@ export class CreateMessageHandler {
 
     public static async handleMessageCreateDotNetSolutionInWorkspace(webviewView: vscode.WebviewView, iMessage: IMessage) {
         let message = iMessage as MessageCreateDotNetSolutionInWorkspace;
-        
+
         let messageExecuteTerminal = this.getMessageCreateTerminal();
 
         messageExecuteTerminal.sendText(ConstantsDotNetCli
@@ -58,7 +56,7 @@ export class CreateMessageHandler {
 
         messageExecuteTerminal.show();
     }
-    
+
     public static async handleMessageCreateTemplatedFileInDirectory(webviewView: vscode.WebviewView, iMessage: IMessage) {
         let message = iMessage as MessageCreateTemplatedFileInDirectory;
 
@@ -84,7 +82,7 @@ export class CreateMessageHandler {
                     }
 
                     message.directoryFile.childFiles.push(ideFile);
-                    
+
                     const openPath = vscode.Uri.file(absoluteFilePath.initialAbsoluteFilePathStringInput);
 
                     vscode.workspace.openTextDocument(openPath).then(doc => {
@@ -99,7 +97,7 @@ export class CreateMessageHandler {
                 }
             });
     }
-    
+
     public static async handleMessageCreateDirectoryInDirectory(webviewView: vscode.WebviewView, iMessage: IMessage) {
         let message = iMessage as MessageCreateDirectoryInDirectory;
 
@@ -118,7 +116,7 @@ export class CreateMessageHandler {
         fs.mkdir(ideFile.absoluteFilePath.initialAbsoluteFilePathStringInput, { recursive: true }, (err: any) => {
         });
     }
-    
+
     public static async handleMessageCreateCSharpProjectInAny(webviewView: vscode.WebviewView, iMessage: IMessage) {
         let message = iMessage as MessageCreateCSharpProjectInAny;
 
@@ -132,7 +130,7 @@ export class CreateMessageHandler {
             dotNetSolutionFileAbsoluteFilePath = dotNetSolutionFile.absoluteFilePath;
         }
         else if (message.ideFile.fileKind === FileKind.solutionFolder) {
-            solutionFolder = message.ideFile as CSharpProjectFile;            
+            solutionFolder = message.ideFile as CSharpProjectFile;
 
             dotNetSolutionFileAbsoluteFilePath = solutionFolder.cSharpProjectModel.parentSolutionAbsoluteFilePath;
         }
@@ -165,7 +163,7 @@ export class CreateMessageHandler {
             dotNetSolutionFileAbsoluteFilePath = dotNetSolutionFile.absoluteFilePath;
         }
         else if (message.ideFile.fileKind === FileKind.solutionFolder) {
-            solutionFolder = message.ideFile as CSharpProjectFile;            
+            solutionFolder = message.ideFile as CSharpProjectFile;
 
             dotNetSolutionFileAbsoluteFilePath = solutionFolder.cSharpProjectModel.parentSolutionAbsoluteFilePath;
         }
