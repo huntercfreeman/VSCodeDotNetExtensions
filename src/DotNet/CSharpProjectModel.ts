@@ -22,6 +22,19 @@ export class CSharpProjectModel {
                     false);
 
             this.rootNamespace = rootNamespace ?? displayName;
+
+            if (!this.absoluteFilePath.extensionNoPeriod) {
+                // Is likely a solution folder
+                // I am not sure if this is fool proof however.
+                //
+                // This is necessary for when a solution folder
+                // is empty otherwise it would 100% be guaranteed
+                // to be a solution folder as it would show in the
+                // solution folders section of the .sln file.;
+                
+                this.solutionFolderEntries = [];
+                this.contextualInformation = ConstantsContextualInformation.TREE_VIEW_SOLUTION_FOLDER_CONTEXT;
+            }
     }
 
     public static async getFileContents(solution: SolutionModel, callback: any) : Promise<string> {

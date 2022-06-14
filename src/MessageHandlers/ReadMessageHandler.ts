@@ -117,12 +117,18 @@ export class ReadMessageHandler {
             let parsedRootNamespaces = [];
 
             for (let i = 0; i < message.dotNetSolutionFile.solutionModel!.projects.length; i++) {
-                parsedRootNamespaces.push(0);
 
                 let cSharpProjectModel = message.dotNetSolutionFile.solutionModel!.projects[i];
 
-                await CSharpProjectModel.parseRootNamespace(cSharpProjectModel,
-                    () => parsedRootNamespaces[i] = 1);
+                if(cSharpProjectModel.solutionFolderEntries !== undefined) {
+                    parsedRootNamespaces.push(1);
+                }
+                else {
+                    parsedRootNamespaces.push(0);
+
+                    await CSharpProjectModel.parseRootNamespace(cSharpProjectModel,
+                        () => parsedRootNamespaces[i] = 1);
+                }
             }
 
             // The parsing of the root namespaces takes a callback for when the parsing is done
