@@ -1,52 +1,52 @@
 <script lang="ts">
     import { FileKind } from "../../../../out/FileSystem/FileKind";
-    import FileProjectIcon from "./Icons/ProjectIcon.svelte";
-    import FileSolutionIcon from "./Icons/SolutionIcon.svelte";
-    import FileDirectoryIcon from "./Icons/DirectoryIcon.svelte";
-    import FileCsIcon from "./Icons/CsIcon.svelte";
-    import FileCshtmlIcon from "./Icons/CshtmlIcon.svelte";
-    import FileRazorIcon from "./Icons/RazorIcon.svelte";
-    import FileCssIcon from "./Icons/CssIcon.svelte";
-    import FileTxtIcon from "./Icons/TxtIcon.svelte";
-    import FileSolutionFolderIcon from "./Icons/SolutionFolderIcon.svelte";
-    import FileJsonIcon from "./Icons/JsonIcon.svelte";
-import FileProjectDependenciesIcon from "./Icons/ProjectDependenciesIcon.svelte";
-import FileNugetPackageDependencyIcon from "./Icons/NugetPackageDependencyIcon.svelte";
-import FileNugetPackageDependenciesIcon from "./Icons/NugetPackageDependenciesIcon.svelte";
-import FileProjectReferencesIcon from "./Icons/ProjectReferencesIcon.svelte";
-import FileProjectReferenceIcon from "./Icons/ProjectReferenceIcon.svelte";
+    import ProjectIcon from "./Icons/ProjectIcon.svelte";
+    import SolutionIcon from "./Icons/SolutionIcon.svelte";
+    import DirectoryIcon from "./Icons/DirectoryIcon.svelte";
+    import CsIcon from "./Icons/CsIcon.svelte";
+    import CshtmlIcon from "./Icons/CshtmlIcon.svelte";
+    import RazorIcon from "./Icons/RazorIcon.svelte";
+    import CssIcon from "./Icons/CssIcon.svelte";
+    import TxtIcon from "./Icons/TxtIcon.svelte";
+    import SolutionFolderIcon from "./Icons/SolutionFolderIcon.svelte";
+    import JsonIcon from "./Icons/JsonIcon.svelte";
+    import ProjectDependenciesIcon from "./Icons/ProjectDependenciesIcon.svelte";
+    import NugetPackageDependencyIcon from "./Icons/NugetPackageDependencyIcon.svelte";
+    import NugetPackageDependenciesIcon from "./Icons/NugetPackageDependenciesIcon.svelte";
+    import ProjectReferencesIcon from "./Icons/ProjectReferencesIcon.svelte";
+    import ProjectReferenceIcon from "./Icons/ProjectReferenceIcon.svelte";
 
     export let fileKind: typeof FileKind;
 </script>
 
 {#if fileKind === FileKind.solution}
-    <FileSolutionIcon />
+    <SolutionIcon />
 {:else if fileKind === FileKind.cSharpProject}
-    <FileProjectIcon />
+    <ProjectIcon />
 {:else if fileKind === FileKind.solutionFolder}
-    <FileSolutionFolderIcon />
+    <SolutionFolderIcon />
 {:else if fileKind === FileKind.default}
-    <FileTxtIcon />
+    <TxtIcon />
 {:else if fileKind === FileKind.directory}
-    <FileDirectoryIcon />
+    <DirectoryIcon />
 {:else if fileKind === FileKind.cSharp}
-    <FileCsIcon />
+    <CsIcon />
 {:else if fileKind === FileKind.cshtml}
-    <FileCshtmlIcon />
+    <CshtmlIcon />
 {:else if fileKind === FileKind.razor}
-    <FileRazorIcon />
+    <RazorIcon />
 {:else if fileKind === FileKind.css}
-    <FileCssIcon />
+    <CssIcon />
 {:else if fileKind === FileKind.json}
-    <FileJsonIcon />
+    <JsonIcon />
 {:else if fileKind === FileKind.projectDependencies}
-    <FileProjectDependenciesIcon />
+    <ProjectDependenciesIcon />
 {:else if fileKind === FileKind.nugetPackageDependencies}
-    <FileNugetPackageDependenciesIcon />
+    <NugetPackageDependenciesIcon />
 {:else if fileKind === FileKind.nugetPackageDependency}
-    <FileNugetPackageDependencyIcon />
+    <NugetPackageDependencyIcon />
 {:else if fileKind === FileKind.projectReferences}
-    <FileProjectReferencesIcon />
+    <ProjectReferencesIcon />
 {:else if fileKind === FileKind.projectReference}
-    <FileProjectReferenceIcon />
+    <ProjectReferenceIcon />
 {/if}
