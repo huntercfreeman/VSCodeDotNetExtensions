@@ -1,4 +1,3 @@
-import { AbsoluteFilePath } from "../../FileSystem/AbsoluteFilePath";
 import { DirectoryFile } from "../../FileSystem/Files/DirectoryFile";
 import { IMessage } from "../IMessage";
 import { MessageCategory } from "../MessageCategory";
@@ -6,7 +5,7 @@ import { IMessageCreate } from "./IMessageCreate";
 import { MessageCreateKind } from "./MessageCreateKind";
 
 export class MessageCreateDirectoryInDirectory implements IMessage, IMessageCreate {
-    constructor(public readonly filenameWithExtension: string, 
+    constructor(public readonly filenameWithExtension: string,
         public readonly directoryFile: DirectoryFile) {
     }
 
