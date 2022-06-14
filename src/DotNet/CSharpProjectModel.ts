@@ -14,11 +14,14 @@ export class CSharpProjectModel {
         public readonly firstGuid: string,
         public readonly displayName: string,
         public readonly projectRelativePathFromSolution: string,
-        public readonly secondGuid: string) {
+        public readonly secondGuid: string,
+        rootNamespace: string | null) {
             this.absoluteFilePath = AbsoluteFilePath
                 .constructAbsoluteFilePathFromAbsoluteFilePathAndRelativePath(parentSolutionModel.absoluteFilePath,
                     this.projectRelativePathFromSolution,
                     false);
+
+            this.rootNamespace = rootNamespace ?? displayName;
     }
 
     public static async getFileContents(solution: SolutionModel, callback: any) : Promise<string> {
@@ -27,6 +30,19 @@ export class CSharpProjectModel {
         });
     }
     
+    public static async parseRootNamespace(cSharpProjectModel: CSharpProjectModel,
+        callback: any) : Promise<void> {
+
+        cSharpProjectModel.rootNamespace = cSharpProjectModel.displayName;
+
+        let cSharpProjectParser = new CSharpProjectParser(undefined, 
+            undefined,
+            undefined,
+            cSharpProjectModel);
+        
+        cSharpProjectParser.parse(callback);
+    }
+
     public static async parseCSharpProjectProjectReferences(cSharpProjectAbsoluteFilePath: AbsoluteFilePath,
         cSharpProjectProjectReferencesFile: CSharpProjectProjectReferencesFile,
         callback: any) : Promise<void> {
@@ -35,6 +51,7 @@ export class CSharpProjectModel {
 
         let cSharpProjectParser = new CSharpProjectParser(cSharpProjectAbsoluteFilePath, 
             cSharpProjectProjectReferencesFile,
+            undefined,
             undefined);
         
         cSharpProjectParser.parse(callback);
@@ -48,7 +65,8 @@ export class CSharpProjectModel {
 
             let cSharpProjectParser = new CSharpProjectParser(cSharpProjectAbsoluteFilePath, 
                 undefined,
-                cSharpProjectNugetPackageDependenciesFile);
+                cSharpProjectNugetPackageDependenciesFile,
+                undefined);
         
         cSharpProjectParser.parse(callback);
     }
@@ -58,6 +76,7 @@ export class CSharpProjectModel {
 	public childFiles: IdeFile[] | undefined;
     public solutionFolderParentSecondGuid: string | undefined;
     public projectReferences: CSharpProjectProjectReferenceFile[] = [];
+    public rootNamespace: string;
 
     public contextualInformation: string = ConstantsContextualInformation.TREE_VIEW_CSHARP_PROJECT_CONTEXT;
 }

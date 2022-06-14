@@ -112,7 +112,27 @@ export class ReadMessageHandler {
     public static async handleMessageReadSolutionIntoTreeViewAsync(webviewView: vscode.WebviewView, iMessage: IMessage) {
         let message = iMessage as MessageReadSolutionIntoTreeView;
 
-        return await SolutionModel.parseSolution(message.dotNetSolutionFile.solutionModel!, () => {
+        return await SolutionModel.parseSolution(message.dotNetSolutionFile.solutionModel!, async () => {
+
+            let parsedRootNamespaces = [];
+
+            for (let i = 0; i < message.dotNetSolutionFile.solutionModel!.projects.length; i++) {
+                parsedRootNamespaces.push(0);
+
+                let cSharpProjectModel = message.dotNetSolutionFile.solutionModel!.projects[i];
+
+                await CSharpProjectModel.parseRootNamespace(cSharpProjectModel,
+                    () => parsedRootNamespaces[i] = 1);
+            }
+
+            // The parsing of the root namespaces takes a callback for when the parsing is done
+            // this works for parsing one file at a time but parsing more than one file
+            // it does not work and finishedParsingRootNamespacesOfProjects should be removed
+            // eventually this is a short term hack.
+            //
+            // "There's no code more permanent than a temporary hack" - Abraham Lincoln
+            await this.finishedParsingRootNamespacesOfProjects(parsedRootNamespaces);
+
             message.dotNetSolutionFile.virtualChildFiles = message.dotNetSolutionFile.solutionModel!.projects
                 .map(x => new CSharpProjectFile(x));
 
@@ -248,5 +268,35 @@ export class ReadMessageHandler {
         }
 
         return messageReadTerminal;
+    }
+
+    private static async finishedParsingRootNamespacesOfProjects(finishedMarkers: number[]) {
+        let timeoutInMiliseconds = 500;
+        let maximumLoopCount = 12000;
+
+        // 1 hour timeout should never happen only a precaution
+
+        let loopCount = 0;
+
+        let sawUnfininshedCallback = false;
+
+        for (;;) {
+
+            sawUnfininshedCallback = false;   
+
+            for (let i = 0; i < finishedMarkers.length; i++) {
+               if (finishedMarkers[i] === 0) {
+                    sawUnfininshedCallback = true;
+               } 
+            }
+
+            ++loopCount;
+
+            if (!sawUnfininshedCallback || (loopCount >= maximumLoopCount)) {
+                break;
+            }
+
+            await new Promise(r => setTimeout(r, timeoutInMiliseconds));
+        }
     }
 }

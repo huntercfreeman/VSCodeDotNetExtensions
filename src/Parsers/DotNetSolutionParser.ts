@@ -186,7 +186,8 @@ export class DotNetSolutionParser {
       firstGuid,
       displayName,
       projectRelativePathFromSolution,
-      secondGuid);
+      secondGuid,
+      null);
 
     this.solutionModel.projects.push(project);
   }

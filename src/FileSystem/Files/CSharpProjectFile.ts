@@ -9,7 +9,7 @@ import { CSharpProjectDependenciesFile } from "./CSharpProjectDependenciesFile";
 export class CSharpProjectFile extends IdeFile {
 
     constructor(public readonly cSharpProjectModel: CSharpProjectModel) {
-        super(cSharpProjectModel.absoluteFilePath, cSharpProjectModel.displayName);
+        super(cSharpProjectModel.absoluteFilePath, cSharpProjectModel.rootNamespace);
 
         if(cSharpProjectModel.solutionFolderEntries !== undefined) {
             this.fileKind = FileKind.solutionFolder;
