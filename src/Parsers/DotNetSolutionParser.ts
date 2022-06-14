@@ -201,7 +201,6 @@ export class DotNetSolutionParser {
     return;
   }
 
-
   public readInSolutionProperties() {
     return;
   }

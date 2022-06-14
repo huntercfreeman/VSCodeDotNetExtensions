@@ -21,7 +21,7 @@ export class CSharpProjectParser {
     // If one finds C# Project files to be large enough to necessitate streaming the contents this should be changed.
     // However, C# Project files are typically RELATIVELY small.
     let absoluteFilePathString = this.cSharpProjectAbsoluteFilePath?.initialAbsoluteFilePathStringInput ??
-                                 this.cSharpProjectModel?.absoluteFilePath?.initialAbsoluteFilePathStringInput;
+      this.cSharpProjectModel?.absoluteFilePath?.initialAbsoluteFilePathStringInput;
 
     await fs.readFile(absoluteFilePathString, 'utf8', (err: any, data: any) => {
       if (err) {
@@ -34,22 +34,19 @@ export class CSharpProjectParser {
       let xmlFileModel = xmlParser.parse();
 
       if (this.cSharpProjectModel) {
-          let rootNamespaces: XmlTagModel[] = [];
+        let rootNamespaces: XmlTagModel[] = [];
 
-          xmlFileModel.selectRecursively(
-            (x) => x.tagName === ConstantsCSharpProjectFile.ROOT_NAMESPACE_TAG_NAME,
-            rootNamespaces);
-          
-          if (rootNamespaces.length === 0) {
-            return;
-          }
+        xmlFileModel.selectRecursively(
+          (x) => x.tagName === ConstantsCSharpProjectFile.ROOT_NAMESPACE_TAG_NAME,
+          rootNamespaces);
 
+        if (rootNamespaces.length !== 0) {
           // There should not be more than 1 root namespace defined in the .csproj file
           // if there is take the first root namespace that is defined.
           let reference = rootNamespaces[0];
 
           let rootNamespaceString = "";
-          
+
           for (let i = 0; i < reference.children.xmlTagModels.length; i++) {
             let child = reference.children.xmlTagModels[i] as any;
 
@@ -61,67 +58,66 @@ export class CSharpProjectParser {
           rootNamespaceString = rootNamespaceString.trim();
 
           this.cSharpProjectModel.rootNamespace = rootNamespaceString;
+        }
       }
       else {
-        if (!this.cSharpProjectAbsoluteFilePath) {
-          return;
-        }
+        if (this.cSharpProjectAbsoluteFilePath) {
+          // Only either cSharpProjectProjectReferencesFile can be calculated or 
+          // cSharpProjectProjectReferencesFile can be returned at a given time as
+          // the user interface that calls this method does not have a reference to both arrays.
 
-        // Only either cSharpProjectProjectReferencesFile can be calculated or 
-        // cSharpProjectProjectReferencesFile can be returned at a given time as
-        // the user interface that calls this method does not have a reference to both arrays.
+          if (this.cSharpProjectProjectReferencesFile) {
+            let projectReferences: XmlTagModel[] = [];
 
-        if (this.cSharpProjectProjectReferencesFile) {
-          let projectReferences: XmlTagModel[] = [];
+            xmlFileModel.selectRecursively(
+              (x) => x.tagName === ConstantsCSharpProjectFile.PROJECT_REFERENCE_TAG_NAME,
+              projectReferences);
 
-          xmlFileModel.selectRecursively(
-            (x) => x.tagName === ConstantsCSharpProjectFile.PROJECT_REFERENCE_TAG_NAME,
-            projectReferences);
+            for (let i = 0; i < projectReferences.length; i++) {
+              let reference = projectReferences[i];
 
-          for (let i = 0; i < projectReferences.length; i++) {
-            let reference = projectReferences[i];
+              let includeAttribute = reference.xmlAttributeModels.find(attribute =>
+                attribute.attributeName === ConstantsCSharpProjectFile.XML_INCLUDE_ATTRIBUTE_NAME);
 
-            let includeAttribute = reference.xmlAttributeModels.find(attribute =>
-              attribute.attributeName === ConstantsCSharpProjectFile.XML_INCLUDE_ATTRIBUTE_NAME);
+              if (includeAttribute) {
+                if (!this.cSharpProjectProjectReferencesFile.virtualChildFiles) {
+                  this.cSharpProjectProjectReferencesFile.virtualChildFiles = [];
+                }
 
-            if (includeAttribute) {
-              if (!this.cSharpProjectProjectReferencesFile.virtualChildFiles) {
-                this.cSharpProjectProjectReferencesFile.virtualChildFiles = [];
+                this.cSharpProjectProjectReferencesFile.virtualChildFiles.push(
+                  new CSharpProjectProjectReferenceFile(this.cSharpProjectAbsoluteFilePath,
+                    this.cSharpProjectProjectReferencesFile.absoluteFilePath, includeAttribute.attributeValue));
               }
-
-              this.cSharpProjectProjectReferencesFile.virtualChildFiles.push(
-                new CSharpProjectProjectReferenceFile(this.cSharpProjectAbsoluteFilePath,
-                  this.cSharpProjectProjectReferencesFile.absoluteFilePath, includeAttribute.attributeValue));
             }
           }
-        }
-        
-        if (this.cSharpProjectNugetPackageDependenciesFile) {
-          let nugetPackageReferences: XmlTagModel[] = [];
 
-        xmlFileModel.selectRecursively(
-          (x) => x.tagName === ConstantsCSharpProjectFile.NUGET_PACKAGE_TAG_NAME,
-          nugetPackageReferences);
+          if (this.cSharpProjectNugetPackageDependenciesFile) {
+            let nugetPackageReferences: XmlTagModel[] = [];
 
-          for (let i = 0; i < nugetPackageReferences.length; i++) {
-            let reference = nugetPackageReferences[i];
+            xmlFileModel.selectRecursively(
+              (x) => x.tagName === ConstantsCSharpProjectFile.NUGET_PACKAGE_TAG_NAME,
+              nugetPackageReferences);
 
-            let includeAttribute = reference.xmlAttributeModels.find(attribute =>
-              attribute.attributeName === ConstantsCSharpProjectFile.XML_INCLUDE_ATTRIBUTE_NAME);
-            
-            let versionAttribute = reference.xmlAttributeModels.find(attribute =>
-              attribute.attributeName === ConstantsCSharpProjectFile.XML_VERSION_ATTRIBUTE_NAME);
+            for (let i = 0; i < nugetPackageReferences.length; i++) {
+              let reference = nugetPackageReferences[i];
 
-            if (includeAttribute && versionAttribute) {
-              if (!this.cSharpProjectNugetPackageDependenciesFile.virtualChildFiles) {
-                this.cSharpProjectNugetPackageDependenciesFile.virtualChildFiles = [];
+              let includeAttribute = reference.xmlAttributeModels.find(attribute =>
+                attribute.attributeName === ConstantsCSharpProjectFile.XML_INCLUDE_ATTRIBUTE_NAME);
+
+              let versionAttribute = reference.xmlAttributeModels.find(attribute =>
+                attribute.attributeName === ConstantsCSharpProjectFile.XML_VERSION_ATTRIBUTE_NAME);
+
+              if (includeAttribute && versionAttribute) {
+                if (!this.cSharpProjectNugetPackageDependenciesFile.virtualChildFiles) {
+                  this.cSharpProjectNugetPackageDependenciesFile.virtualChildFiles = [];
+                }
+
+                this.cSharpProjectNugetPackageDependenciesFile.virtualChildFiles.push(
+                  new CSharpProjectNugetPackageDependencyFile(this.cSharpProjectAbsoluteFilePath,
+                    this.cSharpProjectNugetPackageDependenciesFile.absoluteFilePath,
+                    includeAttribute.attributeValue,
+                    versionAttribute.attributeValue));
               }
-        
-              this.cSharpProjectNugetPackageDependenciesFile.virtualChildFiles.push(
-                new CSharpProjectNugetPackageDependencyFile(this.cSharpProjectAbsoluteFilePath,
-                  this.cSharpProjectNugetPackageDependenciesFile.absoluteFilePath,
-                  includeAttribute.attributeValue,
-                  versionAttribute.attributeValue));
             }
           }
         }
