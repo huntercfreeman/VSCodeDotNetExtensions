@@ -1,42 +1,34 @@
 <script lang="ts">
-    import { ConstantsFileExtensionsNoPeriod } from '../../../../../out/Constants/ConstantsFileExtensionsNoPeriod';
-    import { contextMenuTarget } from '../menu';
-    import MenuOption from '../MenuOption.svelte';
-    import TextInputForm from '../TextInputForm.svelte';
-    import { MessageCreateTemplatedFileInDirectory } from "../../../../../out/Messages/Create/MessageCreateTemplatedFileInDirectory";
-    import { DirectoryFile } from '../../../../../out/FileSystem/Files/DirectoryFile';
-    import { FileKind } from '../../../../../out/FileSystem/FileKind';
-    import { MessageReadVirtualFilesInCSharpProject } from '../../../../../out/Messages/Read/MessageReadVirtualFilesInCSharpProject';
-    import { MessageReadFilesInDirectory } from '../../../../../out/Messages/Read/MessageReadFilesInDirectory';
-    import { MessageExecuteCSharpProjectWithoutDebugging } from '../../../../../out/Messages/Execute/MessageExecuteCSharpProjectWithoutDebugging';
-    import { MessageUpdateExistingCSharpProjectIntoSolution } from '../../../../../out/Messages/Update/MessageUpdateExistingCSharpProjectIntoSolution';
-    import { MessageUpdateRemoveProjectReference } from '../../../../../out/Messages/Update/MessageUpdateRemoveProjectReference';
-    import { MessageUpdateRemoveNugetPackageReference } from '../../../../../out/Messages/Update/MessageUpdateRemoveNugetPackageReference';
+    import { contextMenuTarget } from "../menu";
+    import MenuOption from "../MenuOption.svelte";
+    import { MessageUpdateRemoveNugetPackageReference } from "../../../../../out/Messages/Update/MessageUpdateRemoveNugetPackageReference";
 
-	export let closeMenu;
+    export let closeMenu;
 
-	let contextMenuTargetValue;
+    let contextMenuTargetValue;
     let showPrompt: boolean = false;
-	
-	contextMenuTarget.subscribe(value => {
-		contextMenuTargetValue = value;
-	});
+
+    contextMenuTarget.subscribe((value) => {
+        contextMenuTargetValue = value;
+    });
 
     function removeNugetPackageReference() {
-        let messageUpdateRemoveNugetPackageReference = 
-            new MessageUpdateRemoveNugetPackageReference(contextMenuTargetValue);
+        let messageUpdateRemoveNugetPackageReference =
+            new MessageUpdateRemoveNugetPackageReference(
+                contextMenuTargetValue
+            );
 
         tsVscode.postMessage({
             type: undefined,
-            value: messageUpdateRemoveNugetPackageReference
+            value: messageUpdateRemoveNugetPackageReference,
         });
 
         performCloseMenu();
-	}
-    
+    }
+
     function showConfirmQuestion() {
         showPrompt = true;
-	}
+    }
 
     function performCloseMenu() {
         showPrompt = false;
@@ -44,28 +36,37 @@
     }
 </script>
 
-<MenuOption onClickStopPropagation="{true}"
-            onClick={showConfirmQuestion} 
-            text="Remove Nuget Package Reference." />
+{#if contextMenuTargetValue}
+    <MenuOption
+        onClickStopPropagation={true}
+        onClick={showConfirmQuestion}
+        text="Remove Nuget Package Reference."
+    />
 
-{#if showPrompt}
-    <div>
-        <em>Remove</em> Reference:
-        
-        <div style="margin-left: 12px;">
-            <em>{contextMenuTargetValue.absoluteFilePath.filenameWithExtension}</em>
-        </div>
-    </div>
-    <div>
-        From Project:
-        
-        <div style="margin-left: 12px;">
-            {contextMenuTargetValue.parentCSharpProjectInitialAbsoluteFilePath.filenameWithExtension}
-        </div>
-    </div>
+    {#if showPrompt}
+        <div>
+            <em>Remove</em> Reference:
 
-    <button on:click="{removeNugetPackageReference}">Accept</button>
-    <button on:click="{performCloseMenu}">Decline</button>
+            <div style="margin-left: 12px;">
+                <em
+                    >{contextMenuTargetValue.absoluteFilePath
+                        .filenameWithExtension}</em
+                >
+            </div>
+        </div>
+        <div>
+            From Project:
+
+            <div style="margin-left: 12px;">
+                {contextMenuTargetValue
+                    .parentCSharpProjectInitialAbsoluteFilePath
+                    .filenameWithExtension}
+            </div>
+        </div>
+
+        <button on:click={removeNugetPackageReference}>Accept</button>
+        <button on:click={performCloseMenu}>Decline</button>
+    {/if}
 {/if}
 
 <style>

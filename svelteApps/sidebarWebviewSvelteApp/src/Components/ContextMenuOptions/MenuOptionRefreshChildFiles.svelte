@@ -1,80 +1,86 @@
 <script lang="ts">
-    import { ConstantsFileExtensionsNoPeriod } from '../../../../../out/Constants/ConstantsFileExtensionsNoPeriod';
-    import { contextMenuTarget } from '../menu';
-    import MenuOption from '../MenuOption.svelte';
-    import TextInputForm from '../TextInputForm.svelte';
-    import { MessageCreateTemplatedFileInDirectory } from "../../../../../out/Messages/Create/MessageCreateTemplatedFileInDirectory";
-    import { DirectoryFile } from '../../../../../out/FileSystem/Files/DirectoryFile';
-    import { FileKind } from '../../../../../out/FileSystem/FileKind';
-    import { MessageReadVirtualFilesInCSharpProject } from '../../../../../out/Messages/Read/MessageReadVirtualFilesInCSharpProject';
-    import { MessageReadFilesInDirectory } from '../../../../../out/Messages/Read/MessageReadFilesInDirectory';
-    import { MessageReadSolutionIntoTreeView } from '../../../../../out/Messages/Read/MessageReadSolutionIntoTreeView';
-    import { MessageReadVirtualFilesInSolution } from '../../../../../out/Messages/Read/MessageReadVirtualFilesInSolution';
-import { MessageReadProjectReferencesInProject } from '../../../../../out/Messages/Read/MessageReadProjectReferencesInProject';
-import { MessageReadNugetPackageReferencesInProject } from '../../../../../out/Messages/Read/MessageReadNugetPackageReferencesInProject';
+    import { contextMenuTarget } from "../menu";
+    import MenuOption from "../MenuOption.svelte";
+    import { FileKind } from "../../../../../out/FileSystem/FileKind";
+    import { MessageReadVirtualFilesInCSharpProject } from "../../../../../out/Messages/Read/MessageReadVirtualFilesInCSharpProject";
+    import { MessageReadFilesInDirectory } from "../../../../../out/Messages/Read/MessageReadFilesInDirectory";
+    import { MessageReadVirtualFilesInSolution } from "../../../../../out/Messages/Read/MessageReadVirtualFilesInSolution";
+    import { MessageReadProjectReferencesInProject } from "../../../../../out/Messages/Read/MessageReadProjectReferencesInProject";
+    import { MessageReadNugetPackageReferencesInProject } from "../../../../../out/Messages/Read/MessageReadNugetPackageReferencesInProject";
 
-	export let closeMenu;
+    export let closeMenu;
 
-	let contextMenuTargetValue;
-    let addFileWithTemplateFilename: string | undefined;
-	let shouldAddCodeBehind: boolean = false;
-	
-	contextMenuTarget.subscribe(value => {
-		contextMenuTargetValue = value;
-	});
+    let contextMenuTargetValue;
+
+    contextMenuTarget.subscribe((value) => {
+        contextMenuTargetValue = value;
+    });
 
     function refreshOnClick() {
         switch (contextMenuTargetValue.fileKind) {
             case FileKind.solution:
-                let messageReadVirtualFilesInSolution = new MessageReadVirtualFilesInSolution(contextMenuTargetValue);
+                let messageReadVirtualFilesInSolution =
+                    new MessageReadVirtualFilesInSolution(
+                        contextMenuTargetValue
+                    );
 
                 tsVscode.postMessage({
                     type: undefined,
-                    value: messageReadVirtualFilesInSolution
+                    value: messageReadVirtualFilesInSolution,
                 });
                 break;
             case FileKind.cSharpProject:
-                let messageReadVirtualFilesInCSharpProject = 
-                    new MessageReadVirtualFilesInCSharpProject(contextMenuTargetValue);
+                let messageReadVirtualFilesInCSharpProject =
+                    new MessageReadVirtualFilesInCSharpProject(
+                        contextMenuTargetValue
+                    );
 
                 tsVscode.postMessage({
                     type: undefined,
-                    value: messageReadVirtualFilesInCSharpProject
+                    value: messageReadVirtualFilesInCSharpProject,
                 });
                 break;
             case FileKind.projectReferences:
-                let messageReadProjectReferencesInProject = 
-                    new MessageReadProjectReferencesInProject(contextMenuTargetValue);
+                let messageReadProjectReferencesInProject =
+                    new MessageReadProjectReferencesInProject(
+                        contextMenuTargetValue
+                    );
 
                 tsVscode.postMessage({
                     type: undefined,
-                    value: messageReadProjectReferencesInProject
+                    value: messageReadProjectReferencesInProject,
                 });
                 break;
             case FileKind.nugetPackageDependencies:
-                let messageReadNugetPackageReferencesInProject = 
-                    new MessageReadNugetPackageReferencesInProject(contextMenuTargetValue);
+                let messageReadNugetPackageReferencesInProject =
+                    new MessageReadNugetPackageReferencesInProject(
+                        contextMenuTargetValue
+                    );
 
                 tsVscode.postMessage({
                     type: undefined,
-                    value: messageReadNugetPackageReferencesInProject
+                    value: messageReadNugetPackageReferencesInProject,
                 });
                 break;
             case FileKind.directory:
-                let messageReadFilesInDirectory = 
+                let messageReadFilesInDirectory =
                     new MessageReadFilesInDirectory(contextMenuTargetValue);
 
                 tsVscode.postMessage({
                     type: undefined,
-                    value: messageReadFilesInDirectory
+                    value: messageReadFilesInDirectory,
                 });
                 break;
         }
 
         closeMenu();
-	}
+    }
 </script>
 
-<MenuOption onClickStopPropagation="{true}"
-            onClick={refreshOnClick} 
-            text="Refresh Child Files." />
+{#if contextMenuTargetValue}
+    <MenuOption
+        onClickStopPropagation={true}
+        onClick={refreshOnClick}
+        text="Refresh Child Files."
+    />
+{/if}

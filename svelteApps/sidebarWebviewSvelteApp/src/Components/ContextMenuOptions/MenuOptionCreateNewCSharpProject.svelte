@@ -1,86 +1,93 @@
 <script lang="ts">
-    import { ConstantsFileExtensionsNoPeriod } from '../../../../../out/Constants/ConstantsFileExtensionsNoPeriod';
-    import { contextMenuTarget } from '../menu';
-    import MenuOption from '../MenuOption.svelte';
-    import TextInputForm from '../TextInputForm.svelte';
-    import { MessageCreateTemplatedFileInDirectory } from "../../../../../out/Messages/Create/MessageCreateTemplatedFileInDirectory";
-    import { DirectoryFile } from '../../../../../out/FileSystem/Files/DirectoryFile';
-    import { FileKind } from '../../../../../out/FileSystem/FileKind';
-    import { MessageReadVirtualFilesInCSharpProject } from '../../../../../out/Messages/Read/MessageReadVirtualFilesInCSharpProject';
-    import { MessageReadFilesInDirectory } from '../../../../../out/Messages/Read/MessageReadFilesInDirectory';
-    import { MessageExecuteCSharpProjectWithoutDebugging } from '../../../../../out/Messages/Execute/MessageExecuteCSharpProjectWithoutDebugging';
-    import { MessageReadNewProjectTemplatesOnComputer } from '../../../../../out/Messages/Read/MessageReadNewProjectTemplatesOnComputer';
-    import { MessageCreateCSharpProjectInAny } from '../../../../../out/Messages/Create/MessageCreateCSharpProjectInAny';
+    import { contextMenuTarget } from "../menu";
+    import MenuOption from "../MenuOption.svelte";
+    import { FileKind } from "../../../../../out/FileSystem/FileKind";
+    import { MessageReadNewProjectTemplatesOnComputer } from "../../../../../out/Messages/Read/MessageReadNewProjectTemplatesOnComputer";
+    import { MessageCreateCSharpProjectInAny } from "../../../../../out/Messages/Create/MessageCreateCSharpProjectInAny";
 
-	export let closeMenu;
+    export let closeMenu;
 
-	let contextMenuTargetValue;
+    let contextMenuTargetValue;
     let addCSharpProjectFilename: string | undefined;
     let addCSharpProjectTemplate: string | undefined;
-	
-	contextMenuTarget.subscribe(value => {
-		contextMenuTargetValue = value;
-	});
+
+    contextMenuTarget.subscribe((value) => {
+        contextMenuTargetValue = value;
+    });
 
     function createNewCSharpProject() {
         switch (contextMenuTargetValue.fileKind) {
             case FileKind.solution:
             case FileKind.solutionFolder:
-                let messageCreateCSharpProjectInAny = 
-                    new MessageCreateCSharpProjectInAny(contextMenuTargetValue,
+                let messageCreateCSharpProjectInAny =
+                    new MessageCreateCSharpProjectInAny(
+                        contextMenuTargetValue,
                         addCSharpProjectFilename,
-                        addCSharpProjectTemplate);
+                        addCSharpProjectTemplate
+                    );
 
                 tsVscode.postMessage({
                     type: undefined,
-                    value: messageCreateCSharpProjectInAny
+                    value: messageCreateCSharpProjectInAny,
                 });
         }
 
         closeMenu();
-	}
-    
+    }
+
     function startFormNewCSharpProject() {
-        let messageReadNewProjectTemplatesOnComputer = 
+        let messageReadNewProjectTemplatesOnComputer =
             new MessageReadNewProjectTemplatesOnComputer();
 
         tsVscode.postMessage({
-                    type: undefined,
-                    value: messageReadNewProjectTemplatesOnComputer
-                });
+            type: undefined,
+            value: messageReadNewProjectTemplatesOnComputer,
+        });
 
         addCSharpProjectFilename = "";
         addCSharpProjectTemplate = "";
-	}
+    }
 </script>
 
-<MenuOption onClickStopPropagation="{true}"
-            onClick={startFormNewCSharpProject} 
-            text="New C# Project." />
+{#if contextMenuTargetValue}
+    <MenuOption
+        onClickStopPropagation={true}
+        onClick={startFormNewCSharpProject}
+        text="New C# Project."
+    />
 
-{#if addCSharpProjectFilename !== undefined && addCSharpProjectTemplate !== undefined}
-    <input placeholder="C# Project name no extension" 
-            bind:value="{addCSharpProjectFilename}" />
-    
-    <div>'dotnet new --list'</div>
-    <div>was ran for you in terminal</div>
-    <input placeholder="Template Short Name" 
-            bind:value="{addCSharpProjectTemplate}" />
+    {#if addCSharpProjectFilename !== undefined && addCSharpProjectTemplate !== undefined}
+        <input
+            placeholder="C# Project name no extension"
+            bind:value={addCSharpProjectFilename}
+        />
 
-    <div>
+        <div>'dotnet new --list'</div>
+        <div>was ran for you in terminal</div>
+        <input
+            placeholder="Template Short Name"
+            bind:value={addCSharpProjectTemplate}
+        />
+
         <div>
-            <div>Create C# Project:</div>
-            <div style="margin-left: 12px;"><em>{addCSharpProjectFilename}</em>.csproj</div>
-        </div>
-        
-        <div>
-            <div>Use Template:</div>
-            <div style="margin-left: 12px;"><em>{addCSharpProjectTemplate}</em></div>
-        </div>
-    </div>
+            <div>
+                <div>Create C# Project:</div>
+                <div style="margin-left: 12px;">
+                    <em>{addCSharpProjectFilename}</em>.csproj
+                </div>
+            </div>
 
-    <button on:click={createNewCSharpProject}>Accept</button>
-    <button on:click={closeMenu}>Decline</button>
+            <div>
+                <div>Use Template:</div>
+                <div style="margin-left: 12px;">
+                    <em>{addCSharpProjectTemplate}</em>
+                </div>
+            </div>
+        </div>
+
+        <button on:click={createNewCSharpProject}>Accept</button>
+        <button on:click={closeMenu}>Decline</button>
+    {/if}
 {/if}
 
 <style>

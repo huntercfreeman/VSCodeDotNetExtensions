@@ -1,41 +1,32 @@
 <script lang="ts">
-    import { ConstantsFileExtensionsNoPeriod } from '../../../../../out/Constants/ConstantsFileExtensionsNoPeriod';
-    import { contextMenuTarget } from '../menu';
-    import MenuOption from '../MenuOption.svelte';
-    import TextInputForm from '../TextInputForm.svelte';
-    import { MessageCreateTemplatedFileInDirectory } from "../../../../../out/Messages/Create/MessageCreateTemplatedFileInDirectory";
-    import { DirectoryFile } from '../../../../../out/FileSystem/Files/DirectoryFile';
-    import { FileKind } from '../../../../../out/FileSystem/FileKind';
-    import { MessageReadVirtualFilesInCSharpProject } from '../../../../../out/Messages/Read/MessageReadVirtualFilesInCSharpProject';
-    import { MessageReadFilesInDirectory } from '../../../../../out/Messages/Read/MessageReadFilesInDirectory';
-    import { MessageExecuteCSharpProjectWithoutDebugging } from '../../../../../out/Messages/Execute/MessageExecuteCSharpProjectWithoutDebugging';
-    import { MessageUpdateExistingCSharpProjectIntoSolution } from '../../../../../out/Messages/Update/MessageUpdateExistingCSharpProjectIntoSolution';
-    import { MessageUpdateRemoveProjectReference } from '../../../../../out/Messages/Update/MessageUpdateRemoveProjectReference';
+    import { contextMenuTarget } from "../menu";
+    import MenuOption from "../MenuOption.svelte";
+    import { MessageUpdateRemoveProjectReference } from "../../../../../out/Messages/Update/MessageUpdateRemoveProjectReference";
 
-	export let closeMenu;
+    export let closeMenu;
 
-	let contextMenuTargetValue;
+    let contextMenuTargetValue;
     let showPrompt: boolean = false;
-	
-	contextMenuTarget.subscribe(value => {
-		contextMenuTargetValue = value;
-	});
+
+    contextMenuTarget.subscribe((value) => {
+        contextMenuTargetValue = value;
+    });
 
     function removeProjectReference() {
-        let messageUpdateRemoveProjectReference = 
+        let messageUpdateRemoveProjectReference =
             new MessageUpdateRemoveProjectReference(contextMenuTargetValue);
 
         tsVscode.postMessage({
             type: undefined,
-            value: messageUpdateRemoveProjectReference
+            value: messageUpdateRemoveProjectReference,
         });
 
         performCloseMenu();
-	}
-    
+    }
+
     function showConfirmQuestion() {
         showPrompt = true;
-	}
+    }
 
     function performCloseMenu() {
         showPrompt = false;
@@ -43,28 +34,38 @@
     }
 </script>
 
-<MenuOption onClickStopPropagation="{true}"
-            onClick={showConfirmQuestion} 
-            text="Remove Project Reference." />
+{#if contextMenuTargetValue}
+    <MenuOption
+        onClickStopPropagation={true}
+        onClick={showConfirmQuestion}
+        text="Remove Project Reference."
+    />
 
-{#if showPrompt}
-    <div>
-        <em>Remove</em> Reference:
-        
-        <div style="margin-left: 12px;">
-            <em>{contextMenuTargetValue.cSharpProjectReferenceAbsoluteFilePath.filenameWithExtension}</em>
-        </div>
-    </div>
-    <div>
-        From Project:
-        
-        <div style="margin-left: 12px;">
-            {contextMenuTargetValue.parentCSharpProjectInitialAbsoluteFilePath.filenameWithExtension}
-        </div>
-    </div>
+    {#if showPrompt}
+        <div>
+            <em>Remove</em> Reference:
 
-    <button on:click="{removeProjectReference}">Accept</button>
-    <button on:click="{performCloseMenu}">Decline</button>
+            <div style="margin-left: 12px;">
+                <em
+                    >{contextMenuTargetValue
+                        .cSharpProjectReferenceAbsoluteFilePath
+                        .filenameWithExtension}</em
+                >
+            </div>
+        </div>
+        <div>
+            From Project:
+
+            <div style="margin-left: 12px;">
+                {contextMenuTargetValue
+                    .parentCSharpProjectInitialAbsoluteFilePath
+                    .filenameWithExtension}
+            </div>
+        </div>
+
+        <button on:click={removeProjectReference}>Accept</button>
+        <button on:click={performCloseMenu}>Decline</button>
+    {/if}
 {/if}
 
 <style>
