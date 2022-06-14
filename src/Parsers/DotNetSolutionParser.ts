@@ -209,7 +209,7 @@ export class DotNetSolutionParser {
   public readInSolutionFolders() {
     let currentCharacter: string = "";
 
-    let projectGuid: string | undefined = undefined;
+    let childGuid: string | undefined = undefined;
     let solutionFolderGuid: string | undefined = undefined;
 
     while (!endOfFile(currentCharacter = this._stringReader.consume(1))) {
@@ -218,34 +218,34 @@ export class DotNetSolutionParser {
         case ConstantsSolutionFile.START_OF_GUID:
           var guid = this.readInGuid();
 
-          if (!projectGuid) {
-            projectGuid = guid;
+          if (!childGuid) {
+            childGuid = guid;
           }
           else {
             solutionFolderGuid = guid;
 
-            let project = this.solutionModel.projects
-              .find(x => x.secondGuid === projectGuid);
+            let child = this.solutionModel.projects
+              .find(x => x.secondGuid === childGuid);
 
             let solutionFolder = this.solutionModel.projects
               .find(x => x.secondGuid === solutionFolderGuid);
 
-            if (project && solutionFolder) {
+            if (child && solutionFolder) {
               solutionFolder.contextualInformation = ConstantsContextualInformation.TREE_VIEW_SOLUTION_FOLDER_CONTEXT;
 
-              project.solutionFolderParentSecondGuid = solutionFolderGuid;
+              child.solutionFolderParentSecondGuid = solutionFolderGuid;
 
               if (!solutionFolder.solutionFolderEntries) {
                 solutionFolder.solutionFolderEntries = [];
               }
 
-              solutionFolder.solutionFolderEntries.push(project);
+              solutionFolder.solutionFolderEntries.push(child);
             }
             else {
               throw new Error("Could not map project to solution folder in solution's .sln file");
             }
 
-            projectGuid = undefined;
+            childGuid = undefined;
             solutionFolderGuid = undefined;
           }
       }
