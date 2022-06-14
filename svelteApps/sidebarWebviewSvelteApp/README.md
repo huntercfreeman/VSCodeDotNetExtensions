@@ -20,13 +20,22 @@ The application has a context menu component that can be accessed with the mouse
 
 Many of the context menu options available wrap the already existing dotnet CLI ([https://docs.microsoft.com/en-us/dotnet/core/tools/](https://docs.microsoft.com/en-us/dotnet/core/tools/)).
 
-# Important ideas to follow when developing
+# How to Build this Svelte Application
 
-- [rollup.config.js](rollup.config.js) specifies where the compiled javascript should be output to. As of writing this README.md
+- While using a terminal change directory to where this README.md is located and this application's 'rollup.config.js' is located.
+    - As of the writing of this README.md I currently type while in the root of this repository: 'cd svelteApps/sidebarWebviewSvelteApp' as an example.
+
+    - After following the previous step you should be in the directory that contains this Svelte app's 'rollup.config.js'. The command to build is from this directory is:
+
+> npm run build
+
+---
+
+- [rollup.config.js](rollup.config.js) specifies where the compiled javascript should be output to. As of writing this README.md the path is:
 
 > ../../out/sidebarWebview/sidebarWebview.js
 
-- (continuation of previous bullet), is the path. The takeaway is not the exact relative path as that likely will change, instead the takeaway is that the extension output goes into a folder named, 'out' at the root of the repository.
+- (continuation of previous bullet). The takeaway is not the exact relative path as that likely will change, instead the takeaway is that the extension output goes into a folder named, 'out' at the root of the repository.
 
 - The webview is rendered in Visual Studio Code by the following steps 
 
@@ -92,6 +101,8 @@ context.subscriptions.push(
     }
 },
 ```
+
+# Important ideas to follow when developing
 
 - When adding new context menu options it is important that the dotnet CLI perform the action when possible.
     - In otherwords, be sure to check the dotnet CLI before writing a feature.
