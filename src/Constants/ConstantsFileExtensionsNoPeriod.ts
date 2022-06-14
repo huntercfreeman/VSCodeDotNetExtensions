@@ -5,7 +5,7 @@ export class ConstantsFileExtensionsNoPeriod {
     public static readonly C_SHARP_FILE_EXTENSION: string = "cs";
     public static readonly CSHMTL_FILE_EXTENSION: string = "cshtml";
     public static readonly CSS_FILE_EXTENSION: string = "css";
-    // TODO: Directories should always end in a '/' except when accessing filenameWithoutExtension
+    // TODO: Ensure Directories always end in a '/' except when accessing filenameWithoutExtension
     public static readonly DIRECTORY_FILE_EXTENSION: string = "/";
     public static readonly RAZOR_FILE_EXTENSION: string = "razor";
     public static readonly RAZOR__CODEBEHIND_FILE_EXTENSION: string = "razor.cs";

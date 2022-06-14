@@ -2,7 +2,7 @@
 export class ConstantsCSharpProjectFile {
     public static readonly XML_INCLUDE_ATTRIBUTE_NAME: string = "Include";
     public static readonly XML_VERSION_ATTRIBUTE_NAME: string = "Version";
-    
+
     /**
      * Nuget Package Reference Example text:
      * 

@@ -1,5 +1,3 @@
-import { SolutionModel } from "../DotNet/SolutionModel";
-import { AbsoluteFilePath } from "../FileSystem/AbsoluteFilePath";
 import { getNonce } from "../IdGeneration/getNonce";
 
 /* eslint-disable @typescript-eslint/naming-convention */
@@ -16,7 +14,7 @@ export class ConstantsMessages {
             nonce: getNonce()
         };
     }
-    
+
     public static readonly LOAD_SOLUTIONS_IN_WORKSPACE: string = "LOAD_SOLUTIONS_IN_WORKSPACE";
     public static readonly ADD_PROJECT_TO_SOLUTION: string = "ADD_PROJECT_TO_SOLUTION";
     public static readonly ADD_SOLUTION_FOLDER: string = "ADD_SOLUTION_FOLDER";
@@ -27,5 +25,5 @@ export class ConstantsMessages {
     public static readonly LOAD_DIRECTORY_CHILD_FILES: string = "LOAD_DIRECTORY_CHILD_FILES";
     public static readonly ADD_FILE_WITH_TEMPLATE_TO_DIRECTORY: string = "ADD_FILE_WITH_TEMPLATE_TO_DIRECTORY";
     public static readonly ADD_EMPTY_FILE_TO_DIRECTORY: string = "ADD_EMPTY_FILE_TO_DIRECTORY";
-    public static readonly OPEN_FILE:  string = "OPEN_FILE";
+    public static readonly OPEN_FILE: string = "OPEN_FILE";
 }

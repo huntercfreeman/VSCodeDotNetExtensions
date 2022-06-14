@@ -1,4 +1,3 @@
-import { AbsoluteFilePath } from "../FileSystem/AbsoluteFilePath";
 import { IdeFile } from "../FileSystem/Files/IdeFile";
 import { ConstantsFileExtensionsNoPeriod } from "./ConstantsFileExtensionsNoPeriod";
 
@@ -29,7 +28,7 @@ export class ConstantsFileTemplates {
     private static getNamespace(ideFile: IdeFile): string {
         return ideFile.namespace;
     }
-    
+
     public static csFileTemplate(filenameWithExtension: string, namespace: string): string {
         return `using System;
 using System.Collections.Generic;

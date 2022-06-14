@@ -11,7 +11,7 @@ export class ConstantsSolutionFile {
     /**
     * Example text: Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}")
     */
-     public static readonly END_OF_GUID: string = "}";
+    public static readonly END_OF_GUID: string = "}";
 
 
     /**
@@ -25,7 +25,7 @@ export class ConstantsSolutionFile {
      * where '...' is the name of the GlobalSection
      */
     public static readonly START_OF_GLOBAL_SECTION: string = "GlobalSection";
-    
+
     /**
      * Example text: 
      *    {0CE91DF4-60BF-4A12-B15A-EBEEA5B50214} = {E893BAF0-1C89-4427-90C0-3AFDBBC5F706}

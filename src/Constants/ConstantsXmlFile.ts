@@ -17,9 +17,9 @@ export class ConstantsXmlFile {
 
     public static readonly ENDING_OF_XML_TAG_FOR_CHILD_CONTENT_CONTAINING_TAGS = ">";
     public static readonly ENDING_OF_XML_TAG_FOR_EMPTY_CONTAINING_TAGS = "/>";
-    
+
     public static readonly ENDINGS_OF_XML_TAG: string[] = [
-        this.ENDING_OF_XML_TAG_FOR_CHILD_CONTENT_CONTAINING_TAGS, 
+        this.ENDING_OF_XML_TAG_FOR_CHILD_CONTENT_CONTAINING_TAGS,
         this.ENDING_OF_XML_TAG_FOR_EMPTY_CONTAINING_TAGS
     ];
 
