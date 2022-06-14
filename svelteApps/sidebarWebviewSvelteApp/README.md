@@ -97,6 +97,7 @@ context.subscriptions.push(
                 "name": "Solution Explorer",
                 "icon": "media/dotNetIdeSidebarIcon.svg"
             }
+            // others
         ]
     }
 },
@@ -108,9 +109,7 @@ context.subscriptions.push(
     - In otherwords, be sure to check the dotnet CLI before writing a feature.
 
 - What if dotnet CLI does not have ability to perform the desired action?
-    - Ensure the implementation works with unit tests.
-    - The context menu options are not UI based tests. The context menu is solely a user interface to the code. So, a unit test should be able to prove correctness.
-
+    - Ensure the implementation works with pointed unit tests that are separated from the user interface.
 
 # Not yet implemented
 
