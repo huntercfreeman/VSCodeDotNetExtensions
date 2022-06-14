@@ -1,6 +1,5 @@
 import * as vscode from 'vscode';
 import { NugetPackageManagerMessageHandler } from '../MessageHandlers/NugetPackageManagerMessageHandler';
-import { SidebarProviderMessageHandler } from '../MessageHandlers/SidebarProviderMessageHandler';
 
 const fs = require('fs');
 
@@ -22,14 +21,14 @@ export class NugetPackageManagerProvider implements vscode.WebviewViewProvider {
 
     webviewView.webview.html = this.getWebviewContent(webviewView.webview);
 
-    webviewView.webview.onDidReceiveMessage(async (data) => 
+    webviewView.webview.onDidReceiveMessage(async (data) =>
       NugetPackageManagerMessageHandler.handleMessage(webviewView, data.value, undefined));
   }
 
   public revive(panel: vscode.WebviewView) {
     this._view = panel;
   }
-  
+
   private getWebviewContent(webview: vscode.Webview) {
     const dotNetIdeSvelteAppJavaScriptUri = webview.asWebviewUri(vscode.Uri.joinPath(
       this.context.extensionUri, 'out/nugetPackageManagerWebview', 'nugetPackageManagerWebview.js'));

@@ -1,7 +1,5 @@
 import * as vscode from 'vscode';
 import { SidebarProviderMessageHandler } from '../MessageHandlers/SidebarProviderMessageHandler';
-import { IMessage } from '../Messages/IMessage';
-import { MessageCategory } from '../Messages/MessageCategory';
 
 const fs = require('fs');
 
@@ -26,8 +24,8 @@ export class SidebarProvider implements vscode.WebviewViewProvider {
 
     webviewView.webview.html = this.getWebviewContent(webviewView.webview);
 
-    webviewView.webview.onDidReceiveMessage(async (data) => 
-        SidebarProviderMessageHandler.handleMessage(webviewView, data.value));
+    webviewView.webview.onDidReceiveMessage(async (data) =>
+      SidebarProviderMessageHandler.handleMessage(webviewView, data.value));
   }
 
   public revive(panel: vscode.WebviewView) {
