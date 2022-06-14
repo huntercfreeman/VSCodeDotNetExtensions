@@ -5,8 +5,8 @@ import { IMessageDelete } from "./IMessageDelete";
 import { MessageDeleteKind } from "./MessageDeleteKind";
 
 export class MessageDeleteAddEmptyFileToDirectory implements IMessage, IMessageDelete {
-    constructor(public readonly filenameWithExtension: string, 
-                public readonly directoryAbsoluteFilePath: AbsoluteFilePath) {
+    constructor(public readonly filenameWithExtension: string,
+        public readonly directoryAbsoluteFilePath: AbsoluteFilePath) {
     }
 
     public readonly messageCategory: MessageCategory = MessageCategory.delete;
