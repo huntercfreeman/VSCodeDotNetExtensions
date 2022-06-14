@@ -24,7 +24,7 @@ export class AbsoluteFilePath {
             this.filenameNoExtension = this.filenameWithExtension;
         }
 
-        if(isDirectory) {
+        if (isDirectory) {
             this.extensionNoPeriod = ConstantsFilePath.STANDARDIZED_FILE_DELIMITER;
         }
         else {
@@ -102,7 +102,7 @@ export class AbsoluteFilePath {
             return input.substring(0, startingIndexOfFileExtension + 1);
         }
     }
-    
+
     public static getExtensionNoPeriodFromFilenameWithExtension(input: string): string {
         let startingIndexOfFileExtension = input.lastIndexOf(".");
 

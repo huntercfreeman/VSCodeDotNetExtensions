@@ -4,18 +4,18 @@ const fs = require('fs');
 
 export class FileSystemReader {
     public static async getSiblingFiles(absoluteFilePath: AbsoluteFilePath, callback: any): Promise<void> {
-        fs.readdir(absoluteFilePath.parentDirectories[absoluteFilePath.parentDirectories.length - 1].initialAbsoluteFilePathStringInput, 
+        fs.readdir(absoluteFilePath.parentDirectories[absoluteFilePath.parentDirectories.length - 1].initialAbsoluteFilePathStringInput,
             (err: any, files: any) => {
-            callback(files);
-          });
+                callback(files);
+            });
     }
 
     public static async getChildFilesOfDirectory(absoluteFilePath: AbsoluteFilePath, callback: any): Promise<void> {
-        if(this.isDir(absoluteFilePath.initialAbsoluteFilePathStringInput)) {
-            fs.readdir(absoluteFilePath.initialAbsoluteFilePathStringInput, 
+        if (this.isDir(absoluteFilePath.initialAbsoluteFilePathStringInput)) {
+            fs.readdir(absoluteFilePath.initialAbsoluteFilePathStringInput,
                 (err: any, files: any) => {
-                callback(files);
-              });
+                    callback(files);
+                });
         }
         else {
             throw new Error("Not a directory");
