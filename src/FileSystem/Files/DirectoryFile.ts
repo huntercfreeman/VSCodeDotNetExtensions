@@ -6,11 +6,18 @@ import { IdeFile } from "./IdeFile";
 
 // TODO: Directories should always end in a '/' except when accessing filenameWithoutExtension
 export class DirectoryFile extends IdeFile {
+    constructor(givenAbsoluteFilePath: AbsoluteFilePath, currentNamespaceString: string) {
+        let directoryNamespace = givenAbsoluteFilePath.filenameNoExtension;        
+
+        while (directoryNamespace.indexOf(' ') !== -1) {
+            directoryNamespace = directoryNamespace.replace(' ', '_');
+        }
+
+        super(givenAbsoluteFilePath, currentNamespaceString + '.' + directoryNamespace);
+    }
+
     public setVirtualChildFiles(siblingFiles: IdeFile[]): void {
         throw new Error("Method not implemented.");
-    }
-    constructor(givenAbsoluteFilePath: AbsoluteFilePath, currentNamespaceString: string) {
-        super(givenAbsoluteFilePath, currentNamespaceString + '.' + givenAbsoluteFilePath.filenameNoExtension);
     }
     
     public nonce: string = getNonce();
