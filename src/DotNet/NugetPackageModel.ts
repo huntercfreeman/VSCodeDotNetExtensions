@@ -17,7 +17,7 @@ export class NugetPackageModel {
         public projectUrl: string,
         public tags: string[],
         public authors: string[],
-        public owners: string [],
+        public owners: string[],
         public totalDownloads: number,
         public verified: boolean,
         public packageTypes: string[],

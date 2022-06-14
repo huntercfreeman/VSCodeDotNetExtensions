@@ -6,28 +6,28 @@ import { CSharpProjectModel } from "./CSharpProjectModel";
 const fs = require('fs');
 
 export class SolutionModel {
-    constructor(public readonly absoluteFilePath: AbsoluteFilePath) {   
+    constructor(public readonly absoluteFilePath: AbsoluteFilePath) {
     }
 
     public projects: CSharpProjectModel[] = [];
-    
-    public static async getFileContents(solution: SolutionModel, callback: any) : Promise<string> {
+
+    public static async getFileContents(solution: SolutionModel, callback: any): Promise<string> {
         return await fs.readFile(solution.absoluteFilePath.initialAbsoluteFilePathStringInput, 'utf8', (err: any, data: any) => {
             callback(err, data);
         });
     }
-    
-    public static async parseSolution(solution: SolutionModel, callback: any) : Promise<void> {
+
+    public static async parseSolution(solution: SolutionModel, callback: any): Promise<void> {
         solution.projects = [];
-        
+
         let dotNetSolutionParser = new DotNetSolutionParser(solution);
-        
+
         dotNetSolutionParser.parse(callback);
     }
 
-    public static async addSolutionFolder(solution: SolutionModel, solutionFolderName: string, callback: any) : Promise<void> {
+    public static async addSolutionFolder(solution: SolutionModel, solutionFolderName: string, callback: any): Promise<void> {
         let dotNetSolutionParser = new DotNetSolutionParser(solution);
-        
+
         dotNetSolutionParser.addSolutionFolder(solutionFolderName, callback);
     }
 
