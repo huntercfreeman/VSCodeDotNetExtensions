@@ -1,16 +1,21 @@
 import * as vscode from 'vscode';
+import { ConstantsContextualInformation } from '../Constants/ConstantsContextualInformation';
 import { ConstantsDotNetCli } from '../Constants/ConstantsDotNetCli';
+import { ConstantsFileExtensionsNoPeriod } from '../Constants/ConstantsFileExtensionsNoPeriod';
 import { ConstantsFilePath } from '../Constants/ConstantsFilePath';
 import { ConstantsFileTemplates } from '../Constants/ConstantsFileTemplates';
 import { ConstantsTerminal } from '../Constants/ConstantsTerminal';
 import { AbsoluteFilePath } from '../FileSystem/AbsoluteFilePath';
+import { FileKind } from '../FileSystem/FileKind';
+import { CSharpProjectFile } from '../FileSystem/Files/CSharpProjectFile';
+import { DotNetSolutionFile } from '../FileSystem/Files/DotNetSolutionFile';
 import { IdeFileFactory } from '../FileSystem/IdeFileFactory';
 import { IMessageCreate } from "../Messages/Create/IMessageCreate";
-import { MessageCreateCSharpProjectInSolution } from '../Messages/Create/MessageCreateCSharpProjectInSolution';
+import { MessageCreateCSharpProjectInAny } from '../Messages/Create/MessageCreateCSharpProjectInAny';
 import { MessageCreateDirectoryInDirectory } from '../Messages/Create/MessageCreateDirectoryInDirectory';
 import { MessageCreateDotNetSolutionInWorkspace } from '../Messages/Create/MessageCreateDotNetSolutionInWorkspace';
 import { MessageCreateKind } from "../Messages/Create/MessageCreateKind";
-import { MessageCreateSolutionFolderInSolution } from '../Messages/Create/MessageCreateSolutionFolderInSolution';
+import { MessageCreateSolutionFolderInAny } from '../Messages/Create/MessageCreateSolutionFolderInAny';
 import { MessageCreateTemplatedFileInDirectory } from '../Messages/Create/MessageCreateTemplatedFileInDirectory';
 import { IMessage } from "../Messages/IMessage";
 
@@ -26,13 +31,13 @@ export class CreateMessageHandler {
                 break;
             case MessageCreateKind.emptyFileInDirectory:
                 break;
-            case MessageCreateKind.cSharpProjectInSolution:
-                await this.handleMessageCreateCSharpProjectInSolution(webviewView, message);
+            case MessageCreateKind.cSharpProjectInAny:
+                await this.handleMessageCreateCSharpProjectInAny(webviewView, message);
                 break;
             case MessageCreateKind.projectInSolutionFolder:
                 break;
-            case MessageCreateKind.solutionFolderInSolution:
-                await this.handleMessageCreateSolutionFolderInSolution(webviewView, message);
+            case MessageCreateKind.solutionFolderInAny:
+                await this.handleMessageCreateSolutionFolder(webviewView, message);
                 break;
             case MessageCreateKind.directoryInDirectory:
                 await this.handleMessageCreateDirectoryInDirectory(webviewView, message);
@@ -114,30 +119,43 @@ export class CreateMessageHandler {
         });
     }
     
-    public static async handleMessageCreateCSharpProjectInSolution(webviewView: vscode.WebviewView, iMessage: IMessage) {
-        let message = iMessage as MessageCreateCSharpProjectInSolution;
+    public static async handleMessageCreateCSharpProjectInAny(webviewView: vscode.WebviewView, iMessage: IMessage) {
+        let message = iMessage as MessageCreateCSharpProjectInAny;
+
+        let dotNetSolutionFileAbsoluteFilePath: AbsoluteFilePath | undefined;
+
+        let solutionFolder: CSharpProjectFile | undefined;
+
+        if (message.ideFile.fileKind === FileKind.solution) {
+            let dotNetSolutionFile = message.ideFile as DotNetSolutionFile;
+
+            dotNetSolutionFileAbsoluteFilePath = dotNetSolutionFile.absoluteFilePath;
+        }
+        else if (message.ideFile.fileKind === FileKind.solutionFolder) {
+            solutionFolder = message.ideFile as CSharpProjectFile;            
+
+            dotNetSolutionFileAbsoluteFilePath = solutionFolder.cSharpProjectModel.parentSolutionAbsoluteFilePath;
+        }
 
         let messageCreateTerminal = this.getMessageCreateTerminal();
 
         messageCreateTerminal.sendText(
             ConstantsDotNetCli.formatDotNetNewCSharpProject(message.cSharpProjectNameNoExtension, message.templateName) +
             ` ${ConstantsTerminal.TERMINAL_RUN_IF_PREVIOUS_COMMAND_SUCCESSFUL_OPERATOR} ` +
-            ConstantsDotNetCli.formatDotNetAddCSharpProjectToSolutionUsingProjectName(message.cSharpProjectNameNoExtension, message.dotNetSolutionFile));
+            ConstantsDotNetCli.formatDotNetAddCSharpProjectToSolutionUsingProjectName(message.cSharpProjectNameNoExtension, dotNetSolutionFileAbsoluteFilePath!));
 
         messageCreateTerminal.show();
+
+        if (solutionFolder) {
+            // TODO: Add csproj to solution folder in .sln file
+            var z = 2;
+        }
     }
 
-    public static async handleMessageCreateSolutionFolderInSolution(webviewView: vscode.WebviewView, iMessage: IMessage) {
-        // let message = iMessage as MessageCreateSolutionFolderInSolution;
-
-        // let messageCreateTerminal = this.getMessageCreateTerminal();
-
-        // messageCreateTerminal.sendText(
-        //     ConstantsDotNetCli.formatDotNetNewCSharpProject(message.cSharpProjectNameNoExtension, message.templateName) +
-        //     ` ${ConstantsTerminal.TERMINAL_RUN_IF_PREVIOUS_COMMAND_SUCCESSFUL_OPERATOR} ` +
-        //     ConstantsDotNetCli.formatDotNetAddCSharpProjectToSolutionUsingProjectName(message.cSharpProjectNameNoExtension, message.dotNetSolutionFile));
-
-        // messageCreateTerminal.show();
+    public static async handleMessageCreateSolutionFolder(webviewView: vscode.WebviewView, iMessage: IMessage) {
+        let message = iMessage as MessageCreateSolutionFolderInAny;
+    
+        let v = 1;
     }
 
     private static getMessageCreateTerminal() {

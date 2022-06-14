@@ -35,6 +35,8 @@ export class CSharpProjectModel {
                 this.solutionFolderEntries = [];
                 this.contextualInformation = ConstantsContextualInformation.TREE_VIEW_SOLUTION_FOLDER_CONTEXT;
             }
+
+            this.parentSolutionAbsoluteFilePath = parentSolutionModel.absoluteFilePath;
     }
 
     public static async getFileContents(solution: SolutionModel, callback: any) : Promise<string> {
@@ -90,6 +92,7 @@ export class CSharpProjectModel {
     public solutionFolderParentSecondGuid: string | undefined;
     public projectReferences: CSharpProjectProjectReferenceFile[] = [];
     public rootNamespace: string;
+    public readonly parentSolutionAbsoluteFilePath: AbsoluteFilePath;
 
     public contextualInformation: string = ConstantsContextualInformation.TREE_VIEW_CSHARP_PROJECT_CONTEXT;
 }

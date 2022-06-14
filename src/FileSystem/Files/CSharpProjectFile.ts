@@ -17,7 +17,10 @@ export class CSharpProjectFile extends IdeFile {
             this.virtualChildFiles = cSharpProjectModel.solutionFolderEntries
                 .map(x => new CSharpProjectFile(x));
             
-            this.contextualInformation = [];
+            this.contextualInformation = [
+                ContextualInformationDatum.createSolutionFolder,
+                ContextualInformationDatum.createNewCSharpProject,
+            ];
         }
         else {
             this.contextualInformation = [

@@ -45,10 +45,10 @@
 
 <MenuOption onClickStopPropagation="{true}"
             onClick={startFormCreateNewSolutionFolder} 
-            text="New C# Project." />
+            text="New Solution Folder" />
 
 {#if createNewSolutionFolderName !== undefined}
-    <input placeholder="C# Project name no extension" 
+    <input placeholder="Name for Solution Folder" 
             bind:value="{createNewSolutionFolderName}" />
     
     <div>
