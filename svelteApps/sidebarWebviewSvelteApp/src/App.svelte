@@ -8,16 +8,17 @@
 	import TreeViewDisplay from "./Components/TreeViewDisplay.svelte";
 	import ContextMenu from "./Components/ContextMenu.svelte";
 	import SolutionFileControlButtons from "./Components/SolutionFileControlButtons.svelte";
-	
+
 	let dotNetSolutionFiles: DotNetSolutionFile[] = [];
 	let selectedDotNetSolutionFile: DotNetSolutionFile | undefined;
 
 	function getSolutionFilesInWorkspace() {
-		let messageReadSolutionsInWorkspace = new MessageReadSolutionsInWorkspace();
+		let messageReadSolutionsInWorkspace =
+			new MessageReadSolutionsInWorkspace();
 
 		tsVscode.postMessage({
 			type: undefined,
-			value: messageReadSolutionsInWorkspace
+			value: messageReadSolutionsInWorkspace,
 		});
 	}
 
@@ -26,33 +27,33 @@
 			const message = event.data;
 
 			switch (message.messageCategory) {
-            	case MessageCategory.read:
-					switch(message.messageReadKind) {
+				case MessageCategory.read:
+					switch (message.messageReadKind) {
 						case MessageReadKind.solutionsInWorkspace:
 							dotNetSolutionFiles = message.dotNetSolutionFiles;
 							selectedDotNetSolutionFile = undefined;
 							break;
 						case MessageReadKind.solutionIntoTreeView:
-							selectedDotNetSolutionFile = message.dotNetSolutionFile;
+							selectedDotNetSolutionFile =
+								message.dotNetSolutionFile;
 							break;
 					}
 			}
 		});
-		
+
 		getSolutionFilesInWorkspace();
 	});
 </script>
 
 <div class="dni_app">
+	<SolutionFileControlButtons {getSolutionFilesInWorkspace} />
 
-	<SolutionFileControlButtons getSolutionFilesInWorkspace={getSolutionFilesInWorkspace} />
-	
-	<SelectDotNetSolutionFileForm dotNetSolutionFiles={dotNetSolutionFiles} />
+	<SelectDotNetSolutionFileForm {dotNetSolutionFiles} />
 
-	<div style="margin-bottom: 5px;"></div>
+	<div style="margin-bottom: 5px;" />
 
 	{#if selectedDotNetSolutionFile}
-		<TreeViewDisplay ideFile={selectedDotNetSolutionFile} />	
+		<TreeViewDisplay ideFile={selectedDotNetSolutionFile} />
 	{/if}
 
 	<ContextMenu />
