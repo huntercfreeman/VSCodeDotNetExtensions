@@ -1,107 +1,70 @@
-# This repo is no longer maintained. Consider using `npm init vite` and selecting the `svelte` option or — if you want a full-fledged app framework and don't mind using pre-1.0 software — use [SvelteKit](https://kit.svelte.dev), the official application framework for Svelte.
+# SidebarWebview
+
+The extension renders a webview in the sidebar.
+
+This directory contains the source code for the sidebar webview.
+
+# Programming Language
+
+TypeScript and JavaScript
+
+# UI Framework
+
+Svelte
+
+# Brief description of this application
+
+The application is mostly a TreeView display.
+
+The application has a context menu component that can be accessed with the mouse button of 'Right Click'
+
+Many of the context menu options available wrap the already existing dotnet CLI ([https://docs.microsoft.com/en-us/dotnet/core/tools/](https://docs.microsoft.com/en-us/dotnet/core/tools/)).
+
+# Important ideas to follow when developing
+
+- When adding new context menu options it is important that the dotnet CLI perform the action when possible.
+    - In otherwords, be sure to check the dotnet CLI before writing a feature.
+- What if dotnet CLI does not have ability to perform the desired action?
+    - Ensure the implementation works with unit tests.
+    - The context menu options are not UI based tests. The context menu is solely a user interface to the code. So, a unit test should be able to prove correctness.
+
+# Not yet implemented
+
+- Handle typical keyboard movement found in TreeViews.
+    - A simple example: hitting up and down arrow to traverse up and down the tree view elements.
+    - A more complex example:
+---
+
+- Solution.sln
+
+- ProjectOne.csproj
+
+    - MyClass.cs
+    - Program.cs
+    - MyDirectory
+        - MyService.cs
+
+- ProjectTwo.csproj <--- Focus is here
+
+// Specification: when the ArrowUp key is pressed the C# file named, 'MyService.cs' is to be set as focused.
+
+// Solution: 
+
+// Part 1: This is done by ProjectTwo.csproj setting focus to its previous sibling.
+
+// Part 2: The newly focused sibling named, 'ProjectOne.csproj' is to then check if itself is Expanded.
+
+// Part 3: If 'ProjectOne.csproj' is expanded it should then set focus to the final child in its children list which would be 'MyDirectory'.
+
+// Part 4: If the newly focused final child is Expanded repeat Part 3 and Part 4 recursively until a 'final child' is 'not expanded'
+
+// Part 5: This sets focus to 'MyService.cs'
 
 ---
 
-# svelte app
+- Create a truly generic TreeView that can be used to render anything so it may be used elsewhere as needed.
 
-This is a project template for [Svelte](https://svelte.dev) apps. It lives at https://github.com/sveltejs/template.
+- Add Vim support. I'm not entirely sure what the ideas for this would be but it is definitely on my mind.
 
-To create a new project based on this template using [degit](https://github.com/Rich-Harris/degit):
-
-```bash
-npx degit sveltejs/template svelte-app
-cd svelte-app
-```
-
-*Note that you will need to have [Node.js](https://nodejs.org) installed.*
-
-
-## Get started
-
-Install the dependencies...
-
-```bash
-cd svelte-app
-npm install
-```
-
-...then start [Rollup](https://rollupjs.org):
-
-```bash
-npm run dev
-```
-
-Navigate to [localhost:8080](http://localhost:8080). You should see your app running. Edit a component file in `src`, save it, and reload the page to see your changes.
-
-By default, the server will only respond to requests from localhost. To allow connections from other computers, edit the `sirv` commands in package.json to include the option `--host 0.0.0.0`.
-
-If you're using [Visual Studio Code](https://code.visualstudio.com/) we recommend installing the official extension [Svelte for VS Code](https://marketplace.visualstudio.com/items?itemName=svelte.svelte-vscode). If you are using other editors you may need to install a plugin in order to get syntax highlighting and intellisense.
-
-## Building and running in production mode
-
-To create an optimised version of the app:
-
-```bash
-npm run build
-```
-
-You can run the newly built app with `npm run start`. This uses [sirv](https://github.com/lukeed/sirv), which is included in your package.json's `dependencies` so that the app will work when you deploy to platforms like [Heroku](https://heroku.com).
-
-
-## Single-page app mode
-
-By default, sirv will only respond to requests that match files in `public`. This is to maximise compatibility with static fileservers, allowing you to deploy your app anywhere.
-
-If you're building a single-page app (SPA) with multiple routes, sirv needs to be able to respond to requests for *any* path. You can make it so by editing the `"start"` command in package.json:
-
-```js
-"start": "sirv public --single"
-```
-
-## Using TypeScript
-
-This template comes with a script to set up a TypeScript development environment, you can run it immediately after cloning the template with:
-
-```bash
-node scripts/setupTypeScript.js
-```
-
-Or remove the script via:
-
-```bash
-rm scripts/setupTypeScript.js
-```
-
-If you want to use `baseUrl` or `path` aliases within your `tsconfig`, you need to set up `@rollup/plugin-alias` to tell Rollup to resolve the aliases. For more info, see [this StackOverflow question](https://stackoverflow.com/questions/63427935/setup-tsconfig-path-in-svelte).
-
-## Deploying to the web
-
-### With [Vercel](https://vercel.com)
-
-Install `vercel` if you haven't already:
-
-```bash
-npm install -g vercel
-```
-
-Then, from within your project folder:
-
-```bash
-cd public
-vercel deploy --name my-project
-```
-
-### With [surge](https://surge.sh/)
-
-Install `surge` if you haven't already:
-
-```bash
-npm install -g surge
-```
-
-Then, from within your project folder:
-
-```bash
-npm run build
-surge public my-project.surge.sh
-```
+    - The simplist idea would be that 'h', 'j', 'k', 'l' map to 'ArrowLeft',
+    'ArrowDown', 'ArrowUp', 'ArrowRight'.
