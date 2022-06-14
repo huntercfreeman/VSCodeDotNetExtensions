@@ -53,6 +53,10 @@ export class ContextualInformationDatum {
         new ContextualInformationDatum(ContextualInformationDatumKind.update,
             "removeNugetPackageReference");
 
+    public static readonly createSolutionFolder: ContextualInformationDatum = 
+        new ContextualInformationDatum(ContextualInformationDatumKind.create,
+            "createSolutionFolder");
+
     // TODO: Do not add rename, delete, copy, cut, paste instead add context menu option on files to set focus in folder view of Visual Studio Code and let folder view handle this.
     
     // public static readonly rename: ContextualInformationDatum = 

@@ -10,6 +10,7 @@ import { MessageCreateCSharpProjectInSolution } from '../Messages/Create/Message
 import { MessageCreateDirectoryInDirectory } from '../Messages/Create/MessageCreateDirectoryInDirectory';
 import { MessageCreateDotNetSolutionInWorkspace } from '../Messages/Create/MessageCreateDotNetSolutionInWorkspace';
 import { MessageCreateKind } from "../Messages/Create/MessageCreateKind";
+import { MessageCreateSolutionFolderInSolution } from '../Messages/Create/MessageCreateSolutionFolderInSolution';
 import { MessageCreateTemplatedFileInDirectory } from '../Messages/Create/MessageCreateTemplatedFileInDirectory';
 import { IMessage } from "../Messages/IMessage";
 
@@ -31,6 +32,7 @@ export class CreateMessageHandler {
             case MessageCreateKind.projectInSolutionFolder:
                 break;
             case MessageCreateKind.solutionFolderInSolution:
+                await this.handleMessageCreateSolutionFolderInSolution(webviewView, message);
                 break;
             case MessageCreateKind.directoryInDirectory:
                 await this.handleMessageCreateDirectoryInDirectory(webviewView, message);
@@ -123,6 +125,19 @@ export class CreateMessageHandler {
             ConstantsDotNetCli.formatDotNetAddCSharpProjectToSolutionUsingProjectName(message.cSharpProjectNameNoExtension, message.dotNetSolutionFile));
 
         messageCreateTerminal.show();
+    }
+
+    public static async handleMessageCreateSolutionFolderInSolution(webviewView: vscode.WebviewView, iMessage: IMessage) {
+        // let message = iMessage as MessageCreateSolutionFolderInSolution;
+
+        // let messageCreateTerminal = this.getMessageCreateTerminal();
+
+        // messageCreateTerminal.sendText(
+        //     ConstantsDotNetCli.formatDotNetNewCSharpProject(message.cSharpProjectNameNoExtension, message.templateName) +
+        //     ` ${ConstantsTerminal.TERMINAL_RUN_IF_PREVIOUS_COMMAND_SUCCESSFUL_OPERATOR} ` +
+        //     ConstantsDotNetCli.formatDotNetAddCSharpProjectToSolutionUsingProjectName(message.cSharpProjectNameNoExtension, message.dotNetSolutionFile));
+
+        // messageCreateTerminal.show();
     }
 
     private static getMessageCreateTerminal() {
