@@ -8,7 +8,9 @@
 <div>
 	<select bind:value={selectedVersionModel} class="dni_select">
 		{#each versionModels as versionModel}
-			<option value="{versionModel}" class="dni_option">{versionModel.version}</option>
+			<option value={versionModel} class="dni_option"
+				>{versionModel.version}</option
+			>
 		{/each}
 	</select>
 </div>
