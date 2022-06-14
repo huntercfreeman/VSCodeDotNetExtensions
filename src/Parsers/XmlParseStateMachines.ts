@@ -353,19 +353,38 @@ export class TextXmlParseStateMachine extends XmlParseStateMachineBase {
     }
 }
 
-// TODO: is TagChildContentXmlParseStateMachine dead code?
-
-// export class TagChildContentXmlParseStateMachine extends XmlParseStateMachineBase {
-//     constructor(stringReader: StringReader) {
-//         super(stringReader);
-//     }
-
-//     public override parseRecursively() {
-//     }
-// }
-
+/**
+ * An XmlFileModel is recursively defined, see the following example:
+ *
+ * (I am not sure why vscode peek renders this weirdly so use 'go to definition' for source code comment)
+ *  
+ * '\r\n
+ * <ParentTag>\r\n
+ *     <ChildTag>\r\n
+ *     </ChildTag>\r\n
+ * </ParentTag>\r\n'
+ * 
+ * The XmlFileModel itself is the entirety of what represents the .xml file
+ * 
+ * However, any so called 'ChildContent' is represented as well
+ * by an XmlFileModel as the parsing is identical. 
+ */
 export class XmlFileModel {
     public xmlTagModels: XmlTagModel[] = [];
+
+    public selectRecursively(predicate: (xmlTagModel: XmlTagModel) => boolean,
+        matches: XmlTagModel[]) {
+
+        for (let i = 0; i < this.xmlTagModels.length; i++) {
+            let tagModel = this.xmlTagModels[i];
+
+            if (predicate(tagModel)) {
+                matches.push(tagModel);
+            }
+
+            tagModel.children.selectRecursively(predicate, matches);
+        }
+    }
 }
 
 export class XmlTagModel {

@@ -1,17 +1,10 @@
-import { ConstantsContextualInformation } from "../Constants/ConstantsContextualInformation";
 import { ConstantsCSharpProjectFile } from "../Constants/ConstantsCSharpProjectFile";
-import { ConstantsSolutionFile } from "../Constants/ConstantsSolutionFile";
-import { ConstantsStringReader } from "../Constants/ConstantsStringReader";
-import { CSharpProjectModel } from "../DotNet/CSharpProjectModel";
-import { SolutionModel } from "../DotNet/SolutionModel";
 import { AbsoluteFilePath } from "../FileSystem/AbsoluteFilePath";
 import { CSharpProjectNugetPackageDependenciesFile } from "../FileSystem/Files/CSharpProjectNugetPackageDependenciesFile";
 import { CSharpProjectNugetPackageDependencyFile } from "../FileSystem/Files/CSharpProjectNugetPackageDependencyFile";
 import { CSharpProjectProjectReferenceFile } from "../FileSystem/Files/CSharpProjectProjectReferenceFile";
 import { CSharpProjectProjectReferencesFile } from "../FileSystem/Files/CSharpProjectProjectReferencesFile";
-import { endOfFile } from "./CommonParserUtility";
-import { StringReader } from "./StringReader";
-import { XmlParser } from "./XmlParseStateMachines";
+import { XmlParser, XmlTagModel } from "./XmlParseStateMachines";
 
 const fs = require('fs');
 
@@ -34,6 +27,65 @@ export class CSharpProjectParser {
       let xmlParser: XmlParser = new XmlParser(data);
 
       let xmlFileModel = xmlParser.parse();
+
+      // Only either cSharpProjectProjectReferencesFile can be calculated or 
+      // cSharpProjectProjectReferencesFile can be returned at a given time as
+      // the user interface that calls this method does not have a reference to both arrays.
+
+      if (this.cSharpProjectProjectReferencesFile) {
+        let projectReferences: XmlTagModel[] = [];
+
+        xmlFileModel.selectRecursively(
+          (x) => x.tagName === ConstantsCSharpProjectFile.PROJECT_REFERENCE_TAG_NAME,
+          projectReferences);
+
+        for (let i = 0; i < projectReferences.length; i++) {
+          let reference = projectReferences[i];
+
+          let includeAttribute = reference.xmlAttributeModels.find(attribute =>
+            attribute.attributeName === ConstantsCSharpProjectFile.XML_INCLUDE_ATTRIBUTE_NAME);
+
+          if (includeAttribute) {
+            if (!this.cSharpProjectProjectReferencesFile.virtualChildFiles) {
+              this.cSharpProjectProjectReferencesFile.virtualChildFiles = [];
+            }
+
+            this.cSharpProjectProjectReferencesFile.virtualChildFiles.push(
+              new CSharpProjectProjectReferenceFile(this.cSharpProjectAbsoluteFilePath,
+                this.cSharpProjectProjectReferencesFile.absoluteFilePath, includeAttribute.attributeValue));
+          }
+        }
+      }
+      
+      if (this.cSharpProjectNugetPackageDependenciesFile) {
+        let nugetPackageReferences: XmlTagModel[] = [];
+
+      xmlFileModel.selectRecursively(
+        (x) => x.tagName === ConstantsCSharpProjectFile.NUGET_PACKAGE_TAG_NAME,
+        nugetPackageReferences);
+
+        for (let i = 0; i < nugetPackageReferences.length; i++) {
+          let reference = nugetPackageReferences[i];
+
+          let includeAttribute = reference.xmlAttributeModels.find(attribute =>
+            attribute.attributeName === ConstantsCSharpProjectFile.XML_INCLUDE_ATTRIBUTE_NAME);
+          
+          let versionAttribute = reference.xmlAttributeModels.find(attribute =>
+            attribute.attributeName === ConstantsCSharpProjectFile.XML_VERSION_ATTRIBUTE_NAME);
+
+          if (includeAttribute && versionAttribute) {
+            if (!this.cSharpProjectNugetPackageDependenciesFile.virtualChildFiles) {
+              this.cSharpProjectNugetPackageDependenciesFile.virtualChildFiles = [];
+            }
+      
+            this.cSharpProjectNugetPackageDependenciesFile.virtualChildFiles.push(
+              new CSharpProjectNugetPackageDependencyFile(this.cSharpProjectAbsoluteFilePath,
+                this.cSharpProjectNugetPackageDependenciesFile.absoluteFilePath,
+                includeAttribute.attributeValue,
+                versionAttribute.attributeValue));
+          }
+        }
+      }
 
       callback();
     });

@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 export class ConstantsCSharpProjectFile {
-    public static readonly START_OF_XML_INCLUDE_ATTRIBUTE: string = "Include";
-    public static readonly START_OF_VERSION_ATTRIBUTE: string = "Version";
+    public static readonly XML_INCLUDE_ATTRIBUTE_NAME: string = "Include";
+    public static readonly XML_VERSION_ATTRIBUTE_NAME: string = "Version";
     
     /**
      * ProjectReference Example text:
@@ -22,5 +22,5 @@ export class ConstantsCSharpProjectFile {
      *         </PackageReference>
      *     </ItemGroup>
      */
-    public static readonly START_OF_NUGET_PACKAGE_REFERENCE_DEFINITION: string = "PackageReference";
+    public static readonly NUGET_PACKAGE_TAG_NAME: string = "PackageReference";
 }
