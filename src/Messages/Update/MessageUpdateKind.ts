@@ -3,5 +3,6 @@ export enum MessageUpdateKind {
     addProjectReference,
     removeProjectReference,
     addNugetPackageReference,
-    removeNugetPackageReference
+    removeNugetPackageReference,
+    removeProject
 }

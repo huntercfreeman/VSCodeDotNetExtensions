@@ -11,7 +11,7 @@
     import { MessageExecuteCSharpProjectWithoutDebugging } from '../../../../../out/Messages/Execute/MessageExecuteCSharpProjectWithoutDebugging';
     import { MessageReadNewProjectTemplatesOnComputer } from '../../../../../out/Messages/Read/MessageReadNewProjectTemplatesOnComputer';
     import { MessageCreateCSharpProjectInSolution } from '../../../../../out/Messages/Create/MessageCreateCSharpProjectInSolution';
-    import { MessageCreateSolutionFolderInSolution } from '../../../../../out/Messages/Create/MessageCreateSolutionFolderInSolution';
+    import { MessageCreateSolutionFolderInAny } from '../../../../../out/Messages/Create/MessageCreateSolutionFolderInAny';
 
 	export let closeMenu;
 
@@ -25,13 +25,13 @@
     function createNewSolutionFolder() {
         switch (contextMenuTargetValue.fileKind) {
             case FileKind.solution:
-                let messageCreateSolutionFolderInSolution = 
-                    new MessageCreateSolutionFolderInSolution(contextMenuTargetValue,
+                let messageCreateSolutionFolderInAny = 
+                    new MessageCreateSolutionFolderInAny(contextMenuTargetValue,
                         createNewSolutionFolderName);
 
                 tsVscode.postMessage({
                     type: undefined,
-                    value: messageCreateSolutionFolderInSolution
+                    value: messageCreateSolutionFolderInAny
                 });
         }
 

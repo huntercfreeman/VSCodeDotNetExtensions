@@ -8,6 +8,7 @@
 import MenuOptionCreateNewSolutionFolder from "./ContextMenuOptions/MenuOptionCreateNewSolutionFolder.svelte";
     import MenuOptionCreateNewTemplatedFile from "./ContextMenuOptions/MenuOptionCreateNewTemplatedFile.svelte";
     import MenuOptionRefreshChildFiles from "./ContextMenuOptions/MenuOptionRefreshChildFiles.svelte";
+import MenuOptionRemoveCSharpProject from "./ContextMenuOptions/MenuOptionRemoveCSharpProject.svelte";
     import MenuOptionRemoveCSharpProjectReference from "./ContextMenuOptions/MenuOptionRemoveCSharpProjectReference.svelte";
     import MenuOptionRemoveNugetPackageReference from "./ContextMenuOptions/MenuOptionRemoveNugetPackageReference.svelte";
     import MenuOptionStartDebugging from "./ContextMenuOptions/MenuOptionStartDebugging.svelte";
@@ -54,5 +55,8 @@ import MenuOptionCreateNewSolutionFolder from "./ContextMenuOptions/MenuOptionCr
     {:else if ContextualInformationDatum.checkDatumEquality(ContextualInformationDatum.createSolutionFolder,
                                                             contextualInformationDatum)}
         <MenuOptionCreateNewSolutionFolder closeMenu={closeMenu} />
+    {:else if ContextualInformationDatum.checkDatumEquality(ContextualInformationDatum.removeCSharpProject,
+                                                            contextualInformationDatum)}
+        <MenuOptionRemoveCSharpProject closeMenu={closeMenu} />
     {/if}
 {/each}

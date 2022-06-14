@@ -18,6 +18,4 @@ export class CSharpFile extends IdeFile {
     public setVirtualChildFiles(siblingFiles: IdeFile[]): void {
         return;
     }
-
-    
 }

@@ -2,6 +2,8 @@ import { NugetPackageModel } from "../DotNet/NugetPackageModel";
 import { NugetPackageVersionModel } from "../DotNet/NugetPackageVersionModel";
 import { AbsoluteFilePath } from "../FileSystem/AbsoluteFilePath";
 import { DotNetSolutionFile } from "../FileSystem/Files/DotNetSolutionFile";
+import { getNonce } from "../IdGeneration/getNonce";
+import { ConstantsTerminal } from "./ConstantsTerminal";
 
 /* eslint-disable @typescript-eslint/naming-convention */
 export class ConstantsDotNetCli {
@@ -27,7 +29,17 @@ export class ConstantsDotNetCli {
 
         return `dotnet sln \"${dotNetSolutionFileAbsoluteFilePath.initialAbsoluteFilePathStringInput}\" add \"${projectNameWithoutExtension}/${projectNameWithoutExtension}.csproj\"`;
     }
+
+    public static formatDotNetRemoveCSharpProjectFromSolutionUsingProjectName(projectNameWithoutExtension: string, dotNetSolutionFileAbsoluteFilePath: AbsoluteFilePath): string {
+
+        return `dotnet sln \"${dotNetSolutionFileAbsoluteFilePath.initialAbsoluteFilePathStringInput}\" remove \"${projectNameWithoutExtension}/${projectNameWithoutExtension}.csproj\"`;
+    }
     
+    public static formatDotNetRemoveCSharpProjectFromSolutionUsingProjectUsingAbsoluteFilePath(projectAbsoluteFilePath: AbsoluteFilePath, dotNetSolutionFileAbsoluteFilePath: AbsoluteFilePath): string {
+
+        return `dotnet sln \"${dotNetSolutionFileAbsoluteFilePath.initialAbsoluteFilePathStringInput}\" remove \"${projectAbsoluteFilePath.initialAbsoluteFilePathStringInput}\"`;
+    }
+
     public static formatDotNetAddCSharpProjectToSolutionUsingProjectFsPath(projectFsPath: string, dotNetSolutionFile: DotNetSolutionFile): string {
 
         return `dotnet sln \"${dotNetSolutionFile.absoluteFilePath.initialAbsoluteFilePathStringInput}\" add \"${projectFsPath}\"`;
@@ -54,6 +66,6 @@ export class ConstantsDotNetCli {
 
         return `dotnet remove \"${cSharpProjectInitialAbsoluteFilePath.initialAbsoluteFilePathStringInput}\" package \"${nugetPackageId}\"`;
     }
-    
+
     public static DOT_NET_NEW_LIST = "dotnet new --list";
 }

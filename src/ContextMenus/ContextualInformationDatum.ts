@@ -24,6 +24,10 @@ export class ContextualInformationDatum {
     public static readonly createNewCSharpProject: ContextualInformationDatum = 
         new ContextualInformationDatum(ContextualInformationDatumKind.create,
             "createNewCSharpProject");
+
+    public static readonly removeCSharpProject: ContextualInformationDatum = 
+        new ContextualInformationDatum(ContextualInformationDatumKind.create,
+            "removeCSharpProject");
     
     public static readonly addExistingCSharpProject: ContextualInformationDatum = 
         new ContextualInformationDatum(ContextualInformationDatumKind.create,

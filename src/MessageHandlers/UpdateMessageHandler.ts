@@ -9,6 +9,7 @@ import { MessageUpdateAddProjectReference } from '../Messages/Update/MessageUpda
 import { MessageUpdateRemoveProjectReference } from '../Messages/Update/MessageUpdateRemoveProjectReference';
 import { MessageUpdateAddNugetPackageReference } from '../Messages/Update/MessageUpdateAddNugetPackageReference';
 import { MessageUpdateRemoveNugetPackageReference } from '../Messages/Update/MessageUpdateRemoveNugetPackageReference';
+import { MessageUpdateRemoveProject } from '../Messages/Update/MessageUpdateRemoveProject';
 
 export class UpdateMessageHandler {
     public static async handleMessage(webviewView: vscode.WebviewView, message: IMessage): Promise<void> {
@@ -17,6 +18,9 @@ export class UpdateMessageHandler {
         switch (updateMessage.messageUpdateKind) {
             case MessageUpdateKind.existingCSharpProjectIntoSolution:
                 await this.handleMessageUpdateExistingCSharpProjectIntoSolution(webviewView, message);
+                break;
+            case MessageUpdateKind.removeProject:
+                await this.handleMessageUpdateRemoveProject(webviewView, message);
                 break;
             case MessageUpdateKind.addProjectReference:
                 await this.handleMessageUpdateAddProjectReference(webviewView, message);
@@ -56,6 +60,18 @@ export class UpdateMessageHandler {
                 messageUpdateTerminal.show();
             }
         });
+    }
+
+    public static async handleMessageUpdateRemoveProject(webviewView: vscode.WebviewView, iMessage: IMessage) {
+        let message = iMessage as MessageUpdateRemoveProject;
+
+        let messageUpdateTerminal = this.getMessageUpdateTerminal();
+
+        messageUpdateTerminal.sendText(
+            ConstantsDotNetCli.formatDotNetRemoveCSharpProjectFromSolutionUsingProjectUsingAbsoluteFilePath(message.cSharpProjectFile.absoluteFilePath,
+                message.cSharpProjectFile.cSharpProjectModel.parentSolutionAbsoluteFilePath));
+
+        messageUpdateTerminal.show();
     }
     
     public static async handleMessageUpdateAddProjectReference(webviewView: vscode.WebviewView, iMessage: IMessage) {

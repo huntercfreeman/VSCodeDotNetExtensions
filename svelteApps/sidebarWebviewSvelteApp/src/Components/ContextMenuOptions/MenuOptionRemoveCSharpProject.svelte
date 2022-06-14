@@ -10,7 +10,7 @@
     import { MessageReadFilesInDirectory } from '../../../../../out/Messages/Read/MessageReadFilesInDirectory';
     import { MessageExecuteCSharpProjectWithoutDebugging } from '../../../../../out/Messages/Execute/MessageExecuteCSharpProjectWithoutDebugging';
     import { MessageUpdateExistingCSharpProjectIntoSolution } from '../../../../../out/Messages/Update/MessageUpdateExistingCSharpProjectIntoSolution';
-    import { MessageUpdateRemoveProjectReference } from '../../../../../out/Messages/Update/MessageUpdateRemoveProjectReference';
+    import { MessageUpdateRemoveProject } from '../../../../../out/Messages/Update/MessageUpdateRemoveProject';
 
 	export let closeMenu;
 
@@ -21,13 +21,13 @@
 		contextMenuTargetValue = value;
 	});
 
-    function removeProjectReference() {
-        let messageUpdateRemoveProjectReference = 
-            new MessageUpdateRemoveProjectReference(contextMenuTargetValue);
+    function removeProject() {
+        let messageUpdateRemoveProject = 
+            new MessageUpdateRemoveProject(contextMenuTargetValue);
 
         tsVscode.postMessage({
             type: undefined,
-            value: messageUpdateRemoveProjectReference
+            value: messageUpdateRemoveProject
         });
 
         performCloseMenu();
@@ -45,25 +45,25 @@
 
 <MenuOption onClickStopPropagation="{true}"
             onClick={showConfirmQuestion} 
-            text="Remove Project Reference." />
+            text="Remove Project (no files are deleted)." />
 
 {#if showPrompt}
     <div>
-        <em>Remove</em> Reference:
+        <em>Remove</em> Project:
         
         <div style="margin-left: 12px;">
-            <em>{contextMenuTargetValue.cSharpProjectReferenceAbsoluteFilePath.filenameWithExtension}</em>
+            <em>{contextMenuTargetValue.cSharpProjectModel.absoluteFilePath.filenameWithExtension}</em>
         </div>
     </div>
     <div>
-        From Project:
+        From Solution:
         
         <div style="margin-left: 12px;">
-            {contextMenuTargetValue.parentCSharpProjectInitialAbsoluteFilePath.filenameWithExtension}
+            {contextMenuTargetValue.cSharpProjectModel.parentSolutionAbsoluteFilePath.filenameWithExtension}
         </div>
     </div>
 
-    <button on:click="{removeProjectReference}">Accept</button>
+    <button on:click="{removeProject}">Accept</button>
     <button on:click="{performCloseMenu}">Decline</button>
 {/if}
 

@@ -154,8 +154,35 @@ export class CreateMessageHandler {
 
     public static async handleMessageCreateSolutionFolder(webviewView: vscode.WebviewView, iMessage: IMessage) {
         let message = iMessage as MessageCreateSolutionFolderInAny;
-    
-        let v = 1;
+
+        let dotNetSolutionFileAbsoluteFilePath: AbsoluteFilePath | undefined;
+
+        let solutionFolder: CSharpProjectFile | undefined;
+
+        if (message.ideFile.fileKind === FileKind.solution) {
+            let dotNetSolutionFile = message.ideFile as DotNetSolutionFile;
+
+            dotNetSolutionFileAbsoluteFilePath = dotNetSolutionFile.absoluteFilePath;
+        }
+        else if (message.ideFile.fileKind === FileKind.solutionFolder) {
+            solutionFolder = message.ideFile as CSharpProjectFile;            
+
+            dotNetSolutionFileAbsoluteFilePath = solutionFolder.cSharpProjectModel.parentSolutionAbsoluteFilePath;
+        }
+
+        // TODO: Tried to add solution folder using dotnet cli
+        // however you cannot within reason add an empty solution folder
+        // using the cli. Within reason referring to it was very hacky.
+        // In short, you must at all times have a .csproj file within the solution folder.
+        // So, I made an empty csproj to act as a temporary .csproj so I was allowed to make
+        // the solution folder. Then I deleted the csproj but it also
+        // would delete the solution folder cause now it was empty so I gotta
+        // revisit this.
+
+        if (solutionFolder) {
+            // TODO: Add create solution folder within solution folder.
+            var z = 2;
+        }
     }
 
     private static getMessageCreateTerminal() {
