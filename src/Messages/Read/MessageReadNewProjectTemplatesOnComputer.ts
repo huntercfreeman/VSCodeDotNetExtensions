@@ -1,4 +1,3 @@
-import { DirectoryFile } from "../../FileSystem/Files/DirectoryFile";
 import { IMessage } from "../IMessage";
 import { MessageCategory } from "../MessageCategory";
 import { IMessageRead } from "./IMessageRead";

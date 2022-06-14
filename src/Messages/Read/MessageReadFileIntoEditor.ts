@@ -1,4 +1,3 @@
-import { AbsoluteFilePath } from "../../FileSystem/AbsoluteFilePath";
 import { IdeFile } from "../../FileSystem/Files/IdeFile";
 import { IMessage } from "../IMessage";
 import { MessageCategory } from "../MessageCategory";

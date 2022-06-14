@@ -1,4 +1,3 @@
-import { AbsoluteFilePath } from "../../FileSystem/AbsoluteFilePath";
 import { DotNetSolutionFile } from "../../FileSystem/Files/DotNetSolutionFile";
 import { IMessage } from "../IMessage";
 import { MessageCategory } from "../MessageCategory";
