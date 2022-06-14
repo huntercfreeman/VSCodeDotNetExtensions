@@ -3,10 +3,10 @@
     height="16"
     viewBox="0 0 16 16"
     xmlns="http://www.w3.org/2000/svg"
-    fill="currentColor"
+    fill="var(--dni_file-project-icon-background)"
     ><path
         fill-rule="evenodd"
         clip-rule="evenodd"
-        d="M7.976 10.072l4.357-4.357.62.618L8.284 11h-.618L3 6.333l.619-.618 4.357 4.357z"
+        d="M1.5 1h13l.5.5v13l-.5.5h-13l-.5-.5v-13l.5-.5zM2 14h12V2H2v12zM3 3h2v10H3V3zm6 0H7v6h2V3zm2 0h2v8h-2V3z"
     /></svg
 >

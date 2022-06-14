@@ -1,20 +1,20 @@
 <script lang="ts">
     import { FileKind } from "../../../../out/FileSystem/FileKind";
-    import FileProjectIcon from "./Icons/FileProjectIcon.svelte";
-    import FileSolutionIcon from "./Icons/FileSolutionIcon.svelte";
-    import FileDirectoryIcon from "./Icons/FileDirectoryIcon.svelte";
-    import FileCsIcon from "./Icons/FileCsIcon.svelte";
-    import FileCshtmlIcon from "./Icons/FileCshtmlIcon.svelte";
-    import FileRazorIcon from "./Icons/FileRazorIcon.svelte";
-    import FileCssIcon from "./Icons/FileCssIcon.svelte";
-    import FileTxtIcon from "./Icons/FileTxtIcon.svelte";
-    import FileSolutionFolderIcon from "./Icons/FileSolutionFolderIcon.svelte";
-    import FileJsonIcon from "./Icons/FileJsonIcon.svelte";
-import FileProjectDependenciesIcon from "./Icons/FileProjectDependenciesIcon.svelte";
-import FileNugetPackageDependencyIcon from "./Icons/FileNugetPackageDependencyIcon.svelte";
-import FileNugetPackageDependenciesIcon from "./Icons/FileNugetPackageDependenciesIcon.svelte";
-import FileProjectReferencesIcon from "./Icons/FileProjectReferencesIcon.svelte";
-import FileProjectReferenceIcon from "./Icons/FileProjectReferenceIcon.svelte";
+    import FileProjectIcon from "./Icons/ProjectIcon.svelte";
+    import FileSolutionIcon from "./Icons/SolutionIcon.svelte";
+    import FileDirectoryIcon from "./Icons/DirectoryIcon.svelte";
+    import FileCsIcon from "./Icons/CsIcon.svelte";
+    import FileCshtmlIcon from "./Icons/CshtmlIcon.svelte";
+    import FileRazorIcon from "./Icons/RazorIcon.svelte";
+    import FileCssIcon from "./Icons/CssIcon.svelte";
+    import FileTxtIcon from "./Icons/TxtIcon.svelte";
+    import FileSolutionFolderIcon from "./Icons/SolutionFolderIcon.svelte";
+    import FileJsonIcon from "./Icons/JsonIcon.svelte";
+import FileProjectDependenciesIcon from "./Icons/ProjectDependenciesIcon.svelte";
+import FileNugetPackageDependencyIcon from "./Icons/NugetPackageDependencyIcon.svelte";
+import FileNugetPackageDependenciesIcon from "./Icons/NugetPackageDependenciesIcon.svelte";
+import FileProjectReferencesIcon from "./Icons/ProjectReferencesIcon.svelte";
+import FileProjectReferenceIcon from "./Icons/ProjectReferenceIcon.svelte";
 
     export let fileKind: typeof FileKind;
 </script>
