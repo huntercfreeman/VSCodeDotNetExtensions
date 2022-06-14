@@ -1,4 +1,3 @@
-import { ConstantsContextualInformation } from "../../Constants/ConstantsContextualInformation";
 import { ContextualInformationDatum } from "../../ContextMenus/ContextualInformationDatum";
 import { getNonce } from "../../IdGeneration/getNonce";
 import { AbsoluteFilePath } from "../AbsoluteFilePath";

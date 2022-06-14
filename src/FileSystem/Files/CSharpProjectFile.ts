@@ -1,5 +1,3 @@
-import { ConstantsContextualInformation } from "../../Constants/ConstantsContextualInformation";
-import { AbsoluteFilePath } from "../AbsoluteFilePath";
 import { IdeFile } from "./IdeFile";
 import { CSharpProjectModel } from "../../DotNet/CSharpProjectModel";
 import { FileKind } from "../FileKind";
@@ -11,12 +9,12 @@ export class CSharpProjectFile extends IdeFile {
     constructor(public readonly cSharpProjectModel: CSharpProjectModel) {
         super(cSharpProjectModel.absoluteFilePath, cSharpProjectModel.rootNamespace);
 
-        if(cSharpProjectModel.solutionFolderEntries !== undefined) {
+        if (cSharpProjectModel.solutionFolderEntries !== undefined) {
             this.fileKind = FileKind.solutionFolder;
 
             this.virtualChildFiles = cSharpProjectModel.solutionFolderEntries
                 .map(x => new CSharpProjectFile(x));
-            
+
             this.contextualInformation = [
                 // ContextualInformationDatum.createSolutionFolder,
                 ContextualInformationDatum.createNewCSharpProject,
@@ -38,11 +36,11 @@ export class CSharpProjectFile extends IdeFile {
             new CSharpProjectDependenciesFile(this.cSharpProjectModel.absoluteFilePath),
         ];
     }
-    
+
     public constantChildFiles: any[] | undefined;
 
     public childFiles: any[] | undefined;
-    
+
     public setVirtualChildFiles(siblingFiles: IdeFile[]): void {
         return;
     }
