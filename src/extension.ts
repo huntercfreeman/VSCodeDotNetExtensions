@@ -4,7 +4,7 @@ import { SidebarProvider } from './UiProviders/SidebarProvider';
 
 export function activate(context: vscode.ExtensionContext) {
 	const nugetPackageManagerProvider = new NugetPackageManagerProvider(context);
-	
+
 	context.subscriptions.push(
 		vscode.window.registerWebviewViewProvider(
 			"dot-net-ide.nuget-package-manager-webview",
@@ -33,7 +33,7 @@ export function activate(context: vscode.ExtensionContext) {
 		)
 	);
 
-	
+
 }
 
-export function deactivate() {}
+export function deactivate() { }
