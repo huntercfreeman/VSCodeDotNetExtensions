@@ -1,6 +1,5 @@
 import { ConstantsContextualInformation } from "../Constants/ConstantsContextualInformation";
 import { ConstantsSolutionFile } from "../Constants/ConstantsSolutionFile";
-import { ConstantsStringReader } from "../Constants/ConstantsStringReader";
 import { CSharpProjectModel } from "../DotNet/CSharpProjectModel";
 import { SolutionModel } from "../DotNet/SolutionModel";
 import { AbsoluteFilePath } from "../FileSystem/AbsoluteFilePath";
@@ -37,38 +36,38 @@ export class DotNetSolutionParser {
         var handledToken = false;
 
         if (!handledToken && this._stringReader
-            .isStartOfToken(ConstantsSolutionFile.START_OF_PROJECT_DEFINITION, currentCharacter)) {
+          .isStartOfToken(ConstantsSolutionFile.START_OF_PROJECT_DEFINITION, currentCharacter)) {
 
           handledToken = true;
           this.readInProjectDefinition();
         }
         if (!handledToken && this._stringReader
-            .isStartOfToken(ConstantsSolutionFile.START_OF_GLOBAL_SECTION, currentCharacter)) {
+          .isStartOfToken(ConstantsSolutionFile.START_OF_GLOBAL_SECTION, currentCharacter)) {
 
           handledToken = true;
           this.readInGlobalSection();
         }
         if (!handledToken && this._stringReader
-            .isStartOfToken(ConstantsSolutionFile.START_OF_GLOBAL, currentCharacter)) {
+          .isStartOfToken(ConstantsSolutionFile.START_OF_GLOBAL, currentCharacter)) {
 
           handledToken = true;
           this.readInGlobalDefinition();
         }
         if (!handledToken && this._stringReader
-            .isStartOfToken(ConstantsSolutionFile.START_OF_SOLUTION_PROPERTIES, currentCharacter)) {
-              
+          .isStartOfToken(ConstantsSolutionFile.START_OF_SOLUTION_PROPERTIES, currentCharacter)) {
+
           handledToken = true;
           this.readInSolutionProperties();
         }
         if (!handledToken && this._stringReader
-            .isStartOfToken(ConstantsSolutionFile.START_OF_SOLUTION_FOLDERS, currentCharacter)) {
+          .isStartOfToken(ConstantsSolutionFile.START_OF_SOLUTION_FOLDERS, currentCharacter)) {
 
           handledToken = true;
           this.readInSolutionFolders();
         }
         if (!handledToken && this._stringReader
-            .isStartOfToken(ConstantsSolutionFile.START_OF_EXTENSIBILITY_GLOBALS, currentCharacter)) {
-              
+          .isStartOfToken(ConstantsSolutionFile.START_OF_EXTENSIBILITY_GLOBALS, currentCharacter)) {
+
           handledToken = true;
           this.readInExtensibilityGlobals();
         }
@@ -95,9 +94,9 @@ export class DotNetSolutionParser {
     //  ---------
     while (!endOfFile(currentCharacter = this._stringReader.consume(1))) {
 
-        if (currentCharacter === ConstantsSolutionFile.START_OF_GUID) {
-          break;
-        }
+      if (currentCharacter === ConstantsSolutionFile.START_OF_GUID) {
+        break;
+      }
     }
 
     // Read firstGuid
@@ -112,9 +111,9 @@ export class DotNetSolutionParser {
     //                                                -
     while (!endOfFile(currentCharacter = this._stringReader.consume(1))) {
 
-        if (currentCharacter === '"') {
-          break;
-        }
+      if (currentCharacter === '"') {
+        break;
+      }
     }
 
     // Skip to start of displayName
@@ -122,10 +121,10 @@ export class DotNetSolutionParser {
     // Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyCrudApp", "MyCrudApp\MyCrudApp.csproj", "{8257B361-20EC-4D50-8987-169E8BEC46E4}"
     //                                                 -----
     while (!endOfFile(currentCharacter = this._stringReader.consume(1))) {
-        
-        if (currentCharacter === '"') {
-          break;
-        }
+
+      if (currentCharacter === '"') {
+        break;
+      }
     }
 
     // Start reading displayName
@@ -137,8 +136,8 @@ export class DotNetSolutionParser {
     // Read text into displayName variable until quote that terminates the Project display name
     while (!endOfFile(currentCharacter = this._stringReader.consume(1)) &&
       currentCharacter !== '"') {
-      
-        displayName += currentCharacter;
+
+      displayName += currentCharacter;
     }
 
     // Skip to start of project relative path from solution
@@ -147,9 +146,9 @@ export class DotNetSolutionParser {
     //                                                                ---
     while (!endOfFile(currentCharacter = this._stringReader.consume(1))) {
 
-        if (currentCharacter === '"') {
-          break;
-        }
+      if (currentCharacter === '"') {
+        break;
+      }
     }
 
     // Start reading project relative path from solution
@@ -171,9 +170,9 @@ export class DotNetSolutionParser {
     //                                                                                              ----
     while (!endOfFile(currentCharacter = this._stringReader.consume(1))) {
 
-        if (currentCharacter === ConstantsSolutionFile.START_OF_GUID) {
-          break;
-        }
+      if (currentCharacter === ConstantsSolutionFile.START_OF_GUID) {
+        break;
+      }
     }
 
     // Read secondGuid

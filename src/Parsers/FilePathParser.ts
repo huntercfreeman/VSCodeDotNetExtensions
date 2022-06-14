@@ -3,7 +3,7 @@ import { AbsoluteFilePath } from "../FileSystem/AbsoluteFilePath";
 import { FilePathStandardizer } from "../FileSystem/FilePathStandardizer";
 
 export class FilePathParser {
-    public static parseParentDirectories(inputString: string) : AbsoluteFilePath[] {
+    public static parseParentDirectories(inputString: string): AbsoluteFilePath[] {
         inputString = FilePathStandardizer.standardizeFilePath(inputString);
 
         let separatedFiles = inputString.split(ConstantsFilePath.STANDARDIZED_FILE_DELIMITER);
@@ -15,13 +15,13 @@ export class FilePathParser {
             let directoryAbsoluteFilePath = "";
 
             for (let j = 0; j < i; j++) {
-                directoryAbsoluteFilePath += 
-                    separatedFiles[j] + ConstantsFilePath.STANDARDIZED_FILE_DELIMITER;    
+                directoryAbsoluteFilePath +=
+                    separatedFiles[j] + ConstantsFilePath.STANDARDIZED_FILE_DELIMITER;
             }
 
             parentDirectoriesAbsoluteFilePathStrings
                 .push(directoryAbsoluteFilePath + separatedFiles[i]);
-        }        
+        }
 
         let previouslySeenParentDirectories: AbsoluteFilePath[] = [];
 

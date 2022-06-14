@@ -68,15 +68,15 @@ export class FileXmlParseStateMachine extends XmlParseStateMachineBase {
                     this.stringReader.skipBackwards(1);
 
                     if (ConstantsXmlFile.ENDING_OF_XML_TAG_FOR_CHILD_CONTENT_CONTAINING_TAGS ===
-                            this.stringReader.peek(1)) {
+                        this.stringReader.peek(1)) {
 
-                                let _ = this.stringReader.consume(1);
-                                return;
+                        let _ = this.stringReader.consume(1);
+                        return;
                     }
                     else if (ConstantsXmlFile.START_OF_OPENING_XML_TAG !==
                         this.stringReader.peek(1)) {
 
-                            return;
+                        return;
                     }
 
                     break;
@@ -145,10 +145,10 @@ export class TagXmlParseStateMachine extends XmlParseStateMachineBase {
 
                 this.xmlTagModel.xmlAttributeModels
                     .push(xmlAttributeModel);
-    
+
                 let tagAttributeXmlParseStateMachine =
                     new TagAttributeXmlParseStateMachine(this.stringReader, xmlAttributeModel);
-    
+
                 this.stringReader.skipBackwards(1);
                 tagAttributeXmlParseStateMachine.parseRecursively();
             }
@@ -344,8 +344,8 @@ export class TextXmlParseStateMachine extends XmlParseStateMachineBase {
         while (!endOfFile(currentCharacter = this.stringReader.consume(1))) {
 
             if (this.stringReader
-                    .isStartOfToken(ConstantsXmlFile.ENDING_OF_XML_TAG_FOR_CHILD_CONTENT_CONTAINING_TAGS, 
-                        currentCharacter)) {
+                .isStartOfToken(ConstantsXmlFile.ENDING_OF_XML_TAG_FOR_CHILD_CONTENT_CONTAINING_TAGS,
+                    currentCharacter)) {
 
                 return;
             }

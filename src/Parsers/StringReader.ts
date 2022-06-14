@@ -13,7 +13,7 @@ export class StringReader {
      * @param length This does not relate to indices. A length of 1 returns 1 character inclusive with current position. A length of 0 returns 0 characters.
      * @returns The substring that spans the length specified inclusive with the current position. Returns END_OF_FILE_MARKER anytime a character out of bounds of the length of the string is attempted to be accessed.
      */
-    public peek(length: number) : string {
+    public peek(length: number): string {
         let substring = "";
 
         let virtualPosition = this._position;
@@ -25,7 +25,7 @@ export class StringReader {
         return substring;
     }
 
-    public consume(length: number) : string {
+    public consume(length: number): string {
         let substring = "";
 
         for (let i = 0; i < length; i++) {
@@ -34,7 +34,7 @@ export class StringReader {
 
         return substring;
     }
-    
+
     public skipForwards(length: number): void {
         this._position += length;
     }
@@ -57,25 +57,25 @@ export class StringReader {
 
     public isStartOfToken(startOfToken: string, currentCharacter: string): boolean {
         if (startOfToken.startsWith(currentCharacter)) {
-          if (startOfToken === 
+            if (startOfToken ===
                 (currentCharacter + this.peek(startOfToken.length - 1))) {
-            return true;
-          }
+                return true;
+            }
         }
 
         return false;
-      }
+    }
 
     private peekCharacterAt(virtualPosition: number): string {
-        if(virtualPosition < this._inputLength) {
+        if (virtualPosition < this._inputLength) {
             return this.input[virtualPosition];
         }
 
         return ConstantsStringReader.END_OF_FILE_MARKER;
     }
-    
+
     private consumeCharacter(): string {
-        if(this._position < this._inputLength) {
+        if (this._position < this._inputLength) {
             return this.input[this._position++];
         }
 
