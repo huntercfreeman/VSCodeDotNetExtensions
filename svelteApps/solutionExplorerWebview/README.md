@@ -1,8 +1,8 @@
-# SidebarWebview
+# Solution Explorer Webview
 
-The extension renders a webview in the sidebar.
+The extension renders a solution explorer webview in the sidebar.
 
-This directory contains the source code for the sidebar webview.
+This directory contains the source code for the solution explorer webview.
 
 # Programming Language
 
@@ -23,7 +23,7 @@ Many of the context menu options available wrap the already existing dotnet CLI 
 # How to Build this Svelte Application
 
 - While using a terminal change directory to where this README.md is located and this application's 'rollup.config.js' is located.
-    - As of the writing of this README.md I currently type while in the root of this repository: 'cd svelteApps/sidebarWebviewSvelteApp' as an example.
+    - As of the writing of this README.md I currently type while in the root of this repository: 'cd svelteApps/solutionExplorerWebview' as an example.
 
     - After following the previous step you should be in the directory that contains this Svelte app's 'rollup.config.js'. The command to build is from this directory is:
 
@@ -33,39 +33,41 @@ Many of the context menu options available wrap the already existing dotnet CLI 
 
 - [rollup.config.js](rollup.config.js) specifies where the compiled javascript should be output to. As of writing this README.md the path is:
 
-> ../../out/sidebarWebview/sidebarWebview.js
+> ../../out/solutionExplorerWebview/solutionExplorerWebview.js
 
 - (continuation of previous bullet). The takeaway is not the exact relative path as that likely will change, instead the takeaway is that the extension output goes into a folder named, 'out' at the root of the repository.
 
 - The webview is rendered in Visual Studio Code by the following steps 
 
-1: The TypeScript class 'SidebarProvider.ts'
+1: The TypeScript class [/src/UiProviders/SolutionExplorerWebviewProvider.ts](/src/UiProviders/SolutionExplorerWebviewProvider.ts)
 
 ``` typescript
 private getWebviewContent(webview: vscode.Webview) {
     const dotNetIdeSvelteAppJavaScriptUri = webview.asWebviewUri(vscode.Uri.joinPath(
-      this.context.extensionUri, 'out/sidebarWebview', 'sidebarWebview.js'));
+      this.context.extensionUri, 'out/solutionExplorerWebview', 'solutionExplorerWebview.js'));
 
     const dotNetIdeSvelteAppCssUri = webview.asWebviewUri(vscode.Uri.joinPath(
-      this.context.extensionUri, 'out/sidebarWebview', 'sidebarWebview.css'));
+      this.context.extensionUri, 'out/solutionExplorerWebview', 'solutionExplorerWebview.css'));
 
     // take note that the compiled javascript is referenced here.
 
     // More code follows but is ommitted in this snippet
 }
 ```
-2: Inside 'extension.ts' is
+2: Inside [/src/UiProviders/SolutionExplorerWebviewProvider.ts](/src/extension.ts)
 
 ``` typescript
-const sidebarProvider = new SidebarProvider(context);
+const solutionExplorerWebviewProvider = new SolutionExplorerWebviewProvider(context);
 
 context.subscriptions.push(
     vscode.window.registerWebviewViewProvider(
-        "dot-net-ide.sidebar-webview",
-        sidebarProvider,
+        "dot-net-ide.solution-explorer-webview",
+        solutionExplorerWebviewProvider,
         {
             "webviewOptions": {
                 // retainContextWhenHidden is resource intensive and should be used sparingly
+                // preferably the code would maintain an 'isExpanded' property on 
+                // all entries of the TreeView so that this is not needed to be here
                 retainContextWhenHidden: true
             }
         }
@@ -76,31 +78,33 @@ context.subscriptions.push(
 
 ``` json
 "activationEvents": [
-    "onView:dot-net-ide.sidebar-webview",
+    "onView:dot-net-ide.solution-explorer-webview",
     // others
 ],
+// JSON in between
 "contributes": {
-    "viewsContainers": {
-        "activitybar": [
-            {
-                "id": "dot-net-ide",
-                "title": ".NET IDE",
-                "icon": "media/dotNetIdeSidebarIcon.svg"
-            }
-        ]
-    },
-    "views": {
-        "dot-net-ide": [
-            {
-                "type": "webview",
-                "id": "dot-net-ide.sidebar-webview",
-                "name": "Solution Explorer",
-                "icon": "media/dotNetIdeSidebarIcon.svg"
-            }
-            // others
-        ]
-    }
-},
+		"viewsContainers": {
+			"activitybar": [
+				{
+					"id": "dot-net-ide",
+					"title": ".NET IDE",
+					"icon": "media/solutionExplorerIcon.svg"
+				}
+                // others
+			]
+		},
+		"views": {
+			"dot-net-ide": [
+				{
+					"type": "webview",
+					"id": "dot-net-ide.solution-explorer-webview",
+					"name": "Solution Explorer",
+					"icon": "media/solutionExplorerIcon.svg"
+				},
+                // others
+			]
+		}
+	},
 ```
 
 # Important ideas to follow when developing

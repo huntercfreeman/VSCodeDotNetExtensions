@@ -1,12 +1,9 @@
 import * as vscode from 'vscode';
-import { SidebarProviderMessageHandler } from '../MessageHandlers/SidebarProviderMessageHandler';
+import { NugetPackageManagerMessageHandler } from '../MessageHandlers/NugetPackageManagerMessageHandler';
 
 const fs = require('fs');
 
-/**
- * SidebarProvider renders the Solution Explorer webview
- */
-export class SidebarProvider implements vscode.WebviewViewProvider {
+export class NugetPackageManagerWebviewProvider implements vscode.WebviewViewProvider {
   _view?: vscode.WebviewView;
   _doc?: vscode.TextDocument;
 
@@ -25,7 +22,7 @@ export class SidebarProvider implements vscode.WebviewViewProvider {
     webviewView.webview.html = this.getWebviewContent(webviewView.webview);
 
     webviewView.webview.onDidReceiveMessage(async (data) =>
-      SidebarProviderMessageHandler.handleMessage(webviewView, data.value));
+      NugetPackageManagerMessageHandler.handleMessage(webviewView, data.value, undefined));
   }
 
   public revive(panel: vscode.WebviewView) {
@@ -34,10 +31,10 @@ export class SidebarProvider implements vscode.WebviewViewProvider {
 
   private getWebviewContent(webview: vscode.Webview) {
     const dotNetIdeSvelteAppJavaScriptUri = webview.asWebviewUri(vscode.Uri.joinPath(
-      this.context.extensionUri, 'out/sidebarWebview', 'sidebarWebview.js'));
+      this.context.extensionUri, 'out/nugetPackageManagerWebview', 'nugetPackageManagerWebview.js'));
 
     const dotNetIdeSvelteAppCssUri = webview.asWebviewUri(vscode.Uri.joinPath(
-      this.context.extensionUri, 'out/sidebarWebview', 'sidebarWebview.css'));
+      this.context.extensionUri, 'out/nugetPackageManagerWebview', 'nugetPackageManagerWebview.css'));
 
     const resetCssUri = webview.asWebviewUri(
       vscode.Uri.joinPath(this.context.extensionUri, "media", "reset.css")

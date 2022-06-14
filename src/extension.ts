@@ -1,9 +1,9 @@
 import * as vscode from 'vscode';
-import { NugetPackageManagerProvider } from './UiProviders/NugetPackageManagerProvider';
-import { SidebarProvider } from './UiProviders/SidebarProvider';
+import { NugetPackageManagerWebviewProvider } from './UiProviders/NugetPackageManagerWebviewProvider';
+import { SolutionExplorerWebviewProvider } from './UiProviders/SolutionExplorerWebviewProvider';
 
 export function activate(context: vscode.ExtensionContext) {
-	const nugetPackageManagerProvider = new NugetPackageManagerProvider(context);
+	const nugetPackageManagerProvider = new NugetPackageManagerWebviewProvider(context);
 
 	context.subscriptions.push(
 		vscode.window.registerWebviewViewProvider(
@@ -18,15 +18,17 @@ export function activate(context: vscode.ExtensionContext) {
 		)
 	);
 
-	const sidebarProvider = new SidebarProvider(context);
+	const solutionExplorerWebviewProvider = new SolutionExplorerWebviewProvider(context);
 
 	context.subscriptions.push(
 		vscode.window.registerWebviewViewProvider(
-			"dot-net-ide.sidebar-webview",
-			sidebarProvider,
+			"dot-net-ide.solution-explorer-webview",
+			solutionExplorerWebviewProvider,
 			{
 				"webviewOptions": {
 					// retainContextWhenHidden is resource intensive and should be used sparingly
+					// preferably the code would maintain an 'isExpanded' property on 
+					// all entries of the TreeView so that this is not needed to be here
 					retainContextWhenHidden: true
 				}
 			}

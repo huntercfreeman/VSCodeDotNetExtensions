@@ -1,9 +1,9 @@
 import * as vscode from 'vscode';
-import { NugetPackageManagerMessageHandler } from '../MessageHandlers/NugetPackageManagerMessageHandler';
+import { SolutionExplorerMessageHandler } from '../MessageHandlers/SolutionExplorerMessageHandler';
 
 const fs = require('fs');
 
-export class NugetPackageManagerProvider implements vscode.WebviewViewProvider {
+export class SolutionExplorerWebviewProvider implements vscode.WebviewViewProvider {
   _view?: vscode.WebviewView;
   _doc?: vscode.TextDocument;
 
@@ -22,7 +22,7 @@ export class NugetPackageManagerProvider implements vscode.WebviewViewProvider {
     webviewView.webview.html = this.getWebviewContent(webviewView.webview);
 
     webviewView.webview.onDidReceiveMessage(async (data) =>
-      NugetPackageManagerMessageHandler.handleMessage(webviewView, data.value, undefined));
+      SolutionExplorerMessageHandler.handleMessage(webviewView, data.value));
   }
 
   public revive(panel: vscode.WebviewView) {
@@ -31,10 +31,10 @@ export class NugetPackageManagerProvider implements vscode.WebviewViewProvider {
 
   private getWebviewContent(webview: vscode.Webview) {
     const dotNetIdeSvelteAppJavaScriptUri = webview.asWebviewUri(vscode.Uri.joinPath(
-      this.context.extensionUri, 'out/nugetPackageManagerWebview', 'nugetPackageManagerWebview.js'));
+      this.context.extensionUri, 'out/solutionExplorerWebview', 'solutionExplorerWebview.js'));
 
     const dotNetIdeSvelteAppCssUri = webview.asWebviewUri(vscode.Uri.joinPath(
-      this.context.extensionUri, 'out/nugetPackageManagerWebview', 'nugetPackageManagerWebview.css'));
+      this.context.extensionUri, 'out/solutionExplorerWebview', 'solutionExplorerWebview.css'));
 
     const resetCssUri = webview.asWebviewUri(
       vscode.Uri.joinPath(this.context.extensionUri, "media", "reset.css")

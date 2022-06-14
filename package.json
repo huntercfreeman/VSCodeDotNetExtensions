@@ -11,7 +11,7 @@
 		"Other"
 	],
 	"activationEvents": [
-		"onView:dot-net-ide.sidebar-webview",
+		"onView:dot-net-ide.solution-explorer-webview",
 		"onView:dot-net-ide.nuget-package-manager-webview"
 	],
 	"main": "./out/extension.js",
@@ -21,7 +21,7 @@
 				{
 					"id": "dot-net-ide",
 					"title": ".NET IDE",
-					"icon": "media/dotNetIdeSidebarIcon.svg"
+					"icon": "media/solutionExplorerIcon.svg"
 				}
 			]
 		},
@@ -29,15 +29,15 @@
 			"dot-net-ide": [
 				{
 					"type": "webview",
-					"id": "dot-net-ide.sidebar-webview",
+					"id": "dot-net-ide.solution-explorer-webview",
 					"name": "Solution Explorer",
-					"icon": "media/dotNetIdeSidebarIcon.svg"
+					"icon": "media/solutionExplorerIcon.svg"
 				},
 				{
 					"type": "webview",
 					"id": "dot-net-ide.nuget-package-manager-webview",
 					"name": "Nuget Package Manager",
-					"icon": "media/dotNetIdeNugetPackageManager.svg"
+					"icon": "media/nugetPackageManagerIcon.svg"
 				}
 			]
 		}
