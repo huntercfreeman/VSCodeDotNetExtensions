@@ -25,9 +25,8 @@ export class FileSlnParseStateMachine extends SlnParseStateMachineBase {
                         this.solutionModel.fileHeader);
 
                 fileHeaderSlnParseStateMachine.parseRecursively();
-                break;
             }
-            if (this.stringReader.isStartOfToken(ConstantsSolutionFile.START_OF_PROJECT_DEFINITION,
+            else if (this.stringReader.isStartOfToken(ConstantsSolutionFile.START_OF_PROJECT_DEFINITION,
                 currentCharacter)) {
 
                 let temporaryCSharpProjectModel = new TemporaryCSharpProjectModel(this.solutionModel,
@@ -50,8 +49,6 @@ export class FileSlnParseStateMachine extends SlnParseStateMachineBase {
                     null);
 
                 this.solutionModel.projects.push(definedCSharpProjectModel);
-
-                break;
             }
         }
     }

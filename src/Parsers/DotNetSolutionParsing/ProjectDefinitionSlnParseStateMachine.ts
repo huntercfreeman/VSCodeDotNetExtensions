@@ -12,12 +12,20 @@ export class ProjectDefinitionSlnParseStateMachine extends SlnParseStateMachineB
     }
 
     public override parseRecursively() {
-        this.getProjectTypeGuid();
+        this.getGuid((character) => this.temporaryCSharpProjectModel.projectTypeGuid += character);
 
-        this.getProjectDisplayName();
+        this.getString((character) => this.temporaryCSharpProjectModel.displayName += character);
+
+        this.getString((character) => this.temporaryCSharpProjectModel.projectRelativePathFromSolution += character);
+
+        this.getGuid((character) => this.temporaryCSharpProjectModel.projectIdGuid += character);
     }
 
-    private getProjectTypeGuid() {
+    /**
+     * The parsing examples use Project Type Guid
+     * however this is also used for project id Guid
+     */
+    private getGuid(assignmentLambda: (character: string) => void): void {
         let currentCharacter = "";
 
         // Project Type Guid Skip
@@ -55,69 +63,64 @@ export class ProjectDefinitionSlnParseStateMachine extends SlnParseStateMachineB
         // Project Type Guid Read
         while (!endOfFile(currentCharacter = this.stringReader.consume(1))) {
 
-            let whitespaceMatch = ConstantsWhitespace.whitespaceCharacters.find((character) =>
-                character === currentCharacter);
-
-            if (whitespaceMatch !== undefined) {
+            if (currentCharacter === ConstantsSolutionFile.END_OF_GUID_TOKEN) {
                 break;
             }
 
             //                                                        -----
             // 'Microsoft Visual Studio Solution File, Format Version 12.00'
             //                                                        -----
-            this.temporaryCSharpProjectModel.projectTypeGuid += currentCharacter;
+            assignmentLambda(currentCharacter);
         }
     }
     
-    private getProjectDisplayName() {
+    /**
+     * The parsing examples use Project Display Name
+     * however this is also used for project path
+     */
+    private getString(assignmentLambda: (character: string) => void): void {
+        this.stringReader.skipBackwards(1);
+        
         let currentCharacter = "";
 
-        // Project Type Guid Skip
+        // Quote Skip that marked end of project type Guid
+        //
+        //      -
+        // '556}") = "BlazorStudio.Compiler.Tests", '
+        //      -
         while (!endOfFile(currentCharacter = this.stringReader.consume(1))) {
 
-            if (this.stringReader.isStartOfToken(ConstantsSolutionFile.START_OF_GUID_TOKEN,
-                currentCharacter)) {
-
-                //           -
-                // 'Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "B'
-                //           -
-                let _ = this.stringReader.consume(ConstantsSolutionFile.START_OF_GUID_TOKEN.length - 1);
-
+            if (currentCharacter === '\"') {
                 break;
             }
         }
 
-        // Project Type Guid if unnecessary whitespace
-        //            -------------
-        // 'Project("{  \t\r\n \n\n9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "B'
-        //            -------------
-        if (currentCharacter === ' ') {
-            for (; ;) {
-                if (endOfFile(currentCharacter = this.stringReader.consume(1)) ||
-                    currentCharacter !== ' ') {
+        if (currentCharacter === '\"') {
+            // Quote Skip that marks start of Display Name
+            //
+            //           -
+            // '556}") = "BlazorStudio.Compiler.Tests", '
+            //           -
+            while (!endOfFile(currentCharacter = this.stringReader.consume(1))) {
 
+                if (currentCharacter === '\"') {
                     break;
                 }
             }
-
-            // Eager consumption instead of peeking results in stringReader being one character too far into text
-            this.stringReader.skipBackwards(1);
         }
 
-        // Project Type Guid Read
+        // Read in until quote that marks end of Display Name
+        //
+        //                                       -
+        // '556}") = "BlazorStudio.Compiler.Tests", '
+        //                                       -
         while (!endOfFile(currentCharacter = this.stringReader.consume(1))) {
 
-            let whitespaceMatch = ConstantsWhitespace.whitespaceCharacters.find((character) =>
-                character === currentCharacter);
-
-            if (whitespaceMatch !== undefined) {
+            if (currentCharacter === '\"') {
                 break;
             }
-
-            //                                                        -----
-            // 'Microsoft Visual Studio Solution File, Format Version 12.00'
-            //                                                        -----
-            this.temporaryCSharpProjectModel.projectTypeGuid += currentCharacter;
+            
+            assignmentLambda(currentCharacter);
         }
     }
 }
