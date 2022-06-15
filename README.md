@@ -312,7 +312,7 @@ export class SolutionExplorerWebviewProvider implements vscode.WebviewViewProvid
 
 ![addWebviewIcon.gif](/DocumentationImages/Root-README-Images/addWebviewIcon.gif)
 
-26.20 When running the extension we can visit the webview in the sidebar. However, we currently have no content. Let's put some text on the webview by altering the file, 'SolutionExplorerWebviewProvider.ts' and the method in that file, 'getWebviewContent(webview: vscode.Webview)'.
+26.20: When running the extension we can visit the webview in the sidebar. However, we currently have no content. Let's put some text on the webview by altering the file, 'SolutionExplorerWebviewProvider.ts' and the method in that file, 'getWebviewContent(webview: vscode.Webview)'.
 
 ![addWebviewUiHelloWorld.gif](/DocumentationImages/Root-README-Images/addWebviewUiHelloWorld.gif)
 
@@ -330,5 +330,23 @@ export class SolutionExplorerWebviewProvider implements vscode.WebviewViewProvid
 
 > https://svelte.dev/blog/svelte-and-typescript
 
-26.80 The location that the Svelte application is placed I believe is important. From what I understand Visual Studio Code will allow us to 'ignore' the Svelte application source code when we package the extension to be published. This allows for a smaller download size as only the output of the compiled Svelte application would then be included in the published extension.
+26.80: The location that the Svelte application is placed I believe is important. From what I understand Visual Studio Code will allow us to 'ignore' the Svelte application source code when we package the extension to be published. This allows for a smaller download size as only the output of the compiled Svelte application would then be included in the published extension.
+
+26.90: In the file '/.vscodeignore' we can ignore the location of the Svelte application. Make the directory '/svelteApps'. Afterwards alter the '/.vscodeignore' file as shown (add 'svelteApps/**'):
+
+```
+.vscode/**
+.vscode-test/**
+src/**
+.gitignore
+.yarnrc
+vsc-extension-quickstart.md
+**/tsconfig.json
+**/.eslintrc.json
+**/*.map
+**/*.ts
+svelteApps/**
+```
+
+![svelteAppsDirectory.gif](/DocumentationImages/Root-README-Images/svelteAppsDirectory.gif)
 
