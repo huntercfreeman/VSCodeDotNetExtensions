@@ -57,7 +57,7 @@ export class FileSlnParseStateMachine extends SlnParseStateMachineBase {
 
                 let globalSlnParseStateMachine =
                     new GlobalSlnParseStateMachine(this.stringReader,
-                        this.solutionModel.global);
+                        this.solutionModel);
 
                 globalSlnParseStateMachine.parseRecursively();
             }

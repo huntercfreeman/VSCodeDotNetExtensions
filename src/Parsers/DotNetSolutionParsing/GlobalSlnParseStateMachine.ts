@@ -1,14 +1,19 @@
 import { ConstantsSolutionFile } from "../../Constants/ConstantsSolutionFile";
 import { ConstantsWhitespace } from "../../Constants/ConstantsWhitespace";
+import { ExtensibilityGlobals } from "../../DotNet/ExtensibilityGlobals";
+import { ProjectConfigurationPlatforms } from "../../DotNet/ProjectConfigurationPlatforms";
+import { SolutionConfigurationPlatforms } from "../../DotNet/SolutionConfigurationPlatforms";
+import { SolutionModel } from "../../DotNet/SolutionModel";
 import { SolutionModelGlobal } from "../../DotNet/SolutionModelGlobal";
 import { SolutionModelGlobalSection } from "../../DotNet/SolutionModelGlobalSection";
+import { SolutionProperties } from "../../DotNet/SolutionProperties";
 import { endOfFile } from "../CommonParserUtility";
 import { StringReader } from "../StringReader";
 import { SlnParseStateMachineBase } from "./SlnParseStateMachineBase";
 
 export class GlobalSlnParseStateMachine extends SlnParseStateMachineBase {
     constructor(stringReader: StringReader,
-        private readonly solutionModelGlobal: SolutionModelGlobal) {
+        private readonly solutionModel: SolutionModel) {
         super(stringReader);
     }
 
@@ -17,12 +22,14 @@ export class GlobalSlnParseStateMachine extends SlnParseStateMachineBase {
         let currentCharacter: string = "";
 
         while (!endOfFile(currentCharacter = this.stringReader.consume(1))) {
-            if (this.stringReader.isStartOfToken(ConstantsSolutionFile.START_OF_GLOBAL_SECTION,
+            if (this.stringReader.isStartOfToken(ConstantsSolutionFile.START_OF_GLOBAL_SECTION_ITSELF,
                 currentCharacter)) {
 
-                let _ = this.stringReader.consume(ConstantsSolutionFile.START_OF_GLOBAL_SECTION.length - 1);
+                let _ = this.stringReader.consume(ConstantsSolutionFile.START_OF_GLOBAL_SECTION_ITSELF.length - 1);
 
                 let globalSection = new SolutionModelGlobalSection();
+
+                this.solutionModel.global.globalSections.push(globalSection);
 
                 // Read in GlobalSection's title to know what function to call
                 //
@@ -65,231 +72,98 @@ export class GlobalSlnParseStateMachine extends SlnParseStateMachineBase {
     }
 
     private getSolutionConfigurationPlatforms(globalSection: SolutionModelGlobalSection) {
-        let currentCharacter = "";
-
-        // Format Version Skip
-        while (!endOfFile(currentCharacter = this.stringReader.consume(1))) {
-
-            if (this.stringReader.isStartOfToken(ConstantsSolutionFile.START_OF_FORMAT_VERSION_TOKEN,
-                currentCharacter)) {
-
-                //                                          --------------
-                // 'Microsoft Visual Studio Solution File, Format Version 12.00'
-                //                                          --------------
-                let _ = this.stringReader.consume(ConstantsSolutionFile.START_OF_FORMAT_VERSION_TOKEN.length - 1);
-
-                break;
-            }
-        }
-
-        // Format Version if unnecessary whitespace
-        //                                                        --------
-        // 'Microsoft Visual Studio Solution File, Format Version         12.00'
-        //                                                        --------
-        if (currentCharacter === ' ') {
-            for (; ;) {
-                if (endOfFile(currentCharacter = this.stringReader.consume(1)) ||
-                    currentCharacter !== ' ') {
-
-                    break;
-                }
-            }
-
-            // Eager consumption instead of peeking results in stringReader being one character too far into text
-            this.stringReader.skipBackwards(1);
-        }
-
-        // Format Version Read
-        while (!endOfFile(currentCharacter = this.stringReader.consume(1))) {
-
-            let whitespaceMatch = ConstantsWhitespace.whitespaceCharacters.find((character) =>
-                character === currentCharacter);
-
-            if (whitespaceMatch !== undefined) {
-                break;
-            }
-
-            //                                                        -----
-            // 'Microsoft Visual Studio Solution File, Format Version 12.00'
-            //                                                        -----
-            this.solutionModelFileHeader.formatVersion += currentCharacter;
-        }
+        // TODO: Parse solutionConfigurationPlatforms
+        globalSection.solutionConfigurationPlatforms = new SolutionConfigurationPlatforms();
     }
+
     private getProjectConfigurationPlatforms(globalSection: SolutionModelGlobalSection) {
-        let currentCharacter = "";
-
-        // Format Version Skip
-        while (!endOfFile(currentCharacter = this.stringReader.consume(1))) {
-
-            if (this.stringReader.isStartOfToken(ConstantsSolutionFile.START_OF_FORMAT_VERSION_TOKEN,
-                currentCharacter)) {
-
-                //                                          --------------
-                // 'Microsoft Visual Studio Solution File, Format Version 12.00'
-                //                                          --------------
-                let _ = this.stringReader.consume(ConstantsSolutionFile.START_OF_FORMAT_VERSION_TOKEN.length - 1);
-
-                break;
-            }
-        }
-
-        // Format Version if unnecessary whitespace
-        //                                                        --------
-        // 'Microsoft Visual Studio Solution File, Format Version         12.00'
-        //                                                        --------
-        if (currentCharacter === ' ') {
-            for (; ;) {
-                if (endOfFile(currentCharacter = this.stringReader.consume(1)) ||
-                    currentCharacter !== ' ') {
-
-                    break;
-                }
-            }
-
-            // Eager consumption instead of peeking results in stringReader being one character too far into text
-            this.stringReader.skipBackwards(1);
-        }
-
-        // Format Version Read
-        while (!endOfFile(currentCharacter = this.stringReader.consume(1))) {
-
-            let whitespaceMatch = ConstantsWhitespace.whitespaceCharacters.find((character) =>
-                character === currentCharacter);
-
-            if (whitespaceMatch !== undefined) {
-                break;
-            }
-
-            //                                                        -----
-            // 'Microsoft Visual Studio Solution File, Format Version 12.00'
-            //                                                        -----
-            this.solutionModelFileHeader.formatVersion += currentCharacter;
-        }
+        // TODO: Parse projectConfigurationPlatforms
+        globalSection.projectConfigurationPlatforms = new ProjectConfigurationPlatforms();
     }
+
     private getSolutionProperties(globalSection: SolutionModelGlobalSection) {
-        let currentCharacter = "";
-
-        // Format Version Skip
-        while (!endOfFile(currentCharacter = this.stringReader.consume(1))) {
-
-            if (this.stringReader.isStartOfToken(ConstantsSolutionFile.START_OF_FORMAT_VERSION_TOKEN,
-                currentCharacter)) {
-
-                //                                          --------------
-                // 'Microsoft Visual Studio Solution File, Format Version 12.00'
-                //                                          --------------
-                let _ = this.stringReader.consume(ConstantsSolutionFile.START_OF_FORMAT_VERSION_TOKEN.length - 1);
-
-                break;
-            }
-        }
-
-        // Format Version if unnecessary whitespace
-        //                                                        --------
-        // 'Microsoft Visual Studio Solution File, Format Version         12.00'
-        //                                                        --------
-        if (currentCharacter === ' ') {
-            for (; ;) {
-                if (endOfFile(currentCharacter = this.stringReader.consume(1)) ||
-                    currentCharacter !== ' ') {
-
-                    break;
-                }
-            }
-
-            // Eager consumption instead of peeking results in stringReader being one character too far into text
-            this.stringReader.skipBackwards(1);
-        }
-
-        // Format Version Read
-        while (!endOfFile(currentCharacter = this.stringReader.consume(1))) {
-
-            let whitespaceMatch = ConstantsWhitespace.whitespaceCharacters.find((character) =>
-                character === currentCharacter);
-
-            if (whitespaceMatch !== undefined) {
-                break;
-            }
-
-            //                                                        -----
-            // 'Microsoft Visual Studio Solution File, Format Version 12.00'
-            //                                                        -----
-            this.solutionModelFileHeader.formatVersion += currentCharacter;
-        }
+        // TODO: Parse solutionProperties
+        globalSection.solutionProperties = new SolutionProperties();
     }
+
     private getNestedProjects(globalSection: SolutionModelGlobalSection) {
         let currentCharacter = "";
 
-        // Format Version Skip
-        while (!endOfFile(currentCharacter = this.stringReader.consume(1))) {
+        let idGuidLeftChild = "";
+        let idGuidRightParent = "";
 
-            if (this.stringReader.isStartOfToken(ConstantsSolutionFile.START_OF_FORMAT_VERSION_TOKEN,
+        while (!endOfFile(currentCharacter = this.stringReader.consume(1))) {
+            if (this.stringReader.isStartOfToken(ConstantsSolutionFile.END_OF_GLOBAL_SECTION_ITSELF,
+                currentCharacter)) {
+                    break;
+            }
+            if (this.stringReader.isStartOfToken(ConstantsSolutionFile.START_OF_GUID_TOKEN,
                 currentCharacter)) {
 
-                //                                          --------------
-                // 'Microsoft Visual Studio Solution File, Format Version 12.00'
-                //                                          --------------
-                let _ = this.stringReader.consume(ConstantsSolutionFile.START_OF_FORMAT_VERSION_TOKEN.length - 1);
+                    if (!idGuidLeftChild) {
+                        this.getGuid((character) => idGuidLeftChild += character);
+                    }
+                    else {
+                        this.getGuid((character) => idGuidRightParent += character);
 
-                break;
+                        let child = this.solutionModel.projects.find(project =>
+                            project.projectIdGuid === idGuidLeftChild);
+                        
+                        if (!child) {
+                            continue;
+                        }
+
+                        let parent = this.solutionModel.projects.find(project =>
+                            project.projectIdGuid === idGuidRightParent);
+
+                        if (!parent) {
+                            continue;
+                        }
+
+                        if (!parent.solutionFolderEntries) {
+                            parent.solutionFolderEntries = [];
+                        }
+
+                        parent.solutionFolderEntries.push(child);
+
+                        idGuidLeftChild = "";
+                        idGuidRightParent = "";
+                    }
             }
-        }
-
-        // Format Version if unnecessary whitespace
-        //                                                        --------
-        // 'Microsoft Visual Studio Solution File, Format Version         12.00'
-        //                                                        --------
-        if (currentCharacter === ' ') {
-            for (; ;) {
-                if (endOfFile(currentCharacter = this.stringReader.consume(1)) ||
-                    currentCharacter !== ' ') {
-
-                    break;
-                }
-            }
-
-            // Eager consumption instead of peeking results in stringReader being one character too far into text
-            this.stringReader.skipBackwards(1);
-        }
-
-        // Format Version Read
-        while (!endOfFile(currentCharacter = this.stringReader.consume(1))) {
-
-            let whitespaceMatch = ConstantsWhitespace.whitespaceCharacters.find((character) =>
-                character === currentCharacter);
-
-            if (whitespaceMatch !== undefined) {
-                break;
-            }
-
-            //                                                        -----
-            // 'Microsoft Visual Studio Solution File, Format Version 12.00'
-            //                                                        -----
-            this.solutionModelFileHeader.formatVersion += currentCharacter;
         }
     }
+
     private getExtensibilityGoals(globalSection: SolutionModelGlobalSection) {
+        // TODO: Parse extensibilityGlobals
+        globalSection.extensibilityGlobals = new ExtensibilityGlobals();
+    }
+
+    /**
+     * The parsing examples use Project Type Guid
+     * however this is also used for project id Guid
+     */
+     private getGuid(assignmentLambda: (character: string) => void): void {
         let currentCharacter = "";
 
-        // Format Version Skip
+        // Project Type Guid Skip
         while (!endOfFile(currentCharacter = this.stringReader.consume(1))) {
 
-            if (this.stringReader.isStartOfToken(ConstantsSolutionFile.START_OF_FORMAT_VERSION_TOKEN,
+            if (this.stringReader.isStartOfToken(ConstantsSolutionFile.START_OF_GUID_TOKEN,
                 currentCharacter)) {
 
-                //                                          --------------
-                // 'Microsoft Visual Studio Solution File, Format Version 12.00'
-                //                                          --------------
-                let _ = this.stringReader.consume(ConstantsSolutionFile.START_OF_FORMAT_VERSION_TOKEN.length - 1);
+                //           -
+                // 'Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "B'
+                //           -
+                let _ = this.stringReader.consume(ConstantsSolutionFile.START_OF_GUID_TOKEN.length - 1);
 
                 break;
             }
         }
 
-        // Format Version if unnecessary whitespace
-        //                                                        --------
-        // 'Microsoft Visual Studio Solution File, Format Version         12.00'
-        //                                                        --------
+        // Project Type Guid if unnecessary whitespace
+        //            -------------
+        // 'Project("{  \t\r\n \n\n9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "B'
+        //            -------------
         if (currentCharacter === ' ') {
             for (; ;) {
                 if (endOfFile(currentCharacter = this.stringReader.consume(1)) ||
@@ -303,20 +177,17 @@ export class GlobalSlnParseStateMachine extends SlnParseStateMachineBase {
             this.stringReader.skipBackwards(1);
         }
 
-        // Format Version Read
+        // Project Type Guid Read
         while (!endOfFile(currentCharacter = this.stringReader.consume(1))) {
 
-            let whitespaceMatch = ConstantsWhitespace.whitespaceCharacters.find((character) =>
-                character === currentCharacter);
-
-            if (whitespaceMatch !== undefined) {
+            if (currentCharacter === ConstantsSolutionFile.END_OF_GUID_TOKEN) {
                 break;
             }
 
             //                                                        -----
             // 'Microsoft Visual Studio Solution File, Format Version 12.00'
             //                                                        -----
-            this.solutionModelFileHeader.formatVersion += currentCharacter;
+            assignmentLambda(currentCharacter);
         }
     }
 }

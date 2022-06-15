@@ -24,13 +24,13 @@ export class ConstantsSolutionFile {
      * Example text: GlobalSection(...)
      * where '...' is the name of the GlobalSection
      */
-    public static readonly START_OF_GLOBAL_SECTION: string = "GlobalSection(";
+    public static readonly START_OF_GLOBAL_SECTION_ITSELF: string = "GlobalSection(";
 
     /**
      * GlobalSection(SolutionConfigurationPlatforms) = preSolution
      */
     public static readonly END_OF_GLOBAL_SECTION_TITLE: string = ")";
-
+    
     /**
      * Example text: 
      *    {0CE91DF4-60BF-4A12-B15A-EBEEA5B50214} = {E893BAF0-1C89-4427-90C0-3AFDBBC5F706}
