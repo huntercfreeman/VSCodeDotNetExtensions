@@ -150,4 +150,49 @@ context.subscriptions.push(disposable);
 
 > https://code.visualstudio.com/api/extension-guides/webview
 
+25.30: How do we add a webview to the sidebar? The Microsoft documentation for this can be found at the following link:
+
+25.40: We can start in package.json. The following bullet points are a list of what we need to change in package.json.
+
+- Add to the 'activationEvents' section of the package.json.
+- Add to the 'contributes' section of the package.json.
+    - Add to the 'viewsContainers' section of the 'contributes' section
+        - Add to the 'activitybar section of the 'viewsContainers' section
+    - Add to the 'views' section of the 'contributes' section
+
+What follows is a JSON snippet containing the changes, and following the JSON snippet is a gif of me making the changes.
+
+``` json
+"activationEvents": [
+    "onView:dot-net-ide.solution-explorer-webview",
+    // others
+],
+// JSON in between
+"contributes": {
+		"viewsContainers": {
+			"activitybar": [
+				{
+					"id": "dot-net-ide",
+					"title": ".NET IDE",
+					"icon": "media/solutionExplorerIcon.svg"
+				}
+                // others
+			]
+		},
+		"views": {
+			"dot-net-ide": [
+				{
+					"type": "webview",
+					"id": "dot-net-ide.solution-explorer-webview",
+					"name": "Solution Explorer",
+					"icon": "media/solutionExplorerIcon.svg"
+				},
+                // others
+			]
+		}
+	},
+```
+![addWebviewPackageJson.gif](/DocumentationImages/Root-README-Images/addWebviewPackageJson.gif)
+
+
 
