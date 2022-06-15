@@ -152,8 +152,6 @@ context.subscriptions.push(disposable);
 
 > https://code.visualstudio.com/api/extension-guides/webview
 
-25.30: How do we add a webview to the sidebar? The Microsoft documentation for this can be found at the following link:
-
 25.40: We can start in '/package.json'. The following bullet points are a list of what we need to change in '/package.json'.
 
 - Add to the 'activationEvents' section of the package.json.
