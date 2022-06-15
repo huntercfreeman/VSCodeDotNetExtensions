@@ -4,7 +4,7 @@
 
 For succinct to the point 'how to build' documentation go to each application in the repo's README.md individually (following this text are the links to those README.md files)
 
-- The Visual Studio Extension README.md:
+- The Visual Studio Code Extension README.md:
     - [/src/README.md](/src/README.md)
 - The Solution Explorer Webview README.md:
     - [/svelteApps/solutionExplorerWebview/README.md](/svelteApps/solutionExplorerWebview/README.md)
