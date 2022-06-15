@@ -24,7 +24,12 @@ export class ConstantsSolutionFile {
      * Example text: GlobalSection(...)
      * where '...' is the name of the GlobalSection
      */
-    public static readonly START_OF_GLOBAL_SECTION: string = "GlobalSection";
+    public static readonly START_OF_GLOBAL_SECTION: string = "GlobalSection(";
+
+    /**
+     * GlobalSection(SolutionConfigurationPlatforms) = preSolution
+     */
+    public static readonly END_OF_GLOBAL_SECTION_TITLE: string = ")";
 
     /**
      * Example text: 
@@ -32,7 +37,7 @@ export class ConstantsSolutionFile {
      *    EndGlobalSection
      *    GlobalSection(Extensi
      */
-    public static readonly END_OF_GLOBAL_SECTION: string = "EndGlobalSection";
+    public static readonly END_OF_GLOBAL_SECTION_ITSELF: string = "EndGlobalSection";
 
     /**
      * Example text: GlobalSection(SolutionProperties)
@@ -46,7 +51,7 @@ export class ConstantsSolutionFile {
      * Example text: GlobalSection(ExtensibilityGlobals)
      */
     public static readonly START_OF_EXTENSIBILITY_GLOBALS: string = "(ExtensibilityGlobals)";
-    
+
     /**
      * Example Text:
      * 
@@ -56,7 +61,7 @@ export class ConstantsSolutionFile {
      * MinimumVisualStudioVersion = 10.0.40219.1
      */
     public static readonly START_OF_FILE_HEADER_TOKEN: string = "Microsoft Visual Studio Solution File";
-    
+
     /**
      * Example Text:
      * 
@@ -66,7 +71,7 @@ export class ConstantsSolutionFile {
      * MinimumVisualStudioVersion = 10.0.40219.1
      */
     public static readonly START_OF_FORMAT_VERSION_TOKEN: string = "Format Version ";
-    
+
     /**
      * Example Text:
      * 
@@ -76,7 +81,7 @@ export class ConstantsSolutionFile {
      * MinimumVisualStudioVersion = 10.0.40219.1
      */
     public static readonly START_OF_HASH_TAG_VISUAL_STUDIO_VERSION_TOKEN: string = "# Visual Studio Version ";
-    
+
     /**
      * Example Text:
      * 
@@ -86,7 +91,7 @@ export class ConstantsSolutionFile {
      * MinimumVisualStudioVersion = 10.0.40219.1
      */
     public static readonly START_OF_VISUAL_STUDIO_VERSION_TOKEN: string = "VisualStudioVersion = ";
-    
+
     /**
      * Example Text:
      * 
@@ -96,7 +101,7 @@ export class ConstantsSolutionFile {
      * MinimumVisualStudioVersion = 10.0.40219.1
      */
     public static readonly START_OF_MINIMUM_VISUAL_STUDIO_VERSION_TOKEN: string = "MinimumVisualStudioVersion = ";
-    
+
     /**
      * Example Text:
      * 
@@ -104,7 +109,7 @@ export class ConstantsSolutionFile {
      * EndProject
      */
     public static readonly START_OF_PROJECT_TOKEN: string = "Project(\"{";
-    
+
     /**
      * Example Text:
      * 
@@ -112,7 +117,7 @@ export class ConstantsSolutionFile {
      * EndProject
      */
     public static readonly START_OF_GUID_TOKEN: string = "{";
-    
+
     /**
      * Example Text:
      * 
@@ -120,5 +125,10 @@ export class ConstantsSolutionFile {
      * EndProject
      */
     public static readonly END_OF_GUID_TOKEN: string = "}";
-    
+
+    public static readonly GLOBAL_SECTION_TITLE_SOLUTION_CONFIGURATION_PLATFORMS: string = "SolutionConfigurationPlatforms";
+    public static readonly GLOBAL_SECTION_TITLE_PROJECT_CONFIGURATION_PLATFORMS: string = "ProjectConfigurationPlatforms";
+    public static readonly GLOBAL_SECTION_TITLE_SOLUTION_PROPERTIES: string = "SolutionProperties";
+    public static readonly GLOBAL_SECTION_TITLE_NESTED_PROJECTS: string = "NestedProjects";
+    public static readonly GLOBAL_SECTION_TITLE_EXTENSIBILITY_GOALS: string = "ExtensibilityGlobals";
 }

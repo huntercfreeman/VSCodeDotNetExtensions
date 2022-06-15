@@ -1,10 +1,12 @@
 import { ConstantsSolutionFile } from "../../Constants/ConstantsSolutionFile";
 import { CSharpProjectModel } from "../../DotNet/CSharpProjectModel";
 import { SolutionModel } from "../../DotNet/SolutionModel";
+import { SolutionModelGlobal } from "../../DotNet/SolutionModelGlobal";
 import { TemporaryCSharpProjectModel } from "../../DotNet/TemporaryCSharpProjectModel";
 import { endOfFile } from "../CommonParserUtility";
 import { StringReader } from "../StringReader";
 import { FileHeaderSlnParseStateMachine } from "./FileHeaderSlnParseStateMachine";
+import { GlobalSlnParseStateMachine } from "./GlobalSlnParseStateMachine";
 import { ProjectDefinitionSlnParseStateMachine } from "./ProjectDefinitionSlnParseStateMachine";
 import { SlnParseStateMachineBase } from "./SlnParseStateMachineBase";
 
@@ -49,6 +51,15 @@ export class FileSlnParseStateMachine extends SlnParseStateMachineBase {
                     null);
 
                 this.solutionModel.projects.push(definedCSharpProjectModel);
+            }
+            else if (this.stringReader.isStartOfToken(ConstantsSolutionFile.START_OF_GLOBAL,
+                currentCharacter)) {
+
+                let globalSlnParseStateMachine =
+                    new GlobalSlnParseStateMachine(this.stringReader,
+                        this.solutionModel.global);
+
+                globalSlnParseStateMachine.parseRecursively();
             }
         }
     }
