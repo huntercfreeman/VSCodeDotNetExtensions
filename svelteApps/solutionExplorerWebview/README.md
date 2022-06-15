@@ -25,7 +25,7 @@ Many of the context menu options available wrap the already existing dotnet CLI 
 - While using a terminal change directory to where this README.md is located and this application's 'rollup.config.js' is located.
     - As of the writing of this README.md I currently type while in the root of this repository: 'cd svelteApps/solutionExplorerWebview' as an example.
 
-    - After following the previous step you should be in the directory that contains this Svelte app's 'rollup.config.js'. The command to build is from this directory is:
+    - After following the previous step you should be in the directory that contains this Svelte app's 'rollup.config.js'. The command to build from this directory is:
 
 > npm run build
 

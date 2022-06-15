@@ -128,7 +128,7 @@ context.subscriptions.push(disposable);
 
 20.70: Set the "Run and Debug" sidebar tab as the active tab to view its contents. One can do this by clicking the icon for the "Run and Debug" tab.
 
-20.80: Now that the "Run and Debug" sidebar tab is the active tab, use the dropdown towards the top of view to change from 'Run Extension' to 'Extension Tests'.
+20.80: Now that the "Run and Debug" sidebar tab is the active tab, use the dropdown towards the top of the sidebar view to change from 'Run Extension' to 'Extension Tests'.
 
 20.90: Run the 'Extension Tests'
 
