@@ -662,3 +662,11 @@ private getWebviewContent(webview: vscode.Webview) {
 }
 ```
 ![alterForVscodeCss.gif](/DocumentationImages/Root-README-Images/alterForVscodeCss.gif)
+
+28:10 Build the Svelte application and then run it. The button now appears with Visual Studio Code's css applied.
+
+> npm run build
+
+![buttonIncrementVscodeCss.gif](/DocumentationImages/Root-README-Images/buttonIncrementVscodeCss.gif)
+
+28:20 And that's the end of me building the extension again from scratch. The Nuget Package Manager works in the same way as the Solution Explorer from a Visual Studio Code extension webview standpoint. The actual Svelte code is not the same of course.
