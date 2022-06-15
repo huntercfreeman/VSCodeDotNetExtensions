@@ -14,16 +14,50 @@ Svelte
 
 # Brief description of this application
 
-The application is mostly a TreeView display.
+The application allows the user of the extension to search for Nuget Packages and add them to a Project of their choosing.
 
-The application has a context menu component that can be accessed with the mouse button of 'Right Click'
+The already existing dotnet CLI is leveraged to add the nuget packages that are chosen ([https://docs.microsoft.com/en-us/dotnet/core/tools/](https://docs.microsoft.com/en-us/dotnet/core/tools/)).
 
-Many of the context menu options available wrap the already existing dotnet CLI ([https://docs.microsoft.com/en-us/dotnet/core/tools/](https://docs.microsoft.com/en-us/dotnet/core/tools/)).
+# How to make HTTP GET request searches for nuget packages?
+
+The dotnet CLI does not allow for searching nuget packages as shown in this github issue.
+
+> https://github.com/dotnet/docs/issues/6393
+
+One can extend the dotnet CLI using this github repository:
+
+> https://github.com/billpratt/dotnet-search
+
+Another resource was to a stackoverflow question where the response was:
+- Short answer: It's not possible (as far as I know, as of Nov 25, 2019). 
+- [How to list available package versions using the dotnet cli?](https://stackoverflow.com/questions/57742638/how-to-list-available-package-versions-using-the-dotnet-cli)
+> 
+
+If the repo 'dotnet-search' were to be used a user of this extension would then have to download the nuget package that extends dotnet CLI.
+
+Should this approach be taken the results of the search would end up in the terminal. One could redirect the output from the terminal but I ended up going with a different approach.
+
+I found on Microsoft's documentation however that you can send out requests 'manually' using your language of choice, the link to that follows.
+
+> https://docs.microsoft.com/en-us/nuget/api/search-query-service-resource
+
+Following what is stated in the documentation just previously linked works. However, I feel like I'm not doing this correctly.
+
+My questions:
+
+- Why does microsoft in the nuget api search query documentation make a request to https://azuresearch-usnc.nuget.org/query?q=NuGet.Versioning&prerelease=false&semVerLevel=2.0.0
+- Whereas, when I looked into the 'dotnet-search' github repository he queries 'https://api-v2v3search-0.nuget.org/query?q=' as shown in the following image:
+
+![dotnet-search-url-used](/DocumentationImages/dotnet-search-url.png)
+
+I aim to continue reading up on this.
+
+An additional issue is, how would one handle a private nuget server? Authentication needs to be ensured to be correctly done. I as such did not include private nuget servers.
 
 # How to Build this Svelte Application
 
 - While using a terminal change directory to where this README.md is located and this application's 'rollup.config.js' is located.
-    - As of the writing of this README.md I currently type while in the root of this repository: 'cd svelteApps/solutionExplorerWebview' as an example.
+    - As of the writing of this README.md I currently type while in the root of this repository: 'cd svelteApps/nugetPackageManagerWebview' as an example.
 
     - After following the previous step you should be in the directory that contains this Svelte app's 'rollup.config.js'. The command to build is from this directory is:
 
@@ -33,40 +67,41 @@ Many of the context menu options available wrap the already existing dotnet CLI 
 
 - [rollup.config.js](rollup.config.js) specifies where the compiled javascript should be output to. As of writing this README.md the path is:
 
-> ../../out/sidebarWebview/sidebarWebview.js
+> ../../out/nugetPackageManagerWebview/nugetPackageManagerWebview.js
 
 - (continuation of previous bullet). The takeaway is not the exact relative path as that likely will change, instead the takeaway is that the extension output goes into a folder named, 'out' at the root of the repository.
 
 - The webview is rendered in Visual Studio Code by the following steps 
 
-1: The TypeScript class 'SidebarProvider.ts'
+1: The TypeScript class [/src/UiProviders/NugetPackageManagerWebviewProvider.ts](/src/UiProviders/NugetPackageManagerWebviewProvider.ts)
 
 ``` typescript
 private getWebviewContent(webview: vscode.Webview) {
     const dotNetIdeSvelteAppJavaScriptUri = webview.asWebviewUri(vscode.Uri.joinPath(
-      this.context.extensionUri, 'out/sidebarWebview', 'sidebarWebview.js'));
+      this.context.extensionUri, 'out/nugetPackageManagerWebview', 'nugetPackageManagerWebview.js'));
 
     const dotNetIdeSvelteAppCssUri = webview.asWebviewUri(vscode.Uri.joinPath(
-      this.context.extensionUri, 'out/sidebarWebview', 'sidebarWebview.css'));
+      this.context.extensionUri, 'out/nugetPackageManagerWebview', 'nugetPackageManagerWebview.css'));
 
     // take note that the compiled javascript is referenced here.
 
     // More code follows but is ommitted in this snippet
 }
 ```
-2: Inside 'extension.ts' is
+
+2: Inside [/src/extension.ts](/src/extension.ts)
 
 ``` typescript
-const sidebarProvider = new SidebarProvider(context);
+const nugetPackageManagerProvider = new NugetPackageManagerWebviewProvider(context);
 
 context.subscriptions.push(
     vscode.window.registerWebviewViewProvider(
-        "dot-net-ide.sidebar-webview",
-        sidebarProvider,
+        "dot-net-ide.nuget-package-manager-webview",
+        nugetPackageManagerProvider,
         {
             "webviewOptions": {
+                // do not use retainContextWhenHidden for the nuget package manager
                 // retainContextWhenHidden is resource intensive and should be used sparingly
-                retainContextWhenHidden: true
             }
         }
     )
@@ -76,7 +111,7 @@ context.subscriptions.push(
 
 ``` json
 "activationEvents": [
-    "onView:dot-net-ide.sidebar-webview",
+    "onView:dot-net-ide.nuget-package-manager-webview"
     // others
 ],
 "contributes": {
@@ -85,17 +120,18 @@ context.subscriptions.push(
             {
                 "id": "dot-net-ide",
                 "title": ".NET IDE",
-                "icon": "media/dotNetIdeSidebarIcon.svg"
+                "icon": "media/solutionExplorerIcon.svg"
             }
+            // others
         ]
     },
     "views": {
         "dot-net-ide": [
             {
                 "type": "webview",
-                "id": "dot-net-ide.sidebar-webview",
-                "name": "Solution Explorer",
-                "icon": "media/dotNetIdeSidebarIcon.svg"
+                "id": "dot-net-ide.nuget-package-manager-webview",
+                "name": "Nuget Package Manager",
+                "icon": "media/nugetPackageManagerIcon.svg"
             }
             // others
         ]
@@ -105,7 +141,7 @@ context.subscriptions.push(
 
 # Important ideas to follow when developing
 
-- When adding new context menu options it is important that the dotnet CLI perform the action when possible.
+- When adding new features it is important that the dotnet CLI perform the action when possible.
     - In otherwords, be sure to check the dotnet CLI before writing a feature.
 
 - What if dotnet CLI does not have ability to perform the desired action?
@@ -113,41 +149,7 @@ context.subscriptions.push(
 
 # Not yet implemented
 
-- Handle typical keyboard movement found in TreeViews.
-    - A simple example: hitting up and down arrow to traverse up and down the tree view elements.
-    - A more complex example:
----
-
-- Solution.sln
-
-- ProjectOne.csproj
-
-    - MyClass.cs
-    - Program.cs
-    - MyDirectory
-        - MyService.cs
-
-- ProjectTwo.csproj <--- Focus is here
-
-// Specification: when the ArrowUp key is pressed the C# file named, 'MyService.cs' is to be set as focused.
-
-// Solution: 
-
-// Part 1: This is done by ProjectTwo.csproj setting focus to its previous sibling.
-
-// Part 2: The newly focused sibling named, 'ProjectOne.csproj' is to then check if itself is Expanded.
-
-// Part 3: If 'ProjectOne.csproj' is expanded it should then set focus to the final child in its children list which would be 'MyDirectory'.
-
-// Part 4: If the newly focused final child is Expanded repeat Part 3 and Part 4 recursively until a 'final child' is 'not expanded'
-
-// Part 5: This sets focus to 'MyService.cs'
-
----
-
-- Create a truly generic TreeView that can be used to render anything so it may be used elsewhere as needed.
-
-- Add Vim support. I'm not entirely sure what the ideas for this would be but it is definitely on my mind.
-
-    - The simplist idea would be that 'h', 'j', 'k', 'l' map to 'ArrowLeft',
-    'ArrowDown', 'ArrowUp', 'ArrowRight'.
+- General procedure of making HTTP GET requests for nuget packages is not clear when searching for documentation on it. 
+    - Ensure the currently used solution is the correct way to do it.
+- Authenticated private nuget repos
+- Local nuget repos

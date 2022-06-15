@@ -54,7 +54,8 @@ private getWebviewContent(webview: vscode.Webview) {
     // More code follows but is ommitted in this snippet
 }
 ```
-2: Inside [/src/UiProviders/SolutionExplorerWebviewProvider.ts](/src/extension.ts)
+
+2: Inside [/src/extension.ts](/src/extension.ts)
 
 ``` typescript
 const solutionExplorerWebviewProvider = new SolutionExplorerWebviewProvider(context);
