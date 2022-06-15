@@ -318,9 +318,17 @@ export class SolutionExplorerWebviewProvider implements vscode.WebviewViewProvid
 
 26.30: Let's get started on writing a Svelte application so we can render it in the webview. Any UI framework can be used as long as it outputs javascript at the end of the compilation stage (transpilation stage?).
 
-26.40: I have two quick comments to make before scaffolding the Svelte app.
+26.40: I have a few quick comments to make before scaffolding the Svelte app.
 
-26.50: A video that helped me 'learn' the basic amount of Svelte knowledge I have, and get a Svelte application into a Visual Studio Code webview, is one by a youtuber named, 'Ben Awad'. Find his video at the following link:
+26.45: I use the following extensions for Svelte in Visual Studio Code
+
+> Svelte for VS Code
+![svelteForVSCode.gif](/DocumentationImages/Root-README-Images/svelteForVSCode.png)
+
+> ESLint
+![svelteForVSCode.gif](/DocumentationImages/Root-README-Images/esLint.png)
+
+26.50: A video that helped me learn the basic amount of Svelte knowledge I have, and get a Svelte application into a Visual Studio Code webview, is one by a youtuber named, 'Ben Awad'. Find his video at the following link:
 
 > [How to Code a VSCode Extension by Ben Awad](https://www.youtube.com/watch?v=a5DX5pQ9p5M)
 
@@ -350,3 +358,57 @@ svelteApps/**
 
 ![svelteAppsDirectory.gif](/DocumentationImages/Root-README-Images/svelteAppsDirectory.gif)
 
+27:10: In the terminal change directory to '/svelteApps'. I'll provide the command I used but the command might be different for your setup.
+
+``` bash
+cd ./svelteApps
+```
+27:20: Now run the terminal commands to scaffold the Svelte application that follow:
+
+### If you need to download degit: 'npm install -g degit'
+``` bash
+npx degit sveltejs/template svelte-typescript-app
+cd svelte-typescript-app
+node scripts/setupTypeScript.js
+```
+
+You might have to hit the 'Enter' key to send the last command if you are running all 3 in one paste action.
+
+27:30: With the Svelte app created now we need to reference the output of the Svelte compilation step. Inside '/svelteApps/svelte-typescript-app/rollup.config.js' the location of where the output is put is located.
+
+``` js
+output: {
+    sourcemap: true,
+    format: 'iife',
+    name: 'app',
+    file: 'public/build/bundle.js'
+},
+```
+
+27:40: Change the output file path to be where the Visual Studio Code extension reads from. In otherwords, 'public/build/bundle.js' needs to be changed to '../../out/svelte-typescript-app/svelte-typescript-app.js'
+
+``` js
+output: {
+    sourcemap: true,
+    format: 'iife',
+    name: 'app',
+    file: '../../out/svelte-typescript-app/svelte-typescript-app.js'
+},
+```
+
+![changeSvelteApplicationOutput.gif](/DocumentationImages/Root-README-Images/changeSvelteApplicationOutput.gif)
+
+27:50: Now, in the terminal ensure you are in the directory, '/svelteApps/svelte-typescript-app' and then run the following command to install the dependencies (only have to do this once until you next add a dependency):
+
+``` bash
+npm install
+```
+
+The following command is used to build the svelte app:
+``` bash
+npm run build
+```
+
+![changeSvelteApplicationOutput.gif](/DocumentationImages/Root-README-Images/changeSvelteApplicationOutput.gif)
+
+27:50: Now, in the terminal ensure you are in the directory, '/svelteApps/svelte-typescript-app' and then run the following command:
