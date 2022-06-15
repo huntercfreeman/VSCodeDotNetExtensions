@@ -82,7 +82,9 @@
 	}
 
 	function hasDifferentParentContainer(childIdeFile: IdeFile): boolean {
-		if (childIdeFile.fileKind === FileKind.cSharpProject) {
+		if (childIdeFile.fileKind === FileKind.cSharpProject ||
+		    childIdeFile.fileKind === FileKind.solutionFolder) {
+				
 			let cSharpProjectFile = childIdeFile as CSharpProjectFile;
 
 			if (

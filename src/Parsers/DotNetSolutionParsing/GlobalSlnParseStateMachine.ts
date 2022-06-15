@@ -125,6 +125,7 @@ export class GlobalSlnParseStateMachine extends SlnParseStateMachineBase {
                         }
 
                         parent.solutionFolderEntries.push(child);
+                        child.solutionFolderParentProjectIdGuid = idGuidRightParent;
 
                         idGuidLeftChild = "";
                         idGuidRightParent = "";
