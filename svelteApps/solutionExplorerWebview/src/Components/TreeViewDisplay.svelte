@@ -87,7 +87,7 @@
 
 			if (
 				cSharpProjectFile.cSharpProjectModel
-					.solutionFolderParentSecondGuid !== undefined
+					.solutionFolderParentProjectIdGuid !== undefined
 			) {
 				if (ideFile.fileKind === FileKind.solution) {
 					return true;
@@ -96,9 +96,9 @@
 				let solutionFolderFile = ideFile as CSharpProjectFile;
 
 				if (
-					solutionFolderFile.cSharpProjectModel.secondGuid ===
+					solutionFolderFile.cSharpProjectModel.projectIdGuid ===
 					cSharpProjectFile.cSharpProjectModel
-						.solutionFolderParentSecondGuid
+						.solutionFolderParentProjectIdGuid
 				) {
 					return false;
 				}

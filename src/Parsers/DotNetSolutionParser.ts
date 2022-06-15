@@ -88,7 +88,7 @@ export class DotNetSolutionParser {
 
     let currentCharacter = "";
 
-    // Skip to start of firstGuid
+    // Skip to start of projectTypeGuid
     //  ---------
     // Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyCrudApp", "MyCrudApp\MyCrudApp.csproj", "{8257B361-20EC-4D50-8987-169E8BEC46E4}"
     //  ---------
@@ -99,11 +99,11 @@ export class DotNetSolutionParser {
       }
     }
 
-    // Read firstGuid
+    // Read projectTypeGuid
     //           ------------------------------------
     // Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyCrudApp", "MyCrudApp\MyCrudApp.csproj", "{8257B361-20EC-4D50-8987-169E8BEC46E4}"
     //           ------------------------------------
-    let firstGuid = this.readInGuid();
+    let projectTypeGuid = this.readInGuid();
 
     // Skip double quote
     //                                                -
@@ -164,7 +164,7 @@ export class DotNetSolutionParser {
       projectRelativePathFromSolution += currentCharacter;
     }
 
-    // Skip to start of secondGuid
+    // Skip to start of projectIdGuid
     //                                                                                              ----
     // Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyCrudApp", "MyCrudApp\MyCrudApp.csproj", "{8257B361-20EC-4D50-8987-169E8BEC46E4}"
     //                                                                                              ----
@@ -175,17 +175,17 @@ export class DotNetSolutionParser {
       }
     }
 
-    // Read secondGuid
+    // Read projectIdGuid
     //                                                                                                  ------------------------------------
     // Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyCrudApp", "MyCrudApp\MyCrudApp.csproj", "{8257B361-20EC-4D50-8987-169E8BEC46E4}"
     //                                                                                                  ------------------------------------
-    let secondGuid = this.readInGuid();
+    let projectIdGuid = this.readInGuid();
 
     let project = new CSharpProjectModel(this.solutionModel,
-      firstGuid,
+      projectTypeGuid,
       displayName,
       projectRelativePathFromSolution,
-      secondGuid,
+      projectIdGuid,
       null);
 
     this.solutionModel.projects.push(project);
@@ -224,15 +224,15 @@ export class DotNetSolutionParser {
             solutionFolderGuid = guid;
 
             let child = this.solutionModel.projects
-              .find(x => x.secondGuid === childGuid);
+              .find(x => x.projectIdGuid === childGuid);
 
             let solutionFolder = this.solutionModel.projects
-              .find(x => x.secondGuid === solutionFolderGuid);
+              .find(x => x.projectIdGuid === solutionFolderGuid);
 
             if (child && solutionFolder) {
               solutionFolder.contextualInformation = ConstantsContextualInformation.TREE_VIEW_SOLUTION_FOLDER_CONTEXT;
 
-              child.solutionFolderParentSecondGuid = solutionFolderGuid;
+              child.solutionFolderParentProjectIdGuid = solutionFolderGuid;
 
               if (!solutionFolder.solutionFolderEntries) {
                 solutionFolder.solutionFolderEntries = [];

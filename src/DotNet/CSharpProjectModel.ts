@@ -10,11 +10,20 @@ import { SolutionModel } from "./SolutionModel";
 const fs = require('fs');
 
 export class CSharpProjectModel {
+    /**
+     * 
+     * @param parentSolutionModel 
+     * @param projectTypeGuid Identifies project type and is likely to be seen many times in one .sln file.
+     * @param displayName 
+     * @param projectRelativePathFromSolution 
+     * @param projectIdGuid Identifies one unique project from another
+     * @param rootNamespace 
+     */
     constructor(parentSolutionModel: SolutionModel,
-        public readonly firstGuid: string,
+        public readonly projectTypeGuid: string,
         public readonly displayName: string,
         public readonly projectRelativePathFromSolution: string,
-        public readonly secondGuid: string,
+        public readonly projectIdGuid: string,
         rootNamespace: string | null) {
         this.absoluteFilePath = AbsoluteFilePath
             .constructAbsoluteFilePathFromAbsoluteFilePathAndRelativePath(parentSolutionModel.absoluteFilePath,
@@ -89,7 +98,7 @@ export class CSharpProjectModel {
     public readonly absoluteFilePath: AbsoluteFilePath;
     public solutionFolderEntries: CSharpProjectModel[] | undefined;
     public childFiles: IdeFile[] | undefined;
-    public solutionFolderParentSecondGuid: string | undefined;
+    public solutionFolderParentProjectIdGuid: string | undefined;
     public projectReferences: CSharpProjectProjectReferenceFile[] = [];
     public rootNamespace: string;
     public readonly parentSolutionAbsoluteFilePath: AbsoluteFilePath;
