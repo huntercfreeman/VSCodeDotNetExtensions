@@ -310,7 +310,7 @@ export class SolutionExplorerWebviewProvider implements vscode.WebviewViewProvid
 
 ![addWebviewIcon.gif](/DocumentationImages/Root-README-Images/addWebviewIcon.gif)
 
-26.20: When running the extension we can visit the webview in the sidebar. However, we currently have no content. Let's put some text on the webview by altering the file, 'SolutionExplorerWebviewProvider.ts' and the method in that file, 'getWebviewContent(webview: vscode.Webview)'.
+26.25: When running the extension we can visit the webview in the sidebar. However, we currently have no content. Let's put some text on the webview by altering the file, 'SolutionExplorerWebviewProvider.ts' and the method in that file, 'getWebviewContent(webview: vscode.Webview)'.
 
 ![addWebviewUiHelloWorld.gif](/DocumentationImages/Root-README-Images/addWebviewUiHelloWorld.gif)
 
