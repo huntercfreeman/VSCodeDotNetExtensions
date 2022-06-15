@@ -1,9 +1,6 @@
-import { ConstantsContextualInformation } from "../Constants/ConstantsContextualInformation";
-import { ConstantsSolutionFile } from "../Constants/ConstantsSolutionFile";
-import { CSharpProjectModel } from "../DotNet/CSharpProjectModel";
 import { SolutionModel } from "../DotNet/SolutionModel";
 import { AbsoluteFilePath } from "../FileSystem/AbsoluteFilePath";
-import { endOfFile } from "./CommonParserUtility";
+import { SlnParser } from "./DotNetSolutionParsing/SlnParser";
 import { StringReader } from "./StringReader";
 
 const fs = require('fs');
@@ -15,8 +12,6 @@ export class DotNetSolutionParser {
 
   public readonly solutionAbsoluteFilePath: AbsoluteFilePath;
 
-  private _stringReader!: StringReader;
-
   public async parse(callback: any) {
     // The solution file will be parsed by means of reading in the entire file to memory instead of streaming the contents.
     // If one finds solution files to be large enough to necessitate streaming the contents this should be changed.
@@ -27,249 +22,15 @@ export class DotNetSolutionParser {
         return;
       }
 
-      this._stringReader = new StringReader(data);
+      let slnParser = new SlnParser(data,
+        this.solutionModel);
 
-      let currentCharacter = "";
-
-      while (!endOfFile(currentCharacter = this._stringReader.consume(1))) {
-
-        var handledToken = false;
-
-        if (!handledToken && this._stringReader
-          .isStartOfToken(ConstantsSolutionFile.START_OF_PROJECT_DEFINITION, currentCharacter)) {
-
-          handledToken = true;
-          this.readInProjectDefinition();
-        }
-        if (!handledToken && this._stringReader
-          .isStartOfToken(ConstantsSolutionFile.START_OF_GLOBAL_SECTION, currentCharacter)) {
-
-          handledToken = true;
-          this.readInGlobalSection();
-        }
-        if (!handledToken && this._stringReader
-          .isStartOfToken(ConstantsSolutionFile.START_OF_GLOBAL, currentCharacter)) {
-
-          handledToken = true;
-          this.readInGlobalDefinition();
-        }
-        if (!handledToken && this._stringReader
-          .isStartOfToken(ConstantsSolutionFile.START_OF_SOLUTION_PROPERTIES, currentCharacter)) {
-
-          handledToken = true;
-          this.readInSolutionProperties();
-        }
-        if (!handledToken && this._stringReader
-          .isStartOfToken(ConstantsSolutionFile.START_OF_SOLUTION_FOLDERS, currentCharacter)) {
-
-          handledToken = true;
-          this.readInSolutionFolders();
-        }
-        if (!handledToken && this._stringReader
-          .isStartOfToken(ConstantsSolutionFile.START_OF_EXTENSIBILITY_GLOBALS, currentCharacter)) {
-
-          handledToken = true;
-          this.readInExtensibilityGlobals();
-        }
-      }
+      slnParser.parseIntoSolutionModel();
 
       if (callback) {
         callback();
       }
     });
-  }
-
-  public async addSolutionFolder(solutionFolderName: string, callback: any) {
-    // TODO: addSolutionFolder function
-  }
-
-  public readInProjectDefinition() {
-    // In this file dashes are used to mark on the line above and below a comment what INTENDS to be parsed.
-
-    let currentCharacter = "";
-
-    // Skip to start of projectTypeGuid
-    //  ---------
-    // Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyCrudApp", "MyCrudApp\MyCrudApp.csproj", "{8257B361-20EC-4D50-8987-169E8BEC46E4}"
-    //  ---------
-    while (!endOfFile(currentCharacter = this._stringReader.consume(1))) {
-
-      if (currentCharacter === ConstantsSolutionFile.START_OF_GUID) {
-        break;
-      }
-    }
-
-    // Read projectTypeGuid
-    //           ------------------------------------
-    // Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyCrudApp", "MyCrudApp\MyCrudApp.csproj", "{8257B361-20EC-4D50-8987-169E8BEC46E4}"
-    //           ------------------------------------
-    let projectTypeGuid = this.readInGuid();
-
-    // Skip double quote
-    //                                                -
-    // Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyCrudApp", "MyCrudApp\MyCrudApp.csproj", "{8257B361-20EC-4D50-8987-169E8BEC46E4}"
-    //                                                -
-    while (!endOfFile(currentCharacter = this._stringReader.consume(1))) {
-
-      if (currentCharacter === '"') {
-        break;
-      }
-    }
-
-    // Skip to start of displayName
-    //                                                 -----
-    // Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyCrudApp", "MyCrudApp\MyCrudApp.csproj", "{8257B361-20EC-4D50-8987-169E8BEC46E4}"
-    //                                                 -----
-    while (!endOfFile(currentCharacter = this._stringReader.consume(1))) {
-
-      if (currentCharacter === '"') {
-        break;
-      }
-    }
-
-    // Start reading displayName
-    //                                                      ---------
-    // Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyCrudApp", "MyCrudApp\MyCrudApp.csproj", "{8257B361-20EC-4D50-8987-169E8BEC46E4}"
-    //                                                      ---------
-    let displayName = "";
-
-    // Read text into displayName variable until quote that terminates the Project display name
-    while (!endOfFile(currentCharacter = this._stringReader.consume(1)) &&
-      currentCharacter !== '"') {
-
-      displayName += currentCharacter;
-    }
-
-    // Skip to start of project relative path from solution
-    //                                                                ---
-    // Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyCrudApp", "MyCrudApp\MyCrudApp.csproj", "{8257B361-20EC-4D50-8987-169E8BEC46E4}"
-    //                                                                ---
-    while (!endOfFile(currentCharacter = this._stringReader.consume(1))) {
-
-      if (currentCharacter === '"') {
-        break;
-      }
-    }
-
-    // Start reading project relative path from solution
-    //                                                                   --------------------------
-    // Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyCrudApp", "MyCrudApp\MyCrudApp.csproj", "{8257B361-20EC-4D50-8987-169E8BEC46E4}"
-    //                                                                   --------------------------
-    let projectRelativePathFromSolution = "";
-
-    // Read text into projectRelativePathFromSolution variable until quote that terminates the Project relative path from solution
-    while (!endOfFile(currentCharacter = this._stringReader.consume(1)) &&
-      currentCharacter !== '"') {
-
-      projectRelativePathFromSolution += currentCharacter;
-    }
-
-    // Skip to start of projectIdGuid
-    //                                                                                              ----
-    // Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyCrudApp", "MyCrudApp\MyCrudApp.csproj", "{8257B361-20EC-4D50-8987-169E8BEC46E4}"
-    //                                                                                              ----
-    while (!endOfFile(currentCharacter = this._stringReader.consume(1))) {
-
-      if (currentCharacter === ConstantsSolutionFile.START_OF_GUID) {
-        break;
-      }
-    }
-
-    // Read projectIdGuid
-    //                                                                                                  ------------------------------------
-    // Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyCrudApp", "MyCrudApp\MyCrudApp.csproj", "{8257B361-20EC-4D50-8987-169E8BEC46E4}"
-    //                                                                                                  ------------------------------------
-    let projectIdGuid = this.readInGuid();
-
-    let project = new CSharpProjectModel(this.solutionModel,
-      projectTypeGuid,
-      displayName,
-      projectRelativePathFromSolution,
-      projectIdGuid,
-      null);
-
-    this.solutionModel.projects.push(project);
-  }
-
-  public readInGlobalDefinition() {
-    return;
-  }
-
-
-  public readInGlobalSection() {
-    return;
-  }
-
-  public readInSolutionProperties() {
-    return;
-  }
-
-
-  public readInSolutionFolders() {
-    let currentCharacter: string = "";
-
-    let childGuid: string | undefined = undefined;
-    let solutionFolderGuid: string | undefined = undefined;
-
-    while (!endOfFile(currentCharacter = this._stringReader.consume(1))) {
-
-      switch (currentCharacter) {
-        case ConstantsSolutionFile.START_OF_GUID:
-          var guid = this.readInGuid();
-
-          if (!childGuid) {
-            childGuid = guid;
-          }
-          else {
-            solutionFolderGuid = guid;
-
-            let child = this.solutionModel.projects
-              .find(x => x.projectIdGuid === childGuid);
-
-            let solutionFolder = this.solutionModel.projects
-              .find(x => x.projectIdGuid === solutionFolderGuid);
-
-            if (child && solutionFolder) {
-              solutionFolder.contextualInformation = ConstantsContextualInformation.TREE_VIEW_SOLUTION_FOLDER_CONTEXT;
-
-              child.solutionFolderParentProjectIdGuid = solutionFolderGuid;
-
-              if (!solutionFolder.solutionFolderEntries) {
-                solutionFolder.solutionFolderEntries = [];
-              }
-
-              solutionFolder.solutionFolderEntries.push(child);
-            }
-            else {
-              throw new Error("Could not map project to solution folder in solution's .sln file");
-            }
-
-            childGuid = undefined;
-            solutionFolderGuid = undefined;
-          }
-      }
-    }
-  }
-
-  public readInExtensibilityGlobals() {
-    return;
-  }
-
-  public readInGuid(): string {
-    // Read in a any Guid from a file that starts at current position
-    //           ------------------------------------
-    // Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyCrudApp", "MyCrudApp\MyCrudApp.csproj", "{8257B361-20EC-4D50-8987-169E8BEC46E4}"
-    //           ------------------------------------
-    let currentCharacter = "";
-    let guid = "";
-
-    while (!endOfFile(currentCharacter = this._stringReader.consume(1)) &&
-      currentCharacter !== ConstantsSolutionFile.END_OF_GUID) {
-
-      guid += currentCharacter;
-    }
-
-    return guid;
   }
 }
 

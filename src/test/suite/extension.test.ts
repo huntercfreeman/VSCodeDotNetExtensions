@@ -50,8 +50,7 @@ suite('Extension Test Suite', () => {
 		// done() shows up in documentation but I cannot pinpoint how to use it
 		// I imagine it is the preferred way to achieve what the 'waitForCallback' method I made does
 		await waitForCallback(callbackIsFinishedWrapping);
-
-
+		
 	}).timeout(60_000);
 });
 

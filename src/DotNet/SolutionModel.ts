@@ -2,6 +2,8 @@ import { ConstantsContextualInformation } from "../Constants/ConstantsContextual
 import { AbsoluteFilePath } from "../FileSystem/AbsoluteFilePath";
 import { DotNetSolutionParser } from "../Parsers/DotNetSolutionParser";
 import { CSharpProjectModel } from "./CSharpProjectModel";
+import { SolutionModelFileHeader } from "./SolutionModelFileHeader";
+import { SolutionModelGlobal } from "./SolutionModelGlobal";
 
 const fs = require('fs');
 
@@ -28,8 +30,11 @@ export class SolutionModel {
     public static async addSolutionFolder(solution: SolutionModel, solutionFolderName: string, callback: any): Promise<void> {
         let dotNetSolutionParser = new DotNetSolutionParser(solution);
 
-        dotNetSolutionParser.addSolutionFolder(solutionFolderName, callback);
+        // dotNetSolutionParser.addSolutionFolder(solutionFolderName, callback);
     }
+
+    public readonly fileHeader: SolutionModelFileHeader = new SolutionModelFileHeader();
+    public readonly global: SolutionModelGlobal = new SolutionModelGlobal();
 
     public readonly contextualInformation: string = ConstantsContextualInformation.TREE_VIEW_SOLUTION_CONTEXT;
 }
