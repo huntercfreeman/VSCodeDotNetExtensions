@@ -42,6 +42,7 @@ export class CSharpProjectModel {
             // solution folders section of the .sln file.;
 
             this.solutionFolderEntries = [];
+            this.rootNamespace = "";
             this.contextualInformation = ConstantsContextualInformation.TREE_VIEW_SOLUTION_FOLDER_CONTEXT;
         }
 

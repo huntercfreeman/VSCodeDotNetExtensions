@@ -99,6 +99,8 @@ export class GlobalSlnParseStateMachine extends SlnParseStateMachineBase {
             }
             if (this.stringReader.isStartOfToken(ConstantsSolutionFile.START_OF_GUID_TOKEN,
                 currentCharacter)) {
+                    
+                    this.stringReader.skipBackwards(1);
 
                     if (!idGuidLeftChild) {
                         this.getGuid((character) => idGuidLeftChild += character);
@@ -108,15 +110,13 @@ export class GlobalSlnParseStateMachine extends SlnParseStateMachineBase {
 
                         let child = this.solutionModel.projects.find(project =>
                             project.projectIdGuid === idGuidLeftChild);
-                        
-                        if (!child) {
-                            continue;
-                        }
 
                         let parent = this.solutionModel.projects.find(project =>
                             project.projectIdGuid === idGuidRightParent);
 
-                        if (!parent) {
+                        if (!child || !parent) {
+                            idGuidLeftChild = "";
+                            idGuidRightParent = "";
                             continue;
                         }
 
