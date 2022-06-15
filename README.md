@@ -411,4 +411,254 @@ npm run build
 
 ![changeSvelteApplicationOutput.gif](/DocumentationImages/Root-README-Images/compileSvelte.gif)
 
-27:50: Now, in the terminal ensure you are in the directory, '/svelteApps/svelte-typescript-app' and then run the following command:
+27:60: We can now add a reference to the output of the Svelte application. In the file '/src/UiProviders/SolutionExplorerWebviewProvider.ts' go to the method, 'getWebviewContent(webview: vscode.Webview)'. 
+
+We need to add references to the output of the Svelte application and render the Svelte app. Alter the 'getWebviewContent(webview: vscode.Webview)' to be the following code snippet:
+
+``` typescript
+private getWebviewContent(webview: vscode.Webview) {
+    const dotNetIdeSvelteAppJavaScriptUri = webview.asWebviewUri(vscode.Uri.joinPath(
+      this.context.extensionUri, 'out/svelte-typescript-app', 'svelte-typescript-app.js'));
+
+    const dotNetIdeSvelteAppCssUri = webview.asWebviewUri(vscode.Uri.joinPath(
+      this.context.extensionUri, 'out/svelte-typescript-app', 'svelte-typescript-app.css'));
+
+    return `<!DOCTYPE html>
+  <html lang="en">
+  <head>
+	  <meta charset="UTF-8">
+	  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="${dotNetIdeSvelteAppCssUri}" rel="stylesheet">
+	  <script>
+		const tsVscode = acquireVsCodeApi();
+	</script>
+  </head>
+  <body>
+	  <script src="${dotNetIdeSvelteAppJavaScriptUri}"></script>
+  </body>
+  </html>`;
+  }
+```
+
+We also must modify the method, 'resolveWebviewView(webviewView: vscode.WebviewView)'. The modification is to allow for scripts in the Webview. Within the options for the webview (webviewView.webview.options) add another property, 'enableScripts: true'. Without this the Svelte app cannot run.
+
+``` typescript
+public resolveWebviewView(webviewView: vscode.WebviewView) {
+    this._view = webviewView;
+
+    webviewView.webview.options = {
+      // Allow scripts in the webview
+      enableScripts: true,
+      
+      localResourceRoots: [this.context.extensionUri],
+    };
+
+    webviewView.webview.html = this.getWebviewContent(webviewView.webview);
+  }
+```
+
+![enableScripts.gif](/DocumentationImages/Root-README-Images/enableScripts.gif)
+
+27:70: Upon running the extension we now see the Svelte application.
+
+![initialSvelteApplication.gif](/DocumentationImages/Root-README-Images/initialSvelteApplication.gif)
+
+27:80: Let's add a counter button to the Svelte application as shown in the following gif.
+
+![counterSvelte.gif](/DocumentationImages/Root-README-Images/counterSvelte.gif)
+
+27:90: And next we need to run the command to build the svelte application. Afterwards, run the extension and click the button and watch it increment.
+
+``` bash
+npm run build
+```
+
+![counterIncrementation.gif](/DocumentationImages/Root-README-Images/counterIncrementation.gif)
+
+27:90: We should make the css of the Svelte application match Visual Studio Code's css. Let's do that now.
+
+Add to '/media' the following two files.
+
+- '/media/reset.css'
+- '/media/vscode.css'
+
+Within those two files paste the respective file contents that are in the collapsed section below as to not take up too much space (click it to expand the collapsed section).
+
+<details>
+  <summary>Expand to see '/media/reset.css'</summary>
+  
+``` css
+html {
+	box-sizing: border-box;
+	font-size: 13px;
+}
+
+*,
+*:before,
+*:after {
+	box-sizing: inherit;
+}
+
+body,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+ol,
+ul {
+	margin: 0;
+	padding: 0;
+	font-weight: normal;
+}
+
+img {
+	max-width: 100%;
+	height: auto;
+}
+
+```
+
+</details>
+
+<details>
+  <summary>Expand to see '/media/vscode.css'</summary>
+  
+``` css
+:root {
+	--container-paddding: 20px;
+	--input-padding-vertical: 6px;
+	--input-padding-horizontal: 4px;
+	--input-margin-vertical: 4px;
+	--input-margin-horizontal: 0;
+}
+
+body {
+	padding: 0 var(--container-paddding);
+	color: var(--vscode-foreground);
+	font-size: var(--vscode-font-size);
+	font-weight: var(--vscode-font-weight);
+	font-family: var(--vscode-font-family);
+	background-color: var(--vscode-editor-background);
+}
+
+ol,
+ul {
+	padding-left: var(--container-paddding);
+}
+
+body > *,
+form > * {
+	margin-block-start: var(--input-margin-vertical);
+	margin-block-end: var(--input-margin-vertical);
+}
+
+*:focus {
+	outline-color: var(--vscode-focusBorder) !important;
+}
+
+a {
+	color: var(--vscode-textLink-foreground);
+}
+
+a:hover,
+a:active {
+	color: var(--vscode-textLink-activeForeground);
+}
+
+code {
+	font-size: var(--vscode-editor-font-size);
+	font-family: var(--vscode-editor-font-family);
+}
+
+button {
+	border: none;
+	padding: var(--input-padding-vertical) var(--input-padding-horizontal);
+	width: 100%;
+	text-align: center;
+	outline: 1px solid transparent;
+	outline-offset: 2px !important;
+	color: var(--vscode-button-foreground);
+	background: var(--vscode-button-background);
+}
+
+button:hover {
+	cursor: pointer;
+	background: var(--vscode-button-hoverBackground);
+}
+
+button:focus {
+	outline-color: var(--vscode-focusBorder);
+}
+
+button.secondary {
+	color: var(--vscode-button-secondaryForeground);
+	background: var(--vscode-button-secondaryBackground);
+}
+
+button.secondary:hover {
+	background: var(--vscode-button-secondaryHoverBackground);
+}
+
+input:not([type='checkbox']),
+textarea {
+	display: block;
+	width: 100%;
+	border: none;
+	font-family: var(--vscode-font-family);
+	padding: var(--input-padding-vertical) var(--input-padding-horizontal);
+	color: var(--vscode-input-foreground);
+	outline-color: var(--vscode-input-border);
+	background-color: var(--vscode-input-background);
+}
+
+input::placeholder,
+textarea::placeholder {
+	color: var(--vscode-input-placeholderForeground);
+}
+
+```
+
+</details>
+
+![vscodeCssSvelte.gif](/DocumentationImages/Root-README-Images/vscodeCssSvelte.gif)
+
+28:10 Now we can alter the file, '/src/UiProviders/SolutionExplorerWebviewProvider.ts' and the method within that file, 'getWebviewContent(webview: vscode.Webview)'
+
+``` typescript
+private getWebviewContent(webview: vscode.Webview) {
+    const dotNetIdeSvelteAppJavaScriptUri = webview.asWebviewUri(vscode.Uri.joinPath(
+      this.context.extensionUri, 'out/svelte-typescript-app', 'svelte-typescript-app.js'));
+
+    const dotNetIdeSvelteAppCssUri = webview.asWebviewUri(vscode.Uri.joinPath(
+      this.context.extensionUri, 'out/svelte-typescript-app', 'svelte-typescript-app.css'));
+
+    const resetCssUri = webview.asWebviewUri(
+      vscode.Uri.joinPath(this.context.extensionUri, "media", "reset.css")
+    );
+
+    const vSCodeCssUri = webview.asWebviewUri(
+      vscode.Uri.joinPath(this.context.extensionUri, "media", "vscode.css")
+    );
+
+    return `<!DOCTYPE html>
+  <html lang="en">
+  <head>
+	  <meta charset="UTF-8">
+	  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <link href="${resetCssUri}" rel="stylesheet">
+      <link href="${vSCodeCssUri}" rel="stylesheet">
+      <link href="${dotNetIdeSvelteAppCssUri}" rel="stylesheet">
+	  <script>
+		const tsVscode = acquireVsCodeApi();
+	</script>
+  </head>
+  <body>
+	  <script src="${dotNetIdeSvelteAppJavaScriptUri}"></script>
+  </body>
+  </html>`;
+}
+```
+![alterForVscodeCss.gif](/DocumentationImages/Root-README-Images/alterForVscodeCss.gif)
