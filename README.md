@@ -409,6 +409,6 @@ The following command is used to build the svelte app:
 npm run build
 ```
 
-![changeSvelteApplicationOutput.gif](/DocumentationImages/Root-README-Images/changeSvelteApplicationOutput.gif)
+![changeSvelteApplicationOutput.gif](/DocumentationImages/Root-README-Images/compileSvelte.gif)
 
 27:50: Now, in the terminal ensure you are in the directory, '/svelteApps/svelte-typescript-app' and then run the following command:
