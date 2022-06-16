@@ -3,28 +3,18 @@
 	import type { DotNetSolutionFile } from "../../../out/FileSystem/Files/DotNetSolutionFile";
 	import { MessageCategory } from "../../../out/Messages/MessageCategory";
 	import { MessageReadKind } from "../../../out/Messages/Read/MessageReadKind";
-	import { MessageReadActiveDotNetSolutionFile } from "../../../out/Messages/Read/MessageReadActiveDotNetSolutionFile";
 	import type { CSharpProjectFile } from "../../../out/FileSystem/Files/CSharpProjectFile";
 	import SelectProjectFileForm from "./Components/SelectProjectFileForm.svelte";
 	import { NugetPackageModel } from "../../../out/DotNet/NugetPackageModel";
 	import { NugetPackageVersionModel } from "../../../out/DotNet/NugetPackageVersionModel";
 	import NugetResultsDisplay from "./Components/NugetResultsDisplay.svelte";
+	import NugetPackageManagerControlButtons from "./Components/NugetPackageManagerControlButtons.svelte";
 
 	let selectedDotNetSolutionFile: DotNetSolutionFile | undefined;
 	let selectedProjectFile: CSharpProjectFile;
 	let nugetResults: any;
 	let nugetQuery: string = "";
 	let includePrerelease: boolean = false;
-
-	function syncActiveDotNetSolutionFile() {
-		let messageReadActiveDotNetSolutionFile =
-			new MessageReadActiveDotNetSolutionFile(undefined);
-
-		tsVscode.postMessage({
-			type: undefined,
-			value: messageReadActiveDotNetSolutionFile,
-		});
-	}
 
 	function sendGetRequest() {
 		if (validateGetRequest()) {
@@ -131,9 +121,7 @@
 <div class="dni_app">
 	Nuget Package Manager
 
-	<button on:click={syncActiveDotNetSolutionFile}
-		>Sync Active .NET Solution from Solution Explorer</button
-	>
+	<NugetPackageManagerControlButtons />
 
 	{#if selectedDotNetSolutionFile}
 		<div style="margin-top: 4px;">

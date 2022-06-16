@@ -37,6 +37,10 @@
 							selectedDotNetSolutionFile =
 								message.dotNetSolutionFile;
 							break;
+						case MessageReadKind.messageReadUndefinedSolution:
+							selectedDotNetSolutionFile =
+								undefined;
+							break;
 					}
 			}
 		});

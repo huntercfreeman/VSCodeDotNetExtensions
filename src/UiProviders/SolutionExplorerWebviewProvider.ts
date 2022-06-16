@@ -2,6 +2,8 @@ import * as vscode from 'vscode';
 import { SolutionExplorerMessageHandler } from '../MessageHandlers/SolutionExplorerMessageHandler';
 import { ActiveDotNetSolutionFileContainer } from '../ActiveDotNetSolutionFileContainer';
 import { MessageReadVirtualFilesInSolution } from '../Messages/Read/MessageReadVirtualFilesInSolution';
+import { DotNetSolutionFile } from '../FileSystem/Files/DotNetSolutionFile';
+import { MessageReadUndefinedSolution } from '../Messages/Read/MessageReadUndefinedSolution';
 
 const fs = require('fs');
 
@@ -9,15 +11,22 @@ export class SolutionExplorerWebviewProvider implements vscode.WebviewViewProvid
   _view?: vscode.WebviewView;
   _doc?: vscode.TextDocument;
 
+  private activeDotNetSolutionFile: DotNetSolutionFile | undefined;
+
   constructor(private readonly context: vscode.ExtensionContext) { }
 
   public resolveWebviewView(webviewView: vscode.WebviewView) {
 
     ActiveDotNetSolutionFileContainer.solutionExplorerWebviewProviderSubscription = (activeDotNetSolution) =>
     {
-      if (activeDotNetSolution) {
+      this.activeDotNetSolutionFile = activeDotNetSolution;
+
+      if (this.activeDotNetSolutionFile) {
         SolutionExplorerMessageHandler
-          .handleMessage(webviewView, new MessageReadVirtualFilesInSolution(activeDotNetSolution));
+          .handleMessage(webviewView, new MessageReadVirtualFilesInSolution(this.activeDotNetSolutionFile));
+      }
+      else {
+        webviewView.webview.postMessage(new MessageReadUndefinedSolution());
       }
     };
 

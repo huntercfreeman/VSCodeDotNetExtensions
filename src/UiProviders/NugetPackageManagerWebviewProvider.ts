@@ -1,13 +1,20 @@
 import * as vscode from 'vscode';
 import { ActiveDotNetSolutionFileContainer } from '../ActiveDotNetSolutionFileContainer';
+import { DotNetSolutionFile } from '../FileSystem/Files/DotNetSolutionFile';
 import { NugetPackageManagerMessageHandler } from '../MessageHandlers/NugetPackageManagerMessageHandler';
+import { IMessage } from '../Messages/IMessage';
+import { MessageCategory } from '../Messages/MessageCategory';
+import { IMessageRead } from '../Messages/Read/IMessageRead';
 import { MessageReadActiveDotNetSolutionFile } from '../Messages/Read/MessageReadActiveDotNetSolutionFile';
+import { MessageReadKind } from '../Messages/Read/MessageReadKind';
 
 const fs = require('fs');
 
 export class NugetPackageManagerWebviewProvider implements vscode.WebviewViewProvider {
   _view?: vscode.WebviewView;
   _doc?: vscode.TextDocument;
+  
+  private activeDotNetSolutionFile: DotNetSolutionFile | undefined;
 
   constructor(private readonly context: vscode.ExtensionContext) { }
 
@@ -15,13 +22,12 @@ export class NugetPackageManagerWebviewProvider implements vscode.WebviewViewPro
 
     ActiveDotNetSolutionFileContainer.nugetPackageManagerWebviewProviderSubscription = (activeDotNetSolution) =>
     {
-      if (activeDotNetSolution) {
-        let messageReadActiveDotNetSolutionFile =
-          new MessageReadActiveDotNetSolutionFile(activeDotNetSolution);
+      this.activeDotNetSolutionFile = activeDotNetSolution;
 
+      let messageReadActiveDotNetSolutionFile =
+        new MessageReadActiveDotNetSolutionFile(this.activeDotNetSolutionFile);
 
-        webviewView.webview.postMessage(messageReadActiveDotNetSolutionFile);
-      }
+      webviewView.webview.postMessage(messageReadActiveDotNetSolutionFile);
     };
 
     this._view = webviewView;
@@ -35,8 +41,22 @@ export class NugetPackageManagerWebviewProvider implements vscode.WebviewViewPro
 
     webviewView.webview.html = this.getWebviewContent(webviewView.webview);
 
-    webviewView.webview.onDidReceiveMessage(async (data) =>
-      NugetPackageManagerMessageHandler.handleMessage(webviewView, data.value));
+    webviewView.webview.onDidReceiveMessage(async (data) => {
+      let message = data.value as IMessage;
+
+      if (message.messageCategory === MessageCategory.read &&
+          (message as any as IMessageRead).messageReadKind 
+            === MessageReadKind.activeDotNetSolutionFile) {
+
+              let messageReadActiveDotNetSolutionFile =
+                new MessageReadActiveDotNetSolutionFile(this.activeDotNetSolutionFile);
+
+              webviewView.webview.postMessage(messageReadActiveDotNetSolutionFile);
+      }
+      else {
+        NugetPackageManagerMessageHandler.handleMessage(webviewView, data.value);
+      }
+    });
   }
 
   public revive(panel: vscode.WebviewView) {
