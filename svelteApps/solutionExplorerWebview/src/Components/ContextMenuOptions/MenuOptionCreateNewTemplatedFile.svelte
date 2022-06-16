@@ -3,7 +3,7 @@
     import { contextMenuTarget } from "../menu";
     import MenuOption from "../MenuOption.svelte";
     import TextInputForm from "../TextInputForm.svelte";
-    import { MessageCreateTemplatedFileInDirectory } from "../../../../../out/Messages/Create/MessageCreateTemplatedFileInDirectory";
+    import { MessageCreateTemplatedFileInAny } from "../../../../../out/Messages/Create/MessageCreateTemplatedFileInAny";
     import type { DirectoryFile } from "../../../../../out/FileSystem/Files/DirectoryFile";
     import { FileKind } from "../../../../../out/FileSystem/FileKind";
 
@@ -23,32 +23,20 @@
 
     function addFileWithTemplateToFolderOnClick() {
         if (addFileWithTemplateFilename) {
-            let directoryFile: DirectoryFile;
-
             switch (contextMenuTargetValue.fileKind) {
-                case FileKind.directory:
-                    directoryFile = contextMenuTargetValue;
-                    break;
                 case FileKind.cSharpProject:
-                    directoryFile =
-                        contextMenuTargetValue.absoluteFilePath
-                            .parentDirectories[
-                            contextMenuTargetValue.absoluteFilePath
-                                .parentDirectories.length - 1
-                        ];
-                    break;
+                case FileKind.directory:
+                    let messageCreateTemplatedFileInAny =
+                    new MessageCreateTemplatedFileInAny(
+                        addFileWithTemplateFilename,
+                        contextMenuTargetValue
+                    );
+
+                    tsVscode.postMessage({
+                        type: undefined,
+                        value: messageCreateTemplatedFileInAny,
+                    });
             }
-
-            let messageCreateTemplatedFileInDirectory =
-                new MessageCreateTemplatedFileInDirectory(
-                    addFileWithTemplateFilename,
-                    directoryFile
-                );
-
-            tsVscode.postMessage({
-                type: undefined,
-                value: messageCreateTemplatedFileInDirectory,
-            });
 
             closeMenu();
         }

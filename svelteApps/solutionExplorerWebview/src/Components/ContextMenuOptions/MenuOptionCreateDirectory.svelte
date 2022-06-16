@@ -2,7 +2,7 @@
     import { contextMenuTarget } from "../menu";
     import MenuOption from "../MenuOption.svelte";
     import TextInputForm from "../TextInputForm.svelte";
-    import { MessageCreateDirectoryInDirectory } from "../../../../../out/Messages/Create/MessageCreateDirectoryInDirectory";
+    import { MessageCreateDirectoryInAny } from "../../../../../out/Messages/Create/MessageCreateDirectoryInAny";
     import { DirectoryFile } from "../../../../../out/FileSystem/Files/DirectoryFile";
     import { FileKind } from "../../../../../out/FileSystem/FileKind";
 
@@ -21,33 +21,22 @@
 
     function createDirectoryOnClick() {
         if (createDirectoryFilename) {
-            let directoryFile: DirectoryFile;
-
             switch (contextMenuTargetValue.fileKind) {
                 case FileKind.directory:
-                    directoryFile = contextMenuTargetValue;
-                    break;
                 case FileKind.cSharpProject:
-                    directoryFile = new DirectoryFile(
-                        contextMenuTargetValue.absoluteFilePath.parentDirectories[
-                            contextMenuTargetValue.absoluteFilePath
-                                .parentDirectories.length - 1
-                        ],
-                        contextMenuTargetValue.namespace
+                let messageCreateDirectoryInAny =
+                    new MessageCreateDirectoryInAny(
+                        createDirectoryFilename,
+                        contextMenuTargetValue
                     );
+
+                    tsVscode.postMessage({
+                        type: undefined,
+                        value: messageCreateDirectoryInAny,
+                    });
+
                     break;
             }
-
-            let messageCreateDirectoryInDirectory =
-                new MessageCreateDirectoryInDirectory(
-                    createDirectoryFilename,
-                    directoryFile
-                );
-
-            tsVscode.postMessage({
-                type: undefined,
-                value: messageCreateDirectoryInDirectory,
-            });
 
             closeMenu();
         }

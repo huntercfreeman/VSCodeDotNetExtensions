@@ -6,16 +6,20 @@ import { ConstantsTerminal } from '../Constants/ConstantsTerminal';
 import { AbsoluteFilePath } from '../FileSystem/AbsoluteFilePath';
 import { FileKind } from '../FileSystem/FileKind';
 import { CSharpProjectFile } from '../FileSystem/Files/CSharpProjectFile';
+import { DirectoryFile } from '../FileSystem/Files/DirectoryFile';
 import { DotNetSolutionFile } from '../FileSystem/Files/DotNetSolutionFile';
 import { IdeFileFactory } from '../FileSystem/IdeFileFactory';
 import { IMessageCreate } from "../Messages/Create/IMessageCreate";
 import { MessageCreateCSharpProjectInAny } from '../Messages/Create/MessageCreateCSharpProjectInAny';
-import { MessageCreateDirectoryInDirectory } from '../Messages/Create/MessageCreateDirectoryInDirectory';
+import { MessageCreateDirectoryInAny } from '../Messages/Create/MessageCreateDirectoryInAny';
 import { MessageCreateDotNetSolutionInWorkspace } from '../Messages/Create/MessageCreateDotNetSolutionInWorkspace';
 import { MessageCreateKind } from "../Messages/Create/MessageCreateKind";
 import { MessageCreateSolutionFolderInAny } from '../Messages/Create/MessageCreateSolutionFolderInAny';
-import { MessageCreateTemplatedFileInDirectory } from '../Messages/Create/MessageCreateTemplatedFileInDirectory';
+import { MessageCreateTemplatedFileInAny } from '../Messages/Create/MessageCreateTemplatedFileInAny';
 import { IMessage } from "../Messages/IMessage";
+import { MessageReadFilesInDirectory } from '../Messages/Read/MessageReadFilesInDirectory';
+import { MessageReadVirtualFilesInCSharpProject } from '../Messages/Read/MessageReadVirtualFilesInCSharpProject';
+import { SolutionExplorerMessageHandler } from './SolutionExplorerMessageHandler';
 
 const fs = require('fs');
 
@@ -37,11 +41,11 @@ export class CreateMessageHandler {
             case MessageCreateKind.solutionFolderInAny:
                 await this.handleMessageCreateSolutionFolder(webviewView, message);
                 break;
-            case MessageCreateKind.directoryInDirectory:
-                await this.handleMessageCreateDirectoryInDirectory(webviewView, message);
+            case MessageCreateKind.directoryInAny:
+                await this.handleMessageCreateDirectoryInAny(webviewView, message);
                 break;
-            case MessageCreateKind.templatedFileInDirectory:
-                await this.handleMessageCreateTemplatedFileInDirectory(webviewView, message);
+            case MessageCreateKind.templatedFileInAny:
+                await this.handleMessageCreateTemplatedFileInAny(webviewView, message);
                 break;
         }
     }
@@ -57,10 +61,27 @@ export class CreateMessageHandler {
         messageExecuteTerminal.show();
     }
 
-    public static async handleMessageCreateTemplatedFileInDirectory(webviewView: vscode.WebviewView, iMessage: IMessage) {
-        let message = iMessage as MessageCreateTemplatedFileInDirectory;
+    public static async handleMessageCreateTemplatedFileInAny(webviewView: vscode.WebviewView, iMessage: IMessage) {
+        let message = iMessage as MessageCreateTemplatedFileInAny;
 
-        let writePath: string = message.directoryFile.absoluteFilePath.initialAbsoluteFilePathStringInput;
+        let writePath: string = "";
+
+        switch (message.ideFile.fileKind) {
+            case FileKind.cSharpProject:
+                writePath =
+                    message.ideFile.absoluteFilePath
+                        .parentDirectories[
+                            message.ideFile.absoluteFilePath
+                            .parentDirectories.length - 1
+                    ].initialAbsoluteFilePathStringInput;
+
+                break;
+            case FileKind.directory:
+                writePath = message
+                    .ideFile.absoluteFilePath.initialAbsoluteFilePathStringInput;
+                
+                break;
+        }
 
         if (!writePath.endsWith(ConstantsFilePath.STANDARDIZED_FILE_DELIMITER)) {
             writePath += ConstantsFilePath.STANDARDIZED_FILE_DELIMITER;
@@ -70,18 +91,46 @@ export class CreateMessageHandler {
 
         let absoluteFilePath = new AbsoluteFilePath(writePath, false, null);
 
-        let ideFile = IdeFileFactory.constructIdeFile(absoluteFilePath, message.directoryFile.namespace);
+        let templatedIdeFile = IdeFileFactory.constructIdeFile(absoluteFilePath, message.ideFile.namespace);
 
         fs.writeFile(writePath,
-            ConstantsFileTemplates.getFileTemplate(ideFile),
+            ConstantsFileTemplates.getFileTemplate(templatedIdeFile),
             { flag: 'a+' },
             (err: any) => {
                 if (!err) {
-                    if (!message.directoryFile.childFiles) {
-                        message.directoryFile.childFiles = [];
-                    }
 
-                    message.directoryFile.childFiles.push(ideFile);
+                    switch (message.ideFile.fileKind) {
+                        case FileKind.cSharpProject:
+                            if(!message.ideFile.virtualChildFiles) {
+                                message.ideFile.virtualChildFiles = [];
+                            }
+                            
+                            message.ideFile.virtualChildFiles.push(templatedIdeFile);
+
+                            SolutionExplorerMessageHandler
+                                .handleMessage(
+                                    webviewView,
+                                    new MessageReadVirtualFilesInCSharpProject(
+                                        message.ideFile as CSharpProjectFile
+                                    ));
+
+                            break;
+                        case FileKind.directory:
+                            if (!message.ideFile.childFiles) {
+                                message.ideFile.childFiles = [];
+                            }
+
+                            message.ideFile.childFiles.push(templatedIdeFile);
+
+                            SolutionExplorerMessageHandler
+                                .handleMessage(
+                                    webviewView,
+                                    new MessageReadFilesInDirectory(
+                                        message.ideFile as DirectoryFile
+                                    ));
+                            
+                            break;
+                    }
 
                     const openPath = vscode.Uri.file(absoluteFilePath.initialAbsoluteFilePathStringInput);
 
@@ -98,10 +147,27 @@ export class CreateMessageHandler {
             });
     }
 
-    public static async handleMessageCreateDirectoryInDirectory(webviewView: vscode.WebviewView, iMessage: IMessage) {
-        let message = iMessage as MessageCreateDirectoryInDirectory;
+    public static async handleMessageCreateDirectoryInAny(webviewView: vscode.WebviewView, iMessage: IMessage) {
+        let message = iMessage as MessageCreateDirectoryInAny;
 
-        let writePath: string = message.directoryFile.absoluteFilePath.initialAbsoluteFilePathStringInput;
+        let writePath: string = "";
+
+        switch (message.ideFile.fileKind) {
+            case FileKind.cSharpProject:
+                writePath =
+                    message.ideFile.absoluteFilePath
+                        .parentDirectories[
+                            message.ideFile.absoluteFilePath
+                            .parentDirectories.length - 1
+                    ].initialAbsoluteFilePathStringInput;
+
+                break;
+            case FileKind.directory:
+                writePath = message
+                    .ideFile.absoluteFilePath.initialAbsoluteFilePathStringInput;
+                
+                break;
+        }
 
         if (!writePath.endsWith(ConstantsFilePath.STANDARDIZED_FILE_DELIMITER)) {
             writePath += ConstantsFilePath.STANDARDIZED_FILE_DELIMITER;
@@ -111,9 +177,44 @@ export class CreateMessageHandler {
 
         let absoluteFilePath = new AbsoluteFilePath(writePath, false, null);
 
-        let ideFile = IdeFileFactory.constructIdeFile(absoluteFilePath, message.directoryFile.namespace);
+        let templatedIdeFile = IdeFileFactory.constructIdeFile(absoluteFilePath, message.ideFile.namespace);
 
-        fs.mkdir(ideFile.absoluteFilePath.initialAbsoluteFilePathStringInput, { recursive: true }, (err: any) => {
+        fs.mkdir(templatedIdeFile.absoluteFilePath.initialAbsoluteFilePathStringInput, { recursive: true }, (err: any) => {
+            if (!err) {
+
+                switch (message.ideFile.fileKind) {
+                    case FileKind.cSharpProject:
+                        if(!message.ideFile.virtualChildFiles) {
+                            message.ideFile.virtualChildFiles = [];
+                        }
+                        
+                        message.ideFile.virtualChildFiles.push(templatedIdeFile);
+
+                        SolutionExplorerMessageHandler
+                            .handleMessage(
+                                webviewView,
+                                new MessageReadVirtualFilesInCSharpProject(
+                                    message.ideFile as CSharpProjectFile
+                                ));
+
+                        break;
+                    case FileKind.directory:
+                        if (!message.ideFile.childFiles) {
+                            message.ideFile.childFiles = [];
+                        }
+
+                        message.ideFile.childFiles.push(templatedIdeFile);
+
+                        SolutionExplorerMessageHandler
+                            .handleMessage(
+                                webviewView,
+                                new MessageReadFilesInDirectory(
+                                    message.ideFile as DirectoryFile
+                                ));
+                        
+                        break;
+                }
+            }
         });
     }
 
