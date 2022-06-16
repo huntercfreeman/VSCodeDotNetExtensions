@@ -1,5 +1,6 @@
 import { ContextualInformationDatum } from "../../ContextMenus/ContextualInformationDatum";
 import { AbsoluteFilePath } from "../AbsoluteFilePath";
+import { FileKind } from "../FileKind";
 import { IdeFile } from "./IdeFile";
 
 export class JsonFile extends IdeFile {
@@ -12,41 +13,44 @@ export class JsonFile extends IdeFile {
     public hideExpansionChevronWhenNoChildFiles: boolean = true;
 
     public setVirtualChildFiles(siblingFiles: IdeFile[]) {
-        for (let i = siblingFiles.length - 1; i > -1; i--) {
-            if (this.virtualChildMatchPattern(siblingFiles[i])) {
-                if (!this.childFiles) {
-                    this.childFiles = [];
-                }
 
-                this.childFiles = this.childFiles.concat(siblingFiles.splice(i, 1));
+        for (let i = 0; i < siblingFiles.length; i++) {
+
+            let sibling = siblingFiles[i];
+
+            if (sibling.absoluteFilePath.filenameWithExtension ===
+                this.absoluteFilePath.filenameWithExtension) {
+                continue;
+            }
+            
+            if (sibling.fileKind !== FileKind.json) {
+                continue;
+            }
+    
+            if (this.absoluteFilePath.filenameWithExtension.length >
+                sibling.absoluteFilePath.filenameWithExtension.length) {
+                
+                continue;
+            }
+
+            let siblingSplit = sibling.absoluteFilePath.filenameWithExtension.split('.');
+            let selfSplit = this.absoluteFilePath.filenameWithExtension.split('.');
+    
+            if (siblingSplit[0] === selfSplit[0] &&
+                siblingSplit[siblingSplit.length - 1] === selfSplit[selfSplit.length - 1]) {
+
+                    if (sibling.virtualParentNonce) {
+                        continue;
+                    }
+    
+                    if (!this.virtualChildFiles) {
+                        this.virtualChildFiles = [];
+                    }
+    
+                    this.virtualChildFiles.push(sibling);
+                    sibling.virtualParentNonce = this.nonce;
             }
         }
-    }
-
-    private virtualChildMatchPattern(sibling: IdeFile): boolean {
-        if (sibling.absoluteFilePath.filenameWithExtension ===
-            this.absoluteFilePath.filenameWithExtension) {
-            return false;
-        }
-
-        let siblingSplit = sibling.absoluteFilePath.filenameWithExtension.split('.');
-        let selfSplit = this.absoluteFilePath.filenameWithExtension.split('.');
-
-        if (selfSplit.length > siblingSplit.length) {
-            return false;
-        }
-
-        let patternMatches = true;
-
-        for (let i = 0; i < selfSplit.length - 1; i++) {
-            if (selfSplit[i] !== siblingSplit[i]) {
-                patternMatches = false;
-                break;
-            }
-        }
-
-        return patternMatches &&
-            (selfSplit[selfSplit.length - 1] === siblingSplit[siblingSplit.length - 1]);
     }
 
     public readonly contextualInformation: ContextualInformationDatum[] = [

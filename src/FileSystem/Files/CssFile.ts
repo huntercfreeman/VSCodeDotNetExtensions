@@ -12,7 +12,7 @@ export class CssFile extends IdeFile {
     public hideExpansionChevronWhenNoChildFiles: boolean = true;
 
     public setVirtualChildFiles(siblingFiles: IdeFile[]): void {
-        throw new Error("Method not implemented.");
+        return;
     }
 
     public readonly contextualInformation: ContextualInformationDatum[] = [

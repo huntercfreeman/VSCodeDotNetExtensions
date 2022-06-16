@@ -12,26 +12,18 @@ export class CshtmlFile extends IdeFile {
     public hideExpansionChevronWhenNoChildFiles: boolean = true;
 
     public setVirtualChildFiles(siblingFiles: IdeFile[]) {
-        for (let i = siblingFiles.length - 1; i > -1; i--) {
-            if (this.virtualChildMatchPattern(siblingFiles[i])) {
-                if (!this.childFiles) {
-                    this.childFiles = [];
-                }
-
-                this.childFiles = this.childFiles.concat(siblingFiles.splice(i, 1));
-            }
-        }
+        return;
     }
 
-    private virtualChildMatchPattern(sibling: IdeFile): boolean {
-        if (sibling.absoluteFilePath.filenameWithExtension ===
-            this.absoluteFilePath.filenameWithExtension + ".cs") {
+    // private virtualChildMatchPattern(sibling: IdeFile): boolean {
+    //     if (sibling.absoluteFilePath.filenameWithExtension ===
+    //         this.absoluteFilePath.filenameWithExtension + ".cs") {
 
-            return true;
-        }
+    //         return true;
+    //     }
 
-        return false;
-    }
+    //     return false;
+    // }
 
     public readonly contextualInformation: ContextualInformationDatum[] = [
     ];

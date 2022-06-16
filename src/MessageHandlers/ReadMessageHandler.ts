@@ -206,6 +206,12 @@ export class ReadMessageHandler {
 
             message.cSharpProjectFile.virtualChildFiles = FileSorter.organizeContainer(message.cSharpProjectFile.virtualChildFiles);
 
+            for (let i = 0; i < message.cSharpProjectFile.virtualChildFiles.length; i++) {
+                let file = message.cSharpProjectFile.virtualChildFiles[i];
+
+                file.setVirtualChildFiles(message.cSharpProjectFile.virtualChildFiles);
+            }
+
             webviewView.webview.postMessage(message);
         });
     }
@@ -228,6 +234,12 @@ export class ReadMessageHandler {
                     .constructIdeFile(absoluteFilePath, message.directoryFile.namespace));
 
             message.directoryFile.childFiles = FileSorter.organizeContainer(message.directoryFile.childFiles);
+
+            for (let i = 0; i < message.directoryFile.childFiles.length; i++) {
+                let file = message.directoryFile.childFiles[i];
+
+                file.setVirtualChildFiles(message.directoryFile.childFiles);
+            }
 
             webviewView.webview.postMessage(message);
         });

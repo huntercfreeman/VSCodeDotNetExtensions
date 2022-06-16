@@ -16,7 +16,6 @@ export abstract class IdeFile {
     public childFiles: IdeFile[] | undefined = undefined;
     public constantChildFiles: any[] | undefined = undefined;
     public virtualChildFiles: IdeFile[] | undefined = undefined;
-    public virtualParent: IdeFile[] | undefined = undefined;
     public hideExpansionChevronWhenNoChildFiles: boolean = false;
     public isExpanded: boolean = false;
 

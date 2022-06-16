@@ -3,9 +3,6 @@ import { AbsoluteFilePath } from "../AbsoluteFilePath";
 import { IdeFile } from "./IdeFile";
 
 export class DefaultFile extends IdeFile {
-    public setVirtualChildFiles(siblingFiles: IdeFile[]): void {
-        throw new Error("Method not implemented.");
-    }
     constructor(givenAbsoluteFilePath: AbsoluteFilePath) {
         super(givenAbsoluteFilePath, "");
     }
@@ -13,6 +10,10 @@ export class DefaultFile extends IdeFile {
     public childFiles: any[] | undefined;
 
     public hideExpansionChevronWhenNoChildFiles: boolean = true;
+
+    public setVirtualChildFiles(siblingFiles: IdeFile[]): void {
+        return;
+    }
 
     public readonly contextualInformation: ContextualInformationDatum[] = [
     ];

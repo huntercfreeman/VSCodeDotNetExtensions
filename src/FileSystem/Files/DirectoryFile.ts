@@ -16,7 +16,7 @@ export class DirectoryFile extends IdeFile {
     }
 
     public setVirtualChildFiles(siblingFiles: IdeFile[]): void {
-        throw new Error("Method not implemented.");
+        return;
     }
     
     public nonce: string = getNonce();
