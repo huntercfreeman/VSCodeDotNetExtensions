@@ -2,6 +2,9 @@
 
 # How to Build this Repository
 
+<details>
+  <summary>Expansion: Individual Application README.md files</summary>
+  
 For succinct to the point 'how to build' documentation go to each application in the repo's README.md individually (following this text are the links to those README.md files)
 
 - The Visual Studio Code Extension README.md:
@@ -11,35 +14,53 @@ For succinct to the point 'how to build' documentation go to each application in
 - The Nuget Package Manager Webview README.md:
     - [/svelteApps/nugetPackageManagerWebview/README.md](/svelteApps/nugetPackageManagerWebview/README.md)
 
-Steps are labeled in the pattern '10.10, 20.10, 30.10, ...' this allows if needed at a later date a step to be added without renumbering everything. Example would be realizing an extra step is required before 10.10. One might insert the extra step as, '05.10' to indicate it is a stand alone step. Or, one might insert the extra step as, '10.05' to indicate a substep of the stand alone step labeled '10'.
+</details>
 
-00.10: Be sure to read over the terminal commands before running them.
+---
 
+<details>
+  <summary>Expansion: Layout of this README.md</summary>
+  
+Steps are labeled in the pattern '10.10, 20.10, 30.10, ...' so I don't have to renumber everything when inserted new content.
+
+00.10: Be sure to read over the terminal commands found in this README.md before running them.
+
+</details>
+
+---
+
+<details>
+  <summary>Expansion: Install node.js</summary>
+  
 10.10: Install node.js
 
-``` bash
-sudo snap install node --classic
-```
+  ``` bash
+  sudo snap install node --classic
+  ```
 
-![installNode.gif](/DocumentationImages/Root-README-Images/installNode.gif)
+  ![installNode.gif](/DocumentationImages/Root-README-Images/installNode.gif)
 
-10.20: Restart Terminal to refresh environment variables.
+  10.20: Restart Terminal to refresh environment variables.
 
-10.30: Double check the versions of both 'node', and 'npm'.
+  10.30: Double check the versions of both 'node', and 'npm'.
 
-``` bash
-node --version
-```
+  ``` bash
+  node --version
+  ```
 
-``` bash
-npm --version
-```
+  ``` bash
+  npm --version
+  ```
 
-![nodeNpmVersion.gif](/DocumentationImages/Root-README-Images/nodeNpmVersion.gif)
+  ![nodeNpmVersion.gif](/DocumentationImages/Root-README-Images/nodeNpmVersion.gif)
+</details>
 
-20.05: All of step '20' is a showcase of making this extension entirely from scratch all over again. Step 20 is entirely optional, all required installations to build are already done from earlier documentation (node and npm for example). Once the development process is explained I never showcase this 'from scratch project' again and return to using the actual repository to showcase things.
+---
 
-20.10: Next is to install the project scaffolder for a Visual Studio Code extension. Microsoft documentation immediately follows this text, following the link I document it myself as well.
+<details>
+  <summary>Expansion: Scaffolding an Extension</summary>
+  
+  20.10: Next is to install the project scaffolder for a Visual Studio Code extension. Microsoft documentation immediately follows this text, following the link I document it myself as well.
 
 > https://code.visualstudio.com/api/get-started/your-first-extension
 
@@ -113,8 +134,14 @@ context.subscriptions.push(disposable);
 ```
 
 ![registerCommand.gif](/DocumentationImages/Root-README-Images/registerCommand.gif)
+</details>
 
-20.50: If the extension is running, stop it as we will now look at how to run the tests.
+---
+
+<details>
+  <summary>Expansion: Testing an Extension</summary>
+  
+  20.50: If the extension is running, stop it as we will now look at how to run the tests.
 
 20.60: In the Visual Studio Code sidebar is a tab named "Run and Debug" to help find this tab a gif and some descriptions follow.
 
@@ -147,8 +174,14 @@ context.subscriptions.push(disposable);
 25.30: Create another test that will fail to showcase what a failed test looks like.
 
 ![failedTest.gif](/DocumentationImages/Root-README-Images/failedTest.gif)
+</details>
 
-25.30: How do we add a webview to the sidebar? The Microsoft documentation for this can be found at the following link:
+---
+
+<details>
+  <summary>Expansion: Adding a Webview</summary>
+  
+  25.30: How do we add a webview to the sidebar? The Microsoft documentation for this can be found at the following link:
 
 > https://code.visualstudio.com/api/extension-guides/webview
 
@@ -313,7 +346,12 @@ export class SolutionExplorerWebviewProvider implements vscode.WebviewViewProvid
 26.25: When running the extension we can visit the webview in the sidebar. However, we currently have no content. Let's put some text on the webview by altering the file, 'SolutionExplorerWebviewProvider.ts' and the method in that file, 'getWebviewContent(webview: vscode.Webview)'.
 
 ![addWebviewUiHelloWorld.gif](/DocumentationImages/Root-README-Images/addWebviewUiHelloWorld.gif)
+</details>
 
+---
+<details>
+  <summary>Expansion: Render Svelte Application in Webview</summary>
+  
 26.30: Let's get started on writing a Svelte application so we can render it in the webview. Any UI framework can be used as long as it outputs javascript at the end of the compilation stage (transpilation stage?).
 
 26.40: I have a few quick comments to make before scaffolding the Svelte app.
@@ -668,3 +706,5 @@ private getWebviewContent(webview: vscode.Webview) {
 ![buttonIncrementVscodeCss.gif](/DocumentationImages/Root-README-Images/buttonIncrementVscodeCss.gif)
 
 28:20 And that's the end of me building the extension again from scratch. The Nuget Package Manager works in the same way as the Solution Explorer from a Visual Studio Code extension webview standpoint. The actual Svelte code is not the same of course.
+
+</details>
