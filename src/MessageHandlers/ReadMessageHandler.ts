@@ -203,7 +203,7 @@ export class ReadMessageHandler {
                 .map(absoluteFilePath => IdeFileFactory
                     .constructIdeFile(absoluteFilePath, message.cSharpProjectFile.namespace));
 
-            FileSorter.organizeContainer(message.cSharpProjectFile.virtualChildFiles);
+            message.cSharpProjectFile.virtualChildFiles = FileSorter.organizeContainer(message.cSharpProjectFile.virtualChildFiles);
 
             webviewView.webview.postMessage(message);
         });
@@ -226,7 +226,7 @@ export class ReadMessageHandler {
                 .map(absoluteFilePath => IdeFileFactory
                     .constructIdeFile(absoluteFilePath, message.directoryFile.namespace));
 
-            FileSorter.organizeContainer(message.directoryFile.childFiles);
+            message.directoryFile.childFiles = FileSorter.organizeContainer(message.directoryFile.childFiles);
 
             webviewView.webview.postMessage(message);
         });

@@ -15,8 +15,13 @@
     import NugetPackageDependenciesIcon from "./Icons/NugetPackageDependenciesIcon.svelte";
     import ProjectReferencesIcon from "./Icons/ProjectReferencesIcon.svelte";
     import ProjectReferenceIcon from "./Icons/ProjectReferenceIcon.svelte";
+    import type { IdeFile } from "../../../../out/FileSystem/Files/IdeFile";
+    import WwwRootIcon from "./Icons/WwwRootIcon.svelte";
+    import { ConstantsUniqueFiles } from "../../../../out/Constants/ConstantsUniqueFiles";
 
-    export let fileKind: typeof FileKind;
+    export let ideFile: IdeFile;
+
+    $: fileKind = ideFile.fileKind;
 </script>
 
 {#if fileKind === FileKind.solution}
@@ -28,7 +33,11 @@
 {:else if fileKind === FileKind.default}
     <TxtIcon />
 {:else if fileKind === FileKind.directory}
-    <DirectoryIcon />
+    {#if ideFile.absoluteFilePath.filenameNoExtension === ConstantsUniqueFiles.WWW_ROOT_FILENAME_NO_EXTENSION}
+        <WwwRootIcon />
+    {:else}
+        <DirectoryIcon />
+    {/if}
 {:else if fileKind === FileKind.cSharp}
     <CsIcon />
 {:else if fileKind === FileKind.cshtml}

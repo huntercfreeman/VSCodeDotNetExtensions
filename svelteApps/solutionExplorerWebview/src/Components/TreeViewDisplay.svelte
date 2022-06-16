@@ -241,7 +241,7 @@
 		{/if}
 
 		<span class="dni_tree-view-title-text">
-			<FileIconDisplay fileKind={ideFile.fileKind} />
+			<FileIconDisplay ideFile={ideFile} />
 
 			{getTitleText()}
 		</span>
