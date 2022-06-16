@@ -119,8 +119,6 @@
 </script>
 
 <div class="dni_app">
-	Nuget Package Manager
-
 	<NugetPackageManagerControlButtons />
 
 	{#if selectedDotNetSolutionFile}
@@ -178,8 +176,7 @@
 		{/if}
 	{:else}
 		<div>
-			Select a .NET solution using the Solution Explorer then sync this
-			webview
+			Solution is undefined
 		</div>
 	{/if}
 </div>
