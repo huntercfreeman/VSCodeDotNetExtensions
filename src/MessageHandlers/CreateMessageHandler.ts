@@ -18,7 +18,9 @@ import { MessageCreateSolutionFolderInAny } from '../Messages/Create/MessageCrea
 import { MessageCreateTemplatedFileInAny } from '../Messages/Create/MessageCreateTemplatedFileInAny';
 import { IMessage } from "../Messages/IMessage";
 import { MessageReadFilesInDirectory } from '../Messages/Read/MessageReadFilesInDirectory';
+import { MessageReadSolutionIntoTreeView } from '../Messages/Read/MessageReadSolutionIntoTreeView';
 import { MessageReadVirtualFilesInCSharpProject } from '../Messages/Read/MessageReadVirtualFilesInCSharpProject';
+import { MessageReadVirtualFilesInSolution } from '../Messages/Read/MessageReadVirtualFilesInSolution';
 import { SolutionExplorerMessageHandler } from './SolutionExplorerMessageHandler';
 
 const fs = require('fs');
@@ -236,6 +238,46 @@ export class CreateMessageHandler {
             dotNetSolutionFileAbsoluteFilePath = solutionFolder.cSharpProjectModel.parentSolutionAbsoluteFilePath;
         }
 
+        const folder = vscode.workspace.workspaceFolders?.[0];
+        if (folder) {
+
+            let folderUriFsPath = folder.uri.fsPath.endsWith(ConstantsFilePath.STANDARDIZED_FILE_DELIMITER)
+                ? folder.uri.fsPath
+                : folder.uri.fsPath + ConstantsFilePath.STANDARDIZED_FILE_DELIMITER;
+
+            let relativePathToSolutionFile = message.ideFile.absoluteFilePath.initialAbsoluteFilePathStringInput
+                .replace(folderUriFsPath, "");
+            const fileWatcher = vscode.workspace.createFileSystemWatcher(
+                new vscode.RelativePattern(folder, 
+                    relativePathToSolutionFile));
+
+            fileWatcher.onDidChange(async uri => { 
+                switch (message.ideFile.fileKind) {
+                    case FileKind.solution:
+                        
+                        SolutionExplorerMessageHandler
+                            .handleMessage(
+                                webviewView,
+                                new MessageReadVirtualFilesInSolution(
+                                    message.ideFile as DotNetSolutionFile
+                                ));
+
+                        break;
+                    case FileKind.solutionFolder:
+                        break;
+                }
+
+                fileWatcher?.dispose();
+            });
+
+            // is this Fire and Forget delayed callback needed to guarantee dispose of fileWatcher?
+            this.delayCallback(() => {
+                fileWatcher?.dispose();
+            }, 60_000)
+            .catch(function ignore() {});
+        }
+
+
         let messageCreateTerminal = this.getMessageCreateTerminal();
 
         messageCreateTerminal.sendText(
@@ -292,5 +334,11 @@ export class CreateMessageHandler {
         }
 
         return messageCreateTerminal;
+    }
+
+    private static async delayCallback(callback:() => any, delayInMiliseconds: number) {
+        await new Promise(r => setTimeout(r, delayInMiliseconds));
+
+        callback();
     }
 }
