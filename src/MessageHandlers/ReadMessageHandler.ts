@@ -104,7 +104,7 @@ export class ReadMessageHandler {
         message.dotNetSolutionFiles = solutionModels
             .map(x => new DotNetSolutionFile(x));
 
-        ActiveDotNetSolutionFileContainer.activeDotNetSolutionFile = undefined;
+            ActiveDotNetSolutionFileContainer.setActiveDotNetSolutionFile(undefined);
 
         webviewView.webview.postMessage(message);
     }
@@ -142,7 +142,7 @@ export class ReadMessageHandler {
             message.dotNetSolutionFile.virtualChildFiles = message.dotNetSolutionFile.solutionModel!.projects
                 .map(x => new CSharpProjectFile(x));
 
-            ActiveDotNetSolutionFileContainer.activeDotNetSolutionFile = message.dotNetSolutionFile;
+            ActiveDotNetSolutionFileContainer.setActiveDotNetSolutionFile(message.dotNetSolutionFile);
 
             webviewView.webview.postMessage(message);
         });
@@ -151,7 +151,7 @@ export class ReadMessageHandler {
     public static async handleMessageReadActiveDotNetSolutionFile(webviewView: vscode.WebviewView, iMessage: IMessage) {
         let message = iMessage as MessageReadActiveDotNetSolutionFile;
 
-        message.activeDotNetSolutionFile = ActiveDotNetSolutionFileContainer.activeDotNetSolutionFile;
+        ActiveDotNetSolutionFileContainer.notifySubscriptions();
 
         webviewView.webview.postMessage(message);
     }
@@ -183,6 +183,7 @@ export class ReadMessageHandler {
             message.dotNetSolutionFile.virtualChildFiles = message.dotNetSolutionFile.solutionModel!.projects
                 .map(x => new CSharpProjectFile(x));
 
+            ActiveDotNetSolutionFileContainer.setActiveDotNetSolutionFile(message.dotNetSolutionFile);
             webviewView.webview.postMessage(message);
         });
     }

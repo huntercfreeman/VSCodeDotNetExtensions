@@ -1,4 +1,8 @@
 import * as vscode from 'vscode';
+import { ActiveDotNetSolutionFileContainer } from './ActiveDotNetSolutionFileContainer';
+import { AsyncUtility } from './AsyncUtility/AsyncUtility';
+import { ConstantsFilePath } from './Constants/ConstantsFilePath';
+import { SolutionExplorerMessageHandler } from './MessageHandlers/SolutionExplorerMessageHandler';
 import { NugetPackageManagerWebviewProvider } from './UiProviders/NugetPackageManagerWebviewProvider';
 import { SolutionExplorerWebviewProvider } from './UiProviders/SolutionExplorerWebviewProvider';
 
@@ -34,8 +38,6 @@ export function activate(context: vscode.ExtensionContext) {
 			}
 		)
 	);
-
-
 }
 
 export function deactivate() { }

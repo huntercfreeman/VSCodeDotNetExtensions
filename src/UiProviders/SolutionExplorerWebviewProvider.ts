@@ -1,5 +1,7 @@
 import * as vscode from 'vscode';
 import { SolutionExplorerMessageHandler } from '../MessageHandlers/SolutionExplorerMessageHandler';
+import { ActiveDotNetSolutionFileContainer } from '../ActiveDotNetSolutionFileContainer';
+import { MessageReadVirtualFilesInSolution } from '../Messages/Read/MessageReadVirtualFilesInSolution';
 
 const fs = require('fs');
 
@@ -10,6 +12,15 @@ export class SolutionExplorerWebviewProvider implements vscode.WebviewViewProvid
   constructor(private readonly context: vscode.ExtensionContext) { }
 
   public resolveWebviewView(webviewView: vscode.WebviewView) {
+
+    ActiveDotNetSolutionFileContainer.solutionExplorerWebviewProviderSubscription = (activeDotNetSolution) =>
+    {
+      if (activeDotNetSolution) {
+        SolutionExplorerMessageHandler
+          .handleMessage(webviewView, new MessageReadVirtualFilesInSolution(activeDotNetSolution));
+      }
+    };
+
     this._view = webviewView;
 
     webviewView.webview.options = {

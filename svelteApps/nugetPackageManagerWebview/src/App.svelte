@@ -24,8 +24,6 @@
 			type: undefined,
 			value: messageReadActiveDotNetSolutionFile,
 		});
-
-		selectedProjectFile = undefined;
 	}
 
 	function sendGetRequest() {
@@ -121,6 +119,8 @@
 						case MessageReadKind.activeDotNetSolutionFile:
 							selectedDotNetSolutionFile =
 								message.activeDotNetSolutionFile;
+							
+							selectedProjectFile = undefined;
 							break;
 					}
 			}

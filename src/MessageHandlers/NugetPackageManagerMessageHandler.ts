@@ -8,7 +8,7 @@ import { ReadMessageHandler } from "./ReadMessageHandler";
 import { UpdateMessageHandler } from "./UpdateMessageHandler";
 
 export class NugetPackageManagerMessageHandler {
-  public static async handleMessage(webviewView: vscode.WebviewView, untypedMessage: any, callback: any): Promise<void> {
+  public static async handleMessage(webviewView: vscode.WebviewView, untypedMessage: any): Promise<void> {
 
     let message = untypedMessage as IMessage;
 

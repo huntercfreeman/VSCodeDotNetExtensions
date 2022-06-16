@@ -1,5 +1,7 @@
 import * as vscode from 'vscode';
+import { ActiveDotNetSolutionFileContainer } from '../ActiveDotNetSolutionFileContainer';
 import { NugetPackageManagerMessageHandler } from '../MessageHandlers/NugetPackageManagerMessageHandler';
+import { MessageReadActiveDotNetSolutionFile } from '../Messages/Read/MessageReadActiveDotNetSolutionFile';
 
 const fs = require('fs');
 
@@ -10,6 +12,18 @@ export class NugetPackageManagerWebviewProvider implements vscode.WebviewViewPro
   constructor(private readonly context: vscode.ExtensionContext) { }
 
   public resolveWebviewView(webviewView: vscode.WebviewView) {
+
+    ActiveDotNetSolutionFileContainer.nugetPackageManagerWebviewProviderSubscription = (activeDotNetSolution) =>
+    {
+      if (activeDotNetSolution) {
+        let messageReadActiveDotNetSolutionFile =
+          new MessageReadActiveDotNetSolutionFile(activeDotNetSolution);
+
+
+        webviewView.webview.postMessage(messageReadActiveDotNetSolutionFile);
+      }
+    };
+
     this._view = webviewView;
 
     webviewView.webview.options = {
@@ -22,7 +36,7 @@ export class NugetPackageManagerWebviewProvider implements vscode.WebviewViewPro
     webviewView.webview.html = this.getWebviewContent(webviewView.webview);
 
     webviewView.webview.onDidReceiveMessage(async (data) =>
-      NugetPackageManagerMessageHandler.handleMessage(webviewView, data.value, undefined));
+      NugetPackageManagerMessageHandler.handleMessage(webviewView, data.value));
   }
 
   public revive(panel: vscode.WebviewView) {
