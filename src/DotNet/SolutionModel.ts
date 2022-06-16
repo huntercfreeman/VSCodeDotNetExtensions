@@ -1,5 +1,7 @@
 import { ConstantsContextualInformation } from "../Constants/ConstantsContextualInformation";
 import { AbsoluteFilePath } from "../FileSystem/AbsoluteFilePath";
+import { CSharpProjectFile } from "../FileSystem/Files/CSharpProjectFile";
+import { DotNetSolutionFile } from "../FileSystem/Files/DotNetSolutionFile";
 import { DotNetSolutionParser } from "../Parsers/DotNetSolutionParser";
 import { CSharpProjectModel } from "./CSharpProjectModel";
 import { SolutionModelFileHeader } from "./SolutionModelFileHeader";
@@ -19,12 +21,40 @@ export class SolutionModel {
         });
     }
 
-    public static async parseSolution(solution: SolutionModel, callback: any): Promise<void> {
+    public static async parseSolution(dotNetSolutionFile: DotNetSolutionFile, callback: any): Promise<void> {
+
+        let solution = dotNetSolutionFile.solutionModel;
+
         solution.projects = [];
 
         let dotNetSolutionParser = new DotNetSolutionParser(solution);
 
-        dotNetSolutionParser.parse(callback);
+        dotNetSolutionParser.parse(() => {
+
+            // Virtual Child Files are updated after calling the parseSolution method argument named callback()
+            // Therefore we still have access to the previous user interface 'isExpanded' boolean
+            if (dotNetSolutionFile.virtualChildFiles) {
+                for (let i = 0; i < dotNetSolutionFile.virtualChildFiles.length; i++) {
+                    let oldProjectFileState = dotNetSolutionFile.virtualChildFiles[i];
+                    
+                    let oldProjectFileStateProjectIdGuid =
+                        (oldProjectFileState as CSharpProjectFile).cSharpProjectModel.projectIdGuid;
+
+                    //200847FD-6FD5-4F6C-B9E1-96472010C379
+                    //200847FD-6FD5-4F6C-B9E1-96472010C379
+                    let projectModelStillExists = solution.projects.find(project => {
+                        return oldProjectFileStateProjectIdGuid === 
+                            project.projectIdGuid;
+                    });
+                    
+                    if (projectModelStillExists) {
+                        projectModelStillExists.initialIsExpandedState = oldProjectFileState.isExpanded;
+                    }
+                }
+            }
+
+            callback();
+        });
     }
 
     public static async addSolutionFolder(solution: SolutionModel, solutionFolderName: string, callback: any): Promise<void> {

@@ -103,6 +103,7 @@ export class CSharpProjectModel {
     public projectReferences: CSharpProjectProjectReferenceFile[] = [];
     public rootNamespace: string;
     public readonly parentSolutionAbsoluteFilePath: AbsoluteFilePath;
+    public initialIsExpandedState: boolean = false;
 
     public contextualInformation: string = ConstantsContextualInformation.TREE_VIEW_CSHARP_PROJECT_CONTEXT;
 }

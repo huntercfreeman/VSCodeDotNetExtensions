@@ -18,6 +18,7 @@ export abstract class IdeFile {
     public virtualChildFiles: IdeFile[] | undefined = undefined;
     public virtualParent: IdeFile[] | undefined = undefined;
     public hideExpansionChevronWhenNoChildFiles: boolean = false;
+    public isExpanded: boolean = false;
 
     public abstract readonly contextualInformation: ContextualInformationDatum[];
 

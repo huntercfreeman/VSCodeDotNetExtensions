@@ -22,4 +22,6 @@ export class DotNetSolutionFile extends IdeFile {
         // ContextualInformationDatum.createSolutionFolder,
         ContextualInformationDatum.refreshChildFiles,
     ];
+
+    public isExpanded: boolean = true;
 }

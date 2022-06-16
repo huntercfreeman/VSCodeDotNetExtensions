@@ -35,6 +35,8 @@ export class CSharpProjectFile extends IdeFile {
         this.constantChildFiles = [
             new CSharpProjectDependenciesFile(this.cSharpProjectModel.absoluteFilePath),
         ];
+        
+        this.isExpanded = cSharpProjectModel.initialIsExpandedState;
     }
 
     public constantChildFiles: any[] | undefined;

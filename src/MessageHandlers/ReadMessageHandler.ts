@@ -112,7 +112,7 @@ export class ReadMessageHandler {
     public static async handleMessageReadSolutionIntoTreeViewAsync(webviewView: vscode.WebviewView, iMessage: IMessage) {
         let message = iMessage as MessageReadSolutionIntoTreeView;
 
-        return await SolutionModel.parseSolution(message.dotNetSolutionFile.solutionModel!, async () => {
+        return await SolutionModel.parseSolution(message.dotNetSolutionFile, async () => {
 
             let parsedRootNamespaces = [];
 
@@ -179,7 +179,7 @@ export class ReadMessageHandler {
     public static async handleMessageReadVirtualFilesInSolution(webviewView: vscode.WebviewView, iMessage: IMessage) {
         let message = iMessage as MessageReadSolutionIntoTreeView;
 
-        return await SolutionModel.parseSolution(message.dotNetSolutionFile.solutionModel!, () => {
+        return await SolutionModel.parseSolution(message.dotNetSolutionFile, () => {
             message.dotNetSolutionFile.virtualChildFiles = message.dotNetSolutionFile.solutionModel!.projects
                 .map(x => new CSharpProjectFile(x));
 

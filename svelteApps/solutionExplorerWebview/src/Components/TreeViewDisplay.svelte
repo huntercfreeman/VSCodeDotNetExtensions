@@ -17,7 +17,6 @@
 
 	export let ideFile: IdeFile;
 
-	let isExpanded: boolean = false;
 	let discardIsExpanded: boolean = false;
 
 	let children: any[] | undefined;
@@ -237,7 +236,7 @@
 			</span>
 		{:else}
 			<span class="dni_tree-view-title-expansion-chevron">
-				<ExpansionChevron bind:isExpanded />
+				<ExpansionChevron bind:isExpanded={ideFile.isExpanded} />
 			</span>
 		{/if}
 
@@ -249,7 +248,7 @@
 	</div>
 
 	<div class="dni_tree-view-children">
-		{#if isExpanded}
+		{#if ideFile.isExpanded}
 			{#each children ?? getChildFiles() as child (child.nonce)}
 				{#if !hasDifferentParentContainer(child)}
 					<svelte:self ideFile={child} />
