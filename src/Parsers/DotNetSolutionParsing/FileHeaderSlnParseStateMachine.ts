@@ -12,32 +12,52 @@ export class FileHeaderSlnParseStateMachine extends SlnParseStateMachineBase {
     }
 
     public override parseRecursively() {
-        this.getFormatVersion();
-
-        this.getHashTagVisualStudioVersion();
-
-        this.getVisualStudioVersion();
-
-        this.getMinimumVisualStudioVersion();
-    }
-
-    private getFormatVersion() {
         let currentCharacter = "";
 
-        // Format Version Skip
+        // Skip to next token
         while (!endOfFile(currentCharacter = this.stringReader.consume(1))) {
 
             if (this.stringReader.isStartOfToken(ConstantsSolutionFile.START_OF_FORMAT_VERSION_TOKEN,
                 currentCharacter)) {
 
-                //                                          --------------
-                // 'Microsoft Visual Studio Solution File, Format Version 12.00'
-                //                                          --------------
                 let _ = this.stringReader.consume(ConstantsSolutionFile.START_OF_FORMAT_VERSION_TOKEN.length - 1);
 
-                break;
+                this.getFormatVersion();
+            }
+            else if (this.stringReader.isStartOfToken(ConstantsSolutionFile.START_OF_HASH_TAG_VISUAL_STUDIO_VERSION_TOKEN,
+                currentCharacter)) {
+
+                let _ = this.stringReader.consume(ConstantsSolutionFile.START_OF_HASH_TAG_VISUAL_STUDIO_VERSION_TOKEN.length - 1);
+
+                this.getHashTagVisualStudioVersion();
+            }
+            else if (this.stringReader.isStartOfToken(ConstantsSolutionFile.START_OF_VISUAL_STUDIO_VERSION_TOKEN,
+                currentCharacter)) {
+
+                let _ = this.stringReader.consume(ConstantsSolutionFile.START_OF_VISUAL_STUDIO_VERSION_TOKEN.length - 1);
+
+                this.getVisualStudioVersion();
+            }
+            else if (this.stringReader.isStartOfToken(ConstantsSolutionFile.START_OF_MINIMUM_VISUAL_STUDIO_VERSION_TOKEN,
+                currentCharacter)) {
+
+                let _ = this.stringReader.consume(ConstantsSolutionFile.START_OF_MINIMUM_VISUAL_STUDIO_VERSION_TOKEN.length - 1);
+
+                this.getMinimumVisualStudioVersion();
+            }
+            else if (this.stringReader.isStartOfToken(ConstantsSolutionFile.START_OF_PROJECT_DEFINITION,
+                currentCharacter)) {
+                    break;
+            }
+            else if (this.stringReader.isStartOfToken(ConstantsSolutionFile.START_OF_GLOBAL,
+                currentCharacter)) {
+                    break;
             }
         }
+    }
+
+    private getFormatVersion() {
+        let currentCharacter = "";
 
         // Format Version if unnecessary whitespace
         //                                                        --------
@@ -76,21 +96,6 @@ export class FileHeaderSlnParseStateMachine extends SlnParseStateMachineBase {
     private getHashTagVisualStudioVersion() {
         let currentCharacter = "";
 
-        // # Visual Studio Version Skip
-        while (!endOfFile(currentCharacter = this.stringReader.consume(1))) {
-
-            if (this.stringReader.isStartOfToken(ConstantsSolutionFile.START_OF_HASH_TAG_VISUAL_STUDIO_VERSION_TOKEN,
-                currentCharacter)) {
-
-                //  ------------------------
-                // '# Visual Studio Version 17'
-                //  ------------------------
-                let _ = this.stringReader.consume(ConstantsSolutionFile.START_OF_HASH_TAG_VISUAL_STUDIO_VERSION_TOKEN.length - 1);
-
-                break;
-            }
-        }
-
         // # Visual Studio Version if unnecessary whitespace
         //                          -----
         // '# Visual Studio Version      17'
@@ -128,21 +133,6 @@ export class FileHeaderSlnParseStateMachine extends SlnParseStateMachineBase {
     private getVisualStudioVersion() {
         let currentCharacter = "";
 
-        // VisualStudioVersion Skip
-        while (!endOfFile(currentCharacter = this.stringReader.consume(1))) {
-
-            if (this.stringReader.isStartOfToken(ConstantsSolutionFile.START_OF_VISUAL_STUDIO_VERSION_TOKEN,
-                currentCharacter)) {
-
-                //  ----------------------
-                // 'VisualStudioVersion = 17.0.31912.275'
-                //  ----------------------
-                let _ = this.stringReader.consume(ConstantsSolutionFile.START_OF_VISUAL_STUDIO_VERSION_TOKEN.length - 1);
-
-                break;
-            }
-        }
-
         // VisualStudioVersion if unnecessary whitespace
         //                        ---------
         // 'VisualStudioVersion =    \n \n 17.0.31912.275'
@@ -179,21 +169,6 @@ export class FileHeaderSlnParseStateMachine extends SlnParseStateMachineBase {
 
     private getMinimumVisualStudioVersion() {
         let currentCharacter = "";
-
-        // MinimumVisualStudioVersion Skip
-        while (!endOfFile(currentCharacter = this.stringReader.consume(1))) {
-
-            if (this.stringReader.isStartOfToken(ConstantsSolutionFile.START_OF_MINIMUM_VISUAL_STUDIO_VERSION_TOKEN,
-                currentCharacter)) {
-
-                //  -----------------------------
-                // 'MinimumVisualStudioVersion = 10.0.40219.1'
-                //  -----------------------------
-                let _ = this.stringReader.consume(ConstantsSolutionFile.START_OF_MINIMUM_VISUAL_STUDIO_VERSION_TOKEN.length - 1);
-
-                break;
-            }
-        }
 
         // MinimumVisualStudioVersion if unnecessary whitespace
         //                               -----------------
