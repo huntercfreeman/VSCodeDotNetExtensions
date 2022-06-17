@@ -16,7 +16,7 @@ export class FileSlnParseStateMachine extends SlnParseStateMachineBase {
         super(stringReader);
     }
 
-    public override parseRecursively() {
+    public override parse() {
         let currentCharacter: string = "";
 
         while (!endOfFile(currentCharacter = this.stringReader.consume(1))) {
@@ -26,7 +26,9 @@ export class FileSlnParseStateMachine extends SlnParseStateMachineBase {
                     new FileHeaderSlnParseStateMachine(this.stringReader,
                         this.solutionModel.fileHeader);
 
-                fileHeaderSlnParseStateMachine.parseRecursively();
+                fileHeaderSlnParseStateMachine.parse();
+
+                this.stringReader.skipBackwards(1);
             }
             else if (this.stringReader.isStartOfToken(ConstantsSolutionFile.START_OF_PROJECT_DEFINITION,
                 currentCharacter)) {
@@ -41,7 +43,7 @@ export class FileSlnParseStateMachine extends SlnParseStateMachineBase {
                     new ProjectDefinitionSlnParseStateMachine(this.stringReader,
                         temporaryCSharpProjectModel);
 
-                projectDefinitionSlnParseStateMachine.parseRecursively();
+                projectDefinitionSlnParseStateMachine.parse();
 
                 let definedCSharpProjectModel = new CSharpProjectModel(this.solutionModel,
                     temporaryCSharpProjectModel.projectTypeGuid,
@@ -59,7 +61,7 @@ export class FileSlnParseStateMachine extends SlnParseStateMachineBase {
                     new GlobalSlnParseStateMachine(this.stringReader,
                         this.solutionModel);
 
-                globalSlnParseStateMachine.parseRecursively();
+                globalSlnParseStateMachine.parse();
             }
         }
     }

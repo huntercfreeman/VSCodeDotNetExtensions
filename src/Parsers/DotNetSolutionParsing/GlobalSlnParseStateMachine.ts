@@ -17,7 +17,7 @@ export class GlobalSlnParseStateMachine extends SlnParseStateMachineBase {
         super(stringReader);
     }
 
-    public override parseRecursively() {
+    public override parse() {
 
         let currentCharacter: string = "";
 

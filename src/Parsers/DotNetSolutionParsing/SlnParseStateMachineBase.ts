@@ -4,5 +4,5 @@ export abstract class SlnParseStateMachineBase {
     constructor(protected readonly stringReader: StringReader) {
     }
 
-    public abstract parseRecursively(): void;
+    public abstract parse(): void;
 }

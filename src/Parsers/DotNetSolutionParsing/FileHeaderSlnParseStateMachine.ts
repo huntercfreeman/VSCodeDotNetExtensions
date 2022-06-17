@@ -11,7 +11,7 @@ export class FileHeaderSlnParseStateMachine extends SlnParseStateMachineBase {
         super(stringReader);
     }
 
-    public override parseRecursively() {
+    public override parse() {
         let currentCharacter = "";
 
         // Skip to next token

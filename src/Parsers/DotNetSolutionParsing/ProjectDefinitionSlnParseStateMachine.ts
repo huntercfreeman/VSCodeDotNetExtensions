@@ -11,7 +11,7 @@ export class ProjectDefinitionSlnParseStateMachine extends SlnParseStateMachineB
         super(stringReader);
     }
 
-    public override parseRecursively() {
+    public override parse() {
         this.getGuid((character) => this.temporaryCSharpProjectModel.projectTypeGuid += character);
 
         this.getString((character) => this.temporaryCSharpProjectModel.displayName += character);

@@ -20,6 +20,6 @@ export class SlnParser {
             new FileSlnParseStateMachine(this._stringReader,
                 this.solutionModel);
 
-        fileSlnParseStateMachine.parseRecursively();
+        fileSlnParseStateMachine.parse();
     }
 }
