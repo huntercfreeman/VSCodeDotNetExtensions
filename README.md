@@ -3,6 +3,16 @@
 # How to Build this Repository
 
 <details>
+  <summary>Expansion: Minimum Version of Visual Studio Code</summary>
+
+  The minimum required VSCode version is 1.68.0
+
+  ![/DocumentationImages//Root-README-Images/requiredVSCodeVersion.png](/DocumentationImages//Root-README-Images/requiredVSCodeVersion.png)
+</details>
+
+---
+
+<details>
   <summary>Expansion: Individual Application README.md files</summary>
   
 For succinct to the point 'how to build' documentation go to each application in the repo's README.md individually (following this text are the links to those README.md files)
