@@ -39,7 +39,7 @@ export class CSharpProjectModel {
             // This is necessary for when a solution folder
             // is empty otherwise it would 100% be guaranteed
             // to be a solution folder as it would show in the
-            // solution folders section of the .sln file.;
+            // solution folders section of the .sln file.
 
             this.solutionFolderEntries = [];
             this.rootNamespace = "";

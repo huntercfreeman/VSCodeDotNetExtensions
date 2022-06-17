@@ -124,6 +124,7 @@
 	function titleOnClick(e: MouseEvent) {
 		switch (ideFile.fileKind) {
 			case FileKind.solutionFolder:
+			case FileKind.projectDependencies:
 			case FileKind.projectReferences:
 			case FileKind.projectReference:
 			case FileKind.nugetPackageDependencies:
