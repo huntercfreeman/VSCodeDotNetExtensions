@@ -133,7 +133,8 @@
 
 		<SelectProjectFileForm
 			bind:selectedProjectFile
-			projectFiles={selectedDotNetSolutionFile.solutionModel.projects}
+			projectFiles={selectedDotNetSolutionFile.solutionModel.projects
+							.filter(x => x.solutionFolderEntries === undefined)}
 		/>
 
 		<input style="margin-top: 4px;" bind:value={nugetQuery} />
