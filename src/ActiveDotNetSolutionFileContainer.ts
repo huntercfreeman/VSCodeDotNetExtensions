@@ -1,5 +1,6 @@
 import * as vscode from 'vscode';
 import { ConstantsFilePath } from './Constants/ConstantsFilePath';
+import { FilePathStandardizer } from './FileSystem/FilePathStandardizer';
 import { DotNetSolutionFile } from "./FileSystem/Files/DotNetSolutionFile";
 
 export class ActiveDotNetSolutionFileContainer {
@@ -54,9 +55,11 @@ export class ActiveDotNetSolutionFileContainer {
 
                 if (workspaceFolderZeroIndex) {
         
-                    let folderUriFsPath = workspaceFolderZeroIndex.uri.fsPath.endsWith(ConstantsFilePath.STANDARDIZED_FILE_DELIMITER)
-                        ? workspaceFolderZeroIndex.uri.fsPath
-                        : workspaceFolderZeroIndex.uri.fsPath + ConstantsFilePath.STANDARDIZED_FILE_DELIMITER;
+                    let workspaceStandardizedFilePath = FilePathStandardizer.standardizeFilePath(workspaceFolderZeroIndex.uri.fsPath);
+
+                    let folderUriFsPath = workspaceStandardizedFilePath.endsWith(ConstantsFilePath.STANDARDIZED_FILE_DELIMITER)
+                        ? workspaceStandardizedFilePath
+                        : workspaceStandardizedFilePath + ConstantsFilePath.STANDARDIZED_FILE_DELIMITER;
             
                     let relativePathToSolutionFile = 
                         this.activeDotNetSolutionFile.absoluteFilePath.initialAbsoluteFilePathStringInput
