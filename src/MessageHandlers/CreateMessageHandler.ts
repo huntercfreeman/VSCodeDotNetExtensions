@@ -1,5 +1,4 @@
 import * as vscode from 'vscode';
-import { AsyncUtility } from '../AsyncUtility/AsyncUtility';
 import { ConstantsDotNetCli } from '../Constants/ConstantsDotNetCli';
 import { ConstantsFilePath } from '../Constants/ConstantsFilePath';
 import { ConstantsFileTemplates } from '../Constants/ConstantsFileTemplates';
@@ -17,13 +16,10 @@ import { MessageCreateDirectoryInAny } from '../Messages/Create/MessageCreateDir
 import { MessageCreateDotNetSolutionInWorkspace } from '../Messages/Create/MessageCreateDotNetSolutionInWorkspace';
 import { MessageCreateEmptyFileInAny } from '../Messages/Create/MessageCreateEmptyFileInAny';
 import { MessageCreateKind } from "../Messages/Create/MessageCreateKind";
-import { MessageCreateSolutionFolderInAny } from '../Messages/Create/MessageCreateSolutionFolderInAny';
 import { MessageCreateTemplatedFileInAny } from '../Messages/Create/MessageCreateTemplatedFileInAny';
 import { IMessage } from "../Messages/IMessage";
 import { MessageReadFilesInDirectory } from '../Messages/Read/MessageReadFilesInDirectory';
-import { MessageReadSolutionIntoTreeView } from '../Messages/Read/MessageReadSolutionIntoTreeView';
 import { MessageReadVirtualFilesInCSharpProject } from '../Messages/Read/MessageReadVirtualFilesInCSharpProject';
-import { MessageReadVirtualFilesInSolution } from '../Messages/Read/MessageReadVirtualFilesInSolution';
 import { SolutionExplorerMessageHandler } from './SolutionExplorerMessageHandler';
 
 const fs = require('fs');
@@ -43,9 +39,6 @@ export class CreateMessageHandler {
                 await this.handleMessageCreateCSharpProjectInAny(webviewView, message);
                 break;
             case MessageCreateKind.projectInSolutionFolder:
-                break;
-            case MessageCreateKind.solutionFolderInAny:
-                await this.handleMessageCreateSolutionFolder(webviewView, message);
                 break;
             case MessageCreateKind.directoryInAny:
                 await this.handleMessageCreateDirectoryInAny(webviewView, message);
@@ -342,39 +335,33 @@ export class CreateMessageHandler {
             var z = 2;
         }
     }
+    
+    // public static async handleMessageCreateSolutionFolderInSolutionFile(webviewView: vscode.WebviewView, iMessage: IMessage) {
+    //     let message = iMessage as MessageCreateSolutionFolderInAny;
+    //
+    //     let dotNetSolutionFile = message.ideFile as DotNetSolutionFile;
+    //
+    //     // TODO: Allow adding of a empty SolutionFolder (dotnet CLI seems to require at least one project be in a solution folder)
+    // }
+    
+    // TODO: The dotnet CLI seemingly will not allow an empty folder.
+    // Solution folders are fully functional however, one must make a .csproj and then move it into a
+    // solution folder - if the solution folder does not exist by name provided it is then created. 
+    // Whereas more naturally one in Visual Studio makes the Solution Folder then the .csproj (usually)
+    // public static async handleMessageCreateSolutionFolderInSolutionFolder(webviewView: vscode.WebviewView, iMessage: IMessage) {
+    //     let message = iMessage as MessageCreateSolutionFolderInAny;
 
-    public static async handleMessageCreateSolutionFolder(webviewView: vscode.WebviewView, iMessage: IMessage) {
-        let message = iMessage as MessageCreateSolutionFolderInAny;
+    //     let solutionFolder = message.ideFile as CSharpProjectFile;
 
-        let dotNetSolutionFileAbsoluteFilePath: AbsoluteFilePath | undefined;
+    //     let messageCreateTerminal = this.getMessageCreateTerminal();
 
-        let solutionFolder: CSharpProjectFile | undefined;
+    //     messageCreateTerminal.sendText(
+    //         ConstantsDotNetCli.formatDotNetNewCSharpProject(message.cSharpProjectNameNoExtension, message.templateName) +
+    //         ` ${ConstantsTerminal.TERMINAL_RUN_IF_PREVIOUS_COMMAND_SUCCESSFUL_OPERATOR} ` +
+    //         ConstantsDotNetCli.formatDotNetAddCSharpProjectToSolutionUsingProjectName(message.cSharpProjectNameNoExtension, dotNetSolutionFileAbsoluteFilePath!));
 
-        if (message.ideFile.fileKind === FileKind.solution) {
-            let dotNetSolutionFile = message.ideFile as DotNetSolutionFile;
-
-            dotNetSolutionFileAbsoluteFilePath = dotNetSolutionFile.absoluteFilePath;
-        }
-        else if (message.ideFile.fileKind === FileKind.solutionFolder) {
-            solutionFolder = message.ideFile as CSharpProjectFile;
-
-            dotNetSolutionFileAbsoluteFilePath = solutionFolder.cSharpProjectModel.parentSolutionAbsoluteFilePath;
-        }
-
-        // TODO: Tried to add solution folder using dotnet cli
-        // however you cannot within reason add an empty solution folder
-        // using the cli. Within reason referring to it was very hacky.
-        // In short, you must at all times have a .csproj file within the solution folder.
-        // So, I made an empty csproj to act as a temporary .csproj so I was allowed to make
-        // the solution folder. Then I deleted the csproj but it also
-        // would delete the solution folder cause now it was empty so I gotta
-        // revisit this.
-
-        if (solutionFolder) {
-            // TODO: Add create solution folder within solution folder.
-            var z = 2;
-        }
-    }
+    //     messageCreateTerminal.show();
+    // }
 
     private static getMessageCreateTerminal() {
         let messageCreateTerminal = vscode.window.terminals.find(x => x.name === ConstantsTerminal.MESSAGE_CREATE_TERMINAL_NAME);

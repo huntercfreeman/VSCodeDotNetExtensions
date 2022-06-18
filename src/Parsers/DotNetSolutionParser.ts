@@ -1,7 +1,6 @@
 import { SolutionModel } from "../DotNet/SolutionModel";
 import { AbsoluteFilePath } from "../FileSystem/AbsoluteFilePath";
 import { SlnParser } from "./DotNetSolutionParsing/SlnParser";
-import { StringReader } from "./StringReader";
 
 const fs = require('fs');
 

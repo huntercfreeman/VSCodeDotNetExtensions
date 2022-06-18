@@ -5,7 +5,6 @@
     import MenuOptionCreateDirectory from "./ContextMenuOptions/MenuOptionCreateDirectory.svelte";
     import MenuOptionCreateNewCSharpProject from "./ContextMenuOptions/MenuOptionCreateNewCSharpProject.svelte";
     import MenuOptionCreateNewEmptyFile from "./ContextMenuOptions/MenuOptionCreateNewEmptyFile.svelte";
-    import MenuOptionCreateNewSolutionFolder from "./ContextMenuOptions/MenuOptionCreateNewSolutionFolder.svelte";
     import MenuOptionCreateNewTemplatedFile from "./ContextMenuOptions/MenuOptionCreateNewTemplatedFile.svelte";
     import MenuOptionRefreshChildFiles from "./ContextMenuOptions/MenuOptionRefreshChildFiles.svelte";
     import MenuOptionRemoveCSharpProject from "./ContextMenuOptions/MenuOptionRemoveCSharpProject.svelte";
@@ -13,6 +12,7 @@
     import MenuOptionRemoveNugetPackageReference from "./ContextMenuOptions/MenuOptionRemoveNugetPackageReference.svelte";
     import MenuOptionStartDebugging from "./ContextMenuOptions/MenuOptionStartDebugging.svelte";
     import MenuOptionStartWithoutDebugging from "./ContextMenuOptions/MenuOptionStartWithoutDebugging.svelte";
+import MenuOptionPutProjectInSolutionFolder from "./ContextMenuOptions/MenuOptionPutProjectInSolutionFolder.svelte";
 
     export let contextualInformation: ContextualInformationDatum[];
     export let closeMenu;
@@ -41,8 +41,8 @@
         <MenuOptionRemoveCSharpProjectReference {closeMenu} />
     {:else if ContextualInformationDatum.checkDatumEquality(ContextualInformationDatum.removeNugetPackageReference, contextualInformationDatum)}
         <MenuOptionRemoveNugetPackageReference {closeMenu} />
-    {:else if ContextualInformationDatum.checkDatumEquality(ContextualInformationDatum.createSolutionFolder, contextualInformationDatum)}
-        <MenuOptionCreateNewSolutionFolder {closeMenu} />
+    {:else if ContextualInformationDatum.checkDatumEquality(ContextualInformationDatum.putProjectInSolutionFolder, contextualInformationDatum)}
+        <MenuOptionPutProjectInSolutionFolder {closeMenu} />
     {:else if ContextualInformationDatum.checkDatumEquality(ContextualInformationDatum.removeCSharpProject, contextualInformationDatum)}
         <MenuOptionRemoveCSharpProject {closeMenu} />
     {/if}

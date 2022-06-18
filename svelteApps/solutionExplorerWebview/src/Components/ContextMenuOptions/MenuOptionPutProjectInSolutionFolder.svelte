@@ -2,63 +2,63 @@
     import { contextMenuTarget } from "../menu";
     import MenuOption from "../MenuOption.svelte";
     import { FileKind } from "../../../../../out/FileSystem/FileKind";
-    import { MessageCreateSolutionFolderInAny } from "../../../../../out/Messages/Create/MessageCreateSolutionFolderInAny";
+    import { MessageUpdatePutProjectInSolutionFolder } from "../../../../../out/Messages/Update/MessageUpdatePutProjectInSolutionFolder";
 
     export let closeMenu;
 
     let contextMenuTargetValue;
-    let createNewSolutionFolderName: string | undefined;
+    let solutionFolderName: string | undefined;
 
     contextMenuTarget.subscribe((value) => {
         contextMenuTargetValue = value;
     });
 
-    function createNewSolutionFolder() {
+    function putInSolutionFolder() {
         switch (contextMenuTargetValue.fileKind) {
-            case FileKind.solution:
-                let messageCreateSolutionFolderInAny =
-                    new MessageCreateSolutionFolderInAny(
+            case FileKind.cSharpProject:
+                let messageUpdatePutProjectInSolutionFolder =
+                    new MessageUpdatePutProjectInSolutionFolder(
                         contextMenuTargetValue,
-                        createNewSolutionFolderName
+                        solutionFolderName
                     );
 
                 tsVscode.postMessage({
                     type: undefined,
-                    value: messageCreateSolutionFolderInAny,
+                    value: messageUpdatePutProjectInSolutionFolder,
                 });
         }
 
         closeMenu();
     }
 
-    function startFormCreateNewSolutionFolder() {
-        createNewSolutionFolderName = "";
+    function startFormPutInSolutionFolder() {
+        solutionFolderName = "";
     }
 </script>
 
 {#if contextMenuTargetValue}
     <MenuOption
         onClickStopPropagation={true}
-        onClick={startFormCreateNewSolutionFolder}
-        text="New Solution Folder"
+        onClick={startFormPutInSolutionFolder}
+        text="Put in Solution Folder"
     />
 
-    {#if createNewSolutionFolderName !== undefined}
+    {#if solutionFolderName !== undefined}
         <input
-            placeholder="Name for Solution Folder"
-            bind:value={createNewSolutionFolderName}
+            placeholder="Solution Folder Name"
+            bind:value={solutionFolderName}
         />
 
         <div>
             <div>
                 <div>Create Solution Folder:</div>
                 <div style="margin-left: 12px;">
-                    <em>{createNewSolutionFolderName}</em>
+                    <em>{solutionFolderName}</em>
                 </div>
             </div>
         </div>
 
-        <button on:click={createNewSolutionFolder}>Accept</button>
+        <button on:click={putInSolutionFolder}>Accept</button>
         <button on:click={closeMenu}>Decline</button>
     {/if}
 {/if}

@@ -19,7 +19,6 @@ export class DotNetSolutionFile extends IdeFile {
     public readonly contextualInformation: ContextualInformationDatum[] = [
         ContextualInformationDatum.createNewCSharpProject,
         ContextualInformationDatum.addExistingCSharpProject,
-        // ContextualInformationDatum.createSolutionFolder,
         ContextualInformationDatum.refreshChildFiles,
     ];
 

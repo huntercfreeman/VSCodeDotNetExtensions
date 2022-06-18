@@ -42,15 +42,30 @@ export class ConstantsDotNetCli {
 
         return `dotnet sln \"${dotNetSolutionFile.absoluteFilePath.initialAbsoluteFilePathStringInput}\" add \"${projectFsPath}\"`;
     }
-
+    
     public static formatDotNetAddCSharpProjectReferenceToCSharpProject(receivingProjectAbsoluteFilePath: AbsoluteFilePath, referenceProjectAbsoluteFilePathString: string): string {
 
         return `dotnet add \"${receivingProjectAbsoluteFilePath.initialAbsoluteFilePathStringInput}\" reference \"${referenceProjectAbsoluteFilePathString}\"`;
     }
 
+    /**
+     * 
+     * I'm working on something else right now but are 
+     * these variable names correct? They seem nonsensically named.
+     * 
+     */
     public static formatDotNetRemoveCSharpProjectReferenceFromCSharpProject(parentCSharpProjectInitialAbsoluteFilePath: AbsoluteFilePath, cSharpProjectReferenceAbsoluteFilePath: AbsoluteFilePath): string {
 
         return `dotnet remove \"${parentCSharpProjectInitialAbsoluteFilePath.initialAbsoluteFilePathStringInput}\" reference \"${cSharpProjectReferenceAbsoluteFilePath.initialAbsoluteFilePathStringInput}\"`;
+    }
+    
+    public static formatDotNetPutProjectInSolutionFolder(projectAbsoluteFilePath: AbsoluteFilePath, 
+        dotNetSolutionFileAbsoluteFilePath: AbsoluteFilePath,
+        solutionFolderName: string): string {
+
+        return `dotnet sln ${dotNetSolutionFileAbsoluteFilePath.initialAbsoluteFilePathStringInput}` +
+               ` add ${projectAbsoluteFilePath.initialAbsoluteFilePathStringInput}` +
+               ` --solution-folder ${solutionFolderName}`;
     }
 
     public static formatDotNetAddNugetPackageReferenceToCSharpProject(cSharpProjectInitialAbsoluteFilePath: AbsoluteFilePath,

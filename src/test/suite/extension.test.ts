@@ -4,11 +4,14 @@ import { debug } from 'console';
 // You can import and use all API from the 'vscode' module
 // as well as import your extension to test it
 import * as vscode from 'vscode';
+import { parseSlnTest } from './DotNet/TESTS_SolutionModel';
 // import * as myExtension from '../../extension';
 
 suite('Extension Test Suite', () => {
 	vscode.window.showInformationMessage('Start all tests.');
 
+	test('parseSlnTest test', async () => parseSlnTest());
+	
 	test('myAsyncFunctionNoCallback test', async () => {
 		await myAsyncFunctionNoCallback();
 	});

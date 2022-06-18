@@ -16,8 +16,6 @@ export class CSharpProjectFile extends IdeFile {
                 .map(x => new CSharpProjectFile(x));
 
             this.contextualInformation = [
-                // ContextualInformationDatum.createSolutionFolder,
-                ContextualInformationDatum.createNewCSharpProject,
             ];
         }
         else {
@@ -29,6 +27,7 @@ export class CSharpProjectFile extends IdeFile {
                 ContextualInformationDatum.removeCSharpProject,
                 ContextualInformationDatum.startWithoutDebugging,
                 ContextualInformationDatum.startDebugging,
+                ContextualInformationDatum.putProjectInSolutionFolder,
             ];
         }
 

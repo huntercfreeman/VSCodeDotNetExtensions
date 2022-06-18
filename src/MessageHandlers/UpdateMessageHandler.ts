@@ -10,6 +10,7 @@ import { MessageUpdateRemoveProjectReference } from '../Messages/Update/MessageU
 import { MessageUpdateAddNugetPackageReference } from '../Messages/Update/MessageUpdateAddNugetPackageReference';
 import { MessageUpdateRemoveNugetPackageReference } from '../Messages/Update/MessageUpdateRemoveNugetPackageReference';
 import { MessageUpdateRemoveProject } from '../Messages/Update/MessageUpdateRemoveProject';
+import { MessageUpdatePutProjectInSolutionFolder } from '../Messages/Update/MessageUpdatePutProjectInSolutionFolder';
 
 export class UpdateMessageHandler {
     public static async handleMessage(webviewView: vscode.WebviewView, message: IMessage): Promise<void> {
@@ -21,6 +22,9 @@ export class UpdateMessageHandler {
                 break;
             case MessageUpdateKind.removeProject:
                 await this.handleMessageUpdateRemoveProject(webviewView, message);
+                break;
+            case MessageUpdateKind.putProjectInSolutionFolder:
+                await this.handleMessageUpdatePutProjectInSolutionFolder(webviewView, message);
                 break;
             case MessageUpdateKind.addProjectReference:
                 await this.handleMessageUpdateAddProjectReference(webviewView, message);
@@ -70,6 +74,24 @@ export class UpdateMessageHandler {
         messageUpdateTerminal.sendText(
             ConstantsDotNetCli.formatDotNetRemoveCSharpProjectFromSolutionUsingProjectUsingAbsoluteFilePath(message.cSharpProjectFile.absoluteFilePath,
                 message.cSharpProjectFile.cSharpProjectModel.parentSolutionAbsoluteFilePath));
+
+        messageUpdateTerminal.show();
+    }
+    
+    public static async handleMessageUpdatePutProjectInSolutionFolder(webviewView: vscode.WebviewView, iMessage: IMessage) {
+        let message = iMessage as MessageUpdatePutProjectInSolutionFolder;
+
+        let messageUpdateTerminal = this.getMessageUpdateTerminal();
+
+        let removeProjectCommand = ConstantsDotNetCli.formatDotNetRemoveCSharpProjectFromSolutionUsingProjectUsingAbsoluteFilePath(message.cSharpProjectFile.absoluteFilePath,
+            message.cSharpProjectFile.cSharpProjectModel.parentSolutionAbsoluteFilePath);
+
+        let addBackProjectButInSolutionFolderCommand = ConstantsDotNetCli.formatDotNetPutProjectInSolutionFolder(message.cSharpProjectFile.absoluteFilePath,
+            message.cSharpProjectFile.cSharpProjectModel.parentSolutionAbsoluteFilePath,
+            message.solutionFolderName);
+
+        messageUpdateTerminal.sendText(removeProjectCommand + " && " +
+                                       addBackProjectButInSolutionFolderCommand);
 
         messageUpdateTerminal.show();
     }

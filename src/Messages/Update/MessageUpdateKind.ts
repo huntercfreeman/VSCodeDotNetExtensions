@@ -4,5 +4,6 @@ export enum MessageUpdateKind {
     removeProjectReference,
     addNugetPackageReference,
     removeNugetPackageReference,
-    removeProject
+    removeProject,
+    putProjectInSolutionFolder
 }
