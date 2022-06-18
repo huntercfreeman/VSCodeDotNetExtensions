@@ -63,9 +63,9 @@ export class ConstantsDotNetCli {
         dotNetSolutionFileAbsoluteFilePath: AbsoluteFilePath,
         solutionFolderName: string): string {
 
-        return `dotnet sln ${dotNetSolutionFileAbsoluteFilePath.initialAbsoluteFilePathStringInput}` +
-               ` add ${projectAbsoluteFilePath.initialAbsoluteFilePathStringInput}` +
-               ` --solution-folder ${solutionFolderName}`;
+        return `dotnet sln \"${dotNetSolutionFileAbsoluteFilePath.initialAbsoluteFilePathStringInput}\"` +
+               ` add \"${projectAbsoluteFilePath.initialAbsoluteFilePathStringInput}\"` +
+               ` --solution-folder \"${solutionFolderName}\"`;
     }
 
     public static formatDotNetAddNugetPackageReferenceToCSharpProject(cSharpProjectInitialAbsoluteFilePath: AbsoluteFilePath,
