@@ -1,7 +1,8 @@
 <script lang="ts">
-	import { contextMenuTarget } from "../menu";
-	import MenuOption from "../MenuOption.svelte";
-	import TextInputForm from "../TextInputForm.svelte";
+    import { contextMenuTarget } from "../menu";
+    import MenuOption from "../MenuOption.svelte";
+    import TextInputForm from "../TextInputForm.svelte";
+    import { MessageCreateEmptyFileInAny } from "../../../../../out/Messages/Create/MessageCreateEmptyFileInAny";
 
 	export let closeMenu;
 
@@ -18,6 +19,18 @@
 
 	function addEmptyFileToFolderOnClick() {
 		if (addEmptyFileFilename) {
+			
+			let messageCreateEmptyFileInAny =
+				new MessageCreateEmptyFileInAny(
+					addEmptyFileFilename,
+					contextMenuTargetValue
+				);
+
+			tsVscode.postMessage({
+				type: undefined,
+				value: messageCreateEmptyFileInAny,
+			});
+			
 			closeMenu();
 		}
 	}

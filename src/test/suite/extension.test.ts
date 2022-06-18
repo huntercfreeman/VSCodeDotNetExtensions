@@ -21,20 +21,15 @@ suite('Extension Test Suite', () => {
 		await myAsyncFunctionWithAnAsyncCallback(async (mochaDone: any) => {
 			await myAsyncFunctionNoCallback();
 
-			mochaDone();
+			done();
 		},
 		done);
-	});
-	
-	test('Sample test', () => {
-		assert.strictEqual(-1, [1, 2, 3].indexOf(5));
-		assert.strictEqual(-1, [1, 2, 3].indexOf(0));
 	});
 });
 
 async function myAsyncFunctionNoCallback(): Promise<void> {
 	for (let i = 0; i < 5; i++) {
-		console.log("Total time: " + i);
+		console.log("NoCallback: " + i);
 		
 		await new Promise(r => setTimeout(r, 1000));
 	}
@@ -44,7 +39,7 @@ async function myAsyncFunctionNoCallback(): Promise<void> {
 
 async function myAsyncFunctionWithACallback(callback: () => any): Promise<void> {
 	for (let i = 0; i < 5; i++) {
-		console.log("Total time: " + i);
+		console.log("Callback: " + i);
 		
 		await new Promise(r => setTimeout(r, 1000));
 	}
@@ -56,7 +51,7 @@ async function myAsyncFunctionWithACallback(callback: () => any): Promise<void> 
 
 async function myAsyncFunctionWithAnAsyncCallback(callback: (mochaDone: any) => Promise<any>, mochaDone: any): Promise<void> {
 	for (let i = 0; i < 5; i++) {
-		console.log("Total time: " + i);
+		console.log("AsyncCallback: " + i);
 		
 		await new Promise(r => setTimeout(r, 1000));
 	}
