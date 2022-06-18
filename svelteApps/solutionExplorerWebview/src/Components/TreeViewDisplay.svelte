@@ -192,7 +192,8 @@
 								message as MessageReadProjectReferencesInProject;
 
 							if (
-								ideFile.fileKind === FileKind.projectReferences
+								ideFile.fileKind === FileKind.projectReferences &&
+								ideFile.nonce === messageReadProjectReferencesInProject.cSharpProjectProjectReferencesFile.nonce
 							) {
 								ideFile =
 									messageReadProjectReferencesInProject.cSharpProjectProjectReferencesFile;
@@ -205,8 +206,8 @@
 								message as MessageReadNugetPackageReferencesInProject;
 
 							if (
-								ideFile.fileKind ===
-								FileKind.nugetPackageDependencies
+								ideFile.fileKind === FileKind.nugetPackageDependencies &&
+								ideFile.nonce === messageReadNugetPackageReferencesInProject.cSharpProjectNugetPackageDependenciesFile.nonce
 							) {
 								ideFile =
 									messageReadNugetPackageReferencesInProject.cSharpProjectNugetPackageDependenciesFile;
