@@ -18,7 +18,12 @@ export class FileSorter {
                     currentFile.absoluteFilePath.filenameNoExtension === uniqueFileNameNoExtension);
 
             if (hasUniqueFileNameNoExtension) {
-                isUniqueFiles.push(currentFile);
+
+                if (!ConstantsUniqueFiles.ALL_IGNORED_UNIQUE_FILENAME_NO_EXTENSION
+                        .find(x => x === hasUniqueFileNameNoExtension)) {
+
+                    isUniqueFiles.push(currentFile);
+                }
             }
             else {
                 switch (currentFile.fileKind) {

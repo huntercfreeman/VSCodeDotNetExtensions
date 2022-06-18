@@ -18,6 +18,7 @@
     import type { IdeFile } from "../../../../out/FileSystem/Files/IdeFile";
     import WwwRootIcon from "./Icons/WwwRootIcon.svelte";
     import { ConstantsUniqueFiles } from "../../../../out/Constants/ConstantsUniqueFiles";
+import PropertiesIcon from "./Icons/PropertiesIcon.svelte";
 
     export let ideFile: IdeFile;
 
@@ -35,6 +36,8 @@
 {:else if fileKind === FileKind.directory}
     {#if ideFile.absoluteFilePath.filenameNoExtension === ConstantsUniqueFiles.WWW_ROOT_FILENAME_NO_EXTENSION}
         <WwwRootIcon />
+    {:else if ideFile.absoluteFilePath.filenameNoExtension === ConstantsUniqueFiles.PROPERTIES_FILENAME_NO_EXTENSION}
+        <PropertiesIcon />
     {:else}
         <DirectoryIcon />
     {/if}
