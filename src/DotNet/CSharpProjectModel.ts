@@ -102,6 +102,8 @@ export class CSharpProjectModel {
     public solutionFolderParentProjectIdGuid: string | undefined;
     public projectReferences: CSharpProjectProjectReferenceFile[] = [];
     public rootNamespace: string;
+    public targetFramework: string = "";
+    public isExecutable: boolean = true;;
     public readonly parentSolutionAbsoluteFilePath: AbsoluteFilePath;
     public initialIsExpandedState: boolean = false;
 

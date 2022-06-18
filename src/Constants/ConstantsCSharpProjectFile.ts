@@ -15,6 +15,17 @@ export class ConstantsCSharpProjectFile {
      */
     public static readonly ROOT_NAMESPACE_TAG_NAME: string = "RootNamespace";
     /**
+     * Nuget Package Reference Example text:
+     * 
+     *    <PropertyGroup>
+     *        <TargetFramework>net6.0</TargetFramework>
+     *        <Nullable>enable</Nullable>
+     *        <ImplicitUsings>enable</ImplicitUsings>
+     *        <RootNamespace>Blazor_Server_Side_Test</RootNamespace>
+     *    </PropertyGroup>
+     */
+    public static readonly TARGET_FRAMEWORK_TAG_NAME: string = "TargetFramework";
+    /**
      * ProjectReference Example text:
      * 
      *     <ItemGroup>

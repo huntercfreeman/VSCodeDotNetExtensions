@@ -48,6 +48,41 @@ export class CSharpProjectParser {
       let xmlFileModel = xmlParser.parse();
 
       if (this.cSharpProjectModel) {
+
+        // The UI does not have access to the cSharpProjectModel
+        // however, they do have access to the absolutepath of it
+        // and therefore can parse the C# project.
+        // however this conditional branch does not apply for the
+        // User Interface Tree View Context Menu Options
+
+        // Get <TargetFramework>...</TargetFramework>
+        let targetFramework: XmlTagModel[] = [];
+
+        xmlFileModel.selectRecursively(
+          (x) => x.tagName === ConstantsCSharpProjectFile.TARGET_FRAMEWORK_TAG_NAME,
+          targetFramework);
+
+        if (targetFramework.length !== 0) {
+          // There should not be more than 1 root namespace defined in the .csproj file
+          // if there is take the first root namespace that is defined.
+          let reference = targetFramework[0];
+
+          let targetFrameworkString = "";
+
+          for (let i = 0; i < reference.children.xmlTagModels.length; i++) {
+            let child = reference.children.xmlTagModels[i] as any;
+
+            if (child.text) {
+              targetFrameworkString += child.text;
+            }
+          }
+
+          targetFrameworkString = targetFrameworkString.trim();
+
+          this.cSharpProjectModel.targetFramework = targetFrameworkString;
+        }
+
+        // Get <RootNamespace>...</RootNamespace>
         let rootNamespaces: XmlTagModel[] = [];
 
         xmlFileModel.selectRecursively(
