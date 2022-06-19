@@ -1,5 +1,7 @@
 # .NET IDE - A Visual Studio Code Extension
 
+I make videos going through the source code on my [youtube channel](https://www.youtube.com/channel/UCzhWhqYVP40as1MFUesQM9w)
+
 # How to Build this Repository
 
 <details>
