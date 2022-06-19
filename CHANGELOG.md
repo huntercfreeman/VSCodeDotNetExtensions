@@ -103,7 +103,7 @@ All notable changes to the "dot-net-ide" extension will be documented in this fi
         - A .sln file parser
             - Used for the .NET Solution files.
     - File Path standardization
-    - All ambiguous file path strings are parsed to be an AbsoluteFilePath class and a calculation is performed is given a relative path from an absolute path.
+    - All ambiguous file path strings are parsed to be an AbsoluteFilePath class and a calculation is performed if given a relative path from an absolute path.
     - The messaging between Visual Studio Code and the webviews is done via a typed system. This consists of the interface IMessage, and the MessageHandlers which receive an IMessage.
     - Svelte Applications
         - Nuget Package Manager Webview
