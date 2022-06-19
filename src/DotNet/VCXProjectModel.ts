@@ -11,7 +11,7 @@ import { SolutionModel } from "./SolutionModel";
 
 const fs = require('fs');
 
-export class CSharpProjectModel implements IProjectModel {
+export class VCXProjectModel implements IProjectModel {
     /**
      * 
      * @param parentSolutionModel 
@@ -43,45 +43,17 @@ export class CSharpProjectModel implements IProjectModel {
         });
     }
 
-    public static async parseRootNamespace(cSharpProjectModel: CSharpProjectModel,
+    public static async parseRootNamespace(vCXProjectModel: VCXProjectModel,
         callback: any): Promise<void> {
 
-        cSharpProjectModel.rootNamespace = cSharpProjectModel.displayName;
+        vCXProjectModel.rootNamespace = vCXProjectModel.displayName;
 
-        let cSharpProjectParser = new XmlProjectParser(undefined,
+        let xmlProjectParser = new XmlProjectParser(undefined,
             undefined,
             undefined,
-            cSharpProjectModel);
+            vCXProjectModel);
 
-        cSharpProjectParser.parse(callback);
-    }
-
-    public static async parseCSharpProjectProjectReferences(cSharpProjectAbsoluteFilePath: AbsoluteFilePath,
-        cSharpProjectProjectReferencesFile: CSharpProjectProjectReferencesFile,
-        callback: any): Promise<void> {
-
-        cSharpProjectProjectReferencesFile.virtualChildFiles = [];
-
-        let cSharpProjectParser = new XmlProjectParser(cSharpProjectAbsoluteFilePath,
-            cSharpProjectProjectReferencesFile,
-            undefined,
-            undefined);
-
-        cSharpProjectParser.parse(callback);
-    }
-
-    public static async parseCSharpProjectNugetPackageReferences(cSharpProjectAbsoluteFilePath: AbsoluteFilePath,
-        cSharpProjectNugetPackageDependenciesFile: CSharpProjectNugetPackageDependenciesFile,
-        callback: any): Promise<void> {
-
-        cSharpProjectNugetPackageDependenciesFile.virtualChildFiles = [];
-
-        let cSharpProjectParser = new XmlProjectParser(cSharpProjectAbsoluteFilePath,
-            undefined,
-            cSharpProjectNugetPackageDependenciesFile,
-            undefined);
-
-        cSharpProjectParser.parse(callback);
+        xmlProjectParser.parse(callback);
     }
 
     public readonly absoluteFilePath: AbsoluteFilePath;
@@ -95,5 +67,5 @@ export class CSharpProjectModel implements IProjectModel {
     public initialIsExpandedState: boolean = false;
     public projectKind: ProjectKind = ProjectKind.cSharpProject;
 
-    public contextualInformation: string = ConstantsContextualInformation.TREE_VIEW_CSHARP_PROJECT_CONTEXT;
+    public contextualInformation: string = ConstantsContextualInformation.TREE_VIEW_VCX_PROJECT_CONTEXT;
 }

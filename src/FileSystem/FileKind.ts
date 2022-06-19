@@ -2,6 +2,7 @@ export enum FileKind {
     solution,
     solutionFolder,
     cSharpProject,
+    vcxProject,
     default,
     directory,
     cSharp,

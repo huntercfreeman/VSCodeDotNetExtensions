@@ -10,19 +10,18 @@ import { XmlParser, XmlTagModel } from "./XmlParseStateMachines";
 
 const fs = require('fs');
 
-export class CSharpProjectParser {
-  constructor(public readonly cSharpProjectAbsoluteFilePath: AbsoluteFilePath | undefined,
-    public readonly cSharpProjectProjectReferencesFile: CSharpProjectProjectReferencesFile | undefined,
-    public readonly cSharpProjectNugetPackageDependenciesFile: CSharpProjectNugetPackageDependenciesFile | undefined,
-    public readonly cSharpProjectModel: CSharpProjectModel | undefined) {
+export class XmlProjectParser {
+  constructor(public readonly xmlProjectAbsoluteFilePath: AbsoluteFilePath | undefined,
+    public readonly xmlProjectProjectReferencesFile: CSharpProjectProjectReferencesFile | undefined,
+    public readonly xmlProjectNugetPackageDependenciesFile: CSharpProjectNugetPackageDependenciesFile | undefined,
+    public readonly xmlProjectModel: CSharpProjectModel | undefined) {
   }
 
   public async parse(callback: any) {
-    // The C# Project file will be parsed by means of reading in the entire file to memory instead of streaming the contents.
-    // If one finds C# Project files to be large enough to necessitate streaming the contents this should be changed.
-    // However, C# Project files are typically RELATIVELY small.
-    let absoluteFilePathString = this.cSharpProjectAbsoluteFilePath?.initialAbsoluteFilePathStringInput ??
-      this.cSharpProjectModel?.absoluteFilePath?.initialAbsoluteFilePathStringInput;
+    // The .sln Project files will be parsed by means of reading in the entire file to memory instead of streaming the contents.
+    // If one finds Project files to be large enough to necessitate streaming the contents this should be changed.
+    let absoluteFilePathString = this.xmlProjectAbsoluteFilePath?.initialAbsoluteFilePathStringInput ??
+      this.xmlProjectModel?.absoluteFilePath?.initialAbsoluteFilePathStringInput;
 
     await fs.readFile(absoluteFilePathString, 'utf8', (err: any, data: any) => {
       if (err) {
@@ -39,7 +38,7 @@ export class CSharpProjectParser {
 
       let xmlFileModel = xmlParser.parse();
 
-      if (this.cSharpProjectModel) {
+      if (this.xmlProjectModel) {
 
         // The UI does not have access to the cSharpProjectModel
         // however, they do have access to the absolutepath of it
@@ -71,7 +70,7 @@ export class CSharpProjectParser {
 
           targetFrameworkString = targetFrameworkString.trim();
 
-          this.cSharpProjectModel.targetFramework = targetFrameworkString;
+          this.xmlProjectModel.targetFramework = targetFrameworkString;
         }
 
         // Get <RootNamespace>...</RootNamespace>
@@ -98,16 +97,16 @@ export class CSharpProjectParser {
 
           rootNamespaceString = rootNamespaceString.trim();
 
-          this.cSharpProjectModel.rootNamespace = rootNamespaceString;
+          this.xmlProjectModel.rootNamespace = rootNamespaceString;
         }
       }
       else {
-        if (this.cSharpProjectAbsoluteFilePath) {
+        if (this.xmlProjectAbsoluteFilePath) {
           // Only either cSharpProjectProjectReferencesFile can be calculated or 
           // cSharpProjectProjectReferencesFile can be returned at a given time as
           // the user interface that calls this method does not have a reference to both arrays.
 
-          if (this.cSharpProjectProjectReferencesFile) {
+          if (this.xmlProjectProjectReferencesFile) {
             let projectReferences: XmlTagModel[] = [];
 
             xmlFileModel.selectRecursively(
@@ -121,18 +120,18 @@ export class CSharpProjectParser {
                 attribute.attributeName === ConstantsCSharpProjectFile.XML_INCLUDE_ATTRIBUTE_NAME);
 
               if (includeAttribute) {
-                if (!this.cSharpProjectProjectReferencesFile.virtualChildFiles) {
-                  this.cSharpProjectProjectReferencesFile.virtualChildFiles = [];
+                if (!this.xmlProjectProjectReferencesFile.virtualChildFiles) {
+                  this.xmlProjectProjectReferencesFile.virtualChildFiles = [];
                 }
 
-                this.cSharpProjectProjectReferencesFile.virtualChildFiles.push(
-                  new CSharpProjectProjectReferenceFile(this.cSharpProjectAbsoluteFilePath,
-                    this.cSharpProjectProjectReferencesFile.absoluteFilePath, includeAttribute.attributeValue));
+                this.xmlProjectProjectReferencesFile.virtualChildFiles.push(
+                  new CSharpProjectProjectReferenceFile(this.xmlProjectAbsoluteFilePath,
+                    this.xmlProjectProjectReferencesFile.absoluteFilePath, includeAttribute.attributeValue));
               }
             }
           }
 
-          if (this.cSharpProjectNugetPackageDependenciesFile) {
+          if (this.xmlProjectNugetPackageDependenciesFile) {
             let nugetPackageReferences: XmlTagModel[] = [];
 
             xmlFileModel.selectRecursively(
@@ -149,13 +148,13 @@ export class CSharpProjectParser {
                 attribute.attributeName === ConstantsCSharpProjectFile.XML_VERSION_ATTRIBUTE_NAME);
 
               if (includeAttribute && versionAttribute) {
-                if (!this.cSharpProjectNugetPackageDependenciesFile.virtualChildFiles) {
-                  this.cSharpProjectNugetPackageDependenciesFile.virtualChildFiles = [];
+                if (!this.xmlProjectNugetPackageDependenciesFile.virtualChildFiles) {
+                  this.xmlProjectNugetPackageDependenciesFile.virtualChildFiles = [];
                 }
 
-                this.cSharpProjectNugetPackageDependenciesFile.virtualChildFiles.push(
-                  new CSharpProjectNugetPackageDependencyFile(this.cSharpProjectAbsoluteFilePath,
-                    this.cSharpProjectNugetPackageDependenciesFile.absoluteFilePath,
+                this.xmlProjectNugetPackageDependenciesFile.virtualChildFiles.push(
+                  new CSharpProjectNugetPackageDependencyFile(this.xmlProjectAbsoluteFilePath,
+                    this.xmlProjectNugetPackageDependenciesFile.absoluteFilePath,
                     includeAttribute.attributeValue,
                     versionAttribute.attributeValue));
               }
