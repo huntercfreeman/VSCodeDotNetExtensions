@@ -1,3 +1,4 @@
+import * as vscode from 'vscode';
 import { NugetPackageModel } from "../DotNet/NugetPackageModel";
 import { NugetPackageVersionModel } from "../DotNet/NugetPackageVersionModel";
 import { AbsoluteFilePath } from "../FileSystem/AbsoluteFilePath";
@@ -5,6 +6,25 @@ import { DotNetSolutionFile } from "../FileSystem/Files/DotNetSolutionFile";
 
 /* eslint-disable @typescript-eslint/naming-convention */
 export class ConstantsDotNetCli {
+    public static getEnvShellAbsolutePathString() {
+        return vscode.env.shell;
+    }
+    
+    public static getEnvShellRunCommandIfPreviousCommandIsSuccessfulOperator() {
+        
+        let envShellAbsolutePathString = this.getEnvShellAbsolutePathString();
+        
+        if (envShellAbsolutePathString.indexOf("bash") !== -1) {
+            return '&&';
+        }
+        else if (envShellAbsolutePathString.indexOf("bash") !== -1) {
+            return '&&';
+        }
+        else {
+            return '&&';
+        }
+    }
+
     public static formatDotNetRunCSharpProject(cSharpProjectAbsoluteFilePath: AbsoluteFilePath): string {
         return `dotnet run --project \"${cSharpProjectAbsoluteFilePath.initialAbsoluteFilePathStringInput}\"`;
     }
