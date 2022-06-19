@@ -27,14 +27,6 @@ export class CSharpProjectParser {
     await fs.readFile(absoluteFilePathString, 'utf8', (err: any, data: any) => {
       if (err) {
         console.error(err);
-        
-        // Solution folders with periods in the display name end up here
-        if (this.cSharpProjectModel) {
-
-          this.cSharpProjectModel.solutionFolderEntries = [];
-          this.cSharpProjectModel.rootNamespace = "";
-          this.cSharpProjectModel.contextualInformation = ConstantsContextualInformation.TREE_VIEW_SOLUTION_FOLDER_CONTEXT;
-        }
 
         if (callback) {
           callback();

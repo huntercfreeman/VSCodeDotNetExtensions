@@ -1,8 +1,11 @@
+import { ConstantsFileExtensionsNoPeriod } from "../../Constants/ConstantsFileExtensionsNoPeriod";
 import { ConstantsSolutionFile } from "../../Constants/ConstantsSolutionFile";
 import { CSharpProjectModel } from "../../DotNet/CSharpProjectModel";
+import { IProjectModel } from "../../DotNet/IProjectModel";
+import { SolutionFolderModel } from "../../DotNet/SolutionFolderModel";
 import { SolutionModel } from "../../DotNet/SolutionModel";
 import { SolutionModelGlobal } from "../../DotNet/SolutionModelGlobal";
-import { TemporaryCSharpProjectModel } from "../../DotNet/TemporaryCSharpProjectModel";
+import { TemporaryProjectModel } from "../../DotNet/TemporaryCSharpProjectModel";
 import { endOfFile } from "../CommonParserUtility";
 import { StringReader } from "../StringReader";
 import { FileHeaderSlnParseStateMachine } from "./FileHeaderSlnParseStateMachine";
@@ -33,7 +36,7 @@ export class FileSlnParseStateMachine extends SlnParseStateMachineBase {
             else if (this.stringReader.isStartOfToken(ConstantsSolutionFile.START_OF_PROJECT_DEFINITION,
                 currentCharacter)) {
 
-                let temporaryCSharpProjectModel = new TemporaryCSharpProjectModel(this.solutionModel,
+                let temporaryCSharpProjectModel = new TemporaryProjectModel(this.solutionModel,
                     "",
                     "",
                     "",
@@ -45,14 +48,28 @@ export class FileSlnParseStateMachine extends SlnParseStateMachineBase {
 
                 projectDefinitionSlnParseStateMachine.parse();
 
-                let definedCSharpProjectModel = new CSharpProjectModel(this.solutionModel,
-                    temporaryCSharpProjectModel.projectTypeGuid,
-                    temporaryCSharpProjectModel.displayName,
-                    temporaryCSharpProjectModel.projectRelativePathFromSolution,
-                    temporaryCSharpProjectModel.projectIdGuid,
-                    null);
+                let projectModel: IProjectModel | undefined;
 
-                this.solutionModel.projects.push(definedCSharpProjectModel);
+                if (temporaryCSharpProjectModel.projectRelativePathFromSolution
+                        .endsWith(ConstantsFileExtensionsNoPeriod.C_SHARP_PROJECT_FILE_EXTENSION)) {
+                    
+                            projectModel = new CSharpProjectModel(this.solutionModel,
+                                temporaryCSharpProjectModel.projectTypeGuid,
+                                temporaryCSharpProjectModel.displayName,
+                                temporaryCSharpProjectModel.projectRelativePathFromSolution,
+                                temporaryCSharpProjectModel.projectIdGuid,
+                                null);
+                }
+                else {
+
+                    projectModel = new SolutionFolderModel(this.solutionModel,
+                        temporaryCSharpProjectModel.projectTypeGuid,
+                        temporaryCSharpProjectModel.displayName,
+                        temporaryCSharpProjectModel.projectRelativePathFromSolution,
+                        temporaryCSharpProjectModel.projectIdGuid);
+                }
+
+                this.solutionModel.projects.push(projectModel);
             }
             else if (this.stringReader.isStartOfToken(ConstantsSolutionFile.START_OF_GLOBAL,
                 currentCharacter)) {

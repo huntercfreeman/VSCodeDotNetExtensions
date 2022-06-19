@@ -4,11 +4,14 @@ import { ConstantsDotNetCli } from '../Constants/ConstantsDotNetCli';
 import { ConstantsFilePath } from '../Constants/ConstantsFilePath';
 import { ConstantsTerminal } from '../Constants/ConstantsTerminal';
 import { CSharpProjectModel } from '../DotNet/CSharpProjectModel';
+import { ProjectKind } from '../DotNet/ProjectKind';
+import { SolutionFolderModel } from '../DotNet/SolutionFolderModel';
 import { SolutionModel } from '../DotNet/SolutionModel';
 import { AbsoluteFilePath } from '../FileSystem/AbsoluteFilePath';
 import { FileKind } from '../FileSystem/FileKind';
 import { CSharpProjectFile } from '../FileSystem/Files/CSharpProjectFile';
 import { DotNetSolutionFile } from '../FileSystem/Files/DotNetSolutionFile';
+import { SolutionFolderFile } from '../FileSystem/Files/SolutionFolderFile';
 import { FileSorter } from '../FileSystem/FileSorter';
 import { FileSystemReader } from '../FileSystem/FileSystemReader';
 import { IdeFileFactory } from '../FileSystem/IdeFileFactory';
@@ -118,15 +121,15 @@ export class ReadMessageHandler {
 
             for (let i = 0; i < message.dotNetSolutionFile.solutionModel!.projects.length; i++) {
 
-                let cSharpProjectModel = message.dotNetSolutionFile.solutionModel!.projects[i];
+                let projectModel = message.dotNetSolutionFile.solutionModel!.projects[i];
 
-                if (cSharpProjectModel.solutionFolderEntries !== undefined) {
+                if (projectModel.projectKind === ProjectKind.solutionFolder) {
                     parsedRootNamespaces.push(1);
                 }
                 else {
                     parsedRootNamespaces.push(0);
 
-                    await CSharpProjectModel.parseRootNamespace(cSharpProjectModel,
+                    await CSharpProjectModel.parseRootNamespace(projectModel as CSharpProjectModel,
                         () => parsedRootNamespaces[i] = 1);
                 }
             }
@@ -140,7 +143,16 @@ export class ReadMessageHandler {
             await this.finishedParsingRootNamespacesOfProjects(parsedRootNamespaces);
 
             message.dotNetSolutionFile.virtualChildFiles = message.dotNetSolutionFile.solutionModel!.projects
-                .map(x => new CSharpProjectFile(x));
+                .map(x => {
+                    switch (x.projectKind) {
+                        case ProjectKind.solutionFolder:
+                            return new SolutionFolderFile(x as SolutionFolderModel);
+                        case ProjectKind.cSharpProject:
+                            return new CSharpProjectFile(x as CSharpProjectModel);
+                        default:
+                            throw Error(`The projectKind of ${x.projectKind} is not currently supported.`);
+                    }
+                });
 
             ActiveDotNetSolutionFileContainer.setActiveDotNetSolutionFile(message.dotNetSolutionFile);
 
@@ -181,7 +193,16 @@ export class ReadMessageHandler {
 
         return await SolutionModel.parseSolution(message.dotNetSolutionFile, () => {
             message.dotNetSolutionFile.virtualChildFiles = message.dotNetSolutionFile.solutionModel!.projects
-                .map(x => new CSharpProjectFile(x));
+                .map(x => {
+                    switch (x.projectKind) {
+                        case ProjectKind.solutionFolder:
+                            return new SolutionFolderFile(x as SolutionFolderModel);
+                        case ProjectKind.cSharpProject:
+                            return new CSharpProjectFile(x as CSharpProjectModel);
+                        default:
+                            throw Error(`The projectKind of ${x.projectKind} is not currently supported.`);
+                    }
+                });
 
             ActiveDotNetSolutionFileContainer.setActiveDotNetSolutionFile(message.dotNetSolutionFile);
             webviewView.webview.postMessage(message);

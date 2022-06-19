@@ -1,6 +1,6 @@
 import { SolutionModel } from "./SolutionModel";
 
-export class TemporaryCSharpProjectModel {
+export class TemporaryProjectModel {
     /**
      * 
      * @param parentSolutionModel 

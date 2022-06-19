@@ -3,6 +3,7 @@
 	import type { IdeFile } from "../../../../out/FileSystem/Files/IdeFile";
 	import { FileKind } from "../../../../out/FileSystem/FileKind";
 	import type { CSharpProjectFile } from "../../../../out/FileSystem/Files/CSharpProjectFile";
+	import type { SolutionFolderFile } from "../../../../out/FileSystem/Files/SolutionFolderFile";
 	import { MessageReadFilesInDirectory } from "../../../../out/Messages/Read/MessageReadFilesInDirectory";
 	import { MessageReadFileIntoEditor } from "../../../../out/Messages/Read/MessageReadFileIntoEditor";
 	import { MessageReadVirtualFilesInCSharpProject } from "../../../../out/Messages/Read/MessageReadVirtualFilesInCSharpProject";
@@ -14,6 +15,7 @@
 	import ExpansionChevron from "./ExpansionChevron.svelte";
 	import FileIconDisplay from "./FileIconDisplay.svelte";
 	import { contextMenuTarget } from "./menu.js";
+	import type { IProjectModel } from "../../../../out/DotNet/IProjectModel";
 
 	export let ideFile: IdeFile;
 
@@ -81,27 +83,26 @@
 	}
 
 	function hasDifferentParentContainer(childIdeFile: IdeFile): boolean {
-		if (childIdeFile.fileKind === FileKind.cSharpProject ||
-		    childIdeFile.fileKind === FileKind.solutionFolder) {
-				
-			let cSharpProjectFile = childIdeFile as CSharpProjectFile;
 
-			if (
-				cSharpProjectFile.cSharpProjectModel
-					.solutionFolderParentProjectIdGuid !== undefined
-			) {
+		if (childIdeFile.fileKind === FileKind.solutionFolder ||
+		   childIdeFile.fileKind === FileKind.cSharpProject) {
+
+			let childProjectModel: IProjectModel = childIdeFile.fileKind === FileKind.solutionFolder
+				? (childIdeFile as SolutionFolderFile).solutionFolderModel
+				: (childIdeFile as CSharpProjectFile).cSharpProjectModel;
+
+			if(childProjectModel.solutionFolderParentProjectIdGuid) {
+				
 				if (ideFile.fileKind === FileKind.solution) {
 					return true;
 				}
 
-				let solutionFolderFile = ideFile as CSharpProjectFile;
+				if (ideFile.fileKind === FileKind.solutionFolder) {
 
-				if (
-					solutionFolderFile.cSharpProjectModel.projectIdGuid ===
-					cSharpProjectFile.cSharpProjectModel
-						.solutionFolderParentProjectIdGuid
-				) {
-					return false;
+					let solutionFolder = ideFile as SolutionFolderFile;
+
+					return solutionFolder.solutionFolderModel.projectIdGuid !==
+						childProjectModel.solutionFolderParentProjectIdGuid;
 				}
 
 				return true;

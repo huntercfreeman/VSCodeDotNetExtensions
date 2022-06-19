@@ -9,27 +9,16 @@ export class CSharpProjectFile extends IdeFile {
     constructor(public readonly cSharpProjectModel: CSharpProjectModel) {
         super(cSharpProjectModel.absoluteFilePath, cSharpProjectModel.rootNamespace);
 
-        if (cSharpProjectModel.solutionFolderEntries !== undefined) {
-            this.fileKind = FileKind.solutionFolder;
-
-            this.virtualChildFiles = cSharpProjectModel.solutionFolderEntries
-                .map(x => new CSharpProjectFile(x));
-
-            this.contextualInformation = [
-            ];
-        }
-        else {
-            this.contextualInformation = [
-                ContextualInformationDatum.createNewTemplatedFile,
-                ContextualInformationDatum.createNewEmptyFile,
-                ContextualInformationDatum.createDirectory,
-                ContextualInformationDatum.refreshChildFiles,
-                ContextualInformationDatum.removeCSharpProject,
-                ContextualInformationDatum.startWithoutDebugging,
-                ContextualInformationDatum.startDebugging,
-                ContextualInformationDatum.putProjectInSolutionFolder,
-            ];
-        }
+        this.contextualInformation = [
+            ContextualInformationDatum.createNewTemplatedFile,
+            ContextualInformationDatum.createNewEmptyFile,
+            ContextualInformationDatum.createDirectory,
+            ContextualInformationDatum.refreshChildFiles,
+            ContextualInformationDatum.removeCSharpProject,
+            ContextualInformationDatum.startWithoutDebugging,
+            ContextualInformationDatum.startDebugging,
+            ContextualInformationDatum.putProjectInSolutionFolder,
+        ];
 
         this.constantChildFiles = [
             new CSharpProjectDependenciesFile(this.cSharpProjectModel.absoluteFilePath),

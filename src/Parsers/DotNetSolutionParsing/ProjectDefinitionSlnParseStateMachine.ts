@@ -1,13 +1,13 @@
 import { ConstantsSolutionFile } from "../../Constants/ConstantsSolutionFile";
 import { ConstantsWhitespace } from "../../Constants/ConstantsWhitespace";
-import { TemporaryCSharpProjectModel } from "../../DotNet/TemporaryCSharpProjectModel";
+import { TemporaryProjectModel } from "../../DotNet/TemporaryCSharpProjectModel";
 import { endOfFile } from "../CommonParserUtility";
 import { StringReader } from "../StringReader";
 import { SlnParseStateMachineBase } from "./SlnParseStateMachineBase";
 
 export class ProjectDefinitionSlnParseStateMachine extends SlnParseStateMachineBase {
     constructor(stringReader: StringReader,
-        private readonly temporaryCSharpProjectModel: TemporaryCSharpProjectModel) {
+        private readonly temporaryCSharpProjectModel: TemporaryProjectModel) {
         super(stringReader);
     }
 
