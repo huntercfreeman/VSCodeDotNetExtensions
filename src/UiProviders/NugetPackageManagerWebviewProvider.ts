@@ -1,7 +1,7 @@
 import * as vscode from 'vscode';
 import { ActiveDotNetSolutionFileContainer } from '../ActiveDotNetSolutionFileContainer';
 import { DotNetSolutionFile } from '../FileSystem/Files/DotNetSolutionFile';
-import { NugetPackageManagerMessageHandler } from '../MessageHandlers/NugetPackageManagerMessageHandler';
+import { NugetPackageManagerMessageTransporter } from '../MessageHandlers/NugetPackageManager/NugetPackageManagerMessageTransporter';
 import { IMessage } from '../Messages/IMessage';
 import { MessageCategory } from '../Messages/MessageCategory';
 import { IMessageRead } from '../Messages/Read/IMessageRead';
@@ -54,7 +54,7 @@ export class NugetPackageManagerWebviewProvider implements vscode.WebviewViewPro
               webviewView.webview.postMessage(messageReadActiveDotNetSolutionFile);
       }
       else {
-        NugetPackageManagerMessageHandler.handleMessage(webviewView, data.value);
+        NugetPackageManagerMessageTransporter.transportMessage(webviewView, data.value);
       }
     });
   }

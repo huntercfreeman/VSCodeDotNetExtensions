@@ -55,12 +55,12 @@ import { FileKind } from "../../../../../../out/FileSystem/FileKind";
 						case MessageReadKind.nugetPackageReferencesInProject:
 							let messageReadNugetPackageReferencesInProject =
 								message as MessageReadNugetPackageReferencesInProject;
-							if (
-								cSharpProjectNugetPackageDependenciesListFile.fileKind === FileKind.nugetPackageDependenciesList &&
-								cSharpProjectNugetPackageDependenciesListFile.nonce === messageReadNugetPackageReferencesInProject.cSharpProjectNugetPackageDependenciesFile.nonce
-							) {
+							if (cSharpProjectNugetPackageDependenciesListFile.nonce === 
+								messageReadNugetPackageReferencesInProject.cSharpProjectNugetPackageDependenciesFile.nonce) {
+								
 								cSharpProjectNugetPackageDependenciesListFile =
 									messageReadNugetPackageReferencesInProject.cSharpProjectNugetPackageDependenciesFile;
+									
 								children = cSharpProjectNugetPackageDependenciesListFile.virtualChildFiles;
 							}
 							break;

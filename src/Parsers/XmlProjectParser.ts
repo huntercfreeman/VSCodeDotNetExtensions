@@ -164,7 +164,7 @@ export class XmlProjectParser {
       }
 
       if (callback) {
-        callback();
+        callback(xmlFileModel);
       }
     });
   }

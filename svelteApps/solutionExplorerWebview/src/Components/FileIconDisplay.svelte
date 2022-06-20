@@ -54,14 +54,14 @@
     <CssIcon />
 {:else if fileKind === FileKind.json}
     <JsonIcon />
-{:else if fileKind === FileKind.projectDependencies}
+{:else if fileKind === FileKind.cSharpProjectDependencies}
     <ProjectDependenciesIcon />
-{:else if fileKind === FileKind.nugetPackageDependencies}
+{:else if fileKind === FileKind.cSharpNugetPackageDependenciesList}
     <NugetPackageDependenciesIcon />
-{:else if fileKind === FileKind.nugetPackageDependency}
+{:else if fileKind === FileKind.cSharpNugetPackageDependency}
     <NugetPackageDependencyIcon />
-{:else if fileKind === FileKind.projectReferences}
+{:else if fileKind === FileKind.cSharpProjectReferencesList}
     <ProjectReferencesIcon />
-{:else if fileKind === FileKind.projectReference}
+{:else if fileKind === FileKind.cSharpProjectReference}
     <ProjectReferenceIcon />
 {/if}

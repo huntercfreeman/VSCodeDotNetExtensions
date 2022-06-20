@@ -53,12 +53,11 @@
 						case MessageReadKind.projectReferencesInProject:
 							let messageReadProjectReferencesInProject =
 								message as MessageReadProjectReferencesInProject;
-							if (
-								cSharpProjectProjectReferencesListFile.fileKind === FileKind.projectReferencesList &&
-								cSharpProjectProjectReferencesListFile.nonce === messageReadProjectReferencesInProject.cSharpProjectProjectReferencesFile.nonce
-							) {
+							if (cSharpProjectProjectReferencesListFile.nonce === messageReadProjectReferencesInProject.cSharpProjectProjectReferencesFile.nonce) {
+								
 								cSharpProjectProjectReferencesListFile =
 									messageReadProjectReferencesInProject.cSharpProjectProjectReferencesFile;
+									
 								children = cSharpProjectProjectReferencesListFile.virtualChildFiles;
 							}
 							break;

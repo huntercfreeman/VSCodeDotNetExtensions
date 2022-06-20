@@ -1,38 +1,38 @@
 import * as vscode from 'vscode';
-import { ActiveDotNetSolutionFileContainer } from '../ActiveDotNetSolutionFileContainer';
-import { ConstantsCommands } from '../Constants/ConstantsCommands';
-import { ConstantsDotNetCli } from '../Constants/ConstantsDotNetCli';
-import { ConstantsFilePath } from '../Constants/ConstantsFilePath';
-import { ConstantsTerminal } from '../Constants/ConstantsTerminal';
-import { CSharpProjectModel } from '../DotNet/CSharpProjectModel';
-import { ProjectKind } from '../DotNet/ProjectKind';
-import { SolutionFolderModel } from '../DotNet/SolutionFolderModel';
-import { SolutionModel } from '../DotNet/SolutionModel';
-import { VCXProjectModel } from '../DotNet/VCXProjectModel';
-import { AbsoluteFilePath } from '../FileSystem/AbsoluteFilePath';
-import { FileKind } from '../FileSystem/FileKind';
-import { VCXProjectFile } from '../FileSystem/Files/CPlusPlus/VCXProjectFile';
-import { CSharpProjectFile } from '../FileSystem/Files/CSharp/CSharpProjectFile';
-import { DotNetSolutionFile } from '../FileSystem/Files/DotNetSolutionFile';
-import { SolutionFolderFile } from '../FileSystem/Files/SolutionFolderFile';
-import { FileSorter } from '../FileSystem/FileSorter';
-import { FileSystemReader } from '../FileSystem/FileSystemReader';
-import { IdeFileFactory } from '../FileSystem/IdeFileFactory';
-import { IMessage } from "../Messages/IMessage";
-import { IMessageRead } from "../Messages/Read/IMessageRead";
-import { MessageReadActiveDotNetSolutionFile } from '../Messages/Read/MessageReadActiveDotNetSolutionFile';
-import { MessageReadFileIntoEditor } from '../Messages/Read/MessageReadFileIntoEditor';
-import { MessageReadFilesInDirectory } from '../Messages/Read/MessageReadFilesInDirectory';
-import { MessageReadKind } from "../Messages/Read/MessageReadKind";
-import { MessageReadNewProjectTemplatesOnComputer } from '../Messages/Read/MessageReadNewProjectTemplatesOnComputer';
-import { MessageReadNugetPackageReferencesInProject } from '../Messages/Read/MessageReadNugetPackageReferencesInProject';
-import { MessageReadProjectIntoXmlEditor } from '../Messages/Read/MessageReadProjectIntoXmlEditor';
-import { MessageReadProjectReferencesInProject } from '../Messages/Read/MessageReadProjectReferencesInProject';
-import { MessageReadSolutionIntoTreeView } from '../Messages/Read/MessageReadSolutionIntoTreeView';
-import { MessageReadSolutionsInWorkspace } from '../Messages/Read/MessageReadSolutionsInWorkspace';
-import { MessageReadVirtualFilesInCSharpProject } from '../Messages/Read/MessageReadVirtualFilesInCSharpProject';
+import { ActiveDotNetSolutionFileContainer } from '../../ActiveDotNetSolutionFileContainer';
+import { ConstantsCommands } from '../../Constants/ConstantsCommands';
+import { ConstantsDotNetCli } from '../../Constants/ConstantsDotNetCli';
+import { ConstantsFilePath } from '../../Constants/ConstantsFilePath';
+import { CSharpProjectModel } from '../../DotNet/CSharpProjectModel';
+import { ProjectKind } from '../../DotNet/ProjectKind';
+import { SolutionFolderModel } from '../../DotNet/SolutionFolderModel';
+import { SolutionModel } from '../../DotNet/SolutionModel';
+import { VCXProjectModel } from '../../DotNet/VCXProjectModel';
+import { AbsoluteFilePath } from '../../FileSystem/AbsoluteFilePath';
+import { FileKind } from '../../FileSystem/FileKind';
+import { VCXProjectFile } from '../../FileSystem/Files/CPlusPlus/VCXProjectFile';
+import { CSharpProjectFile } from '../../FileSystem/Files/CSharp/CSharpProjectFile';
+import { DotNetSolutionFile } from '../../FileSystem/Files/DotNetSolutionFile';
+import { SolutionFolderFile } from '../../FileSystem/Files/SolutionFolderFile';
+import { FileSorter } from '../../FileSystem/FileSorter';
+import { FileSystemReader } from '../../FileSystem/FileSystemReader';
+import { IdeFileFactory } from '../../FileSystem/IdeFileFactory';
+import { IMessage } from '../../Messages/IMessage';
+import { IMessageRead } from '../../Messages/Read/IMessageRead';
+import { MessageReadActiveDotNetSolutionFile } from '../../Messages/Read/MessageReadActiveDotNetSolutionFile';
+import { MessageReadFileIntoEditor } from '../../Messages/Read/MessageReadFileIntoEditor';
+import { MessageReadFilesInDirectory } from '../../Messages/Read/MessageReadFilesInDirectory';
+import { MessageReadKind } from '../../Messages/Read/MessageReadKind';
+import { MessageReadNewProjectTemplatesOnComputer } from '../../Messages/Read/MessageReadNewProjectTemplatesOnComputer';
+import { MessageReadNugetPackageReferencesInProject } from '../../Messages/Read/MessageReadNugetPackageReferencesInProject';
+import { MessageReadProjectIntoXmlEditor } from '../../Messages/Read/MessageReadProjectIntoXmlEditor';
+import { MessageReadProjectReferencesInProject } from '../../Messages/Read/MessageReadProjectReferencesInProject';
+import { MessageReadSolutionIntoTreeView } from '../../Messages/Read/MessageReadSolutionIntoTreeView';
+import { MessageReadSolutionsInWorkspace } from '../../Messages/Read/MessageReadSolutionsInWorkspace';
+import { MessageReadVirtualFilesInCSharpProject } from '../../Messages/Read/MessageReadVirtualFilesInCSharpProject';
+import { TerminalService } from '../../Terminal/TerminalService';
 
-export class ReadMessageHandler {
+export class SolutionExplorerReadMessageHandler {
     public static async handleMessage(webviewView: vscode.WebviewView, message: IMessage): Promise<void> {
         let readMessage = message as unknown as IMessageRead;
 
@@ -66,9 +66,6 @@ export class ReadMessageHandler {
                 break;
             case MessageReadKind.newProjectTemplatesOnComputer:
                 await this.handleMessageReadNewProjectTemplatesOnComputer(webviewView, message);
-                break;
-            case MessageReadKind.projectIntoXmlEditor:
-                await this.handleMessageReadProjectIntoXmlEditor(webviewView, message);
                 break;
         }
     }
@@ -304,27 +301,17 @@ export class ReadMessageHandler {
     public static async handleMessageReadNewProjectTemplatesOnComputer(webviewView: vscode.WebviewView, iMessage: IMessage) {
         let message = iMessage as MessageReadNewProjectTemplatesOnComputer;
 
-        let messageExecuteTerminal = this.getMessageReadTerminal();
+        let generalUseTerminal = TerminalService.getGeneralUseTerminal();
 
-        messageExecuteTerminal.sendText(ConstantsDotNetCli.DOT_NET_NEW_LIST);
+        generalUseTerminal.sendText(ConstantsDotNetCli.DOT_NET_NEW_LIST);
 
-        messageExecuteTerminal.show();
+        generalUseTerminal.show();
     }
     
     public static async handleMessageReadProjectIntoXmlEditor(webviewView: vscode.WebviewView, iMessage: IMessage) {
         let message = iMessage as MessageReadProjectIntoXmlEditor;
 
         vscode.commands.executeCommand(ConstantsCommands.DOT_NET_IDE_OPEN_PROJECT_IN_XML_EDITOR);
-    }
-
-    private static getMessageReadTerminal() {
-        let messageReadTerminal = vscode.window.terminals.find(x => x.name === ConstantsTerminal.MESSAGE_READ_TERMINAL_NAME);
-
-        if (!messageReadTerminal) {
-            messageReadTerminal = vscode.window.createTerminal(ConstantsTerminal.MESSAGE_READ_TERMINAL_NAME);
-        }
-
-        return messageReadTerminal;
     }
 
     private static async finishedParsingRootNamespacesOfProjects(finishedMarkers: number[]) {

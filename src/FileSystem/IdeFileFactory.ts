@@ -13,10 +13,6 @@ import { JsonFile } from "./Files/Miscellaneous/JsonFile";
 export class IdeFileFactory {
     public static constructIdeFile(absoluteFilePath: AbsoluteFilePath, currentNamespaceString: string): IdeFile {
         switch (FileKindMatcher.getFileKind(absoluteFilePath.extensionNoPeriod)) {
-            // case FileKind.cSharpProject:
-            //     return ;
-            // case FileKind.solution:
-            //     return ;
             case FileKind.cSharp:
                 return new CSharpFile(absoluteFilePath, currentNamespaceString);
             case FileKind.cshtml:
