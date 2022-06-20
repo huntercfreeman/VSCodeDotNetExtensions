@@ -1,6 +1,5 @@
-import { ConstantsContextualInformation } from "../Constants/ConstantsContextualInformation";
 import { ConstantsCSharpProjectFile } from "../Constants/ConstantsCSharpProjectFile";
-import { CSharpProjectModel } from "../DotNet/CSharpProjectModel";
+import { IProjectModel } from "../DotNet/IProjectModel";
 import { AbsoluteFilePath } from "../FileSystem/AbsoluteFilePath";
 import { CSharpProjectNugetPackageDependenciesListFile } from "../FileSystem/Files/CSharp/CSharpProjectNugetPackageDependenciesListFile";
 import { CSharpProjectNugetPackageDependencyFile } from "../FileSystem/Files/CSharp/CSharpProjectNugetPackageDependencyFile";
@@ -14,7 +13,7 @@ export class XmlProjectParser {
   constructor(public readonly xmlProjectAbsoluteFilePath: AbsoluteFilePath | undefined,
     public readonly xmlProjectProjectReferencesFile: CSharpProjectProjectReferencesListFile | undefined,
     public readonly xmlProjectNugetPackageDependenciesFile: CSharpProjectNugetPackageDependenciesListFile | undefined,
-    public readonly xmlProjectModel: CSharpProjectModel | undefined) {
+    public readonly xmlProjectModel: IProjectModel | undefined) {
   }
 
   public async parse(callback: any) {

@@ -4,25 +4,26 @@
 	import { onMount } from "svelte";
 	import { MessageCategory } from "../../../out/Messages/MessageCategory";
 	import { MessageReadKind } from "../../../out/Messages/Read/MessageReadKind";
-	import { MessageReadProjectIntoXmlEditor } from "../../../out/Messages/Read/MessageReadProjectIntoXmlEditor";
+	import { MessageReadProjectXmlIntoXmlEditor } from "../../../out/Messages/Read/MessageReadProjectXmlIntoXmlEditor";
 	import SelectProjectFileForm from "./Components/SelectProjectFileForm.svelte";
 
 	let activeDotNetSolutionFile: DotNetSolutionFile | undefined;
-	let selectedProjectFile: any;
+	let selectedProjectModel: any;
 	let selectedProjectXmlFileModel: any;
 
-	function parseSelectedProjectFile(projectFile: any) {
-		selectedProjectFile = projectFile;
+	function parseSelectedProjectFile() {
+		selectedProjectXmlFileModel = undefined;
 
-		if (!selectedProjectFile) {
-			selectedProjectXmlFileModel = undefined;
+		if (!selectedProjectModel) {
+			return;
 		}
 
-		let messageReadProjectIntoXmlEditor = new MessageReadProjectIntoXmlEditor();
+		let messageReadProjectXmlIntoXmlEditor = 
+			new MessageReadProjectXmlIntoXmlEditor(selectedProjectModel, undefined);
 
 		tsVscode.postMessage({
 			type: undefined,
-			value: messageReadProjectIntoXmlEditor,
+			value: messageReadProjectXmlIntoXmlEditor,
 		});
 	}
 
@@ -47,7 +48,7 @@
 							break;
 					}
 					switch (message.messageReadKind) {
-						case MessageReadKind.xmlIntoXmlEditor:
+						case MessageReadKind.projectXmlIntoXmlEditor:
 							selectedProjectXmlFileModel = message.xmlFileModel;
 							break;
 					}
@@ -73,15 +74,21 @@
 	<hr />
 
 	<SelectProjectFileForm
-		bind:selectedProjectFile
+		bind:selectedProjectModel={selectedProjectModel}
 		projectFiles={activeDotNetSolutionFile.solutionModel.projects
 						.filter(x => x.solutionFolderEntries === undefined)}
-		onChangeCallback={parseSelectedProjectFile}
 	/>
 
-	{#if selectedProjectXmlFileModel}
-		{JSON.stringify(selectedProjectXmlFileModel, null, 2)}
-	{/if}
+<button on:click="{parseSelectedProjectFile}">Parse {selectedProjectModel?.absoluteFilePath.filenameWithExtension ?? "undefined"} XML</button>
+
+<pre>
+{#if selectedProjectXmlFileModel}
+{JSON.stringify(selectedProjectXmlFileModel, null, 2)}
+{:else}
+selectedProjectXmlFileModel is undefined
+{/if}
+</pre>
+
 {:else}
 	<div>
 		Solution is undefined

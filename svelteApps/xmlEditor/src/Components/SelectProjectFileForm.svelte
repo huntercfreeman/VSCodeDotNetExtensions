@@ -1,12 +1,10 @@
 <script lang="ts">
 	export let projectFiles: any[] = [];
-	export let selectedProjectFile: any;
-
-	export let onChangeCallback: (projectFile: any) => any;
+	export let selectedProjectModel: any;
 </script>
 
 <div>
-	<select bind:value={selectedProjectFile} on:change="{onChangeCallback}" class="dni_select">
+	<select bind:value={selectedProjectModel} class="dni_select">
 		{#each projectFiles as projectFile}
 			<option value={projectFile} class="dni_option"
 				>{projectFile.absoluteFilePath.filenameWithExtension}</option

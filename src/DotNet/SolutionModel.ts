@@ -1,11 +1,7 @@
 import { ConstantsContextualInformation } from "../Constants/ConstantsContextualInformation";
 import { AbsoluteFilePath } from "../FileSystem/AbsoluteFilePath";
-import { FileKind } from "../FileSystem/FileKind";
-import { VCXProjectFile } from "../FileSystem/Files/CPlusPlus/VCXProjectFile";
-import { CSharpProjectFile } from "../FileSystem/Files/CSharp/CSharpProjectFile";
 import { DotNetSolutionFile } from "../FileSystem/Files/DotNetSolutionFile";
 import { IProjectFile } from "../FileSystem/Files/IProjectFile";
-import { SolutionFolderFile } from "../FileSystem/Files/SolutionFolderFile";
 import { DotNetSolutionParser } from "../Parsers/DotNetSolutionParser";
 import { IProjectModel } from "./IProjectModel";
 import { SolutionModelFileHeader } from "./SolutionModelFileHeader";

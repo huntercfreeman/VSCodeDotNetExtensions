@@ -25,7 +25,7 @@ import { MessageReadFilesInDirectory } from '../../Messages/Read/MessageReadFile
 import { MessageReadKind } from '../../Messages/Read/MessageReadKind';
 import { MessageReadNewProjectTemplatesOnComputer } from '../../Messages/Read/MessageReadNewProjectTemplatesOnComputer';
 import { MessageReadNugetPackageReferencesInProject } from '../../Messages/Read/MessageReadNugetPackageReferencesInProject';
-import { MessageReadProjectIntoXmlEditor } from '../../Messages/Read/MessageReadProjectIntoXmlEditor';
+import { MessageReadOpenXmlEditor } from '../../Messages/Read/MessageReadOpenXmlEditor';
 import { MessageReadProjectReferencesInProject } from '../../Messages/Read/MessageReadProjectReferencesInProject';
 import { MessageReadSolutionIntoTreeView } from '../../Messages/Read/MessageReadSolutionIntoTreeView';
 import { MessageReadSolutionsInWorkspace } from '../../Messages/Read/MessageReadSolutionsInWorkspace';
@@ -67,8 +67,8 @@ export class SolutionExplorerReadMessageHandler {
             case MessageReadKind.newProjectTemplatesOnComputer:
                 await this.handleMessageReadNewProjectTemplatesOnComputer(webviewView, message);
                 break;
-            case MessageReadKind.projectIntoXmlEditor:
-                await this.handleMessageReadProjectIntoXmlEditor(webviewView, message);
+            case MessageReadKind.openXmlEditor:
+                await this.handleMessageReadOpenXmlEditor(webviewView, message);
                 break;
         }
     }
@@ -311,10 +311,10 @@ export class SolutionExplorerReadMessageHandler {
         generalUseTerminal.show();
     }
     
-    public static async handleMessageReadProjectIntoXmlEditor(webviewView: vscode.WebviewView, iMessage: IMessage) {
-        let message = iMessage as MessageReadProjectIntoXmlEditor;
+    public static async handleMessageReadOpenXmlEditor(webviewView: vscode.WebviewView, iMessage: IMessage) {
+        let message = iMessage as MessageReadOpenXmlEditor;
 
-        vscode.commands.executeCommand(ConstantsCommands.DOT_NET_IDE_OPEN_PROJECT_IN_XML_EDITOR);
+        vscode.commands.executeCommand(ConstantsCommands.DOT_NET_IDE_OPEN_XML_EDITOR);
     }
 
     private static async finishedParsingRootNamespacesOfProjects(finishedMarkers: number[]) {

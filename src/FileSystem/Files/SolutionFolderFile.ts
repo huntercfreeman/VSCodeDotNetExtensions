@@ -47,7 +47,7 @@ export class SolutionFolderFile extends IdeFile implements IProjectFile {
         return;
     }
 
-    projectModel: IProjectModel;
+    public projectModel: IProjectModel;
 
     public readonly contextualInformation: ContextualInformationDatum[];
 }

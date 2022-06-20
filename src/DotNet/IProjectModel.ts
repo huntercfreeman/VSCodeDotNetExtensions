@@ -15,6 +15,8 @@ export interface IProjectModel {
     readonly displayName: string,
     readonly projectRelativePathFromSolution: string,
     readonly projectIdGuid: string,
+    targetFramework: string,
+    rootNamespace: string,
 
     contextualInformation: string;
 }
