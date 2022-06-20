@@ -8,7 +8,7 @@ import { CSharpProjectProjectReferencesListFile } from "./CSharpProjectProjectRe
 
 export class CSharpProjectDependenciesListFile extends IdeFile {
     constructor(cSharpProjectParentAbsoluteFilePath: AbsoluteFilePath) {
-        let myAbsoluteFilePath = new AbsoluteFilePath(ConstantsFileExtensionsNoPeriod.PROJECT_DEPENDENCIES_FILE_EXTENSION,
+        let myAbsoluteFilePath = new AbsoluteFilePath(ConstantsFileExtensionsNoPeriod.C_SHARP_PROJECT_DEPENDENCIES_FILE_EXTENSION,
             false,
             cSharpProjectParentAbsoluteFilePath.parentDirectories);
 

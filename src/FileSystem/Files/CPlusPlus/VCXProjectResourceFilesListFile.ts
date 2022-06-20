@@ -4,16 +4,18 @@ import { AbsoluteFilePath } from "../../AbsoluteFilePath";
 import { FileKind } from "../../FileKind";
 import { IdeFile } from "../IdeFile";
 
-
-export class CSharpProjectProjectReferencesListFile extends IdeFile {
-    constructor(cSharpProjectParentAbsoluteFilePath: AbsoluteFilePath, projectDependenciesParentAbsoluteFilePath: AbsoluteFilePath) {
-        let myAbsoluteFilePath = new AbsoluteFilePath(ConstantsFileExtensionsNoPeriod.C_SHARP_PROJECT_REFERENCES_FILE_EXTENSION,
+export class VCXProjectResourceFilesListFile extends IdeFile {
+    constructor(cSharpProjectParentAbsoluteFilePath: AbsoluteFilePath) {
+        let myAbsoluteFilePath = new AbsoluteFilePath(ConstantsFileExtensionsNoPeriod.VCX_PROJECT_RESOURCE_FILES_FILE_EXTENSION,
             false,
-            projectDependenciesParentAbsoluteFilePath.parentDirectories);
+            cSharpProjectParentAbsoluteFilePath.parentDirectories);
 
         super(myAbsoluteFilePath, "");
 
-        this.fileKind = FileKind.projectReferencesList;
+        this.constantChildFiles = [
+        ];
+
+        this.fileKind = FileKind.projectDependencies;
 
         this.parentCSharpProjectInitialAbsoluteFilePath = cSharpProjectParentAbsoluteFilePath;
     }
@@ -29,7 +31,5 @@ export class CSharpProjectProjectReferencesListFile extends IdeFile {
     public hideExpansionChevronWhenNoChildFiles: boolean = false;
 
     public readonly contextualInformation: ContextualInformationDatum[] = [
-        ContextualInformationDatum.addProjectReference,
-        ContextualInformationDatum.refreshChildFiles,
     ];
 }
