@@ -67,6 +67,9 @@ export class SolutionExplorerReadMessageHandler {
             case MessageReadKind.newProjectTemplatesOnComputer:
                 await this.handleMessageReadNewProjectTemplatesOnComputer(webviewView, message);
                 break;
+            case MessageReadKind.projectIntoXmlEditor:
+                await this.handleMessageReadProjectIntoXmlEditor(webviewView, message);
+                break;
         }
     }
 
