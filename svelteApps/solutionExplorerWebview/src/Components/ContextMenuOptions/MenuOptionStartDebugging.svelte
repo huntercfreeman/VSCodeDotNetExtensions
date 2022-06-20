@@ -2,7 +2,7 @@
     import { contextMenuTarget } from "../menu";
     import MenuOption from "../MenuOption.svelte";
     import { FileKind } from "../../../../../out/FileSystem/FileKind";
-    import { MessageExecuteCSharpProjectDebugging } from "../../../../../out/Messages/Execute/MessageExecuteCSharpProjectDebugging";
+    import { MessageExecuteProjectDebugging } from "../../../../../out/Messages/Execute/MessageExecuteProjectDebugging";
 
     export let closeMenu;
 
@@ -15,14 +15,15 @@
     function startWithoutDebugging() {
         switch (contextMenuTargetValue.fileKind) {
             case FileKind.cSharpProject:
-                let messageExecuteCSharpProjectDebugging =
-                    new MessageExecuteCSharpProjectDebugging(
+            case FileKind.vcxProjectFile:
+                let messageExecuteProjectDebugging =
+                    new MessageExecuteProjectDebugging(
                         contextMenuTargetValue
                     );
 
                 tsVscode.postMessage({
                     type: undefined,
-                    value: messageExecuteCSharpProjectDebugging,
+                    value: messageExecuteProjectDebugging,
                 });
                 break;
         }

@@ -2,7 +2,7 @@ import * as vscode from 'vscode';
 import { ConstantsDotNetCli } from '../Constants/ConstantsDotNetCli';
 import { ConstantsTerminal } from '../Constants/ConstantsTerminal';
 import { IMessageExecute } from '../Messages/Execute/IMessageExecute';
-import { MessageExecuteCSharpProjectWithoutDebugging } from '../Messages/Execute/MessageExecuteCSharpProjectWithoutDebugging';
+import { MessageExecuteProjectWithoutDebugging } from '../Messages/Execute/MessageExecuteProjectWithoutDebugging';
 import { MessageExecuteKind } from '../Messages/Execute/MessageExecuteKind';
 import { IMessage } from "../Messages/IMessage";
 import { ConstantsOmniSharp } from '../Constants/ConstantsOmniSharp';
@@ -14,28 +14,28 @@ export class ExecuteMessageHandler {
         let executeMessage = message as unknown as IMessageExecute;
 
         switch (executeMessage.messageExecuteKind) {
-            case MessageExecuteKind.cSharpProjectWithoutDebugging:
-                await this.handleMessageExecuteCSharpProjectWithoutDebugging(webviewView, message);
+            case MessageExecuteKind.projectWithoutDebugging:
+                await this.handleMessageExecuteProjectWithoutDebugging(webviewView, message);
                 break;
-            case MessageExecuteKind.cSharpProjectDebugging:
-                await this.handleMessageExecuteCSharpProjectDebugging(webviewView, message);
+            case MessageExecuteKind.projectDebugging:
+                await this.handleMessageExecuteProjectDebugging(webviewView, message);
                 break;
         }
     }
 
-    public static async handleMessageExecuteCSharpProjectWithoutDebugging(webviewView: vscode.WebviewView, iMessage: IMessage) {
-        let message = iMessage as MessageExecuteCSharpProjectWithoutDebugging;
+    public static async handleMessageExecuteProjectWithoutDebugging(webviewView: vscode.WebviewView, iMessage: IMessage) {
+        let message = iMessage as MessageExecuteProjectWithoutDebugging;
 
         let messageExecuteTerminal = this.getMessageExecuteTerminal();
 
         messageExecuteTerminal.sendText(ConstantsDotNetCli
-            .formatDotNetRunCSharpProject(message.cSharpProjectFile.absoluteFilePath));
+            .formatDotNetRunCSharpProject(message.projectModel.absoluteFilePath));
 
         messageExecuteTerminal.show();
     }
 
-    public static async handleMessageExecuteCSharpProjectDebugging(webviewView: vscode.WebviewView, iMessage: IMessage) {
-        let message = iMessage as MessageExecuteCSharpProjectWithoutDebugging;
+    public static async handleMessageExecuteProjectDebugging(webviewView: vscode.WebviewView, iMessage: IMessage) {
+        let message = iMessage as MessageExecuteProjectWithoutDebugging;
 
         vscode.commands.executeCommand(ConstantsOmniSharp.OMNI_SHARP_GENERATE_ASSETS);
     }

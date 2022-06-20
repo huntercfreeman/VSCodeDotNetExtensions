@@ -1,8 +1,8 @@
 <script lang="ts">
     import { contextMenuTarget } from "../menu";
     import MenuOption from "../MenuOption.svelte";
-    import { MessageExecuteCSharpProjectWithoutDebugging } from "../../../../../out/Messages/Execute/MessageExecuteCSharpProjectWithoutDebugging";
     import { FileKind } from "../../../../../out/FileSystem/FileKind";
+    import { MessageExecuteProjectWithoutDebugging } from "../../../../../out/Messages/Execute/MessageExecuteCSharpProjectWithoutDebugging";
 
     export let closeMenu;
 
@@ -15,14 +15,15 @@
     function startWithoutDebugging() {
         switch (contextMenuTargetValue.fileKind) {
             case FileKind.cSharpProject:
-                let messageExecuteCSharpProjectWithoutDebugging =
-                    new MessageExecuteCSharpProjectWithoutDebugging(
+            case FileKind.vcxProject:
+                let messageExecuteProjectWithoutDebugging =
+                    new MessageExecuteProjectWithoutDebugging(
                         contextMenuTargetValue
                     );
 
                 tsVscode.postMessage({
                     type: undefined,
-                    value: messageExecuteCSharpProjectWithoutDebugging,
+                    value: messageExecuteProjectWithoutDebugging,
                 });
                 break;
         }

@@ -10,9 +10,14 @@ export enum FileKind {
     razor,
     css,
     json,
-    projectDependencies,
-    nugetPackageDependenciesList,
-    nugetPackageDependency,
-    projectReferencesList,
-    projectReference
+    cSharpProjectDependencies,
+    cSharpNugetPackageDependenciesList,
+    cSharpNugetPackageDependency,
+    cSharpProjectReferencesList,
+    cSharpProjectReference,
+    vcxProjectExternalDependenciesListFile,
+    vcxProjectHeaderFilesListFile,
+    vcxProjectReferencesListFile,
+    vcxProjectResourceFilesListFile,
+    vcxProjectSourceFilesListFile
 }

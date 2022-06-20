@@ -23,7 +23,7 @@ export class FileKindMatcher {
             case ConstantsFileExtensionsNoPeriod.JSON_FILE_EXTENSION:
                 return FileKind.json;
             case ConstantsFileExtensionsNoPeriod.C_SHARP_PROJECT_DEPENDENCIES_FILE_EXTENSION:
-                return FileKind.projectDependencies;
+                return FileKind.cSharpProjectDependencies;
             default:
                 return FileKind.default;
         }

@@ -19,7 +19,7 @@ export class CSharpProjectDependenciesListFile extends IdeFile {
             new CSharpProjectProjectReferencesListFile(cSharpProjectParentAbsoluteFilePath, myAbsoluteFilePath),
         ];
 
-        this.fileKind = FileKind.projectDependencies;
+        this.fileKind = FileKind.cSharpProjectDependencies;
 
         this.parentCSharpProjectInitialAbsoluteFilePath = cSharpProjectParentAbsoluteFilePath;
     }

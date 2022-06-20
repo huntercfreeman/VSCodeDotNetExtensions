@@ -63,7 +63,7 @@ export class VCXProjectModel implements IProjectModel {
     public isExecutable: boolean = true;;
     public readonly parentSolutionAbsoluteFilePath: AbsoluteFilePath;
     public initialIsExpandedState: boolean = false;
-    public projectKind: ProjectKind = ProjectKind.cSharpProject;
+    public projectKind: ProjectKind = ProjectKind.vcxProject;
 
     public contextualInformation: string = ConstantsContextualInformation.TREE_VIEW_VCX_PROJECT_CONTEXT;
 }

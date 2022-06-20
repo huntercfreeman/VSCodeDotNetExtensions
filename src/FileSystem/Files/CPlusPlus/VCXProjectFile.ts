@@ -16,6 +16,11 @@ export class VCXProjectFile extends IdeFile {
         super(vcxProjectModel.absoluteFilePath, vcxProjectModel.rootNamespace);
 
         this.contextualInformation = [
+            ContextualInformationDatum.refreshChildFiles,
+            ContextualInformationDatum.removeCSharpProject,
+            ContextualInformationDatum.startWithoutDebugging,
+            ContextualInformationDatum.startDebugging,
+            ContextualInformationDatum.putProjectInSolutionFolder,
         ];
 
         this.constantChildFiles = [
@@ -37,5 +42,5 @@ export class VCXProjectFile extends IdeFile {
         return;
     }
 
-    public readonly contextualInformation: ContextualInformationDatum[];
+    public readonly contextualInformation: ContextualInformationDatum[] = [];
 }

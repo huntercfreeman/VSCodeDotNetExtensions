@@ -1,33 +1,27 @@
 <script lang="ts">
 	import type { IdeFile } from "../../../../../../out/FileSystem/Files/IdeFile";
-	import type { VCXProjectFile } from "../../../../../../out/FileSystem/Files/CPlusPlus/VCXProjectFile";
 	import { MessageReadFileIntoEditor } from "../../../../../../out/Messages/Read/MessageReadFileIntoEditor";
 	import TreeViewBase from "../../TreeViewBase.svelte";
+	import type { VCXProjectResourceFilesListFile } from "../../../../../../out/FileSystem/Files/CPlusPlus/VCXProjectResourceFilesListFile";
 	
-    export let vcxProjectFile: VCXProjectFile;
+    export let vcxProjectResourceFilesListFile: VCXProjectResourceFilesListFile;
 
 	let children: IdeFile[] | undefined;
 
     function getTitleText() {
-        return vcxProjectFile.absoluteFilePath.filenameWithExtension;
+        return vcxProjectResourceFilesListFile.absoluteFilePath.filenameWithExtension;
     }
 
 	function titleOnClick() {
-		let messageReadFileIntoEditor = new MessageReadFileIntoEditor(vcxProjectFile);
-		
-		tsVscode.postMessage({
-			type: undefined,
-			value: messageReadFileIntoEditor,
-		});
     }
 
 	function getChildFiles(): IdeFile[] {
-		return vcxProjectFile.constantChildFiles;
+		return [];
 	}
 
 	function hasDifferentParentContainer(childIdeFile: IdeFile): boolean {
 		if (childIdeFile.virtualParentNonce) {
-			if (childIdeFile.virtualParentNonce !== vcxProjectFile.nonce) {
+			if (childIdeFile.virtualParentNonce !== vcxProjectResourceFilesListFile.nonce) {
 				return true;
 			}
 		}
@@ -36,7 +30,7 @@
 	}
 </script>
 
-<TreeViewBase ideFile="{vcxProjectFile}" 
+<TreeViewBase ideFile="{vcxProjectResourceFilesListFile}" 
               getTitleText={getTitleText}
               titleOnClick={titleOnClick}
               getChildFiles={getChildFiles}

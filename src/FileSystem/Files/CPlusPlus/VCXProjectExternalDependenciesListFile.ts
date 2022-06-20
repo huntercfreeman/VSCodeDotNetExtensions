@@ -15,7 +15,7 @@ export class VCXProjectExternalDependenciesListFile extends IdeFile {
         this.constantChildFiles = [
         ];
 
-        this.fileKind = FileKind.projectDependencies;
+        this.fileKind = FileKind.vcxProjectExternalDependenciesListFile;
 
         this.parentCSharpProjectInitialAbsoluteFilePath = cSharpProjectParentAbsoluteFilePath;
     }

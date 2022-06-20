@@ -13,7 +13,7 @@ export class CSharpProjectProjectReferencesListFile extends IdeFile {
 
         super(myAbsoluteFilePath, "");
 
-        this.fileKind = FileKind.projectReferencesList;
+        this.fileKind = FileKind.cSharpProjectReferencesList;
 
         this.parentCSharpProjectInitialAbsoluteFilePath = cSharpProjectParentAbsoluteFilePath;
     }

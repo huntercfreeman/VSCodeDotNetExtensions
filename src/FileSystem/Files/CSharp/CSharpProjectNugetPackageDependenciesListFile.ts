@@ -13,7 +13,7 @@ export class CSharpProjectNugetPackageDependenciesListFile extends IdeFile {
 
         super(myAbsoluteFilePath, "");
 
-        this.fileKind = FileKind.nugetPackageDependenciesList;
+        this.fileKind = FileKind.cSharpNugetPackageDependenciesList;
 
         this.parentCSharpProjectInitialAbsoluteFilePath = cSharpProjectParentAbsoluteFilePath;
     }
