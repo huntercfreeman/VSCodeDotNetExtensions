@@ -1,8 +1,7 @@
-import { IdeFile } from "./IdeFile";
-import { CSharpProjectModel } from "../../DotNet/CSharpProjectModel";
-import { FileKind } from "../FileKind";
-import { ContextualInformationDatum } from "../../ContextMenus/ContextualInformationDatum";
-import { CSharpProjectDependenciesFile } from "./CSharpProjectDependenciesFile";
+import { ContextualInformationDatum } from "../../../ContextMenus/ContextualInformationDatum";
+import { CSharpProjectModel } from "../../../DotNet/CSharpProjectModel";
+import { IdeFile } from "../IdeFile";
+import { CSharpProjectDependenciesListFile } from "./CSharpProjectDependenciesListFile";
 
 export class CSharpProjectFile extends IdeFile {
 
@@ -21,7 +20,7 @@ export class CSharpProjectFile extends IdeFile {
         ];
 
         this.constantChildFiles = [
-            new CSharpProjectDependenciesFile(this.cSharpProjectModel.absoluteFilePath),
+            new CSharpProjectDependenciesListFile(this.cSharpProjectModel.absoluteFilePath),
         ];
         
         this.isExpanded = cSharpProjectModel.initialIsExpandedState;

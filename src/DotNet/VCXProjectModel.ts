@@ -1,8 +1,6 @@
 import { ConstantsContextualInformation } from "../Constants/ConstantsContextualInformation";
 import { AbsoluteFilePath } from "../FileSystem/AbsoluteFilePath";
-import { CSharpProjectNugetPackageDependenciesFile } from "../FileSystem/Files/CSharpProjectNugetPackageDependenciesFile";
-import { CSharpProjectProjectReferenceFile } from "../FileSystem/Files/CSharpProjectProjectReferenceFile";
-import { CSharpProjectProjectReferencesFile } from "../FileSystem/Files/CSharpProjectProjectReferencesFile";
+import { CSharpProjectProjectReferenceFile } from "../FileSystem/Files/CSharp/CSharpProjectProjectReferenceFile";
 import { IdeFile } from "../FileSystem/Files/IdeFile";
 import { XmlProjectParser } from "../Parsers/XmlProjectParser";
 import { IProjectModel } from "./IProjectModel";

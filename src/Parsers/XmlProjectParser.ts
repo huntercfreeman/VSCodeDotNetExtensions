@@ -2,18 +2,18 @@ import { ConstantsContextualInformation } from "../Constants/ConstantsContextual
 import { ConstantsCSharpProjectFile } from "../Constants/ConstantsCSharpProjectFile";
 import { CSharpProjectModel } from "../DotNet/CSharpProjectModel";
 import { AbsoluteFilePath } from "../FileSystem/AbsoluteFilePath";
-import { CSharpProjectNugetPackageDependenciesFile } from "../FileSystem/Files/CSharpProjectNugetPackageDependenciesFile";
-import { CSharpProjectNugetPackageDependencyFile } from "../FileSystem/Files/CSharpProjectNugetPackageDependencyFile";
-import { CSharpProjectProjectReferenceFile } from "../FileSystem/Files/CSharpProjectProjectReferenceFile";
-import { CSharpProjectProjectReferencesFile } from "../FileSystem/Files/CSharpProjectProjectReferencesFile";
+import { CSharpProjectNugetPackageDependenciesListFile } from "../FileSystem/Files/CSharp/CSharpProjectNugetPackageDependenciesListFile";
+import { CSharpProjectNugetPackageDependencyFile } from "../FileSystem/Files/CSharp/CSharpProjectNugetPackageDependencyFile";
+import { CSharpProjectProjectReferenceFile } from "../FileSystem/Files/CSharp/CSharpProjectProjectReferenceFile";
+import { CSharpProjectProjectReferencesListFile } from "../FileSystem/Files/CSharp/CSharpProjectProjectReferencesListFile";
 import { XmlParser, XmlTagModel } from "./XmlParseStateMachines";
 
 const fs = require('fs');
 
 export class XmlProjectParser {
   constructor(public readonly xmlProjectAbsoluteFilePath: AbsoluteFilePath | undefined,
-    public readonly xmlProjectProjectReferencesFile: CSharpProjectProjectReferencesFile | undefined,
-    public readonly xmlProjectNugetPackageDependenciesFile: CSharpProjectNugetPackageDependenciesFile | undefined,
+    public readonly xmlProjectProjectReferencesFile: CSharpProjectProjectReferencesListFile | undefined,
+    public readonly xmlProjectNugetPackageDependenciesFile: CSharpProjectNugetPackageDependenciesListFile | undefined,
     public readonly xmlProjectModel: CSharpProjectModel | undefined) {
   }
 

@@ -3,14 +3,13 @@
 	import ExpansionChevron from "./ExpansionChevron.svelte";
 	import FileIconDisplay from "./FileIconDisplay.svelte";
 	import { contextMenuTarget } from "./menu.js";
+import TreeViewMapper from "./TreeViewMapper.svelte";
 
 	export let ideFile: IdeFile;
 	export let getTitleText: () => string;
 	export let titleOnClick: (e: MouseEvent) => void;
 	export let getChildFiles: () => IdeFile[];
 	export let hasDifferentParentContainer: (childIdeFile: IdeFile) => boolean;
-
-	let discardIsExpanded: boolean = false;
 
 	let children: any[] | undefined;
 </script>
@@ -28,7 +27,7 @@
 				tabindex="-1"
 				class="dni_unselectable"
 			>
-				<ExpansionChevron bind:isExpanded={discardIsExpanded} />
+				<ExpansionChevron isExpanded={false} />
 			</span>
 		{:else}
 			<span class="dni_tree-view-title-expansion-chevron">
@@ -47,7 +46,7 @@
 		{#if ideFile.isExpanded}
 			{#each children ?? getChildFiles() as child (child.nonce)}
 				{#if !hasDifferentParentContainer(child)}
-					<svelte:self ideFile={child} />
+					<TreeViewMapper ideFile={child} />
 				{/if}
 			{/each}
 		{/if}

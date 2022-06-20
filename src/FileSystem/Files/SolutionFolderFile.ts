@@ -4,7 +4,7 @@ import { FileKind } from "../FileKind";
 import { ContextualInformationDatum } from "../../ContextMenus/ContextualInformationDatum";
 import { SolutionFolderModel } from "../../DotNet/SolutionFolderModel";
 import { ProjectKind } from "../../DotNet/ProjectKind";
-import { CSharpProjectFile } from "./CSharpProjectFile";
+import { CSharpProjectFile } from "./CSharp/CSharpProjectFile";
 
 export class SolutionFolderFile extends IdeFile {
 

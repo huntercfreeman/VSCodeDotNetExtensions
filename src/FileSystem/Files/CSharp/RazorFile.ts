@@ -1,7 +1,7 @@
-import { ConstantsFileExtensionsNoPeriod } from "../../Constants/ConstantsFileExtensionsNoPeriod";
-import { ContextualInformationDatum } from "../../ContextMenus/ContextualInformationDatum";
-import { AbsoluteFilePath } from "../AbsoluteFilePath";
-import { IdeFile } from "./IdeFile";
+import { ConstantsFileExtensionsNoPeriod } from "../../../Constants/ConstantsFileExtensionsNoPeriod";
+import { ContextualInformationDatum } from "../../../ContextMenus/ContextualInformationDatum";
+import { AbsoluteFilePath } from "../../AbsoluteFilePath";
+import { IdeFile } from "../IdeFile";
 
 export class RazorFile extends IdeFile {
     constructor(givenAbsoluteFilePath: AbsoluteFilePath) {

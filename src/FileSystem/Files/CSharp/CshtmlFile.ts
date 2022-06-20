@@ -1,6 +1,7 @@
-import { ContextualInformationDatum } from "../../ContextMenus/ContextualInformationDatum";
-import { AbsoluteFilePath } from "../AbsoluteFilePath";
-import { IdeFile } from "./IdeFile";
+import { ContextualInformationDatum } from "../../../ContextMenus/ContextualInformationDatum";
+import { AbsoluteFilePath } from "../../AbsoluteFilePath";
+import { IdeFile } from "../IdeFile";
+
 
 export class CshtmlFile extends IdeFile {
     constructor(givenAbsoluteFilePath: AbsoluteFilePath) {

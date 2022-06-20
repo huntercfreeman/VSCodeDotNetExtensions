@@ -1,10 +1,11 @@
-import { ConstantsFileExtensionsNoPeriod } from "../../Constants/ConstantsFileExtensionsNoPeriod";
-import { ContextualInformationDatum } from "../../ContextMenus/ContextualInformationDatum";
-import { AbsoluteFilePath } from "../AbsoluteFilePath";
-import { FileKind } from "../FileKind";
-import { IdeFile } from "./IdeFile";
+import { ConstantsFileExtensionsNoPeriod } from "../../../Constants/ConstantsFileExtensionsNoPeriod";
+import { ContextualInformationDatum } from "../../../ContextMenus/ContextualInformationDatum";
+import { AbsoluteFilePath } from "../../AbsoluteFilePath";
+import { FileKind } from "../../FileKind";
+import { IdeFile } from "../IdeFile";
 
-export class CSharpProjectProjectReferencesFile extends IdeFile {
+
+export class CSharpProjectProjectReferencesListFile extends IdeFile {
     constructor(cSharpProjectParentAbsoluteFilePath: AbsoluteFilePath, projectDependenciesParentAbsoluteFilePath: AbsoluteFilePath) {
         let myAbsoluteFilePath = new AbsoluteFilePath(ConstantsFileExtensionsNoPeriod.PROJECT_REFERENCES_FILE_EXTENSION,
             false,
@@ -12,7 +13,7 @@ export class CSharpProjectProjectReferencesFile extends IdeFile {
 
         super(myAbsoluteFilePath, "");
 
-        this.fileKind = FileKind.projectReferences;
+        this.fileKind = FileKind.projectReferencesList;
 
         this.parentCSharpProjectInitialAbsoluteFilePath = cSharpProjectParentAbsoluteFilePath;
     }

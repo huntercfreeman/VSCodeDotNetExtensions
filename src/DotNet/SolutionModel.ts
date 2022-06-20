@@ -1,7 +1,7 @@
 import { ConstantsContextualInformation } from "../Constants/ConstantsContextualInformation";
 import { AbsoluteFilePath } from "../FileSystem/AbsoluteFilePath";
 import { FileKind } from "../FileSystem/FileKind";
-import { CSharpProjectFile } from "../FileSystem/Files/CSharpProjectFile";
+import { CSharpProjectFile } from "../FileSystem/Files/CSharp/CSharpProjectFile";
 import { DotNetSolutionFile } from "../FileSystem/Files/DotNetSolutionFile";
 import { SolutionFolderFile } from "../FileSystem/Files/SolutionFolderFile";
 import { DotNetSolutionParser } from "../Parsers/DotNetSolutionParser";

@@ -1,12 +1,12 @@
-import { ConstantsFileExtensionsNoPeriod } from "../../Constants/ConstantsFileExtensionsNoPeriod";
-import { ContextualInformationDatum } from "../../ContextMenus/ContextualInformationDatum";
-import { AbsoluteFilePath } from "../AbsoluteFilePath";
-import { FileKind } from "../FileKind";
-import { CSharpProjectNugetPackageDependenciesFile } from "./CSharpProjectNugetPackageDependenciesFile";
-import { CSharpProjectProjectReferencesFile } from "./CSharpProjectProjectReferencesFile";
-import { IdeFile } from "./IdeFile";
+import { ConstantsFileExtensionsNoPeriod } from "../../../Constants/ConstantsFileExtensionsNoPeriod";
+import { ContextualInformationDatum } from "../../../ContextMenus/ContextualInformationDatum";
+import { AbsoluteFilePath } from "../../AbsoluteFilePath";
+import { FileKind } from "../../FileKind";
+import { IdeFile } from "../IdeFile";
+import { CSharpProjectNugetPackageDependenciesListFile } from "./CSharpProjectNugetPackageDependenciesListFile";
+import { CSharpProjectProjectReferencesListFile } from "./CSharpProjectProjectReferencesListFile";
 
-export class CSharpProjectDependenciesFile extends IdeFile {
+export class CSharpProjectDependenciesListFile extends IdeFile {
     constructor(cSharpProjectParentAbsoluteFilePath: AbsoluteFilePath) {
         let myAbsoluteFilePath = new AbsoluteFilePath(ConstantsFileExtensionsNoPeriod.PROJECT_DEPENDENCIES_FILE_EXTENSION,
             false,
@@ -15,8 +15,8 @@ export class CSharpProjectDependenciesFile extends IdeFile {
         super(myAbsoluteFilePath, "");
 
         this.constantChildFiles = [
-            new CSharpProjectNugetPackageDependenciesFile(cSharpProjectParentAbsoluteFilePath, myAbsoluteFilePath),
-            new CSharpProjectProjectReferencesFile(cSharpProjectParentAbsoluteFilePath, myAbsoluteFilePath),
+            new CSharpProjectNugetPackageDependenciesListFile(cSharpProjectParentAbsoluteFilePath, myAbsoluteFilePath),
+            new CSharpProjectProjectReferencesListFile(cSharpProjectParentAbsoluteFilePath, myAbsoluteFilePath),
         ];
 
         this.fileKind = FileKind.projectDependencies;

@@ -1,8 +1,8 @@
 import { ConstantsContextualInformation } from "../Constants/ConstantsContextualInformation";
 import { AbsoluteFilePath } from "../FileSystem/AbsoluteFilePath";
-import { CSharpProjectNugetPackageDependenciesFile } from "../FileSystem/Files/CSharpProjectNugetPackageDependenciesFile";
-import { CSharpProjectProjectReferenceFile } from "../FileSystem/Files/CSharpProjectProjectReferenceFile";
-import { CSharpProjectProjectReferencesFile } from "../FileSystem/Files/CSharpProjectProjectReferencesFile";
+import { CSharpProjectNugetPackageDependenciesListFile } from "../FileSystem/Files/CSharp/CSharpProjectNugetPackageDependenciesListFile";
+import { CSharpProjectProjectReferenceFile } from "../FileSystem/Files/CSharp/CSharpProjectProjectReferenceFile";
+import { CSharpProjectProjectReferencesListFile } from "../FileSystem/Files/CSharp/CSharpProjectProjectReferencesListFile";
 import { IdeFile } from "../FileSystem/Files/IdeFile";
 import { XmlProjectParser } from "../Parsers/XmlProjectParser";
 import { IProjectModel } from "./IProjectModel";
@@ -57,7 +57,7 @@ export class CSharpProjectModel implements IProjectModel {
     }
 
     public static async parseCSharpProjectProjectReferences(cSharpProjectAbsoluteFilePath: AbsoluteFilePath,
-        cSharpProjectProjectReferencesFile: CSharpProjectProjectReferencesFile,
+        cSharpProjectProjectReferencesFile: CSharpProjectProjectReferencesListFile,
         callback: any): Promise<void> {
 
         cSharpProjectProjectReferencesFile.virtualChildFiles = [];
@@ -71,7 +71,7 @@ export class CSharpProjectModel implements IProjectModel {
     }
 
     public static async parseCSharpProjectNugetPackageReferences(cSharpProjectAbsoluteFilePath: AbsoluteFilePath,
-        cSharpProjectNugetPackageDependenciesFile: CSharpProjectNugetPackageDependenciesFile,
+        cSharpProjectNugetPackageDependenciesFile: CSharpProjectNugetPackageDependenciesListFile,
         callback: any): Promise<void> {
 
         cSharpProjectNugetPackageDependenciesFile.virtualChildFiles = [];

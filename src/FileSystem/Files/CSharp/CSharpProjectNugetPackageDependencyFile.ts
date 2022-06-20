@@ -1,7 +1,7 @@
-import { ContextualInformationDatum } from "../../ContextMenus/ContextualInformationDatum";
-import { AbsoluteFilePath } from "../AbsoluteFilePath";
-import { FileKind } from "../FileKind";
-import { IdeFile } from "./IdeFile";
+import { ContextualInformationDatum } from "../../../ContextMenus/ContextualInformationDatum";
+import { AbsoluteFilePath } from "../../AbsoluteFilePath";
+import { FileKind } from "../../FileKind";
+import { IdeFile } from "../IdeFile";
 
 export class CSharpProjectNugetPackageDependencyFile extends IdeFile {
     constructor(cSharpProjectParentAbsoluteFilePath: AbsoluteFilePath,

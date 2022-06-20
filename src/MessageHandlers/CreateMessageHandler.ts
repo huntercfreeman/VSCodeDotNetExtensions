@@ -5,7 +5,7 @@ import { ConstantsFileTemplates } from '../Constants/ConstantsFileTemplates';
 import { ConstantsTerminal } from '../Constants/ConstantsTerminal';
 import { AbsoluteFilePath } from '../FileSystem/AbsoluteFilePath';
 import { FileKind } from '../FileSystem/FileKind';
-import { CSharpProjectFile } from '../FileSystem/Files/CSharpProjectFile';
+import { CSharpProjectFile } from '../FileSystem/Files/CSharp/CSharpProjectFile';
 import { DefaultFile } from '../FileSystem/Files/DefaultFile';
 import { DirectoryFile } from '../FileSystem/Files/DirectoryFile';
 import { DotNetSolutionFile } from '../FileSystem/Files/DotNetSolutionFile';
