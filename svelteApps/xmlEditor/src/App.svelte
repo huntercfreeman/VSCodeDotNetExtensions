@@ -6,6 +6,7 @@
 	import { MessageReadKind } from "../../../out/Messages/Read/MessageReadKind";
 	import { MessageReadProjectXmlIntoXmlEditor } from "../../../out/Messages/Read/MessageReadProjectXmlIntoXmlEditor";
 	import SelectProjectFileForm from "./Components/SelectProjectFileForm.svelte";
+	import XmlFileEditor from "./Components/XmlEditors/XmlFileEditor.svelte";
 
 	let activeDotNetSolutionFile: DotNetSolutionFile | undefined;
 	let selectedProjectModel: any;
@@ -81,13 +82,10 @@
 
 <button on:click="{parseSelectedProjectFile}">Parse {selectedProjectModel?.absoluteFilePath.filenameWithExtension ?? "undefined"} XML</button>
 
-<pre>
+
 {#if selectedProjectXmlFileModel}
-{JSON.stringify(selectedProjectXmlFileModel, null, 2)}
-{:else}
-selectedProjectXmlFileModel is undefined
+	<XmlFileEditor xmlFileModel={selectedProjectXmlFileModel} />
 {/if}
-</pre>
 
 {:else}
 	<div>
