@@ -21,22 +21,18 @@
             }
 
             // IProjectModel
-            let projectModel: any = (
-                contextMenuTargetValue as any
-            ).projectModel;
+            let projectModel: any = (contextMenuTargetValue as any).projectModel;
 
-            if (projectModel) {
-                let messageUpdatePutProjectInSolutionFolder =
-                    new MessageUpdatePutProjectInSolutionFolder(
-                        contextMenuTargetValue,
-                        solutionFolderName
-                    );
+            let messageUpdatePutProjectInSolutionFolder =
+                new MessageUpdatePutProjectInSolutionFolder(
+                    projectModel,
+                    solutionFolderName
+                );
 
-                tsVscode.postMessage({
-                    type: undefined,
-                    value: messageUpdatePutProjectInSolutionFolder,
-                });
-            }
+            tsVscode.postMessage({
+                type: undefined,
+                value: messageUpdatePutProjectInSolutionFolder,
+            });
         }
 
         closeMenu();

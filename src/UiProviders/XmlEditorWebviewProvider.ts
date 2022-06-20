@@ -7,7 +7,7 @@ import { MessageReadUndefinedSolution } from '../Messages/Read/MessageReadUndefi
 
 const fs = require('fs');
 
-export class SolutionExplorerWebviewProvider implements vscode.WebviewViewProvider {
+export class XmlEditorWebviewProvider implements vscode.WebviewViewProvider {
   _view?: vscode.WebviewView;
   _doc?: vscode.TextDocument;
 
@@ -16,19 +16,6 @@ export class SolutionExplorerWebviewProvider implements vscode.WebviewViewProvid
   constructor(private readonly context: vscode.ExtensionContext) { }
 
   public resolveWebviewView(webviewView: vscode.WebviewView) {
-
-    ActiveDotNetSolutionFileContainer.solutionExplorerWebviewProviderSubscription = (activeDotNetSolution) =>
-    {
-      this.activeDotNetSolutionFile = activeDotNetSolution;
-
-      if (this.activeDotNetSolutionFile) {
-        SolutionExplorerMessageHandler
-          .handleMessage(webviewView, new MessageReadVirtualFilesInSolution(this.activeDotNetSolutionFile));
-      }
-      else {
-        webviewView.webview.postMessage(new MessageReadUndefinedSolution());
-      }
-    };
 
     this._view = webviewView;
 
@@ -40,9 +27,6 @@ export class SolutionExplorerWebviewProvider implements vscode.WebviewViewProvid
     };
 
     webviewView.webview.html = this.getWebviewContent(webviewView.webview);
-
-    webviewView.webview.onDidReceiveMessage(async (data) =>
-      SolutionExplorerMessageHandler.handleMessage(webviewView, data.value));
   }
 
   public revive(panel: vscode.WebviewView) {
@@ -50,11 +34,11 @@ export class SolutionExplorerWebviewProvider implements vscode.WebviewViewProvid
   }
 
   private getWebviewContent(webview: vscode.Webview) {
-    const solutionExplorerWebviewJavaScriptUri = webview.asWebviewUri(vscode.Uri.joinPath(
-      this.context.extensionUri, 'out/solutionExplorerWebview', 'solutionExplorerWebview.js'));
+    const xmlEditorJavaScriptUri = webview.asWebviewUri(vscode.Uri.joinPath(
+      this.context.extensionUri, 'out/xmlEditor', 'xmlEditor.js'));
 
-    const solutionExplorerWebviewCssUri = webview.asWebviewUri(vscode.Uri.joinPath(
-      this.context.extensionUri, 'out/solutionExplorerWebview', 'solutionExplorerWebview.css'));
+    const xmlEditorCssUri = webview.asWebviewUri(vscode.Uri.joinPath(
+      this.context.extensionUri, 'out/xmlEditor', 'xmlEditor.css'));
 
     const resetCssUri = webview.asWebviewUri(
       vscode.Uri.joinPath(this.context.extensionUri, "media", "reset.css")
@@ -77,13 +61,13 @@ export class SolutionExplorerWebviewProvider implements vscode.WebviewViewProvid
     <link href="${resetCssUri}" rel="stylesheet">
     <link href="${vSCodeCssUri}" rel="stylesheet">
     <link href="${dotNetIdeCssUri}" rel="stylesheet">
-    <link href="${solutionExplorerWebviewCssUri}" rel="stylesheet">
+    <link href="${xmlEditorCssUri}" rel="stylesheet">
 	  <script>
 		const tsVscode = acquireVsCodeApi();
 	</script>
   </head>
   <body style="padding: 0 5px;" class="">
-	  <script src="${solutionExplorerWebviewJavaScriptUri}"></script>
+	  <script src="${xmlEditorJavaScriptUri}"></script>
   </body>
   </html>`;
   }

@@ -14,7 +14,8 @@
 	],
 	"activationEvents": [
 		"onView:dot-net-ide.solution-explorer-webview",
-		"onView:dot-net-ide.nuget-package-manager-webview"
+		"onView:dot-net-ide.nuget-package-manager-webview",
+		"onView:dot-net-ide.xml-editor"
 	],
 	"main": "./out/extension.js",
 	"contributes": {
@@ -40,6 +41,12 @@
 					"id": "dot-net-ide.nuget-package-manager-webview",
 					"name": "Nuget Package Manager",
 					"icon": "media/nugetPackageManagerIcon.svg"
+				},
+				{
+					"type": "webview",
+					"id": "dot-net-ide.xml-editor",
+					"name": "XML Editor",
+					"icon": "media/xmlEditorIcon.svg"
 				}
 			]
 		}

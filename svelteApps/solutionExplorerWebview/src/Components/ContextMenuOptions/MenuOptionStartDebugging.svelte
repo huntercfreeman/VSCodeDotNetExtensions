@@ -20,21 +20,17 @@
             }
 
             // IProjectModel
-            let projectModel: any = (
-                contextMenuTargetValue as any
-            ).projectModel;
+            let projectModel: any = (contextMenuTargetValue as any).projectModel;
 
-            if (projectModel) {
-                let messageExecuteProjectDebugging =
+            let messageExecuteProjectDebugging =
                 new MessageExecuteProjectDebugging(
-                    contextMenuTargetValue
+                    projectModel
                 );
 
-                tsVscode.postMessage({
-                    type: undefined,
-                    value: messageExecuteProjectDebugging,
-                });
-            }
+            tsVscode.postMessage({
+                type: undefined,
+                value: messageExecuteProjectDebugging,
+            });
         }
 
         closeMenu();

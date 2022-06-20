@@ -20,21 +20,17 @@
             }
 
             // IProjectModel
-            let projectModel: any = (
-                contextMenuTargetValue as any
-            ).projectModel;
+            let projectModel: any = (contextMenuTargetValue as any).projectModel;
 
-            if (projectModel) {
-                let messageExecuteProjectWithoutDebugging =
-                    new MessageExecuteProjectWithoutDebugging(
-                        contextMenuTargetValue
-                    );
+            let messageExecuteProjectWithoutDebugging =
+                new MessageExecuteProjectWithoutDebugging(
+                    projectModel
+                );
 
-                tsVscode.postMessage({
-                    type: undefined,
-                    value: messageExecuteProjectWithoutDebugging,
-                });
-            }
+            tsVscode.postMessage({
+                type: undefined,
+                value: messageExecuteProjectWithoutDebugging,
+            });
         }
 
         closeMenu();
