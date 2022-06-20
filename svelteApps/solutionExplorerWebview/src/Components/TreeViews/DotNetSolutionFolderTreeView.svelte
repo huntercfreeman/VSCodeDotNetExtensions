@@ -24,29 +24,24 @@
 	}
 
 	function hasDifferentParentContainer(childIdeFile: IdeFile): boolean {
-		if (childIdeFile.fileKind === FileKind.solutionFolder ||
-		   childIdeFile.fileKind === FileKind.cSharpProject) {
-			let childProjectModel: any = childIdeFile.fileKind === FileKind.solutionFolder
-				? (childIdeFile as SolutionFolderFile).solutionFolderModel
-				: (childIdeFile as CSharpProjectFile).cSharpProjectModel;
-			if(childProjectModel.solutionFolderParentProjectIdGuid) {
-				
-				if (solutionFolderFile.fileKind === FileKind.solution) {
-					return true;
-				}
-				if (solutionFolderFile.fileKind === FileKind.solutionFolder) {
-					let solutionFolder = solutionFolderFile as SolutionFolderFile;
-					return solutionFolder.solutionFolderModel.projectIdGuid !==
-						childProjectModel.solutionFolderParentProjectIdGuid;
-				}
-				return true;
-			}
+
+		console.log((childIdeFile as any).projectModel);
+
+		if ((childIdeFile as any).projectModel) {
+			// IProjectModel
+			let projectModel: any = (childIdeFile as any)
+                        .projectModel;
+
+			return solutionFolderFile.solutionFolderModel.projectIdGuid !==
+				projectModel.solutionFolderParentProjectIdGuid;
 		}
+		
 		if (childIdeFile.virtualParentNonce) {
 			if (childIdeFile.virtualParentNonce !== solutionFolderFile.nonce) {
 				return true;
 			}
 		}
+		
 		return false;
 	}
 	

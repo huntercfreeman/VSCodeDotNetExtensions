@@ -4,6 +4,7 @@ import { FileKind } from "../FileSystem/FileKind";
 import { VCXProjectFile } from "../FileSystem/Files/CPlusPlus/VCXProjectFile";
 import { CSharpProjectFile } from "../FileSystem/Files/CSharp/CSharpProjectFile";
 import { DotNetSolutionFile } from "../FileSystem/Files/DotNetSolutionFile";
+import { IProjectFile } from "../FileSystem/Files/IProjectFile";
 import { SolutionFolderFile } from "../FileSystem/Files/SolutionFolderFile";
 import { DotNetSolutionParser } from "../Parsers/DotNetSolutionParser";
 import { IProjectModel } from "./IProjectModel";
@@ -40,17 +41,8 @@ export class SolutionModel {
                 for (let i = 0; i < dotNetSolutionFile.virtualChildFiles.length; i++) {
                     let oldProjectFileState = dotNetSolutionFile.virtualChildFiles[i];
                     
-                    let oldProjectFileStateProjectIdGuid: string;
-
-                    if (oldProjectFileState.fileKind === FileKind.cSharpProject) {
-                        oldProjectFileStateProjectIdGuid = (oldProjectFileState as CSharpProjectFile).cSharpProjectModel.projectIdGuid;
-                    }
-                    else if (oldProjectFileState.fileKind === FileKind.vcxProject) {
-                        oldProjectFileStateProjectIdGuid = (oldProjectFileState as VCXProjectFile).vcxProjectModel.projectIdGuid;
-                    }
-                    else {
-                        oldProjectFileStateProjectIdGuid = (oldProjectFileState as SolutionFolderFile).solutionFolderModel.projectIdGuid;
-                    }
+                    let oldProjectFileStateProjectIdGuid: string = (oldProjectFileState as unknown as IProjectFile)
+                        .projectModel.projectIdGuid;
 
                     //200847FD-6FD5-4F6C-B9E1-96472010C379
                     //200847FD-6FD5-4F6C-B9E1-96472010C379

@@ -1,10 +1,8 @@
 <script lang="ts">
     import { contextMenuTarget } from "../menu";
     import MenuOption from "../MenuOption.svelte";
-    import { FileKind } from "../../../../../out/FileSystem/FileKind";
     import { MessageExecuteProjectWithoutDebugging } from "../../../../../out/Messages/Execute/MessageExecuteCSharpProjectWithoutDebugging";
-import type { CSharpProjectFile } from "../../../../../out/FileSystem/Files/CSharp/CSharpProjectFile";
-import type { VCXProjectFile } from "../../../../../out/FileSystem/Files/CPlusPlus/VCXProjectFile";
+    import { FileKind } from "../../../../../out/FileSystem/FileKind";
 
     export let closeMenu;
 
@@ -15,33 +13,28 @@ import type { VCXProjectFile } from "../../../../../out/FileSystem/Files/CPlusPl
     });
 
     function startWithoutDebugging() {
-        switch (contextMenuTargetValue.fileKind) {
-            case FileKind.cSharpProject:
-            case FileKind.vcxProject:
+        if ((contextMenuTargetValue as any).projectModel) {
 
-                // IProjectModel
-                let projectModel: any;
+            if (contextMenuTargetValue.fileKind === FileKind.solutionFolder) {
+                return;
+            }
 
-                if (contextMenuTargetValue.fileKind === FileKind.cSharpProject) {
-                    projectModel = (contextMenuTargetValue as CSharpProjectFile).cSharpProjectModel;
-                }
-                else if (contextMenuTargetValue.fileKind === FileKind.vcxProject) {
-                    projectModel = (contextMenuTargetValue as VCXProjectFile).vcxProjectModel.projectIdGuid;
-                }
+            // IProjectModel
+            let projectModel: any = (
+                contextMenuTargetValue as any
+            ).projectModel;
 
-                if (projectModel) {
-                    let messageExecuteProjectWithoutDebugging =
-                        new MessageExecuteProjectWithoutDebugging(
-                            contextMenuTargetValue
-                        );
+            if (projectModel) {
+                let messageExecuteProjectWithoutDebugging =
+                    new MessageExecuteProjectWithoutDebugging(
+                        contextMenuTargetValue
+                    );
 
-                    tsVscode.postMessage({
-                        type: undefined,
-                        value: messageExecuteProjectWithoutDebugging,
-                    });
-                }
-
-                break;
+                tsVscode.postMessage({
+                    type: undefined,
+                    value: messageExecuteProjectWithoutDebugging,
+                });
+            }
         }
 
         closeMenu();

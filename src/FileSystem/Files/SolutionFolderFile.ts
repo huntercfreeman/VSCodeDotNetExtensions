@@ -7,8 +7,10 @@ import { ProjectKind } from "../../DotNet/ProjectKind";
 import { CSharpProjectFile } from "./CSharp/CSharpProjectFile";
 import { VCXProjectFile } from "./CPlusPlus/VCXProjectFile";
 import { VCXProjectModel } from "../../DotNet/VCXProjectModel";
+import { IProjectFile } from "./IProjectFile";
+import { IProjectModel } from "../../DotNet/IProjectModel";
 
-export class SolutionFolderFile extends IdeFile {
+export class SolutionFolderFile extends IdeFile implements IProjectFile {
 
     constructor(public readonly solutionFolderModel: SolutionFolderModel) {
         super(solutionFolderModel.absoluteFilePath, "");
@@ -33,8 +35,10 @@ export class SolutionFolderFile extends IdeFile {
         ];
         
         this.isExpanded = solutionFolderModel.initialIsExpandedState;
-    }
 
+        this.projectModel = solutionFolderModel;
+    }
+    
     public constantChildFiles: any[] | undefined;
 
     public childFiles: any[] | undefined;
@@ -42,6 +46,8 @@ export class SolutionFolderFile extends IdeFile {
     public setVirtualChildFiles(siblingFiles: IdeFile[]): void {
         return;
     }
+
+    projectModel: IProjectModel;
 
     public readonly contextualInformation: ContextualInformationDatum[];
 }

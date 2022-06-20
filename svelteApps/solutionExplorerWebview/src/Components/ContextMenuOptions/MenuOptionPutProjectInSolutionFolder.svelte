@@ -3,9 +3,7 @@
     import MenuOption from "../MenuOption.svelte";
     import { FileKind } from "../../../../../out/FileSystem/FileKind";
     import { MessageUpdatePutProjectInSolutionFolder } from "../../../../../out/Messages/Update/MessageUpdatePutProjectInSolutionFolder";
-import type { CSharpProjectFile } from "../../../../../out/FileSystem/Files/CSharp/CSharpProjectFile";
-import type { VCXProjectFile } from "../../../../../out/FileSystem/Files/CPlusPlus/VCXProjectFile";
-
+    
     export let closeMenu;
 
     let contextMenuTargetValue;
@@ -16,32 +14,29 @@ import type { VCXProjectFile } from "../../../../../out/FileSystem/Files/CPlusPl
     });
 
     function putInSolutionFolder() {
-        switch (contextMenuTargetValue.fileKind) {
-            case FileKind.cSharpProject:
-            case FileKind.vcxProject:
+        if ((contextMenuTargetValue as any).projectModel) {
 
-                // IProjectModel
-                let projectModel: any;
+            if (contextMenuTargetValue.fileKind === FileKind.solutionFolder) {
+                return;
+            }
 
-                if (contextMenuTargetValue.fileKind === FileKind.cSharpProject) {
-                    projectModel = (contextMenuTargetValue as CSharpProjectFile).cSharpProjectModel;
-                }
-                else if (contextMenuTargetValue.fileKind === FileKind.vcxProject) {
-                    projectModel = (contextMenuTargetValue as VCXProjectFile).vcxProjectModel.projectIdGuid;
-                }
+            // IProjectModel
+            let projectModel: any = (
+                contextMenuTargetValue as any
+            ).projectModel;
 
-                if (projectModel) {
-                    let messageUpdatePutProjectInSolutionFolder =
-                        new MessageUpdatePutProjectInSolutionFolder(
-                            contextMenuTargetValue,
-                            solutionFolderName
-                        );
+            if (projectModel) {
+                let messageUpdatePutProjectInSolutionFolder =
+                    new MessageUpdatePutProjectInSolutionFolder(
+                        contextMenuTargetValue,
+                        solutionFolderName
+                    );
 
-                    tsVscode.postMessage({
-                        type: undefined,
-                        value: messageUpdatePutProjectInSolutionFolder,
-                    });
-                }
+                tsVscode.postMessage({
+                    type: undefined,
+                    value: messageUpdatePutProjectInSolutionFolder,
+                });
+            }
         }
 
         closeMenu();

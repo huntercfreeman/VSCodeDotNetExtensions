@@ -1,6 +1,8 @@
 import { ContextualInformationDatum } from "../../../ContextMenus/ContextualInformationDatum";
+import { IProjectModel } from "../../../DotNet/IProjectModel";
 import { VCXProjectModel } from "../../../DotNet/VCXProjectModel";
 import { IdeFile } from "../IdeFile";
+import { IProjectFile } from "../IProjectFile";
 import { VCXProjectExternalDependenciesListFile } from "./VCXProjectExternalDependenciesListFile";
 import { VCXProjectHeaderFilesListFile } from "./VCXProjectHeaderFilesListFile";
 import { VCXProjectReferencesListFile } from "./VCXProjectReferencesListFile";
@@ -10,7 +12,7 @@ import { VCXProjectSourceFilesListFile } from "./VCXProjectSourceFilesListFile";
 /**
  * C++ Project
  */
-export class VCXProjectFile extends IdeFile {
+export class VCXProjectFile extends IdeFile implements IProjectFile {
 
     constructor(public readonly vcxProjectModel: VCXProjectModel) {
         super(vcxProjectModel.absoluteFilePath, vcxProjectModel.rootNamespace);
@@ -32,6 +34,8 @@ export class VCXProjectFile extends IdeFile {
         ];
         
         this.isExpanded = vcxProjectModel.initialIsExpandedState;
+
+        this.projectModel = vcxProjectModel;
     }
 
     public constantChildFiles: any[] | undefined;
@@ -41,6 +45,8 @@ export class VCXProjectFile extends IdeFile {
     public setVirtualChildFiles(siblingFiles: IdeFile[]): void {
         return;
     }
+
+    projectModel: IProjectModel;
 
     public readonly contextualInformation: ContextualInformationDatum[] = [];
 }

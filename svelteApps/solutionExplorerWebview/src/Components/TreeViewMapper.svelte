@@ -28,8 +28,8 @@
     import CSharpProjectTreeView from "./TreeViews/CSharp/CSharpProjectTreeView.svelte";
     import DefaultFileTreeView from "./TreeViews/DefaultFileTreeView.svelte";
     import DirectoryTreeView from "./TreeViews/DirectoryTreeView.svelte";
-    import SolutionFileTreeView from "./TreeViews/DotNetSolutionTreeView.svelte";
-    import SolutionFolderTreeView from "./TreeViews/SolutionFolderTreeView.svelte";
+    import DotNetSolutionTreeView from "./TreeViews/DotNetSolutionTreeView.svelte";
+    import DotNetSolutionFolderTreeView from "./TreeViews/DotNetSolutionFolderTreeView.svelte";
 
     export let ideFile: IdeFile;
 
@@ -50,10 +50,10 @@
 </script>
 
 {#if ideFile.fileKind === FileKind.solution}
-    <SolutionFileTreeView dotNetSolutionFile={dotNetSolutionFile} />
+    <DotNetSolutionTreeView dotNetSolutionFile={dotNetSolutionFile} />
 
 {:else if ideFile.fileKind === FileKind.solutionFolder}
-    <SolutionFolderTreeView solutionFolderFile={solutionFolderFile} />
+    <DotNetSolutionFolderTreeView solutionFolderFile={solutionFolderFile} />
 
 {:else if ideFile.fileKind === FileKind.cSharpProject}
     <CSharpProjectTreeView cSharpProjectFile={cSharpProjectFile} />

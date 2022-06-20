@@ -2,7 +2,6 @@
 	import { onMount } from "svelte";
 	import type { IdeFile } from "../../../../../out/FileSystem/Files/IdeFile";
 	import { FileKind } from "../../../../../out/FileSystem/FileKind";
-	import type { CSharpProjectFile } from "../../../../../out/FileSystem/Files/CSharpProjectFile";
 	import type { SolutionFolderFile } from "../../../../../out/FileSystem/Files/SolutionFolderFile";
 	import { MessageReadFileIntoEditor } from "../../../../../out/Messages/Read/MessageReadFileIntoEditor";
 	import { MessageCategory } from "../../../../../out/Messages/MessageCategory";
@@ -35,12 +34,13 @@
     }
 
 	function hasDifferentParentContainer(childIdeFile: IdeFile): boolean {
-		if (childIdeFile.fileKind === FileKind.solutionFolder ||
-		   childIdeFile.fileKind === FileKind.cSharpProject) {
-			let childProjectModel: any = childIdeFile.fileKind === FileKind.solutionFolder
-				? (childIdeFile as SolutionFolderFile).solutionFolderModel
-				: (childIdeFile as CSharpProjectFile).cSharpProjectModel;
-			if(childProjectModel.solutionFolderParentProjectIdGuid) {
+
+		if ((childIdeFile as any).projectModel !== undefined) {
+			// IProjectModel
+			let projectModel: any = (childIdeFile as any)
+                        .projectModel;
+
+			if(projectModel.solutionFolderParentProjectIdGuid) {
 				return true;
 			}
 		}
