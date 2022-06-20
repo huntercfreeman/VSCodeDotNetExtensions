@@ -1,19 +1,16 @@
 <script lang="ts">
 	import { onMount } from "svelte";
 	import type { IdeFile } from "../../../../../../out/FileSystem/Files/IdeFile";
-	import { FileKind } from "../../../../../../out/FileSystem/FileKind";
 	import type { CSharpProjectFile } from "../../../../../../out/FileSystem/Files/CSharpProjectFile";
 	import { MessageReadFileIntoEditor } from "../../../../../../out/Messages/Read/MessageReadFileIntoEditor";
 	import { MessageReadVirtualFilesInCSharpProject } from "../../../../../../out/Messages/Read/MessageReadVirtualFilesInCSharpProject";
 	import { MessageCategory } from "../../../../../../out/Messages/MessageCategory";
 	import { MessageReadKind } from "../../../../../../out/Messages/Read/MessageReadKind";
 	import TreeViewBase from "../../TreeViewBase.svelte";
-	import type { MessageReadProjectReferencesInProject } from "../../../../../../out/Messages/Read/MessageReadProjectReferencesInProject";
-	import type { MessageReadNugetPackageReferencesInProject } from "../../../../../../out/Messages/Read/MessageReadNugetPackageReferencesInProject";
 	
     export let cSharpProjectFile: CSharpProjectFile;
 
-	let children: any[] | undefined;
+	let children: IdeFile[] | undefined;
 
     function getTitleText() {
         return cSharpProjectFile.absoluteFilePath.filenameWithExtension;
@@ -28,7 +25,7 @@
 		});
     }
 
-	function getChildFiles(): any[] {
+	function getChildFiles(): IdeFile[] {
 		children = cSharpProjectFile.virtualChildFiles;
 
 		if (!children) {
@@ -76,30 +73,6 @@
 								children = children.concat(cSharpProjectFile.virtualChildFiles);
 							}
 							break;
-						case MessageReadKind.projectReferencesInProject:
-							let messageReadProjectReferencesInProject =
-								message as MessageReadProjectReferencesInProject;
-							if (
-								cSharpProjectFile.fileKind === FileKind.projectReferences &&
-								cSharpProjectFile.nonce === messageReadProjectReferencesInProject.cSharpProjectProjectReferencesFile.nonce
-							) {
-								cSharpProjectFile =
-									messageReadProjectReferencesInProject.cSharpProjectProjectReferencesFile;
-								children = cSharpProjectFile.virtualChildFiles;
-							}
-							break;
-						case MessageReadKind.nugetPackageReferencesInProject:
-							let messageReadNugetPackageReferencesInProject =
-								message as MessageReadNugetPackageReferencesInProject;
-							if (
-								cSharpProjectFile.fileKind === FileKind.nugetPackageDependencies &&
-								cSharpProjectFile.nonce === messageReadNugetPackageReferencesInProject.cSharpProjectNugetPackageDependenciesFile.nonce
-							) {
-								cSharpProjectFile =
-									messageReadNugetPackageReferencesInProject.cSharpProjectNugetPackageDependenciesFile;
-								children = cSharpProjectFile.virtualChildFiles;
-							}
-							break;
 					}
 			}
 		});
@@ -110,4 +83,5 @@
               getTitleText={getTitleText}
               titleOnClick={titleOnClick}
               getChildFiles={getChildFiles}
-              hasDifferentParentContainer={hasDifferentParentContainer} />
+              hasDifferentParentContainer={hasDifferentParentContainer}
+			  bind:children={children} />

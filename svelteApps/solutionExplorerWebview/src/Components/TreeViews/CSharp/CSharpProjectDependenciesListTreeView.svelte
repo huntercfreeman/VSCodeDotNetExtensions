@@ -5,7 +5,7 @@
 	
     export let cSharpProjectDependenciesListFile: CSharpProjectDependenciesListFile;
 
-	let children: any[] | undefined;
+	let children: IdeFile[] | undefined;
 
     function getTitleText() {
         return cSharpProjectDependenciesListFile.absoluteFilePath.filenameWithExtension;
@@ -14,7 +14,7 @@
 	function titleOnClick() {
     }
 
-	function getChildFiles(): any[] {
+	function getChildFiles(): IdeFile[] {
 		children = cSharpProjectDependenciesListFile.constantChildFiles;
 		
 		return children;
@@ -34,4 +34,5 @@
               getTitleText={getTitleText}
               titleOnClick={titleOnClick}
               getChildFiles={getChildFiles}
-              hasDifferentParentContainer={hasDifferentParentContainer} />
+              hasDifferentParentContainer={hasDifferentParentContainer}
+			  bind:children={children} />

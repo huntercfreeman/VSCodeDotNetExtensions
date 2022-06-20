@@ -5,7 +5,7 @@
 	
     export let cSharpProjectNugetPackageDependencyFile: CSharpProjectNugetPackageDependencyFile;
 
-	let children: any[] | undefined;
+	let children: IdeFile[] | undefined;
 
     function getTitleText() {
         return cSharpProjectNugetPackageDependencyFile.absoluteFilePath.filenameWithExtension;
@@ -14,7 +14,7 @@
 	function titleOnClick() {
     }
 
-	function getChildFiles(): any[] {
+	function getChildFiles(): IdeFile[] {
         children = cSharpProjectNugetPackageDependencyFile.virtualChildFiles;
 
 		return children;
@@ -35,4 +35,5 @@
               getTitleText={getTitleText}
               titleOnClick={titleOnClick}
               getChildFiles={getChildFiles}
-              hasDifferentParentContainer={hasDifferentParentContainer} />
+              hasDifferentParentContainer={hasDifferentParentContainer}
+			  bind:children={children} />

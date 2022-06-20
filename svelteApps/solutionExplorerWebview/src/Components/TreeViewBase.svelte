@@ -3,15 +3,14 @@
 	import ExpansionChevron from "./ExpansionChevron.svelte";
 	import FileIconDisplay from "./FileIconDisplay.svelte";
 	import { contextMenuTarget } from "./menu.js";
-import TreeViewMapper from "./TreeViewMapper.svelte";
+	import TreeViewMapper from "./TreeViewMapper.svelte";
 
 	export let ideFile: IdeFile;
+	export let children: IdeFile[] | undefined;
 	export let getTitleText: () => string;
 	export let titleOnClick: (e: MouseEvent) => void;
 	export let getChildFiles: () => IdeFile[];
 	export let hasDifferentParentContainer: (childIdeFile: IdeFile) => boolean;
-
-	let children: any[] | undefined;
 </script>
 
 <div class="dni_tree-view">

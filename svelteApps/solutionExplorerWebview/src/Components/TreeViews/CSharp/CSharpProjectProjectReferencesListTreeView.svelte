@@ -8,7 +8,7 @@
 	
     export let cSharpProjectProjectReferencesListFile: CSharpProjectProjectReferencesListFile;
 
-	let children: any[] | undefined;
+	let children: IdeFile[] | undefined;
 
     function getTitleText() {
         return cSharpProjectProjectReferencesListFile.absoluteFilePath.filenameWithExtension;
@@ -17,7 +17,7 @@
 	function titleOnClick() {
     }
 
-	function getChildFiles(): any[] {
+	function getChildFiles(): IdeFile[] {
 		children = cSharpProjectProjectReferencesListFile.virtualChildFiles;
 
 		if (!children) {
@@ -43,10 +43,34 @@
 
 		return false;
 	}
+
+	onMount(async () => {
+		window.addEventListener("message", async (event) => {
+			const message = event.data;
+			switch (message.messageCategory) {
+				case MessageCategory.read:
+					switch (message.messageReadKind) {
+						case MessageReadKind.projectReferencesInProject:
+							let messageReadProjectReferencesInProject =
+								message as MessageReadProjectReferencesInProject;
+							if (
+								cSharpProjectProjectReferencesListFile.fileKind === FileKind.projectReferencesList &&
+								cSharpProjectProjectReferencesListFile.nonce === messageReadProjectReferencesInProject.cSharpProjectProjectReferencesFile.nonce
+							) {
+								cSharpProjectProjectReferencesListFile =
+									messageReadProjectReferencesInProject.cSharpProjectProjectReferencesFile;
+								children = cSharpProjectProjectReferencesListFile.virtualChildFiles;
+							}
+							break;
+					}
+			}
+		});
+	});
 </script>
 
 <TreeViewBase ideFile="{cSharpProjectProjectReferencesListFile}" 
               getTitleText={getTitleText}
               titleOnClick={titleOnClick}
               getChildFiles={getChildFiles}
-              hasDifferentParentContainer={hasDifferentParentContainer} />
+              hasDifferentParentContainer={hasDifferentParentContainer}
+			  bind:children={children} />

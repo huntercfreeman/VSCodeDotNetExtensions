@@ -5,7 +5,7 @@
 	
     export let ideFile: IdeFile;
 
-	let children: any[] | undefined;
+	let children: IdeFile[] | undefined;
 
     function getTitleText() {
         return ideFile.absoluteFilePath.filenameWithExtension;
@@ -20,7 +20,7 @@
 		});
     }
 
-	function getChildFiles(): any[] {
+	function getChildFiles(): IdeFile[] {
         children = ideFile.virtualChildFiles;
 
 		return children ?? [];
@@ -41,4 +41,5 @@
               getTitleText={getTitleText}
               titleOnClick={titleOnClick}
               getChildFiles={getChildFiles}
-              hasDifferentParentContainer={hasDifferentParentContainer} />
+              hasDifferentParentContainer={hasDifferentParentContainer}
+			  bind:children={children} />

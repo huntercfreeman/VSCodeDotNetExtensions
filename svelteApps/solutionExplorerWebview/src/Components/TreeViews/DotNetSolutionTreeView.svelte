@@ -13,7 +13,7 @@
 	
     export let dotNetSolutionFile: DotNetSolutionFile;
 
-	let children: any[] | undefined;
+	let children: IdeFile[] | undefined;
 
     function getTitleText() {
         return dotNetSolutionFile.absoluteFilePath.filenameWithExtension;
@@ -63,11 +63,11 @@
 						case MessageReadKind.virtualFilesInSolution:
 							let messageReadVirtualFilesInSolution =
 								message as MessageReadVirtualFilesInSolution;
-							if (dotNetSolutionFile.fileKind === FileKind.solution) {
-								dotNetSolutionFile =
-									messageReadVirtualFilesInSolution.dotNetSolutionFile;
-								children = dotNetSolutionFile.virtualChildFiles;
-							}
+							dotNetSolutionFile =
+								messageReadVirtualFilesInSolution.dotNetSolutionFile;
+							
+							children = dotNetSolutionFile.virtualChildFiles;
+
 							break;
 					}
 			}
@@ -79,4 +79,5 @@
               getTitleText={getTitleText}
               titleOnClick={titleOnClick}
               getChildFiles={getChildFiles}
-              hasDifferentParentContainer={hasDifferentParentContainer} />
+              hasDifferentParentContainer={hasDifferentParentContainer}
+			  bind:children={children} />
