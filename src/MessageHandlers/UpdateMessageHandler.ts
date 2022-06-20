@@ -83,11 +83,11 @@ export class UpdateMessageHandler {
 
         let messageUpdateTerminal = this.getMessageUpdateTerminal();
 
-        let removeProjectCommand = ConstantsDotNetCli.formatDotNetRemoveCSharpProjectFromSolutionUsingProjectUsingAbsoluteFilePath(message.cSharpProjectFile.absoluteFilePath,
-            message.cSharpProjectFile.cSharpProjectModel.parentSolutionAbsoluteFilePath);
+        let removeProjectCommand = ConstantsDotNetCli.formatDotNetRemoveCSharpProjectFromSolutionUsingProjectUsingAbsoluteFilePath(message.projectModel.absoluteFilePath,
+            message.projectModel.parentSolutionAbsoluteFilePath);
 
-        let addBackProjectButInSolutionFolderCommand = ConstantsDotNetCli.formatDotNetPutProjectInSolutionFolder(message.cSharpProjectFile.absoluteFilePath,
-            message.cSharpProjectFile.cSharpProjectModel.parentSolutionAbsoluteFilePath,
+        let addBackProjectButInSolutionFolderCommand = ConstantsDotNetCli.formatDotNetPutProjectInSolutionFolder(message.projectModel.absoluteFilePath,
+            message.projectModel.parentSolutionAbsoluteFilePath,
             message.solutionFolderName);
 
         messageUpdateTerminal.sendText(removeProjectCommand + " && " +

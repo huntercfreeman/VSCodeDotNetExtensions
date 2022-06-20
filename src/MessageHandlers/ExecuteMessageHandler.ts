@@ -6,6 +6,7 @@ import { MessageExecuteProjectWithoutDebugging } from '../Messages/Execute/Messa
 import { MessageExecuteKind } from '../Messages/Execute/MessageExecuteKind';
 import { IMessage } from "../Messages/IMessage";
 import { ConstantsOmniSharp } from '../Constants/ConstantsOmniSharp';
+import { ProjectKind } from '../DotNet/ProjectKind';
 
 const fs = require('fs');
 
@@ -28,8 +29,13 @@ export class ExecuteMessageHandler {
 
         let messageExecuteTerminal = this.getMessageExecuteTerminal();
 
-        messageExecuteTerminal.sendText(ConstantsDotNetCli
-            .formatDotNetRunCSharpProject(message.projectModel.absoluteFilePath));
+        if (message.projectModel.projectKind === ProjectKind.cSharpProject) {
+            messageExecuteTerminal.sendText(ConstantsDotNetCli
+                .formatDotNetRunCSharpProject(message.projectModel.absoluteFilePath));
+        }
+        else if ((message.projectModel as any).vcxProjectModel) {
+            // TODO: Start .vcx project without debugging
+        }
 
         messageExecuteTerminal.show();
     }

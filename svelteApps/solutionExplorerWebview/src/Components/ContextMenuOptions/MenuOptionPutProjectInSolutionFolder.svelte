@@ -3,6 +3,8 @@
     import MenuOption from "../MenuOption.svelte";
     import { FileKind } from "../../../../../out/FileSystem/FileKind";
     import { MessageUpdatePutProjectInSolutionFolder } from "../../../../../out/Messages/Update/MessageUpdatePutProjectInSolutionFolder";
+import type { CSharpProjectFile } from "../../../../../out/FileSystem/Files/CSharp/CSharpProjectFile";
+import type { VCXProjectFile } from "../../../../../out/FileSystem/Files/CPlusPlus/VCXProjectFile";
 
     export let closeMenu;
 
@@ -16,16 +18,30 @@
     function putInSolutionFolder() {
         switch (contextMenuTargetValue.fileKind) {
             case FileKind.cSharpProject:
-                let messageUpdatePutProjectInSolutionFolder =
-                    new MessageUpdatePutProjectInSolutionFolder(
-                        contextMenuTargetValue,
-                        solutionFolderName
-                    );
+            case FileKind.vcxProject:
 
-                tsVscode.postMessage({
-                    type: undefined,
-                    value: messageUpdatePutProjectInSolutionFolder,
-                });
+                // IProjectModel
+                let projectModel: any;
+
+                if (contextMenuTargetValue.fileKind === FileKind.cSharpProject) {
+                    projectModel = (contextMenuTargetValue as CSharpProjectFile).cSharpProjectModel;
+                }
+                else if (contextMenuTargetValue.fileKind === FileKind.vcxProject) {
+                    projectModel = (contextMenuTargetValue as VCXProjectFile).vcxProjectModel.projectIdGuid;
+                }
+
+                if (projectModel) {
+                    let messageUpdatePutProjectInSolutionFolder =
+                        new MessageUpdatePutProjectInSolutionFolder(
+                            contextMenuTargetValue,
+                            solutionFolderName
+                        );
+
+                    tsVscode.postMessage({
+                        type: undefined,
+                        value: messageUpdatePutProjectInSolutionFolder,
+                    });
+                }
         }
 
         closeMenu();
