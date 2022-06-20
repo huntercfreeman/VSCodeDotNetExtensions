@@ -1,6 +1,7 @@
 import { ConstantsContextualInformation } from "../Constants/ConstantsContextualInformation";
 import { AbsoluteFilePath } from "../FileSystem/AbsoluteFilePath";
 import { FileKind } from "../FileSystem/FileKind";
+import { VCXProjectFile } from "../FileSystem/Files/CPlusPlus/VCXProjectFile";
 import { CSharpProjectFile } from "../FileSystem/Files/CSharp/CSharpProjectFile";
 import { DotNetSolutionFile } from "../FileSystem/Files/DotNetSolutionFile";
 import { SolutionFolderFile } from "../FileSystem/Files/SolutionFolderFile";
@@ -39,9 +40,17 @@ export class SolutionModel {
                 for (let i = 0; i < dotNetSolutionFile.virtualChildFiles.length; i++) {
                     let oldProjectFileState = dotNetSolutionFile.virtualChildFiles[i];
                     
-                    let oldProjectFileStateProjectIdGuid = oldProjectFileState.fileKind === FileKind.cSharpProject
-                        ? (oldProjectFileState as CSharpProjectFile).cSharpProjectModel.projectIdGuid
-                        : (oldProjectFileState as SolutionFolderFile).solutionFolderModel.projectIdGuid
+                    let oldProjectFileStateProjectIdGuid: string;
+
+                    if (oldProjectFileState.fileKind === FileKind.cSharpProject) {
+                        oldProjectFileStateProjectIdGuid = (oldProjectFileState as CSharpProjectFile).cSharpProjectModel.projectIdGuid;
+                    }
+                    else if (oldProjectFileState.fileKind === FileKind.vcxProject) {
+                        oldProjectFileStateProjectIdGuid = (oldProjectFileState as VCXProjectFile).vcxProjectModel.projectIdGuid;
+                    }
+                    else {
+                        oldProjectFileStateProjectIdGuid = (oldProjectFileState as SolutionFolderFile).solutionFolderModel.projectIdGuid;
+                    }
 
                     //200847FD-6FD5-4F6C-B9E1-96472010C379
                     //200847FD-6FD5-4F6C-B9E1-96472010C379

@@ -1,5 +1,6 @@
 <script lang="ts">
     import { FileKind } from "../../../../out/FileSystem/FileKind";
+    import type { VCXProjectFile } from "../../../../out/FileSystem/Files/CPlusPlus/VCXProjectFile";
     import type { CSharpProjectDependenciesListFile } from "../../../../out/FileSystem/Files/CSharp/CSharpProjectDependenciesListFile";
     import type { CSharpProjectFile } from "../../../../out/FileSystem/Files/CSharp/CSharpProjectFile";
     import type { CSharpProjectNugetPackageDependenciesListFile } from "../../../../out/FileSystem/Files/CSharp/CSharpProjectNugetPackageDependenciesListFile";
@@ -10,6 +11,7 @@
     import type { DotNetSolutionFile } from "../../../../out/FileSystem/Files/DotNetSolutionFile";
 	import type { IdeFile } from "../../../../out/FileSystem/Files/IdeFile";
     import type { SolutionFolderFile } from "../../../../out/FileSystem/Files/SolutionFolderFile";
+    import VcxProjectTreeView from "./TreeViews/CPlusPlus/VCXProjectTreeView.svelte";
     import CSharpProjectDependenciesListTreeView from "./TreeViews/CSharp/CSharpProjectDependenciesListTreeView.svelte";
     import CSharpProjectNugetPackageDependenciesListTreeView from "./TreeViews/CSharp/CSharpProjectNugetPackageDependenciesListTreeView.svelte";
     import CSharpProjectNugetPackageDependencyTreeView from "./TreeViews/CSharp/CSharpProjectNugetPackageDependencyTreeView.svelte";
@@ -26,6 +28,7 @@
     $: dotNetSolutionFile = ideFile as DotNetSolutionFile;
     $: solutionFolderFile = ideFile as SolutionFolderFile;
     $: cSharpProjectFile = ideFile as CSharpProjectFile;
+    $: vcxProjectFile = ideFile as VCXProjectFile;
     $: directoryFile = ideFile as DirectoryFile;
     $: cSharpProjectDependenciesListFile = ideFile as CSharpProjectDependenciesListFile;
     $: cSharpProjectNugetPackageDependenciesListFile = ideFile as CSharpProjectNugetPackageDependenciesListFile;
@@ -42,6 +45,9 @@
 
 {:else if ideFile.fileKind === FileKind.cSharpProject}
     <CSharpProjectTreeView cSharpProjectFile={cSharpProjectFile} />
+
+{:else if ideFile.fileKind === FileKind.vcxProject}
+    <VcxProjectTreeView vcxProjectFile={vcxProjectFile} />
 
 <!-- {:else if ideFile.fileKind === FileKind.vcxProject}]
     <VCX -->

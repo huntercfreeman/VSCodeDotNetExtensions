@@ -7,8 +7,10 @@ import { CSharpProjectModel } from '../DotNet/CSharpProjectModel';
 import { ProjectKind } from '../DotNet/ProjectKind';
 import { SolutionFolderModel } from '../DotNet/SolutionFolderModel';
 import { SolutionModel } from '../DotNet/SolutionModel';
+import { VCXProjectModel } from '../DotNet/VCXProjectModel';
 import { AbsoluteFilePath } from '../FileSystem/AbsoluteFilePath';
 import { FileKind } from '../FileSystem/FileKind';
+import { VCXProjectFile } from '../FileSystem/Files/CPlusPlus/VCXProjectFile';
 import { CSharpProjectFile } from '../FileSystem/Files/CSharp/CSharpProjectFile';
 import { DotNetSolutionFile } from '../FileSystem/Files/DotNetSolutionFile';
 import { SolutionFolderFile } from '../FileSystem/Files/SolutionFolderFile';
@@ -149,6 +151,8 @@ export class ReadMessageHandler {
                             return new SolutionFolderFile(x as SolutionFolderModel);
                         case ProjectKind.cSharpProject:
                             return new CSharpProjectFile(x as CSharpProjectModel);
+                        case ProjectKind.vcxProject:
+                            return new VCXProjectFile(x as VCXProjectModel);
                         default:
                             throw Error(`The projectKind of ${x.projectKind} is not currently supported.`);
                     }
@@ -199,6 +203,8 @@ export class ReadMessageHandler {
                             return new SolutionFolderFile(x as SolutionFolderModel);
                         case ProjectKind.cSharpProject:
                             return new CSharpProjectFile(x as CSharpProjectModel);
+                        case ProjectKind.vcxProject:
+                            return new VCXProjectFile(x as VCXProjectModel);
                         default:
                             throw Error(`The projectKind of ${x.projectKind} is not currently supported.`);
                     }

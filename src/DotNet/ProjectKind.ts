@@ -1,4 +1,5 @@
 export enum ProjectKind {
     cSharpProject,
-    solutionFolder
+    solutionFolder,
+    vcxProject
 }

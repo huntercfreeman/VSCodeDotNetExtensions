@@ -1,6 +1,6 @@
 <script lang="ts">
     import { FileKind } from "../../../../out/FileSystem/FileKind";
-    import ProjectIcon from "./Icons/ProjectIcon.svelte";
+    import CSharpProjectIcon from "./Icons/CSharpProjectIcon.svelte";
     import SolutionIcon from "./Icons/SolutionIcon.svelte";
     import DirectoryIcon from "./Icons/DirectoryIcon.svelte";
     import CsIcon from "./Icons/CsIcon.svelte";
@@ -18,7 +18,8 @@
     import type { IdeFile } from "../../../../out/FileSystem/Files/IdeFile";
     import WwwRootIcon from "./Icons/WwwRootIcon.svelte";
     import { ConstantsUniqueFiles } from "../../../../out/Constants/ConstantsUniqueFiles";
-import PropertiesIcon from "./Icons/PropertiesIcon.svelte";
+    import PropertiesIcon from "./Icons/PropertiesIcon.svelte";
+    import VcxProjectIcon from "./Icons/VCXProjectIcon.svelte";
 
     export let ideFile: IdeFile;
 
@@ -27,10 +28,12 @@ import PropertiesIcon from "./Icons/PropertiesIcon.svelte";
 
 {#if fileKind === FileKind.solution}
     <SolutionIcon />
-{:else if fileKind === FileKind.cSharpProject}
-    <ProjectIcon />
 {:else if fileKind === FileKind.solutionFolder}
     <SolutionFolderIcon />
+{:else if fileKind === FileKind.cSharpProject}
+    <CSharpProjectIcon />
+{:else if fileKind === FileKind.vcxProject}
+    <VcxProjectIcon />
 {:else if fileKind === FileKind.default}
     <TxtIcon />
 {:else if fileKind === FileKind.directory}

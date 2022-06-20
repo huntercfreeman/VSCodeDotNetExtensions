@@ -5,6 +5,8 @@ import { ContextualInformationDatum } from "../../ContextMenus/ContextualInforma
 import { SolutionFolderModel } from "../../DotNet/SolutionFolderModel";
 import { ProjectKind } from "../../DotNet/ProjectKind";
 import { CSharpProjectFile } from "./CSharp/CSharpProjectFile";
+import { VCXProjectFile } from "./CPlusPlus/VCXProjectFile";
+import { VCXProjectModel } from "../../DotNet/VCXProjectModel";
 
 export class SolutionFolderFile extends IdeFile {
 
@@ -20,6 +22,8 @@ export class SolutionFolderFile extends IdeFile {
                         return new SolutionFolderFile(x as SolutionFolderModel);
                     case ProjectKind.cSharpProject:
                         return new CSharpProjectFile(x as CSharpProjectModel);
+                    case ProjectKind.vcxProject:
+                        return new VCXProjectFile(x as VCXProjectModel);
                     default:
                         throw Error(`The projectKind of ${x.projectKind} is not currently supported.`);
                 }

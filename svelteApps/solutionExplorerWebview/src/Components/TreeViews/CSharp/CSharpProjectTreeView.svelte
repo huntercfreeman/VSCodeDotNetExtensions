@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { onMount } from "svelte";
 	import type { IdeFile } from "../../../../../../out/FileSystem/Files/IdeFile";
-	import type { CSharpProjectFile } from "../../../../../../out/FileSystem/Files/CSharpProjectFile";
+	import type { CSharpProjectFile } from "../../../../../../out/FileSystem/Files/CSharp/CSharpProjectFile";
 	import { MessageReadFileIntoEditor } from "../../../../../../out/Messages/Read/MessageReadFileIntoEditor";
 	import { MessageReadVirtualFilesInCSharpProject } from "../../../../../../out/Messages/Read/MessageReadVirtualFilesInCSharpProject";
 	import { MessageCategory } from "../../../../../../out/Messages/MessageCategory";
