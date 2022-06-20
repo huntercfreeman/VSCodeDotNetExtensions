@@ -99,4 +99,8 @@ export class ActiveDotNetSolutionFileContainer {
     public static notifySubscriptions() {
         
     }
+
+    public static getActiveDotNetSolutionFile() {
+        return this.activeDotNetSolutionFile;
+    }
 }

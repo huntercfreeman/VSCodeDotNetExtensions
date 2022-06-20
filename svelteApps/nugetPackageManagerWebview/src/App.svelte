@@ -3,7 +3,6 @@
 	import type { DotNetSolutionFile } from "../../../out/FileSystem/Files/DotNetSolutionFile";
 	import { MessageCategory } from "../../../out/Messages/MessageCategory";
 	import { MessageReadKind } from "../../../out/Messages/Read/MessageReadKind";
-	import type { CSharpProjectFile } from "../../../out/FileSystem/Files/CSharpProjectFile";
 	import SelectProjectFileForm from "./Components/SelectProjectFileForm.svelte";
 	import { NugetPackageModel } from "../../../out/DotNet/NugetPackageModel";
 	import { NugetPackageVersionModel } from "../../../out/DotNet/NugetPackageVersionModel";
@@ -11,7 +10,7 @@
 	import NugetPackageManagerControlButtons from "./Components/NugetPackageManagerControlButtons.svelte";
 
 	let selectedDotNetSolutionFile: DotNetSolutionFile | undefined;
-	let selectedProjectFile: CSharpProjectFile;
+	let selectedProjectFile: any;
 	let nugetResults: any;
 	let nugetQuery: string = "";
 	let includePrerelease: boolean = false;

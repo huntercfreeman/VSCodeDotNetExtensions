@@ -8,7 +8,7 @@
 	import TreeViewDisplay from "./Components/TreeViewBase.svelte";
 	import ContextMenu from "./Components/ContextMenu.svelte";
 	import SolutionFileControlButtons from "./Components/SolutionFileControlButtons.svelte";
-import TreeViewMapper from "./Components/TreeViewMapper.svelte";
+	import TreeViewMapper from "./Components/TreeViewMapper.svelte";
 
 	let dotNetSolutionFiles: DotNetSolutionFile[] = [];
 	let selectedDotNetSolutionFile: DotNetSolutionFile | undefined;

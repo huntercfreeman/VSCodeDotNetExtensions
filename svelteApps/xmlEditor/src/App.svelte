@@ -1,30 +1,69 @@
 <script lang="ts">
-	export let name: string;
+	import { MessageReadActiveDotNetSolutionFile } from "../../../out/Messages/Read/MessageReadActiveDotNetSolutionFile";
+	import type { DotNetSolutionFile } from "../../../out/FileSystem/Files/DotNetSolutionFile";
+	import { onMount } from "svelte";
+	import { MessageCategory } from "../../../out/Messages/MessageCategory";
+	import { MessageReadKind } from "../../../out/Messages/Read/MessageReadKind";
+	import SelectProjectFileForm from "./Components/SelectProjectFileForm.svelte";
+
+	let activeDotNetSolutionFile: DotNetSolutionFile | undefined;
+	let selectedProjectFile: any;
+
+	function readActiveDotNetSolutionFile() {
+		let messageReadActiveDotNetSolutionFile = new MessageReadActiveDotNetSolutionFile();
+
+		tsVscode.postMessage({
+			type: undefined,
+			value: messageReadActiveDotNetSolutionFile,
+		});
+	}
+
+	onMount(async () => {
+		window.addEventListener("message", async (event) => {
+			const message = event.data;
+
+			switch (message.messageCategory) {
+				case MessageCategory.read:
+					switch (message.messageReadKind) {
+						case MessageReadKind.activeDotNetSolutionFile:
+							activeDotNetSolutionFile = message.activeDotNetSolutionFile;
+							break;
+					}
+			}
+		});
+
+		readActiveDotNetSolutionFile();
+	});
 </script>
 
-<main>
-	<h1>Hello {name}!</h1>
-	<p>Visit the <a href="https://svelte.dev/tutorial">Svelte tutorial</a> to learn how to build Svelte apps.</p>
-</main>
+<button on:click={readActiveDotNetSolutionFile}>
+	readActiveDotNetSolutionFile
+</button>
+
+{#if activeDotNetSolutionFile}
+	<div style="margin-top: 4px;">
+		Active solution: <em
+			>{activeDotNetSolutionFile.absoluteFilePath
+				.filenameWithExtension}</em
+		>
+	</div>
+
+	<hr />
+
+	<SelectProjectFileForm
+		bind:selectedProjectFile
+		projectFiles={activeDotNetSolutionFile.solutionModel.projects
+						.filter(x => x.solutionFolderEntries === undefined)}
+	/>
+{:else}
+	<div>
+		Solution is undefined
+	</div>
+{/if}
 
 <style>
-	main {
-		text-align: center;
-		padding: 1em;
-		max-width: 240px;
-		margin: 0 auto;
-	}
-
-	h1 {
-		color: #ff3e00;
-		text-transform: uppercase;
-		font-size: 4em;
-		font-weight: 100;
-	}
-
-	@media (min-width: 640px) {
-		main {
-			max-width: none;
-		}
+	em {
+		font-style: normal;
+		color: var(--vscode-editorInfo-foreground);
 	}
 </style>

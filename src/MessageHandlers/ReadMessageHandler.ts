@@ -1,5 +1,6 @@
 import * as vscode from 'vscode';
 import { ActiveDotNetSolutionFileContainer } from '../ActiveDotNetSolutionFileContainer';
+import { ConstantsCommands } from '../Constants/ConstantsCommands';
 import { ConstantsDotNetCli } from '../Constants/ConstantsDotNetCli';
 import { ConstantsFilePath } from '../Constants/ConstantsFilePath';
 import { ConstantsTerminal } from '../Constants/ConstantsTerminal';
@@ -313,15 +314,7 @@ export class ReadMessageHandler {
     public static async handleMessageReadProjectIntoXmlEditor(webviewView: vscode.WebviewView, iMessage: IMessage) {
         let message = iMessage as MessageReadProjectIntoXmlEditor;
 
-        const panel = vscode.window.createWebviewPanel(
-            'dot-net-ide.xml-editor', // Identifies the type of the webview. Used internally
-            'XML Editor', // Title of the panel displayed to the user
-            vscode.ViewColumn.One, // Editor column to show the new webview panel in.
-            {
-                enableScripts: true,
-                
-            } // Webview options. More on these later.
-          );
+        vscode.commands.executeCommand(ConstantsCommands.DOT_NET_IDE_OPEN_PROJECT_IN_XML_EDITOR);
     }
 
     private static getMessageReadTerminal() {

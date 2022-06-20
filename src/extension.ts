@@ -1,7 +1,7 @@
 import * as vscode from 'vscode';
 import { NugetPackageManagerWebviewProvider } from './UiProviders/NugetPackageManagerWebviewProvider';
 import { SolutionExplorerWebviewProvider } from './UiProviders/SolutionExplorerWebviewProvider';
-import { XmlEditorWebviewPanel } from './UiProviders/XmlEditorWebviewProvider';
+import { XmlEditorWebviewPanel } from './UiProviders/XmlEditorWebviewPanel';
 
 export function activate(context: vscode.ExtensionContext) {
 	const nugetPackageManagerProvider = new NugetPackageManagerWebviewProvider(context);

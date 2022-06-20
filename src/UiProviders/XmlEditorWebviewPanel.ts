@@ -1,6 +1,6 @@
 import * as vscode from 'vscode';
-import { DotNetSolutionFile } from '../FileSystem/Files/DotNetSolutionFile';
-import { getNonce } from '../IdGeneration/getNonce';
+import { ActiveDotNetSolutionFileContainer } from '../ActiveDotNetSolutionFileContainer';
+import { MessageReadActiveDotNetSolutionFile } from '../Messages/Read/MessageReadActiveDotNetSolutionFile';
 
 const fs = require('fs');
 
@@ -52,6 +52,14 @@ export class XmlEditorWebviewPanel {
 
   private constructor(private readonly panel: vscode.WebviewPanel, 
     private readonly context: vscode.ExtensionContext) {
+
+      panel.webview.onDidReceiveMessage(async (data) => {
+
+        let messageActiveDotNetSolutionFile = new MessageReadActiveDotNetSolutionFile(
+          ActiveDotNetSolutionFileContainer.getActiveDotNetSolutionFile());
+
+        panel.webview.postMessage(messageActiveDotNetSolutionFile);
+      });
 
     // Listen for when the panel is disposed
     // This happens when the user closes the panel or when the panel is closed programatically
