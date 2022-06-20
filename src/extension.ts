@@ -20,7 +20,7 @@ export function activate(context: vscode.ExtensionContext) {
 	);
 
 	context.subscriptions.push(
-		vscode.commands.registerCommand('dot-net-ide.open-project-in-xml-editor', () => {
+		vscode.commands.registerCommand('dot-net-ide.open-xml-editor', () => {
 			XmlEditorWebviewPanel.createOrShow(context);
 		})
 	);

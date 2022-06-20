@@ -19,7 +19,7 @@ export class CSharpProjectFile extends IdeFile implements IProjectFile {
             ContextualInformationDatum.startWithoutDebugging,
             ContextualInformationDatum.startDebugging,
             ContextualInformationDatum.putProjectInSolutionFolder,
-            ContextualInformationDatum.openInXmlEditor,
+            ContextualInformationDatum.openXmlEditor,
         ];
 
         this.constantChildFiles = [

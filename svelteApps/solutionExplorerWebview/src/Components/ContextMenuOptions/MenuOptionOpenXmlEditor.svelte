@@ -1,7 +1,7 @@
 <script lang="ts">
     import { contextMenuTarget } from "../menu";
     import MenuOption from "../MenuOption.svelte";
-    import { MessageReadProjectIntoXmlEditor } from "../../../../../out/Messages/Read/MessageReadProjectIntoXmlEditor";
+    import { MessageReadOpenXmlEditor } from "../../../../../out/Messages/Read/MessageReadOpenXmlEditor";
     import { FileKind } from "../../../../../out/FileSystem/FileKind";
 
     export let closeMenu;
@@ -12,7 +12,7 @@
         contextMenuTargetValue = value;
     });
 
-    function startWithoutDebugging() {
+    function openXmlEditor() {
         if ((contextMenuTargetValue as any).projectModel) {
 
             if (contextMenuTargetValue.fileKind === FileKind.solutionFolder) {
@@ -22,14 +22,14 @@
             // IProjectModel
             let projectModel: any = (contextMenuTargetValue as any).projectModel;
 
-            let messageReadProjectIntoXmlEditor =
-                new MessageReadProjectIntoXmlEditor(
+            let messageReadOpenXmlEditor =
+                new MessageReadOpenXmlEditor(
                     projectModel
                 );
 
             tsVscode.postMessage({
                 type: undefined,
-                value: messageReadProjectIntoXmlEditor,
+                value: messageReadOpenXmlEditor,
             });
         }
 
@@ -40,7 +40,7 @@
 {#if contextMenuTargetValue}
     <MenuOption
         onClickStopPropagation={true}
-        onClick={startWithoutDebugging}
-        text="Properties"
+        onClick={openXmlEditor}
+        text="Open XML Editor"
     />
 {/if}

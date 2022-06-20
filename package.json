@@ -13,7 +13,7 @@
 		"Other"
 	],
 	"activationEvents": [
-		"onCommand:dot-net-ide.open-project-in-xml-editor",
+		"onCommand:dot-net-ide.open-xml-editor",
 		"onView:dot-net-ide.solution-explorer-webview",
 		"onView:dot-net-ide.nuget-package-manager-webview"
 	],
@@ -21,7 +21,7 @@
 	"contributes": {
 		"commands": [
 			{
-				"command": "dot-net-ide.open-project-in-xml-editor",
+				"command": "dot-net-ide.open-xml-editor",
 				"title": "Open project in XML Editor"
 			}
 		],
