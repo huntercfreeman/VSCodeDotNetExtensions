@@ -13,12 +13,18 @@
 		"Other"
 	],
 	"activationEvents": [
+		"onCommand:dot-net-ide.open-project-in-xml-editor",
 		"onView:dot-net-ide.solution-explorer-webview",
-		"onView:dot-net-ide.nuget-package-manager-webview",
-		"onView:dot-net-ide.xml-editor"
+		"onView:dot-net-ide.nuget-package-manager-webview"
 	],
 	"main": "./out/extension.js",
 	"contributes": {
+		"commands": [
+			{
+				"command": "dot-net-ide.open-project-in-xml-editor",
+				"title": "Open project in XML Editor"
+			  }
+		],
 		"viewsContainers": {
 			"activitybar": [
 				{

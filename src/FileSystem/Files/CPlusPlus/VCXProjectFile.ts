@@ -19,10 +19,8 @@ export class VCXProjectFile extends IdeFile implements IProjectFile {
 
         this.contextualInformation = [
             ContextualInformationDatum.refreshChildFiles,
-            ContextualInformationDatum.removeCSharpProject,
-            ContextualInformationDatum.startWithoutDebugging,
-            ContextualInformationDatum.startDebugging,
             ContextualInformationDatum.putProjectInSolutionFolder,
+            ContextualInformationDatum.openInXmlEditor,
         ];
 
         this.constantChildFiles = [

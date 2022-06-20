@@ -12,7 +12,8 @@
     import MenuOptionRemoveNugetPackageReference from "./ContextMenuOptions/MenuOptionRemoveNugetPackageReference.svelte";
     import MenuOptionStartDebugging from "./ContextMenuOptions/MenuOptionStartDebugging.svelte";
     import MenuOptionStartWithoutDebugging from "./ContextMenuOptions/MenuOptionStartWithoutDebugging.svelte";
-import MenuOptionPutProjectInSolutionFolder from "./ContextMenuOptions/MenuOptionPutProjectInSolutionFolder.svelte";
+    import MenuOptionPutProjectInSolutionFolder from "./ContextMenuOptions/MenuOptionPutProjectInSolutionFolder.svelte";
+    import MenuOptionOpenProjectInXmlEditor from "./ContextMenuOptions/MenuOptionOpenProjectInXmlEditor.svelte";
 
     export let contextualInformation: ContextualInformationDatum[];
     export let closeMenu;
@@ -45,5 +46,7 @@ import MenuOptionPutProjectInSolutionFolder from "./ContextMenuOptions/MenuOptio
         <MenuOptionPutProjectInSolutionFolder {closeMenu} />
     {:else if ContextualInformationDatum.checkDatumEquality(ContextualInformationDatum.removeCSharpProject, contextualInformationDatum)}
         <MenuOptionRemoveCSharpProject {closeMenu} />
+    {:else if ContextualInformationDatum.checkDatumEquality(ContextualInformationDatum.openInXmlEditor, contextualInformationDatum)}
+        <MenuOptionOpenProjectInXmlEditor {closeMenu} />
     {/if}
 {/each}

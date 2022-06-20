@@ -25,6 +25,7 @@ import { MessageReadFilesInDirectory } from '../Messages/Read/MessageReadFilesIn
 import { MessageReadKind } from "../Messages/Read/MessageReadKind";
 import { MessageReadNewProjectTemplatesOnComputer } from '../Messages/Read/MessageReadNewProjectTemplatesOnComputer';
 import { MessageReadNugetPackageReferencesInProject } from '../Messages/Read/MessageReadNugetPackageReferencesInProject';
+import { MessageReadProjectIntoXmlEditor } from '../Messages/Read/MessageReadProjectIntoXmlEditor';
 import { MessageReadProjectReferencesInProject } from '../Messages/Read/MessageReadProjectReferencesInProject';
 import { MessageReadSolutionIntoTreeView } from '../Messages/Read/MessageReadSolutionIntoTreeView';
 import { MessageReadSolutionsInWorkspace } from '../Messages/Read/MessageReadSolutionsInWorkspace';
@@ -64,6 +65,9 @@ export class ReadMessageHandler {
                 break;
             case MessageReadKind.newProjectTemplatesOnComputer:
                 await this.handleMessageReadNewProjectTemplatesOnComputer(webviewView, message);
+                break;
+            case MessageReadKind.projectIntoXmlEditor:
+                await this.handleMessageReadProjectIntoXmlEditor(webviewView, message);
                 break;
         }
     }
@@ -304,6 +308,20 @@ export class ReadMessageHandler {
         messageExecuteTerminal.sendText(ConstantsDotNetCli.DOT_NET_NEW_LIST);
 
         messageExecuteTerminal.show();
+    }
+    
+    public static async handleMessageReadProjectIntoXmlEditor(webviewView: vscode.WebviewView, iMessage: IMessage) {
+        let message = iMessage as MessageReadProjectIntoXmlEditor;
+
+        const panel = vscode.window.createWebviewPanel(
+            'dot-net-ide.xml-editor', // Identifies the type of the webview. Used internally
+            'XML Editor', // Title of the panel displayed to the user
+            vscode.ViewColumn.One, // Editor column to show the new webview panel in.
+            {
+                enableScripts: true,
+                
+            } // Webview options. More on these later.
+          );
     }
 
     private static getMessageReadTerminal() {

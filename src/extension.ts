@@ -1,10 +1,7 @@
 import * as vscode from 'vscode';
-import { ActiveDotNetSolutionFileContainer } from './ActiveDotNetSolutionFileContainer';
-import { AsyncUtility } from './AsyncUtility/AsyncUtility';
-import { ConstantsFilePath } from './Constants/ConstantsFilePath';
-import { SolutionExplorerMessageHandler } from './MessageHandlers/SolutionExplorerMessageHandler';
 import { NugetPackageManagerWebviewProvider } from './UiProviders/NugetPackageManagerWebviewProvider';
 import { SolutionExplorerWebviewProvider } from './UiProviders/SolutionExplorerWebviewProvider';
+import { XmlEditorWebviewPanel } from './UiProviders/XmlEditorWebviewProvider';
 
 export function activate(context: vscode.ExtensionContext) {
 	const nugetPackageManagerProvider = new NugetPackageManagerWebviewProvider(context);
@@ -20,6 +17,12 @@ export function activate(context: vscode.ExtensionContext) {
 				}
 			}
 		)
+	);
+
+	context.subscriptions.push(
+		vscode.commands.registerCommand('dot-net-ide.open-project-in-xml-editor', () => {
+			XmlEditorWebviewPanel.createOrShow(context);
+		})
 	);
 
 	const solutionExplorerWebviewProvider = new SolutionExplorerWebviewProvider(context);

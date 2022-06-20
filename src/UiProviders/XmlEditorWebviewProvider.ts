@@ -1,55 +1,96 @@
 import * as vscode from 'vscode';
-import { SolutionExplorerMessageHandler } from '../MessageHandlers/SolutionExplorerMessageHandler';
-import { ActiveDotNetSolutionFileContainer } from '../ActiveDotNetSolutionFileContainer';
-import { MessageReadVirtualFilesInSolution } from '../Messages/Read/MessageReadVirtualFilesInSolution';
 import { DotNetSolutionFile } from '../FileSystem/Files/DotNetSolutionFile';
-import { MessageReadUndefinedSolution } from '../Messages/Read/MessageReadUndefinedSolution';
+import { getNonce } from '../IdGeneration/getNonce';
 
 const fs = require('fs');
 
-export class XmlEditorWebviewProvider implements vscode.WebviewViewProvider {
-  _view?: vscode.WebviewView;
-  _doc?: vscode.TextDocument;
+export class XmlEditorWebviewPanel {
+  /**
+   * Track the currently panel. Only allow a single panel to exist at a time.
+   */
+  public static currentPanel: XmlEditorWebviewPanel | undefined;
 
-  private activeDotNetSolutionFile: DotNetSolutionFile | undefined;
+  public static readonly viewType = "dot-net-ide.xml-editor";
 
-  constructor(private readonly context: vscode.ExtensionContext) { }
+  private _disposables: vscode.Disposable[] = [];
 
-  public resolveWebviewView(webviewView: vscode.WebviewView) {
+  public static createOrShow(context: vscode.ExtensionContext) {
+    const column = vscode.window.activeTextEditor
+      ? vscode.window.activeTextEditor.viewColumn
+      : undefined;
 
-    this._view = webviewView;
+    // If we already have a panel, show it.
+    if (XmlEditorWebviewPanel.currentPanel) {
+      XmlEditorWebviewPanel.currentPanel.panel.reveal(column);
+      return;
+    }
 
-    webviewView.webview.options = {
-      // Allow scripts in the webview
-      enableScripts: true,
+    // Otherwise, create a new panel.
+    const panel = vscode.window.createWebviewPanel(
+      XmlEditorWebviewPanel.viewType,
+      "Xml Editor",
+      column || vscode.ViewColumn.One,
+      {
+        // Enable javascript in the webview
+        enableScripts: true,
+      }
+    );
 
-      localResourceRoots: [this.context.extensionUri],
-    };
+    panel.webview.html = XmlEditorWebviewPanel.getWebviewContent(panel.webview, context);
 
-    webviewView.webview.html = this.getWebviewContent(webviewView.webview);
+    XmlEditorWebviewPanel.currentPanel = new XmlEditorWebviewPanel(panel, context);
   }
 
-  public revive(panel: vscode.WebviewView) {
-    this._view = panel;
+  public static kill() {
+    XmlEditorWebviewPanel.currentPanel?.dispose();
+    XmlEditorWebviewPanel.currentPanel = undefined;
   }
 
-  private getWebviewContent(webview: vscode.Webview) {
+  public static revive(panel: vscode.WebviewPanel, context: vscode.ExtensionContext) {
+    XmlEditorWebviewPanel.currentPanel = new XmlEditorWebviewPanel(panel, context);
+  }
+
+  private constructor(private readonly panel: vscode.WebviewPanel, 
+    private readonly context: vscode.ExtensionContext) {
+
+    // Listen for when the panel is disposed
+    // This happens when the user closes the panel or when the panel is closed programatically
+    this.panel.onDidDispose(() => this.dispose(), null, this._disposables);
+  }
+
+  public dispose() {
+    XmlEditorWebviewPanel.currentPanel = undefined;
+
+    // Clean up our resources
+    this.panel.dispose();
+
+    while (this._disposables.length) {
+      const x = this._disposables.pop();
+      if (x) {
+        x.dispose();
+      }
+    }
+  }
+
+  private static getWebviewContent(webview: vscode.Webview,
+    context: vscode.ExtensionContext) {
+
     const xmlEditorJavaScriptUri = webview.asWebviewUri(vscode.Uri.joinPath(
-      this.context.extensionUri, 'out/xmlEditor', 'xmlEditor.js'));
+      context.extensionUri, 'out/xmlEditor', 'xmlEditor.js'));
 
     const xmlEditorCssUri = webview.asWebviewUri(vscode.Uri.joinPath(
-      this.context.extensionUri, 'out/xmlEditor', 'xmlEditor.css'));
+      context.extensionUri, 'out/xmlEditor', 'xmlEditor.css'));
 
     const resetCssUri = webview.asWebviewUri(
-      vscode.Uri.joinPath(this.context.extensionUri, "media", "reset.css")
+      vscode.Uri.joinPath(context.extensionUri, "media", "reset.css")
     );
 
     const vSCodeCssUri = webview.asWebviewUri(
-      vscode.Uri.joinPath(this.context.extensionUri, "media", "vscode.css")
+      vscode.Uri.joinPath(context.extensionUri, "media", "vscode.css")
     );
 
     const dotNetIdeCssUri = webview.asWebviewUri(
-      vscode.Uri.joinPath(this.context.extensionUri, "media", "dotNetIde.css")
+      vscode.Uri.joinPath(context.extensionUri, "media", "dotNetIde.css")
     );
 
     return `<!DOCTYPE html>
