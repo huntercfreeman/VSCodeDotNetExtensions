@@ -2,7 +2,7 @@
 	export let projectFiles: any[] = [];
 	export let selectedProjectFile: any;
 
-	export let onChangeCallback: () => any;
+	export let onChangeCallback: (projectFile: any) => any;
 </script>
 
 <div>

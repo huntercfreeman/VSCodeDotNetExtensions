@@ -42,7 +42,7 @@ export class SolutionExplorerWebviewProvider implements vscode.WebviewViewProvid
     webviewView.webview.html = this.getWebviewContent(webviewView.webview);
 
     webviewView.webview.onDidReceiveMessage(async (data) =>
-    SolutionExplorerMessageTransporter.transportMessage(webviewView, data.value));
+      SolutionExplorerMessageTransporter.transportMessage(webviewView, data.value));
   }
 
   public revive(panel: vscode.WebviewView) {

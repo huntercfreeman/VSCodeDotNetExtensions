@@ -4,7 +4,7 @@ import { MessageDeleteKind } from '../../Messages/Delete/MessageDeleteKind';
 import { IMessage } from '../../Messages/IMessage';
 
 export class XmlEditorDeleteMessageHandler {
-    public static handleMessage(webviewView: vscode.WebviewView, message: IMessage): void {
+    public static handleMessage(webviewView: vscode.WebviewPanel, message: IMessage): void {
         let deleteMessage = message as unknown as IMessageDelete;
     }
 }

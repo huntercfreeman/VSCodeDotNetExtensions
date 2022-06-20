@@ -8,7 +8,7 @@ import { XmlEditorReadMessageHandler } from './XmlEditorReadMessageHandler';
 import { XmlEditorUpdateMessageHandler } from './XmlEditorUpdateMessageHandler';
 
 export class XmlEditorMessageTransporter {
-  public static async handleMessage(webviewView: vscode.WebviewView, untypedMessage: any): Promise<void> {
+  public static async transportMessage(webviewView: vscode.WebviewPanel, untypedMessage: any): Promise<void> {
 
     let message = untypedMessage as IMessage;
 

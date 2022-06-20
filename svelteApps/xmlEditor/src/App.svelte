@@ -11,7 +11,9 @@
 	let selectedProjectFile: any;
 	let selectedProjectXmlFileModel: any;
 
-	function parseSelectedProjectFile() {
+	function parseSelectedProjectFile(projectFile: any) {
+		selectedProjectFile = projectFile;
+
 		if (!selectedProjectFile) {
 			selectedProjectXmlFileModel = undefined;
 		}
