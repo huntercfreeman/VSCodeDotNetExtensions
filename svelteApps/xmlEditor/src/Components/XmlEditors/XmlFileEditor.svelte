@@ -5,8 +5,9 @@
 	export let xmlFileModel: XmlFileModel;
 </script>
 
-<div class="dni_xml-file-model-editor">
+<span class="dni_xml-file-model-editor">
+
     {#each xmlFileModel.xmlTagModels as xmlTagModel}
         <XmlTagModelEditor xmlTagModel={xmlTagModel} />
     {/each}
-</div>
+</span>

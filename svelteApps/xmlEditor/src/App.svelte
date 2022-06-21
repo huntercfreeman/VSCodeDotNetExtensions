@@ -6,7 +6,7 @@
 	import { MessageReadKind } from "../../../out/Messages/Read/MessageReadKind";
 	import { MessageReadProjectXmlIntoXmlEditor } from "../../../out/Messages/Read/MessageReadProjectXmlIntoXmlEditor";
 	import SelectProjectFileForm from "./Components/SelectProjectFileForm.svelte";
-	import XmlFileEditor from "./Components/XmlEditors/XmlFileEditor.svelte";
+	import XmlEditor from "./Components/XmlEditor.svelte";
 
 	let activeDotNetSolutionFile: DotNetSolutionFile | undefined;
 	let selectedProjectModel: any;
@@ -84,7 +84,7 @@
 
 
 {#if selectedProjectXmlFileModel}
-	<XmlFileEditor xmlFileModel={selectedProjectXmlFileModel} />
+	<XmlEditor xmlFileModel={selectedProjectXmlFileModel} />
 {/if}
 
 {:else}

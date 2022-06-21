@@ -1,9 +1,11 @@
 <script lang="ts">
-    import type { XmlTextModel } from '../../../../../out/Parsers/XmlParseStateMachines'
+    import { text } from 'stream/consumers';
+import type { XmlTextModel } from '../../../../../out/Parsers/XmlParseStateMachines'
+import XmlInputField from './XmlInputField.svelte';
 
 	export let xmlTextModel: XmlTextModel;
 </script>
 
-<div class="dni_xml-text-model-editor">
-    <input bind:value={xmlTextModel.text} />
-</div>
+<span class="dni_xml-text-model-editor">
+    <XmlInputField bind:value={xmlTextModel.text} />
+</span>
