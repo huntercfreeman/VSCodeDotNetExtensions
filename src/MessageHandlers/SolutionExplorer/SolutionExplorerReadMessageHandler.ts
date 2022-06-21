@@ -1,6 +1,5 @@
 import * as vscode from 'vscode';
 import { ActiveDotNetSolutionFileContainer } from '../../ActiveDotNetSolutionFileContainer';
-import { ConstantsCommands } from '../../Constants/ConstantsCommands';
 import { ConstantsDotNetCli } from '../../Constants/ConstantsDotNetCli';
 import { ConstantsFilePath } from '../../Constants/ConstantsFilePath';
 import { CSharpProjectModel } from '../../DotNet/CSharpProjectModel';

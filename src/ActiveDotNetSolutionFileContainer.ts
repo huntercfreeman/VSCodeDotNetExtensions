@@ -65,7 +65,7 @@ export class ActiveDotNetSolutionFileContainer {
                         this.activeDotNetSolutionFile.absoluteFilePath.initialAbsoluteFilePathStringInput
                             .replace(folderUriFsPath, "");
         
-                    this.solutionFileWatcher?.dispose();
+                    this.disposeSolutionFileWatcher();
 
                     this.solutionFileWatcher = vscode.workspace.createFileSystemWatcher(
                         new vscode.RelativePattern(workspaceFolderZeroIndex, 
@@ -87,7 +87,7 @@ export class ActiveDotNetSolutionFileContainer {
                 // if new active .sln is undefined when previous
                 // was not undefined dispose previous filewatcher
 
-                this.solutionFileWatcher?.dispose();
+                this.disposeSolutionFileWatcher();
             }
         }
         
@@ -102,5 +102,9 @@ export class ActiveDotNetSolutionFileContainer {
 
     public static getActiveDotNetSolutionFile() {
         return this.activeDotNetSolutionFile;
+    }
+
+    public static disposeSolutionFileWatcher() {
+        this.solutionFileWatcher?.dispose();
     }
 }

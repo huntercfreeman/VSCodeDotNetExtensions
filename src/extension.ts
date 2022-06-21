@@ -1,4 +1,5 @@
 import * as vscode from 'vscode';
+import { ActiveDotNetSolutionFileContainer } from './ActiveDotNetSolutionFileContainer';
 import { NugetPackageManagerWebviewProvider } from './UiProviders/NugetPackageManagerWebviewProvider';
 import { SolutionExplorerWebviewProvider } from './UiProviders/SolutionExplorerWebviewProvider';
 
@@ -36,4 +37,7 @@ export function activate(context: vscode.ExtensionContext) {
 	);
 }
 
-export function deactivate() { }
+export function deactivate() 
+{ 
+	ActiveDotNetSolutionFileContainer.disposeSolutionFileWatcher();
+}
