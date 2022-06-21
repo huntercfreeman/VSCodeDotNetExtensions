@@ -5,9 +5,10 @@
     import XmlInputField from './XmlInputField.svelte';
 
 	export let xmlTagModel: XmlTagModel;
+    export let displayChildren: boolean = true;
 </script>
 
-<div class="dni_inline-flex dni_xml-tag-model-editor">
+<span class="dni_inline-flex dni_xml-tag-model-editor">
     <span class="dni_inline-flex dni_xml-tag-model-editor-tag-name">
         <span class="dni_inline-flex">&lt;</span>
         <XmlInputField bind:value={xmlTagModel.tagName} />
@@ -26,12 +27,15 @@
     </span>
     
     <span class="dni_inline-flex dni_xml-tag-model-editor-children">
-        {#if (xmlTagModel.children.xmlTagModels?.length ?? 0) > 0}
+        {#if displayChildren && ((xmlTagModel.children.xmlTagModels?.length ?? 0) > 0)}
             <span class="dni_inline-flex">&gt;</span>
+
+            <br/>
             <XmlFileEditor xmlFileModel={xmlTagModel.children} />
+            
             <div class="dni_inline-flex">&lt;/{xmlTagModel.tagName}&gt;</div>
         {:else}
             <span class="dni_inline-flex">/&gt;</span>
         {/if}
     </span>
-</div>
+</span>

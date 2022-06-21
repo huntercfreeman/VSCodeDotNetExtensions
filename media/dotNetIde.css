@@ -63,4 +63,5 @@
 
 .dni_inline-flex {
     display: inline-flex;
+    height: fit-content;
 }

@@ -1,13 +1,17 @@
 <script lang="ts">
-    import type { XmlFileModel, XmlTagModel } from '../../../../../out/Parsers/XmlParseStateMachines'
+    import type { XmlFileModel } from '../../../../../out/Parsers/XmlParseStateMachines'
     import XmlTagModelEditor from './XmlTagModelEditor.svelte';
 
 	export let xmlFileModel: XmlFileModel;
 </script>
 
-<span class="dni_xml-file-model-editor">
+<div class="dni_xml-file-model-editor" style="margin-left: 12px;">
 
     {#each xmlFileModel.xmlTagModels as xmlTagModel}
-        <XmlTagModelEditor xmlTagModel={xmlTagModel} />
+        {#if xmlTagModel.tagName}
+            <div>
+                <XmlTagModelEditor xmlTagModel={xmlTagModel} />
+            </div>
+        {/if}
     {/each}
-</span>
+</div>
