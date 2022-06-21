@@ -5,7 +5,7 @@ import { IMessageUpdate } from "./IMessageUpdate";
 import { MessageUpdateKind } from "./MessageUpdateKind";
 
 export class MessageUpdatePasteIntoAny implements IMessage, IMessageUpdate {
-    constructor(public readonly ideFile: IdeFile) {
+    constructor(public readonly directory: IdeFile) {
     }
 
     public readonly messageCategory: MessageCategory = MessageCategory.update;

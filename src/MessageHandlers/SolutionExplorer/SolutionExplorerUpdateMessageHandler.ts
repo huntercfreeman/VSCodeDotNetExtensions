@@ -1,11 +1,18 @@
 import * as vscode from 'vscode';
+import { ConstantsClipboard } from '../../Constants/ConstantsClipboard';
 import { ConstantsDotNetCli } from '../../Constants/ConstantsDotNetCli';
+import { ConstantsFilePath } from '../../Constants/ConstantsFilePath';
+import { AbsoluteFilePath } from '../../FileSystem/AbsoluteFilePath';
+import { FileSystemReader } from '../../FileSystem/FileSystemReader';
 import { IMessage } from '../../Messages/IMessage';
 import { IMessageUpdate } from '../../Messages/Update/IMessageUpdate';
 import { MessageUpdateAddNugetPackageReference } from '../../Messages/Update/MessageUpdateAddNugetPackageReference';
 import { MessageUpdateAddProjectReference } from '../../Messages/Update/MessageUpdateAddProjectReference';
+import { MessageUpdateCopyAny } from '../../Messages/Update/MessageUpdateCopyAny';
+import { MessageUpdateCutAny } from '../../Messages/Update/MessageUpdateCutAny';
 import { MessageUpdateExistingCSharpProjectIntoSolution } from '../../Messages/Update/MessageUpdateExistingCSharpProjectIntoSolution';
 import { MessageUpdateKind } from '../../Messages/Update/MessageUpdateKind';
+import { MessageUpdatePasteIntoAny } from '../../Messages/Update/MessageUpdatePasteIntoAny';
 import { MessageUpdatePutProjectInSolutionFolder } from '../../Messages/Update/MessageUpdatePutProjectInSolutionFolder';
 import { MessageUpdateRemoveNugetPackageReference } from '../../Messages/Update/MessageUpdateRemoveNugetPackageReference';
 import { MessageUpdateRemoveProject } from '../../Messages/Update/MessageUpdateRemoveProject';
@@ -189,14 +196,26 @@ export class SolutionExplorerUpdateMessageHandler {
     }
 
     private static handleMessageUpdatePasteIntoAny(webviewView: vscode.WebviewView, messageUntyped: IMessage) {
-        throw new Error('Method not implemented.');
+        let message = messageUntyped as MessageUpdatePasteIntoAny;
     }
 
     private static handleMessageUpdateCutAny(webviewView: vscode.WebviewView, messageUntyped: IMessage) {
-        throw new Error('Method not implemented.');
+        let message = messageUntyped as MessageUpdateCutAny;
+
+        vscode.env.clipboard
+            .writeText(ConstantsClipboard.CUT_OPERATION +
+                       ConstantsClipboard.OPERATION_DELIMITER +
+                       message.ideFile.absoluteFilePath.initialAbsoluteFilePathStringInput 
+            );
     }
 
     private static handleMessageUpdateCopyAny(webviewView: vscode.WebviewView, messageUntyped: IMessage) {
-        throw new Error('Method not implemented.');
+        let message = messageUntyped as MessageUpdateCopyAny;
+
+        vscode.env.clipboard
+            .writeText(ConstantsClipboard.COPY_OPERATION +
+                       ConstantsClipboard.OPERATION_DELIMITER +
+                       message.ideFile.absoluteFilePath.initialAbsoluteFilePathStringInput 
+            );
     }
 }

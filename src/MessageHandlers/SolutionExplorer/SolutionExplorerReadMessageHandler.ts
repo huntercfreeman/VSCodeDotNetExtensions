@@ -245,9 +245,6 @@ export class SolutionExplorerReadMessageHandler {
         let message = iMessage as MessageReadFilesInDirectory;
 
         await FileSystemReader.getChildFilesOfDirectory(message.directoryFile.absoluteFilePath, (childFiles: string[]) => {
-            childFiles = childFiles
-                .filter(x => x !== message.directoryFile.absoluteFilePath.filenameWithExtension);
-
             let childAbsoluteFilePaths: AbsoluteFilePath[] = childFiles
                 .map(x => message.directoryFile.absoluteFilePath.initialAbsoluteFilePathStringInput +
                     ConstantsFilePath.STANDARDIZED_FILE_DELIMITER +
