@@ -5,6 +5,8 @@
     import XmlTagRootNamespaceEditor from './XmlEditors/XmlTagRootNamespaceEditor.svelte';
     import XmlTagNugetPackageEditor from './XmlEditors/XmlTagNugetPackageEditor.svelte';
     import XmlTagProjectReferenceEditor from './XmlEditors/XmlTagProjectReferenceEditor.svelte';
+import XmlTagModelEditor from './XmlEditors/XmlTagModelEditor.svelte';
+import XmlFileEditor from './XmlEditors/XmlFileEditor.svelte';
 
 	export let xmlFileModel: XmlFileModel;
 
@@ -70,11 +72,13 @@
 
 <span class="dni_xml-file-model-editor">
 
-    <XmlTagTargetFrameworkEditor targetFrameworkTag={getTargetFrameworkTag} />
+    <XmlFileEditor xmlFileModel="{xmlFileModel}" />
+
+    <!-- <XmlTagTargetFrameworkEditor targetFrameworkTag={getTargetFrameworkTag} />
 
     <XmlTagRootNamespaceEditor rootNamespaceTag={getRootNamespaceTag} />
 
     <XmlTagNugetPackageEditor nugetPackageTags={getNugetPackageTags} />
 
-    <XmlTagProjectReferenceEditor projectReferenceTags={getProjectReferenceTags} />
+    <XmlTagProjectReferenceEditor projectReferenceTags={getProjectReferenceTags} /> -->
 </span>

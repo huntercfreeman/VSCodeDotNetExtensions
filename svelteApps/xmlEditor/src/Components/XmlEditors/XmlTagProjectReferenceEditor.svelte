@@ -16,7 +16,7 @@
     {#if isExpanded}
         <div class="dni_tree-view-children">
             {#each projectReferenceTags as projectReferenceTag}
-                <div class="dni_xml-tag-nuget-package">
+                <div class="dni_xml-tag-project-reference">
                     <XmlTagModelEditor xmlTagModel={projectReferenceTag}
                                     displayChildren={false} />
                 </div>
@@ -33,7 +33,7 @@
         margin-top: 3px;
 	}
 
-    .dni_xml-tag-nuget-package {
+    .dni_xml-tag-project-reference {
         margin-bottom:3px;
     }
 </style>
