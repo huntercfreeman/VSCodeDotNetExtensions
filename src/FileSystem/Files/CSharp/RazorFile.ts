@@ -1,3 +1,4 @@
+import { ConstantsContextInformationDatums } from "../../../Constants/ConstantsFileEditingContextInformationDatums";
 import { ConstantsFileExtensionsNoPeriod } from "../../../Constants/ConstantsFileExtensionsNoPeriod";
 import { ContextualInformationDatum } from "../../../ContextMenus/ContextualInformationDatum";
 import { AbsoluteFilePath } from "../../AbsoluteFilePath";
@@ -6,6 +7,13 @@ import { IdeFile } from "../IdeFile";
 export class RazorFile extends IdeFile {
     constructor(givenAbsoluteFilePath: AbsoluteFilePath) {
         super(givenAbsoluteFilePath, "");
+
+        this.contextualInformation = [
+            
+        ];
+
+        this.contextualInformation = this.contextualInformation
+            .concat(ConstantsContextInformationDatums.DEFAULT_FILE_EDITING_CONTEXTUAL_INFORMATION_DATUMS);
     }
 
     public childFiles: IdeFile[] | undefined;
@@ -39,6 +47,5 @@ export class RazorFile extends IdeFile {
         }
     }
 
-    public readonly contextualInformation: ContextualInformationDatum[] = [
-    ];
+    public readonly contextualInformation: ContextualInformationDatum[];
 }
