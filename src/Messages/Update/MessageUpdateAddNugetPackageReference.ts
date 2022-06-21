@@ -1,6 +1,6 @@
 import { NugetPackageModel } from "../../DotNet/NugetPackageModel";
 import { NugetPackageVersionModel } from "../../DotNet/NugetPackageVersionModel";
-import { CSharpProjectFile } from "../../FileSystem/Files/CSharpProjectFile";
+import { CSharpProjectFile } from "../../FileSystem/Files/CSharp/CSharpProjectFile";
 import { IMessage } from "../IMessage";
 import { MessageCategory } from "../MessageCategory";
 import { IMessageUpdate } from "./IMessageUpdate";

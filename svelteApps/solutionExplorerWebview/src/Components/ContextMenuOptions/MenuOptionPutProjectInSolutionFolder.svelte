@@ -3,7 +3,7 @@
     import MenuOption from "../MenuOption.svelte";
     import { FileKind } from "../../../../../out/FileSystem/FileKind";
     import { MessageUpdatePutProjectInSolutionFolder } from "../../../../../out/Messages/Update/MessageUpdatePutProjectInSolutionFolder";
-
+    
     export let closeMenu;
 
     let contextMenuTargetValue;
@@ -14,18 +14,25 @@
     });
 
     function putInSolutionFolder() {
-        switch (contextMenuTargetValue.fileKind) {
-            case FileKind.cSharpProject:
-                let messageUpdatePutProjectInSolutionFolder =
-                    new MessageUpdatePutProjectInSolutionFolder(
-                        contextMenuTargetValue,
-                        solutionFolderName
-                    );
+        if ((contextMenuTargetValue as any).projectModel) {
 
-                tsVscode.postMessage({
-                    type: undefined,
-                    value: messageUpdatePutProjectInSolutionFolder,
-                });
+            if (contextMenuTargetValue.fileKind === FileKind.solutionFolder) {
+                return;
+            }
+
+            // IProjectModel
+            let projectModel: any = (contextMenuTargetValue as any).projectModel;
+
+            let messageUpdatePutProjectInSolutionFolder =
+                new MessageUpdatePutProjectInSolutionFolder(
+                    projectModel,
+                    solutionFolderName
+                );
+
+            tsVscode.postMessage({
+                type: undefined,
+                value: messageUpdatePutProjectInSolutionFolder,
+            });
         }
 
         closeMenu();

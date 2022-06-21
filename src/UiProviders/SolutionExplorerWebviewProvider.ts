@@ -1,9 +1,9 @@
 import * as vscode from 'vscode';
-import { SolutionExplorerMessageHandler } from '../MessageHandlers/SolutionExplorerMessageHandler';
 import { ActiveDotNetSolutionFileContainer } from '../ActiveDotNetSolutionFileContainer';
-import { MessageReadVirtualFilesInSolution } from '../Messages/Read/MessageReadVirtualFilesInSolution';
 import { DotNetSolutionFile } from '../FileSystem/Files/DotNetSolutionFile';
+import { SolutionExplorerMessageTransporter } from '../MessageHandlers/SolutionExplorer/SolutionExplorerMessageTransporter';
 import { MessageReadUndefinedSolution } from '../Messages/Read/MessageReadUndefinedSolution';
+import { MessageReadVirtualFilesInSolution } from '../Messages/Read/MessageReadVirtualFilesInSolution';
 
 const fs = require('fs');
 
@@ -22,8 +22,8 @@ export class SolutionExplorerWebviewProvider implements vscode.WebviewViewProvid
       this.activeDotNetSolutionFile = activeDotNetSolution;
 
       if (this.activeDotNetSolutionFile) {
-        SolutionExplorerMessageHandler
-          .handleMessage(webviewView, new MessageReadVirtualFilesInSolution(this.activeDotNetSolutionFile));
+        SolutionExplorerMessageTransporter
+          .transportMessage(webviewView, new MessageReadVirtualFilesInSolution(this.activeDotNetSolutionFile));
       }
       else {
         webviewView.webview.postMessage(new MessageReadUndefinedSolution());
@@ -42,7 +42,7 @@ export class SolutionExplorerWebviewProvider implements vscode.WebviewViewProvid
     webviewView.webview.html = this.getWebviewContent(webviewView.webview);
 
     webviewView.webview.onDidReceiveMessage(async (data) =>
-      SolutionExplorerMessageHandler.handleMessage(webviewView, data.value));
+      SolutionExplorerMessageTransporter.transportMessage(webviewView, data.value));
   }
 
   public revive(panel: vscode.WebviewView) {
@@ -50,10 +50,10 @@ export class SolutionExplorerWebviewProvider implements vscode.WebviewViewProvid
   }
 
   private getWebviewContent(webview: vscode.Webview) {
-    const dotNetIdeSvelteAppJavaScriptUri = webview.asWebviewUri(vscode.Uri.joinPath(
+    const solutionExplorerWebviewJavaScriptUri = webview.asWebviewUri(vscode.Uri.joinPath(
       this.context.extensionUri, 'out/solutionExplorerWebview', 'solutionExplorerWebview.js'));
 
-    const dotNetIdeSvelteAppCssUri = webview.asWebviewUri(vscode.Uri.joinPath(
+    const solutionExplorerWebviewCssUri = webview.asWebviewUri(vscode.Uri.joinPath(
       this.context.extensionUri, 'out/solutionExplorerWebview', 'solutionExplorerWebview.css'));
 
     const resetCssUri = webview.asWebviewUri(
@@ -77,13 +77,13 @@ export class SolutionExplorerWebviewProvider implements vscode.WebviewViewProvid
     <link href="${resetCssUri}" rel="stylesheet">
     <link href="${vSCodeCssUri}" rel="stylesheet">
     <link href="${dotNetIdeCssUri}" rel="stylesheet">
-    <link href="${dotNetIdeSvelteAppCssUri}" rel="stylesheet">
+    <link href="${solutionExplorerWebviewCssUri}" rel="stylesheet">
 	  <script>
 		const tsVscode = acquireVsCodeApi();
 	</script>
   </head>
   <body style="padding: 0 5px;" class="">
-	  <script src="${dotNetIdeSvelteAppJavaScriptUri}"></script>
+	  <script src="${solutionExplorerWebviewJavaScriptUri}"></script>
   </body>
   </html>`;
   }

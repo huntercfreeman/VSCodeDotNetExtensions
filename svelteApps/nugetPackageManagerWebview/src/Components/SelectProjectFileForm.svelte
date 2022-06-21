@@ -1,8 +1,6 @@
 <script lang="ts">
-	import type { CSharpProjectFile } from "../../../../out/FileSystem/Files/CSharpProjectFile";
-
-	export let projectFiles: CSharpProjectFile[] = [];
-	export let selectedProjectFile: CSharpProjectFile;
+	export let projectFiles: any[] = [];
+	export let selectedProjectFile: any;
 </script>
 
 <div>

@@ -1,4 +1,4 @@
-import { CSharpProjectProjectReferenceFile } from "../../FileSystem/Files/CSharpProjectProjectReferenceFile";
+import { CSharpProjectProjectReferenceFile } from "../../FileSystem/Files/CSharp/CSharpProjectProjectReferenceFile";
 import { IMessage } from "../IMessage";
 import { MessageCategory } from "../MessageCategory";
 import { IMessageUpdate } from "./IMessageUpdate";

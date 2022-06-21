@@ -1,7 +1,7 @@
 import * as vscode from 'vscode';
 import { ActiveDotNetSolutionFileContainer } from '../ActiveDotNetSolutionFileContainer';
 import { DotNetSolutionFile } from '../FileSystem/Files/DotNetSolutionFile';
-import { NugetPackageManagerMessageHandler } from '../MessageHandlers/NugetPackageManagerMessageHandler';
+import { NugetPackageManagerMessageTransporter } from '../MessageHandlers/NugetPackageManager/NugetPackageManagerMessageTransporter';
 import { IMessage } from '../Messages/IMessage';
 import { MessageCategory } from '../Messages/MessageCategory';
 import { IMessageRead } from '../Messages/Read/IMessageRead';
@@ -54,7 +54,7 @@ export class NugetPackageManagerWebviewProvider implements vscode.WebviewViewPro
               webviewView.webview.postMessage(messageReadActiveDotNetSolutionFile);
       }
       else {
-        NugetPackageManagerMessageHandler.handleMessage(webviewView, data.value);
+        NugetPackageManagerMessageTransporter.transportMessage(webviewView, data.value);
       }
     });
   }
@@ -64,10 +64,10 @@ export class NugetPackageManagerWebviewProvider implements vscode.WebviewViewPro
   }
 
   private getWebviewContent(webview: vscode.Webview) {
-    const dotNetIdeSvelteAppJavaScriptUri = webview.asWebviewUri(vscode.Uri.joinPath(
+    const nugetPackageManagerWebviewScriptUri = webview.asWebviewUri(vscode.Uri.joinPath(
       this.context.extensionUri, 'out/nugetPackageManagerWebview', 'nugetPackageManagerWebview.js'));
 
-    const dotNetIdeSvelteAppCssUri = webview.asWebviewUri(vscode.Uri.joinPath(
+    const nugetPackageManagerWebviewCssUri = webview.asWebviewUri(vscode.Uri.joinPath(
       this.context.extensionUri, 'out/nugetPackageManagerWebview', 'nugetPackageManagerWebview.css'));
 
     const resetCssUri = webview.asWebviewUri(
@@ -91,13 +91,13 @@ export class NugetPackageManagerWebviewProvider implements vscode.WebviewViewPro
     <link href="${resetCssUri}" rel="stylesheet">
     <link href="${vSCodeCssUri}" rel="stylesheet">
     <link href="${dotNetIdeCssUri}" rel="stylesheet">
-    <link href="${dotNetIdeSvelteAppCssUri}" rel="stylesheet">
+    <link href="${nugetPackageManagerWebviewCssUri}" rel="stylesheet">
 	  <script>
 		const tsVscode = acquireVsCodeApi();
 	</script>
   </head>
   <body style="padding: 0 5px;" class="">
-	  <script src="${dotNetIdeSvelteAppJavaScriptUri}"></script>
+	  <script src="${nugetPackageManagerWebviewScriptUri}"></script>
   </body>
   </html>`;
   }

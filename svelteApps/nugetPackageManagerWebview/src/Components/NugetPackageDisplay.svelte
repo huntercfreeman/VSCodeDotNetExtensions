@@ -1,13 +1,12 @@
 <script lang="ts">
     import type { NugetPackageModel } from "../../../../out/DotNet/NugetPackageModel";
     import type { NugetPackageVersionModel } from "../../../../out/DotNet/NugetPackageVersionModel";
-    import type { CSharpProjectFile } from "../../../../out/FileSystem/Files/CSharpProjectFile";
     import ExpansionChevron from "./ExpansionChevron.svelte";
     import SelectNugetPackageVersionForm from "./SelectNugetPackageVersionForm.svelte";
     import { MessageUpdateAddNugetPackageReference } from "../../../../out/Messages/Update/MessageUpdateAddNugetPackageReference";
 
     export let nugetPackageModel: NugetPackageModel;
-    export let selectedProjectFile: CSharpProjectFile;
+    export let selectedProjectFile: any;
 
     let selectedVersionModel: NugetPackageVersionModel;
 

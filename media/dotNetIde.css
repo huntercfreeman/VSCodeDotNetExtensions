@@ -53,3 +53,15 @@
     color: transparent;
     background-color: transparent;
 }
+
+.dni_xml-input-field input {
+    display: inline !important;
+    width: fit-content !important;
+    min-width: 1rem !important;
+    max-width: 100% !important;
+}
+
+.dni_inline-flex {
+    display: inline-flex;
+    height: fit-content;
+}

@@ -1,4 +1,4 @@
 export enum MessageExecuteKind {
-    cSharpProjectWithoutDebugging,
-    cSharpProjectDebugging
+    projectDebugging,
+    projectWithoutDebugging
 }

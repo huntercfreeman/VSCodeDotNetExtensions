@@ -1,7 +1,7 @@
 <script lang="ts">
     import { contextMenuTarget } from "../menu";
     import MenuOption from "../MenuOption.svelte";
-    import { MessageExecuteCSharpProjectWithoutDebugging } from "../../../../../out/Messages/Execute/MessageExecuteCSharpProjectWithoutDebugging";
+    import { MessageExecuteProjectWithoutDebugging } from "../../../../../out/Messages/Execute/MessageExecuteProjectWithoutDebugging"
     import { FileKind } from "../../../../../out/FileSystem/FileKind";
 
     export let closeMenu;
@@ -13,18 +13,24 @@
     });
 
     function startWithoutDebugging() {
-        switch (contextMenuTargetValue.fileKind) {
-            case FileKind.cSharpProject:
-                let messageExecuteCSharpProjectWithoutDebugging =
-                    new MessageExecuteCSharpProjectWithoutDebugging(
-                        contextMenuTargetValue
-                    );
+        if ((contextMenuTargetValue as any).projectModel) {
 
-                tsVscode.postMessage({
-                    type: undefined,
-                    value: messageExecuteCSharpProjectWithoutDebugging,
-                });
-                break;
+            if (contextMenuTargetValue.fileKind === FileKind.solutionFolder) {
+                return;
+            }
+
+            // IProjectModel
+            let projectModel: any = (contextMenuTargetValue as any).projectModel;
+
+            let messageExecuteProjectWithoutDebugging =
+                new MessageExecuteProjectWithoutDebugging(
+                    projectModel
+                );
+
+            tsVscode.postMessage({
+                type: undefined,
+                value: messageExecuteProjectWithoutDebugging,
+            });
         }
 
         closeMenu();

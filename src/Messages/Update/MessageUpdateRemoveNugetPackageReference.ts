@@ -1,4 +1,4 @@
-import { CSharpProjectNugetPackageDependencyFile } from "../../FileSystem/Files/CSharpProjectNugetPackageDependencyFile";
+import { CSharpProjectNugetPackageDependencyFile } from "../../FileSystem/Files/CSharp/CSharpProjectNugetPackageDependencyFile";
 import { IMessage } from "../IMessage";
 import { MessageCategory } from "../MessageCategory";
 import { IMessageUpdate } from "./IMessageUpdate";

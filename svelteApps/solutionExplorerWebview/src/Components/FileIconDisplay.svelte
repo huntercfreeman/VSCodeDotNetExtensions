@@ -1,6 +1,6 @@
 <script lang="ts">
     import { FileKind } from "../../../../out/FileSystem/FileKind";
-    import ProjectIcon from "./Icons/ProjectIcon.svelte";
+    import CSharpProjectIcon from "./Icons/CSharpProjectIcon.svelte";
     import SolutionIcon from "./Icons/SolutionIcon.svelte";
     import DirectoryIcon from "./Icons/DirectoryIcon.svelte";
     import CsIcon from "./Icons/CsIcon.svelte";
@@ -18,7 +18,8 @@
     import type { IdeFile } from "../../../../out/FileSystem/Files/IdeFile";
     import WwwRootIcon from "./Icons/WwwRootIcon.svelte";
     import { ConstantsUniqueFiles } from "../../../../out/Constants/ConstantsUniqueFiles";
-import PropertiesIcon from "./Icons/PropertiesIcon.svelte";
+    import PropertiesIcon from "./Icons/PropertiesIcon.svelte";
+    import VcxProjectIcon from "./Icons/VCXProjectIcon.svelte";
 
     export let ideFile: IdeFile;
 
@@ -27,10 +28,12 @@ import PropertiesIcon from "./Icons/PropertiesIcon.svelte";
 
 {#if fileKind === FileKind.solution}
     <SolutionIcon />
-{:else if fileKind === FileKind.cSharpProject}
-    <ProjectIcon />
 {:else if fileKind === FileKind.solutionFolder}
     <SolutionFolderIcon />
+{:else if fileKind === FileKind.cSharpProject}
+    <CSharpProjectIcon />
+{:else if fileKind === FileKind.vcxProject}
+    <VcxProjectIcon />
 {:else if fileKind === FileKind.default}
     <TxtIcon />
 {:else if fileKind === FileKind.directory}
@@ -51,14 +54,14 @@ import PropertiesIcon from "./Icons/PropertiesIcon.svelte";
     <CssIcon />
 {:else if fileKind === FileKind.json}
     <JsonIcon />
-{:else if fileKind === FileKind.projectDependencies}
+{:else if fileKind === FileKind.cSharpProjectDependencies}
     <ProjectDependenciesIcon />
-{:else if fileKind === FileKind.nugetPackageDependencies}
+{:else if fileKind === FileKind.cSharpNugetPackageDependenciesList}
     <NugetPackageDependenciesIcon />
-{:else if fileKind === FileKind.nugetPackageDependency}
+{:else if fileKind === FileKind.cSharpNugetPackageDependency}
     <NugetPackageDependencyIcon />
-{:else if fileKind === FileKind.projectReferences}
+{:else if fileKind === FileKind.cSharpProjectReferencesList}
     <ProjectReferencesIcon />
-{:else if fileKind === FileKind.projectReference}
+{:else if fileKind === FileKind.cSharpProjectReference}
     <ProjectReferenceIcon />
 {/if}

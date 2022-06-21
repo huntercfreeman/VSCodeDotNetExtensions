@@ -40,7 +40,7 @@
                     value: messageReadVirtualFilesInCSharpProject,
                 });
                 break;
-            case FileKind.projectReferences:
+            case FileKind.cSharpProjectReferencesList:
                 let messageReadProjectReferencesInProject =
                     new MessageReadProjectReferencesInProject(
                         contextMenuTargetValue
@@ -51,7 +51,7 @@
                     value: messageReadProjectReferencesInProject,
                 });
                 break;
-            case FileKind.nugetPackageDependencies:
+            case FileKind.cSharpNugetPackageDependenciesList:
                 let messageReadNugetPackageReferencesInProject =
                     new MessageReadNugetPackageReferencesInProject(
                         contextMenuTargetValue

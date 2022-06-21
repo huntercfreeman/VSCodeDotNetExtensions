@@ -3,6 +3,7 @@ import { ConstantsWhitespace } from "../../Constants/ConstantsWhitespace";
 import { ExtensibilityGlobals } from "../../DotNet/ExtensibilityGlobals";
 import { ProjectConfigurationPlatforms } from "../../DotNet/ProjectConfigurationPlatforms";
 import { SolutionConfigurationPlatforms } from "../../DotNet/SolutionConfigurationPlatforms";
+import { SolutionFolderModel } from "../../DotNet/SolutionFolderModel";
 import { SolutionModel } from "../../DotNet/SolutionModel";
 import { SolutionModelGlobal } from "../../DotNet/SolutionModelGlobal";
 import { SolutionModelGlobalSection } from "../../DotNet/SolutionModelGlobalSection";
@@ -120,11 +121,13 @@ export class GlobalSlnParseStateMachine extends SlnParseStateMachineBase {
                             continue;
                         }
 
-                        if (!parent.solutionFolderEntries) {
-                            parent.solutionFolderEntries = [];
+                        let solutionFolder = parent as SolutionFolderModel;
+
+                        if (!solutionFolder.solutionFolderEntries) {
+                            solutionFolder.solutionFolderEntries = [];
                         }
 
-                        parent.solutionFolderEntries.push(child);
+                        solutionFolder.solutionFolderEntries.push(child);
                         child.solutionFolderParentProjectIdGuid = idGuidRightParent;
 
                         idGuidLeftChild = "";

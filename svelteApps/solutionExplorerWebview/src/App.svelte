@@ -5,9 +5,10 @@
 	import { MessageReadKind } from "../../../out/Messages/Read/MessageReadKind";
 	import { MessageReadSolutionsInWorkspace } from "../../../out/Messages/Read/MessageReadSolutionsInWorkspace";
 	import SelectDotNetSolutionFileForm from "./Components/SelectDotNetSolutionFileForm.svelte";
-	import TreeViewDisplay from "./Components/TreeViewDisplay.svelte";
+	import TreeViewDisplay from "./Components/TreeViewBase.svelte";
 	import ContextMenu from "./Components/ContextMenu.svelte";
 	import SolutionFileControlButtons from "./Components/SolutionFileControlButtons.svelte";
+	import TreeViewMapper from "./Components/TreeViewMapper.svelte";
 
 	let dotNetSolutionFiles: DotNetSolutionFile[] = [];
 	let selectedDotNetSolutionFile: DotNetSolutionFile | undefined;
@@ -57,7 +58,7 @@
 	<div style="margin-bottom: 5px;" />
 
 	{#if selectedDotNetSolutionFile}
-		<TreeViewDisplay ideFile={selectedDotNetSolutionFile} />
+		<TreeViewMapper ideFile={selectedDotNetSolutionFile} />
 	{/if}
 
 	<ContextMenu />

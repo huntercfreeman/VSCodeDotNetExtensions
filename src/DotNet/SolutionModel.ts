@@ -1,9 +1,9 @@
 import { ConstantsContextualInformation } from "../Constants/ConstantsContextualInformation";
 import { AbsoluteFilePath } from "../FileSystem/AbsoluteFilePath";
-import { CSharpProjectFile } from "../FileSystem/Files/CSharpProjectFile";
 import { DotNetSolutionFile } from "../FileSystem/Files/DotNetSolutionFile";
+import { IProjectFile } from "../FileSystem/Files/IProjectFile";
 import { DotNetSolutionParser } from "../Parsers/DotNetSolutionParser";
-import { CSharpProjectModel } from "./CSharpProjectModel";
+import { IProjectModel } from "./IProjectModel";
 import { SolutionModelFileHeader } from "./SolutionModelFileHeader";
 import { SolutionModelGlobal } from "./SolutionModelGlobal";
 
@@ -13,7 +13,7 @@ export class SolutionModel {
     constructor(public readonly absoluteFilePath: AbsoluteFilePath) {
     }
 
-    public projects: CSharpProjectModel[] = [];
+    public projects: IProjectModel[] = [];
 
     public static async getFileContents(solution: SolutionModel, callback: any): Promise<string> {
         return await fs.readFile(solution.absoluteFilePath.initialAbsoluteFilePathStringInput, 'utf8', (err: any, data: any) => {
@@ -37,8 +37,8 @@ export class SolutionModel {
                 for (let i = 0; i < dotNetSolutionFile.virtualChildFiles.length; i++) {
                     let oldProjectFileState = dotNetSolutionFile.virtualChildFiles[i];
                     
-                    let oldProjectFileStateProjectIdGuid =
-                        (oldProjectFileState as CSharpProjectFile).cSharpProjectModel.projectIdGuid;
+                    let oldProjectFileStateProjectIdGuid: string = (oldProjectFileState as unknown as IProjectFile)
+                        .projectModel.projectIdGuid;
 
                     //200847FD-6FD5-4F6C-B9E1-96472010C379
                     //200847FD-6FD5-4F6C-B9E1-96472010C379

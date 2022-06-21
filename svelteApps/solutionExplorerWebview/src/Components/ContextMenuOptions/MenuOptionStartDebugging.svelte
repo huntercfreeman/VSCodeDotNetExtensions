@@ -2,7 +2,7 @@
     import { contextMenuTarget } from "../menu";
     import MenuOption from "../MenuOption.svelte";
     import { FileKind } from "../../../../../out/FileSystem/FileKind";
-    import { MessageExecuteCSharpProjectDebugging } from "../../../../../out/Messages/Execute/MessageExecuteCSharpProjectDebugging";
+    import { MessageExecuteProjectDebugging } from "../../../../../out/Messages/Execute/MessageExecuteProjectDebugging";
 
     export let closeMenu;
 
@@ -13,18 +13,24 @@
     });
 
     function startWithoutDebugging() {
-        switch (contextMenuTargetValue.fileKind) {
-            case FileKind.cSharpProject:
-                let messageExecuteCSharpProjectDebugging =
-                    new MessageExecuteCSharpProjectDebugging(
-                        contextMenuTargetValue
-                    );
+        if ((contextMenuTargetValue as any).projectModel) {
 
-                tsVscode.postMessage({
-                    type: undefined,
-                    value: messageExecuteCSharpProjectDebugging,
-                });
-                break;
+            if (contextMenuTargetValue.fileKind === FileKind.solutionFolder) {
+                return;
+            }
+
+            // IProjectModel
+            let projectModel: any = (contextMenuTargetValue as any).projectModel;
+
+            let messageExecuteProjectDebugging =
+                new MessageExecuteProjectDebugging(
+                    projectModel
+                );
+
+            tsVscode.postMessage({
+                type: undefined,
+                value: messageExecuteProjectDebugging,
+            });
         }
 
         closeMenu();

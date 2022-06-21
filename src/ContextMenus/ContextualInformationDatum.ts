@@ -59,6 +59,10 @@ export class ContextualInformationDatum {
     public static readonly putProjectInSolutionFolder: ContextualInformationDatum =
         new ContextualInformationDatum(ContextualInformationDatumKind.update,
             "putProjectInSolutionFolder");
+    
+    public static readonly openXmlEditor: ContextualInformationDatum =
+        new ContextualInformationDatum(ContextualInformationDatumKind.read,
+            "openXmlEditor");
 
     // TODO: Do not add rename, delete, copy, cut, paste instead add context menu option on files to set focus in folder view of Visual Studio Code and let folder view handle this.
 

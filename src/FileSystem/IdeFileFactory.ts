@@ -1,22 +1,18 @@
 import { FileKindMatcher } from "./FileKindMatcher";
 import { FileKind } from "./FileKind";
 import { AbsoluteFilePath } from "./AbsoluteFilePath";
-import { CSharpFile } from "./Files/CSharpFile";
+import { CSharpFile } from "./Files/CSharp/CSharpFile";
 import { IdeFile } from "./Files/IdeFile";
-import { CshtmlFile } from "./Files/CshtmlFile";
-import { CssFile } from "./Files/CssFile";
+import { CssFile } from "./Files/Miscellaneous/CssFile";
 import { DefaultFile } from "./Files/DefaultFile";
 import { DirectoryFile } from "./Files/DirectoryFile";
-import { JsonFile } from "./Files/JsonFile";
-import { RazorFile } from "./Files/RazorFile";
+import { RazorFile } from "./Files/CSharp/RazorFile";
+import { CshtmlFile } from "./Files/CSharp/CshtmlFile";
+import { JsonFile } from "./Files/Miscellaneous/JsonFile";
 
 export class IdeFileFactory {
     public static constructIdeFile(absoluteFilePath: AbsoluteFilePath, currentNamespaceString: string): IdeFile {
         switch (FileKindMatcher.getFileKind(absoluteFilePath.extensionNoPeriod)) {
-            // case FileKind.cSharpProject:
-            //     return ;
-            // case FileKind.solution:
-            //     return ;
             case FileKind.cSharp:
                 return new CSharpFile(absoluteFilePath, currentNamespaceString);
             case FileKind.cshtml:

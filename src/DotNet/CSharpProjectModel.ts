@@ -1,15 +1,17 @@
 import { ConstantsContextualInformation } from "../Constants/ConstantsContextualInformation";
 import { AbsoluteFilePath } from "../FileSystem/AbsoluteFilePath";
-import { CSharpProjectNugetPackageDependenciesFile } from "../FileSystem/Files/CSharpProjectNugetPackageDependenciesFile";
-import { CSharpProjectProjectReferenceFile } from "../FileSystem/Files/CSharpProjectProjectReferenceFile";
-import { CSharpProjectProjectReferencesFile } from "../FileSystem/Files/CSharpProjectProjectReferencesFile";
+import { CSharpProjectNugetPackageDependenciesListFile } from "../FileSystem/Files/CSharp/CSharpProjectNugetPackageDependenciesListFile";
+import { CSharpProjectProjectReferenceFile } from "../FileSystem/Files/CSharp/CSharpProjectProjectReferenceFile";
+import { CSharpProjectProjectReferencesListFile } from "../FileSystem/Files/CSharp/CSharpProjectProjectReferencesListFile";
 import { IdeFile } from "../FileSystem/Files/IdeFile";
-import { CSharpProjectParser } from "../Parsers/CSharpProjectParser";
+import { XmlProjectParser } from "../Parsers/XmlProjectParser";
+import { IProjectModel } from "./IProjectModel";
+import { ProjectKind } from "./ProjectKind";
 import { SolutionModel } from "./SolutionModel";
 
 const fs = require('fs');
 
-export class CSharpProjectModel {
+export class CSharpProjectModel implements IProjectModel {
     /**
      * 
      * @param parentSolutionModel 
@@ -32,20 +34,6 @@ export class CSharpProjectModel {
 
         this.rootNamespace = rootNamespace ?? displayName;
 
-        if (!this.absoluteFilePath.extensionNoPeriod) {
-            // Is likely a solution folder
-            // I am not sure if this is fool proof however.
-            //
-            // This is necessary for when a solution folder
-            // is empty otherwise it would 100% be guaranteed
-            // to be a solution folder as it would show in the
-            // solution folders section of the .sln file.
-
-            this.solutionFolderEntries = [];
-            this.rootNamespace = "";
-            this.contextualInformation = ConstantsContextualInformation.TREE_VIEW_SOLUTION_FOLDER_CONTEXT;
-        }
-
         this.parentSolutionAbsoluteFilePath = parentSolutionModel.absoluteFilePath;
     }
 
@@ -60,7 +48,7 @@ export class CSharpProjectModel {
 
         cSharpProjectModel.rootNamespace = cSharpProjectModel.displayName;
 
-        let cSharpProjectParser = new CSharpProjectParser(undefined,
+        let cSharpProjectParser = new XmlProjectParser(undefined,
             undefined,
             undefined,
             cSharpProjectModel);
@@ -69,12 +57,12 @@ export class CSharpProjectModel {
     }
 
     public static async parseCSharpProjectProjectReferences(cSharpProjectAbsoluteFilePath: AbsoluteFilePath,
-        cSharpProjectProjectReferencesFile: CSharpProjectProjectReferencesFile,
+        cSharpProjectProjectReferencesFile: CSharpProjectProjectReferencesListFile,
         callback: any): Promise<void> {
 
         cSharpProjectProjectReferencesFile.virtualChildFiles = [];
 
-        let cSharpProjectParser = new CSharpProjectParser(cSharpProjectAbsoluteFilePath,
+        let cSharpProjectParser = new XmlProjectParser(cSharpProjectAbsoluteFilePath,
             cSharpProjectProjectReferencesFile,
             undefined,
             undefined);
@@ -83,12 +71,12 @@ export class CSharpProjectModel {
     }
 
     public static async parseCSharpProjectNugetPackageReferences(cSharpProjectAbsoluteFilePath: AbsoluteFilePath,
-        cSharpProjectNugetPackageDependenciesFile: CSharpProjectNugetPackageDependenciesFile,
+        cSharpProjectNugetPackageDependenciesFile: CSharpProjectNugetPackageDependenciesListFile,
         callback: any): Promise<void> {
 
         cSharpProjectNugetPackageDependenciesFile.virtualChildFiles = [];
 
-        let cSharpProjectParser = new CSharpProjectParser(cSharpProjectAbsoluteFilePath,
+        let cSharpProjectParser = new XmlProjectParser(cSharpProjectAbsoluteFilePath,
             undefined,
             cSharpProjectNugetPackageDependenciesFile,
             undefined);
@@ -97,7 +85,6 @@ export class CSharpProjectModel {
     }
 
     public readonly absoluteFilePath: AbsoluteFilePath;
-    public solutionFolderEntries: CSharpProjectModel[] | undefined;
     public childFiles: IdeFile[] | undefined;
     public solutionFolderParentProjectIdGuid: string | undefined;
     public projectReferences: CSharpProjectProjectReferenceFile[] = [];
@@ -106,6 +93,7 @@ export class CSharpProjectModel {
     public isExecutable: boolean = true;;
     public readonly parentSolutionAbsoluteFilePath: AbsoluteFilePath;
     public initialIsExpandedState: boolean = false;
+    public projectKind: ProjectKind = ProjectKind.cSharpProject;
 
     public contextualInformation: string = ConstantsContextualInformation.TREE_VIEW_CSHARP_PROJECT_CONTEXT;
 }

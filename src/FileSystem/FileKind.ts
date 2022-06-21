@@ -2,6 +2,7 @@ export enum FileKind {
     solution,
     solutionFolder,
     cSharpProject,
+    vcxProject,
     default,
     directory,
     cSharp,
@@ -9,9 +10,14 @@ export enum FileKind {
     razor,
     css,
     json,
-    projectDependencies,
-    nugetPackageDependency,
-    nugetPackageDependencies,
-    projectReferences,
-    projectReference
+    cSharpProjectDependencies,
+    cSharpNugetPackageDependenciesList,
+    cSharpNugetPackageDependency,
+    cSharpProjectReferencesList,
+    cSharpProjectReference,
+    vcxProjectExternalDependenciesListFile,
+    vcxProjectHeaderFilesListFile,
+    vcxProjectReferencesListFile,
+    vcxProjectResourceFilesListFile,
+    vcxProjectSourceFilesListFile
 }
