@@ -197,8 +197,33 @@ export class SolutionExplorerUpdateMessageHandler {
 
     private static handleMessageUpdatePasteIntoAny(webviewView: vscode.WebviewView, messageUntyped: IMessage) {
         let message = messageUntyped as MessageUpdatePasteIntoAny;
-    }
 
+        vscode.env.clipboard.readText().then((async clipboardText => {
+
+            if (clipboardText &&
+                    (clipboardText.startsWith(ConstantsClipboard.COPY_OPERATION) || 
+                    clipboardText.startsWith(ConstantsClipboard.COPY_OPERATION))) {
+
+                        let copiedAbsoluteFilePathString = clipboardText
+                            .replace(ConstantsClipboard.COPY_OPERATION + ConstantsClipboard.OPERATION_DELIMITER, "")
+                            .replace(ConstantsClipboard.CUT_OPERATION + ConstantsClipboard.OPERATION_DELIMITER, "");
+
+                        let isDir = FileSystemReader.isDir(copiedAbsoluteFilePathString);
+
+                        let absoluteFilePath = new AbsoluteFilePath(copiedAbsoluteFilePathString, isDir, null);
+
+                        let parentDirectoryWithFileDelimiter = message.directory.absoluteFilePath.initialAbsoluteFilePathStringInput.endsWith(ConstantsFilePath.STANDARDIZED_FILE_DELIMITER)
+                            ? message.directory.absoluteFilePath.initialAbsoluteFilePathStringInput
+                            : message.directory.absoluteFilePath.initialAbsoluteFilePathStringInput + ConstantsFilePath.STANDARDIZED_FILE_DELIMITER;
+
+                        let target = parentDirectoryWithFileDelimiter + absoluteFilePath.filenameNoExtension;
+
+                        vscode.workspace.fs.copy(vscode.Uri.file(copiedAbsoluteFilePathString),
+                            vscode.Uri.file(target));
+            }
+        }));
+    }
+    
     private static handleMessageUpdateCutAny(webviewView: vscode.WebviewView, messageUntyped: IMessage) {
         let message = messageUntyped as MessageUpdateCutAny;
 
