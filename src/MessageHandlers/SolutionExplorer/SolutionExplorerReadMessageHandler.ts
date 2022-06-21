@@ -217,6 +217,8 @@ export class SolutionExplorerReadMessageHandler {
         let message = iMessage as MessageReadVirtualFilesInCSharpProject;
 
         await FileSystemReader.getSiblingFiles(message.cSharpProjectFile.absoluteFilePath, (siblingFiles: string[]) => {
+            let previousVirtualChildFiles = message.cSharpProjectFile.virtualChildFiles;
+
             siblingFiles = siblingFiles
                 .filter(x => x !== message.cSharpProjectFile.absoluteFilePath.filenameWithExtension);
 
@@ -235,6 +237,15 @@ export class SolutionExplorerReadMessageHandler {
                 let file = message.cSharpProjectFile.virtualChildFiles[i];
 
                 file.setVirtualChildFiles(message.cSharpProjectFile.virtualChildFiles);
+
+                if (previousVirtualChildFiles) {
+                    let previousFileState = previousVirtualChildFiles.find(x => x.absoluteFilePath.initialAbsoluteFilePathStringInput ===
+                        file.absoluteFilePath.initialAbsoluteFilePathStringInput);
+
+                    if (previousFileState) {
+                        file.isExpanded = previousFileState.isExpanded;
+                    }
+                }
             }
 
             webviewView.webview.postMessage(message);
@@ -245,6 +256,8 @@ export class SolutionExplorerReadMessageHandler {
         let message = iMessage as MessageReadFilesInDirectory;
 
         await FileSystemReader.getChildFilesOfDirectory(message.directoryFile.absoluteFilePath, (childFiles: string[]) => {
+            let previousChildFiles = message.directoryFile.childFiles;
+
             let childAbsoluteFilePaths: AbsoluteFilePath[] = childFiles
                 .map(x => message.directoryFile.absoluteFilePath.initialAbsoluteFilePathStringInput +
                     ConstantsFilePath.STANDARDIZED_FILE_DELIMITER +
@@ -261,6 +274,15 @@ export class SolutionExplorerReadMessageHandler {
                 let file = message.directoryFile.childFiles[i];
 
                 file.setVirtualChildFiles(message.directoryFile.childFiles);
+
+                if (previousChildFiles) {
+                    let previousFileState = previousChildFiles.find(x => x.absoluteFilePath.initialAbsoluteFilePathStringInput ===
+                        file.absoluteFilePath.initialAbsoluteFilePathStringInput);
+
+                    if (previousFileState) {
+                        file.isExpanded = previousFileState.isExpanded;
+                    }
+                }
             }
 
             webviewView.webview.postMessage(message);
