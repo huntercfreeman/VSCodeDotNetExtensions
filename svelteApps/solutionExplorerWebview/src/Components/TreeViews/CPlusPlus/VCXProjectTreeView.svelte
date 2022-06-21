@@ -8,9 +8,7 @@
 
 	let children: IdeFile[] | undefined;
 
-    function getTitleText() {
-        return vcxProjectFile.absoluteFilePath.filenameWithExtension;
-    }
+	$: titleText = vcxProjectFile.absoluteFilePath.filenameWithExtension;
 
 	function titleOnClick() {
 		let messageReadFileIntoEditor = new MessageReadFileIntoEditor(vcxProjectFile);
@@ -37,7 +35,7 @@
 </script>
 
 <TreeViewBase ideFile="{vcxProjectFile}" 
-              getTitleText={getTitleText}
+              titleText={titleText}
               titleOnClick={titleOnClick}
               getChildFiles={getChildFiles}
               hasDifferentParentContainer={hasDifferentParentContainer}

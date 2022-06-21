@@ -57,12 +57,6 @@ export class SolutionModel {
         });
     }
 
-    public static async addSolutionFolder(solution: SolutionModel, solutionFolderName: string, callback: any): Promise<void> {
-        let dotNetSolutionParser = new DotNetSolutionParser(solution);
-
-        // dotNetSolutionParser.addSolutionFolder(solutionFolderName, callback);
-    }
-
     public readonly fileHeader: SolutionModelFileHeader = new SolutionModelFileHeader();
     public readonly global: SolutionModelGlobal = new SolutionModelGlobal();
 

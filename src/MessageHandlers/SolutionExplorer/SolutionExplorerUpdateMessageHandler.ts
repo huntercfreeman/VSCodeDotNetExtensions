@@ -1,16 +1,29 @@
 import * as vscode from 'vscode';
+import { ConstantsClipboard } from '../../Constants/ConstantsClipboard';
 import { ConstantsDotNetCli } from '../../Constants/ConstantsDotNetCli';
+import { ConstantsFilePath } from '../../Constants/ConstantsFilePath';
+import { AbsoluteFilePath } from '../../FileSystem/AbsoluteFilePath';
+import { CSharpProjectFile } from '../../FileSystem/Files/CSharp/CSharpProjectFile';
+import { DirectoryFile } from '../../FileSystem/Files/DirectoryFile';
+import { FileSystemReader } from '../../FileSystem/FileSystemReader';
 import { IMessage } from '../../Messages/IMessage';
+import { MessageReadFilesInDirectory } from '../../Messages/Read/MessageReadFilesInDirectory';
+import { MessageReadVirtualFilesInCSharpProject } from '../../Messages/Read/MessageReadVirtualFilesInCSharpProject';
 import { IMessageUpdate } from '../../Messages/Update/IMessageUpdate';
 import { MessageUpdateAddNugetPackageReference } from '../../Messages/Update/MessageUpdateAddNugetPackageReference';
 import { MessageUpdateAddProjectReference } from '../../Messages/Update/MessageUpdateAddProjectReference';
+import { MessageUpdateCopyAny } from '../../Messages/Update/MessageUpdateCopyAny';
+import { MessageUpdateCutAny } from '../../Messages/Update/MessageUpdateCutAny';
 import { MessageUpdateExistingCSharpProjectIntoSolution } from '../../Messages/Update/MessageUpdateExistingCSharpProjectIntoSolution';
 import { MessageUpdateKind } from '../../Messages/Update/MessageUpdateKind';
+import { MessageUpdatePasteIntoAny } from '../../Messages/Update/MessageUpdatePasteIntoAny';
 import { MessageUpdatePutProjectInSolutionFolder } from '../../Messages/Update/MessageUpdatePutProjectInSolutionFolder';
 import { MessageUpdateRemoveNugetPackageReference } from '../../Messages/Update/MessageUpdateRemoveNugetPackageReference';
 import { MessageUpdateRemoveProject } from '../../Messages/Update/MessageUpdateRemoveProject';
 import { MessageUpdateRemoveProjectReference } from '../../Messages/Update/MessageUpdateRemoveProjectReference';
+import { MessageUpdateRenameAny } from '../../Messages/Update/MessageUpdateRenameAny';
 import { TerminalService } from '../../Terminal/TerminalService';
+import { SolutionExplorerMessageTransporter } from './SolutionExplorerMessageTransporter';
 
 export class SolutionExplorerUpdateMessageHandler {
     public static async handleMessage(webviewView: vscode.WebviewView, message: IMessage): Promise<void> {
@@ -34,6 +47,18 @@ export class SolutionExplorerUpdateMessageHandler {
                 break;
             case MessageUpdateKind.removeNugetPackageReference:
                 await this.handleMessageUpdateRemoveNugetPackageReference(webviewView, message);
+                break;
+            case MessageUpdateKind.copyAny:
+                await this.handleMessageUpdateCopyAny(webviewView, message);
+                break;
+            case MessageUpdateKind.cutAny:
+                await this.handleMessageUpdateCutAny(webviewView, message);
+                break;
+            case MessageUpdateKind.pasteIntoAny:
+                await this.handleMessageUpdatePasteIntoAny(webviewView, message);
+                break;
+            case MessageUpdateKind.renameAny:
+                await this.handleMessageUpdateRenameAny(webviewView, message);
                 break;
         }
     }
@@ -151,5 +176,106 @@ export class SolutionExplorerUpdateMessageHandler {
                 message.cSharpProjectNugetPackageDependencyFile.nugetPackageId));
 
         generalUseTerminal.show();
+    }
+
+    private static handleMessageUpdateRenameAny(webviewView: vscode.WebviewView, messageUntyped: IMessage) {
+        let message = messageUntyped as MessageUpdateRenameAny;
+
+        let renameWorkspaceEdit = new vscode.WorkspaceEdit();
+
+        let toBeAbsoluteFilePathString = message.ideFile.absoluteFilePath.initialAbsoluteFilePathStringInput
+            .replace(message.ideFile.absoluteFilePath.filenameWithExtension,
+                message.toBeFilenameWithExtension);
+
+        renameWorkspaceEdit.renameFile(vscode.Uri.file(message.ideFile.absoluteFilePath.initialAbsoluteFilePathStringInput),
+            vscode.Uri.file(toBeAbsoluteFilePathString));
+
+        vscode.workspace.applyEdit(renameWorkspaceEdit).then((value: boolean) => {
+            // onfulfilled
+            
+        }, 
+        (reason: any) => {
+            // onrejected
+            
+        });
+    }
+
+    private static handleMessageUpdatePasteIntoAny(webviewView: vscode.WebviewView, messageUntyped: IMessage) {
+        let message = messageUntyped as MessageUpdatePasteIntoAny;
+
+        vscode.env.clipboard.readText().then((async clipboardText => {
+
+            if (clipboardText &&
+                    (clipboardText.startsWith(ConstantsClipboard.COPY_OPERATION) || 
+                    clipboardText.startsWith(ConstantsClipboard.CUT_OPERATION))) {
+
+                        let directoryAbsoluteFilePath: AbsoluteFilePath = message.ideFile.absoluteFilePath;
+
+                        if ((message.ideFile as any).projectModel) {
+                            directoryAbsoluteFilePath = message.ideFile.absoluteFilePath
+                                        .parentDirectories[
+                                            message.ideFile.absoluteFilePath
+                                            .parentDirectories.length - 1
+                                    ];
+                        }
+
+                        let copiedAbsoluteFilePathString = clipboardText
+                            .replace(ConstantsClipboard.COPY_OPERATION + ConstantsClipboard.OPERATION_DELIMITER, "")
+                            .replace(ConstantsClipboard.CUT_OPERATION + ConstantsClipboard.OPERATION_DELIMITER, "");
+
+                        let isDir = FileSystemReader.isDir(copiedAbsoluteFilePathString);
+
+                        let absoluteFilePath = new AbsoluteFilePath(copiedAbsoluteFilePathString, isDir, null);
+
+                        let parentDirectoryWithFileDelimiter = directoryAbsoluteFilePath.initialAbsoluteFilePathStringInput.endsWith(ConstantsFilePath.STANDARDIZED_FILE_DELIMITER)
+                            ? directoryAbsoluteFilePath.initialAbsoluteFilePathStringInput
+                            : directoryAbsoluteFilePath.initialAbsoluteFilePathStringInput + ConstantsFilePath.STANDARDIZED_FILE_DELIMITER;
+
+                        let target = parentDirectoryWithFileDelimiter + absoluteFilePath.filenameWithExtension;
+
+                        vscode.workspace.fs.copy(vscode.Uri.file(copiedAbsoluteFilePathString),
+                            vscode.Uri.file(target)).then((x) => {
+                                
+                                if (clipboardText.startsWith(ConstantsClipboard.CUT_OPERATION)) {
+                                    vscode.workspace.fs.delete(vscode.Uri.file(copiedAbsoluteFilePathString),
+                                    {
+                                        "recursive": true,
+                                        "useTrash": true
+                                    });
+                                }
+
+                                if ((message.ideFile as any).projectModel) {
+                                    SolutionExplorerMessageTransporter
+                                        .transportMessage(webviewView, 
+                                            new MessageReadVirtualFilesInCSharpProject(message.ideFile as CSharpProjectFile));
+                                }
+                                else {
+                                    SolutionExplorerMessageTransporter
+                                        .transportMessage(webviewView, 
+                                            new MessageReadFilesInDirectory(message.ideFile as DirectoryFile));
+                                }
+                            });
+            }
+        }));
+    }
+
+    private static handleMessageUpdateCutAny(webviewView: vscode.WebviewView, messageUntyped: IMessage) {
+        let message = messageUntyped as MessageUpdateCutAny;
+
+        vscode.env.clipboard
+            .writeText(ConstantsClipboard.CUT_OPERATION +
+                       ConstantsClipboard.OPERATION_DELIMITER +
+                       message.ideFile.absoluteFilePath.initialAbsoluteFilePathStringInput 
+            );
+    }
+
+    private static handleMessageUpdateCopyAny(webviewView: vscode.WebviewView, messageUntyped: IMessage) {
+        let message = messageUntyped as MessageUpdateCopyAny;
+
+        vscode.env.clipboard
+            .writeText(ConstantsClipboard.COPY_OPERATION +
+                       ConstantsClipboard.OPERATION_DELIMITER +
+                       message.ideFile.absoluteFilePath.initialAbsoluteFilePathStringInput 
+            );
     }
 }

@@ -60,28 +60,26 @@ export class ContextualInformationDatum {
         new ContextualInformationDatum(ContextualInformationDatumKind.update,
             "putProjectInSolutionFolder");
 
-    // TODO: Do not add rename, delete, copy, cut, paste instead add context menu option on files to set focus in folder view of Visual Studio Code and let folder view handle this.
+    public static readonly rename: ContextualInformationDatum = 
+        new ContextualInformationDatum(ContextualInformationDatumKind.delete,
+            "rename");
 
-    // public static readonly rename: ContextualInformationDatum = 
-    //     new ContextualInformationDatum(ContextualInformationDatumKind.update,
-    //         "rename");
+    public static readonly deleteFile: ContextualInformationDatum = 
+        new ContextualInformationDatum(ContextualInformationDatumKind.delete,
+            "deleteFile");
 
-    // public static readonly deleteFile: ContextualInformationDatum = 
-    //     new ContextualInformationDatum(ContextualInformationDatumKind.delete,
-    //         "deleteFile");
+    public static readonly copyFile: ContextualInformationDatum = 
+        new ContextualInformationDatum(ContextualInformationDatumKind.control,
+            "copyFile");
 
-    // public static readonly copyFile: ContextualInformationDatum = 
-    //     new ContextualInformationDatum(ContextualInformationDatumKind.control,
-    //         "copyFile");
+    public static readonly cutFile: ContextualInformationDatum = 
+        new ContextualInformationDatum(ContextualInformationDatumKind.control,
+            "cutFile");
 
-    // public static readonly cutFile: ContextualInformationDatum = 
-    //     new ContextualInformationDatum(ContextualInformationDatumKind.control,
-    //         "cutFile");
-
-    // public static readonly paste: ContextualInformationDatum = 
-    //         new ContextualInformationDatum(ContextualInformationDatumKind.control,
-    //             "paste");
-
+    public static readonly paste: ContextualInformationDatum = 
+            new ContextualInformationDatum(ContextualInformationDatumKind.control,
+                "paste");
+                
     public static checkDatumEquality(datumOne: ContextualInformationDatum, datumTwo: ContextualInformationDatum) {
         return (datumOne.contextualInformationDatumKind === datumTwo.contextualInformationDatumKind) &&
             (datumOne.contextualInformationIdentifier === datumTwo.contextualInformationIdentifier);

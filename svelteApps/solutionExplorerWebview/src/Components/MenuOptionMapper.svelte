@@ -13,6 +13,11 @@
     import MenuOptionStartDebugging from "./ContextMenuOptions/MenuOptionStartDebugging.svelte";
     import MenuOptionStartWithoutDebugging from "./ContextMenuOptions/MenuOptionStartWithoutDebugging.svelte";
     import MenuOptionPutProjectInSolutionFolder from "./ContextMenuOptions/MenuOptionPutProjectInSolutionFolder.svelte";
+    import MenuOptionCopyFile from "./ContextMenuOptions/MenuOptionCopyFile.svelte";
+    import MenuOptionCutFile from "./ContextMenuOptions/MenuOptionCutFile.svelte";
+    import MenuOptionDeleteFile from "./ContextMenuOptions/MenuOptionDeleteFile.svelte";
+    import MenuOptionPasteFile from "./ContextMenuOptions/MenuOptionPasteFile.svelte";
+    import MenuOptionRename from "./ContextMenuOptions/MenuOptionRename.svelte";
 
     export let contextualInformation: ContextualInformationDatum[];
     export let closeMenu;
@@ -45,5 +50,15 @@
         <MenuOptionPutProjectInSolutionFolder {closeMenu} />
     {:else if ContextualInformationDatum.checkDatumEquality(ContextualInformationDatum.removeCSharpProject, contextualInformationDatum)}
         <MenuOptionRemoveCSharpProject {closeMenu} />
+    {:else if ContextualInformationDatum.checkDatumEquality(ContextualInformationDatum.copyFile, contextualInformationDatum)}
+        <MenuOptionCopyFile {closeMenu} />
+    {:else if ContextualInformationDatum.checkDatumEquality(ContextualInformationDatum.cutFile, contextualInformationDatum)}
+        <MenuOptionCutFile {closeMenu} />
+    {:else if ContextualInformationDatum.checkDatumEquality(ContextualInformationDatum.deleteFile, contextualInformationDatum)}
+        <MenuOptionDeleteFile {closeMenu} />
+    {:else if ContextualInformationDatum.checkDatumEquality(ContextualInformationDatum.paste, contextualInformationDatum)}
+        <MenuOptionPasteFile {closeMenu} />
+    {:else if ContextualInformationDatum.checkDatumEquality(ContextualInformationDatum.rename, contextualInformationDatum)}
+        <MenuOptionRename {closeMenu} />
     {/if}
 {/each}

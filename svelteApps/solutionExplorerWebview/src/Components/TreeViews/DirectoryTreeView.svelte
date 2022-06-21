@@ -11,9 +11,7 @@
 
 	let children: IdeFile[] | undefined;
 
-	function getTitleText() {
-        return directoryFile.absoluteFilePath.filenameWithExtension;
-    }
+	$: titleText = directoryFile.absoluteFilePath.filenameWithExtension;
 
 	function titleOnClick() {
     }
@@ -70,7 +68,7 @@
 </script>
 
 <TreeViewBase ideFile="{directoryFile}" 
-              getTitleText={getTitleText}
+              titleText={titleText}
               titleOnClick={titleOnClick}
               getChildFiles={getChildFiles}
               hasDifferentParentContainer={hasDifferentParentContainer}
