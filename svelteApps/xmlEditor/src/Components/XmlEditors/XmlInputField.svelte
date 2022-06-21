@@ -6,6 +6,7 @@ import { activeInputField } from "./xmlInputField";
 
     let activeInputFieldValue;
 
+    let xmlInputFieldElement;
     let isEditable: boolean = false;
     let nonce = getNonce();
     
@@ -22,12 +23,31 @@ import { activeInputField } from "./xmlInputField";
 
         activeInputField.set(nonce);
     }
+
+    function extendOnKeyDown(keyboardEvent) {
+		if (keyboardEvent.code === "Escape" && isEditable) {
+			isEditable = false;
+		}
+	}
+
+	function onPageClick(e) {
+		if (e.target === xmlInputFieldElement || 
+            xmlInputFieldElement.contains(e.target)) 
+                return;
+		
+        isEditable = false;
+	}
 </script>
 
-<span class="dni_xml-input-field" on:click={setIsEditableOnClick}>
+<span class="dni_xml-input-field" 
+      on:click={setIsEditableOnClick} 
+      bind:this={xmlInputFieldElement}>
+
     {#if isEditable}
         <input bind:value={value} />
     {:else}
         {value}
     {/if}
 </span>
+
+<svelte:body on:click={onPageClick} on:keydown={extendOnKeyDown} />

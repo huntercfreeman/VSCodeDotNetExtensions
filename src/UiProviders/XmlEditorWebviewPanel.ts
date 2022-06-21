@@ -98,7 +98,7 @@ export class XmlEditorWebviewPanel {
     );
 
     return `<!DOCTYPE html>
-  <html lang="en">
+  <html lang="en" style="height: 100%">
   <head>
 	  <meta charset="UTF-8">
 	  <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -111,7 +111,7 @@ export class XmlEditorWebviewPanel {
 		const tsVscode = acquireVsCodeApi();
 	</script>
   </head>
-  <body style="padding: 0 5px;" class="">
+  <body style="padding: 0 5px; height: 100%;" class="">
 	  <script src="${xmlEditorJavaScriptUri}"></script>
   </body>
   </html>`;
