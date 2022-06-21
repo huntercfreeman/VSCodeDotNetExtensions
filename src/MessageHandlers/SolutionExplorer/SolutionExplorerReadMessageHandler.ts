@@ -109,8 +109,6 @@ export class SolutionExplorerReadMessageHandler {
         message.dotNetSolutionFiles = solutionModels
             .map(x => new DotNetSolutionFile(x));
 
-            ActiveDotNetSolutionFileContainer.setActiveDotNetSolutionFile(undefined);
-
         webviewView.webview.postMessage(message);
     }
 

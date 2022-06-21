@@ -6,13 +6,13 @@ import { DotNetSolutionFile } from "./FileSystem/Files/DotNetSolutionFile";
 export class ActiveDotNetSolutionFileContainer {
     private static activeDotNetSolutionFile: DotNetSolutionFile | undefined;
     private static solutionFileWatcher: vscode.FileSystemWatcher | undefined;
-    
+
     private static setActiveDotNetSolutionFileCallCounter: number = 0;
 
-    public static solutionExplorerWebviewProviderSubscription: 
+    public static solutionExplorerWebviewProviderSubscription:
         ((activeDotNetSolutionFile: DotNetSolutionFile | undefined) => void) | undefined;
 
-    public static nugetPackageManagerWebviewProviderSubscription: 
+    public static nugetPackageManagerWebviewProviderSubscription:
         ((activeDotNetSolutionFile: DotNetSolutionFile | undefined) => void) | undefined;
 
     // TODO: I like this property more than having each webview get its own property to store the subscription.
@@ -33,8 +33,8 @@ export class ActiveDotNetSolutionFileContainer {
         let absoluteFilePathOfSolutionFileChanged: boolean = false;
 
         if (this.activeDotNetSolutionFile && dotNetSolutionFile) {
-            absoluteFilePathOfSolutionFileChanged =  
-                this.activeDotNetSolutionFile?.absoluteFilePath.initialAbsoluteFilePathStringInput === 
+            absoluteFilePathOfSolutionFileChanged =
+                this.activeDotNetSolutionFile?.absoluteFilePath.initialAbsoluteFilePathStringInput !==
                 dotNetSolutionFile?.absoluteFilePath.initialAbsoluteFilePathStringInput;
         }
         else if (!this.activeDotNetSolutionFile || !dotNetSolutionFile) {
@@ -49,35 +49,35 @@ export class ActiveDotNetSolutionFileContainer {
 
         if (absoluteFilePathOfSolutionFileChanged) {
 
-                // If not undefined create new file watcher for .sln
-                if (this.activeDotNetSolutionFile) {
-                    const workspaceFolderZeroIndex = vscode.workspace.workspaceFolders?.[0];
+            // If not undefined create new file watcher for .sln
+            if (this.activeDotNetSolutionFile) {
+                const workspaceFolderZeroIndex = vscode.workspace.workspaceFolders?.[0];
 
                 if (workspaceFolderZeroIndex) {
-        
+
                     let workspaceStandardizedFilePath = FilePathStandardizer.standardizeFilePath(workspaceFolderZeroIndex.uri.fsPath);
 
                     let folderUriFsPath = workspaceStandardizedFilePath.endsWith(ConstantsFilePath.STANDARDIZED_FILE_DELIMITER)
                         ? workspaceStandardizedFilePath
                         : workspaceStandardizedFilePath + ConstantsFilePath.STANDARDIZED_FILE_DELIMITER;
-            
-                    let relativePathToSolutionFile = 
+
+                    let relativePathToSolutionFile =
                         this.activeDotNetSolutionFile.absoluteFilePath.initialAbsoluteFilePathStringInput
                             .replace(folderUriFsPath, "");
-        
+
                     this.disposeSolutionFileWatcher();
 
                     this.solutionFileWatcher = vscode.workspace.createFileSystemWatcher(
-                        new vscode.RelativePattern(workspaceFolderZeroIndex, 
+                        new vscode.RelativePattern(workspaceFolderZeroIndex,
                             relativePathToSolutionFile));
-            
-                    this.solutionFileWatcher.onDidChange(async uri => { 
-            
-                        if(this.solutionExplorerWebviewProviderSubscription) {
+
+                    this.solutionFileWatcher.onDidChange(async uri => {
+
+                        if (this.solutionExplorerWebviewProviderSubscription) {
                             this.solutionExplorerWebviewProviderSubscription(this.activeDotNetSolutionFile);
                         }
-                        
-                        if(this.nugetPackageManagerWebviewProviderSubscription) {
+
+                        if (this.nugetPackageManagerWebviewProviderSubscription) {
                             this.nugetPackageManagerWebviewProviderSubscription(this.activeDotNetSolutionFile);
                         }
                     });
@@ -89,15 +89,19 @@ export class ActiveDotNetSolutionFileContainer {
 
                 this.disposeSolutionFileWatcher();
             }
+
+            if (this.solutionExplorerWebviewProviderSubscription) {
+                this.solutionExplorerWebviewProviderSubscription(this.activeDotNetSolutionFile);
+            }
         }
-        
-        if(this.nugetPackageManagerWebviewProviderSubscription) {
+
+        if (this.nugetPackageManagerWebviewProviderSubscription) {
             this.nugetPackageManagerWebviewProviderSubscription(this.activeDotNetSolutionFile);
         }
     }
 
     public static notifySubscriptions() {
-        
+
     }
 
     public static getActiveDotNetSolutionFile() {

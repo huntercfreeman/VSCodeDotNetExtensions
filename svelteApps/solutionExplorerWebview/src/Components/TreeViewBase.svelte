@@ -7,7 +7,7 @@
 
 	export let ideFile: IdeFile;
 	export let children: IdeFile[] | undefined;
-	export let getTitleText: () => string;
+	export let titleText: string;
 	export let titleOnClick: (e: MouseEvent) => void;
 	export let getChildFiles: () => IdeFile[];
 	export let hasDifferentParentContainer: (childIdeFile: IdeFile) => boolean;
@@ -16,7 +16,7 @@
 <div class="dni_tree-view">
 	<div
 		class="dni_tree-view-title"
-		title={getTitleText()}
+		title={titleText}
 		on:click={(e) => titleOnClick(e)}
 		on:contextmenu={(e) => contextMenuTarget.set(ideFile)}
 	>
@@ -37,7 +37,7 @@
 		<span class="dni_tree-view-title-text">
 			<FileIconDisplay ideFile={ideFile} />
 
-			{getTitleText()}
+			{titleText}
 		</span>
 	</div>
 

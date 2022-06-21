@@ -2,6 +2,7 @@ import * as vscode from 'vscode';
 import { ActiveDotNetSolutionFileContainer } from '../ActiveDotNetSolutionFileContainer';
 import { DotNetSolutionFile } from '../FileSystem/Files/DotNetSolutionFile';
 import { SolutionExplorerMessageTransporter } from '../MessageHandlers/SolutionExplorer/SolutionExplorerMessageTransporter';
+import { IMessage } from '../Messages/IMessage';
 import { MessageReadUndefinedSolution } from '../Messages/Read/MessageReadUndefinedSolution';
 import { MessageReadVirtualFilesInSolution } from '../Messages/Read/MessageReadVirtualFilesInSolution';
 
@@ -47,6 +48,12 @@ export class SolutionExplorerWebviewProvider implements vscode.WebviewViewProvid
 
   public revive(panel: vscode.WebviewView) {
     this._view = panel;
+  }
+
+  public sendMessage(message: IMessage) {
+    if (this._view) {
+      SolutionExplorerMessageTransporter.transportMessage(this._view, message);
+    }
   }
 
   private getWebviewContent(webview: vscode.Webview) {

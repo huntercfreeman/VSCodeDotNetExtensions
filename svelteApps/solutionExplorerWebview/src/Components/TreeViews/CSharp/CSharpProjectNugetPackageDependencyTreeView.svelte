@@ -7,10 +7,8 @@
 
 	let children: IdeFile[] | undefined;
 
-    function getTitleText() {
-        return cSharpProjectNugetPackageDependencyFile.absoluteFilePath.filenameWithExtension;
-    }
-
+	$: titleText = cSharpProjectNugetPackageDependencyFile.absoluteFilePath.filenameWithExtension;
+	
 	function titleOnClick() {
     }
 
@@ -32,7 +30,7 @@
 </script>
 
 <TreeViewBase ideFile="{cSharpProjectNugetPackageDependencyFile}" 
-              getTitleText={getTitleText}
+              titleText={titleText}
               titleOnClick={titleOnClick}
               getChildFiles={getChildFiles}
               hasDifferentParentContainer={hasDifferentParentContainer}

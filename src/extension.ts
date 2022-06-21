@@ -1,7 +1,13 @@
 import * as vscode from 'vscode';
 import { ActiveDotNetSolutionFileContainer } from './ActiveDotNetSolutionFileContainer';
+import { ConstantsFilePath } from './Constants/ConstantsFilePath';
+import { FilePathStandardizer } from './FileSystem/FilePathStandardizer';
+import { SolutionExplorerMessageTransporter } from './MessageHandlers/SolutionExplorer/SolutionExplorerMessageTransporter';
+import { MessageReadSolutionsInWorkspace } from './Messages/Read/MessageReadSolutionsInWorkspace';
 import { NugetPackageManagerWebviewProvider } from './UiProviders/NugetPackageManagerWebviewProvider';
 import { SolutionExplorerWebviewProvider } from './UiProviders/SolutionExplorerWebviewProvider';
+
+let newSolutionFileWatcher: vscode.FileSystemWatcher | undefined;
 
 export function activate(context: vscode.ExtensionContext) {
 	const nugetPackageManagerProvider = new NugetPackageManagerWebviewProvider(context);
@@ -35,9 +41,28 @@ export function activate(context: vscode.ExtensionContext) {
 			}
 		)
 	);
+
+	const workspaceFolderZeroIndex = vscode.workspace.workspaceFolders?.[0];
+
+	if (workspaceFolderZeroIndex) {
+		newSolutionFileWatcher = vscode.workspace.createFileSystemWatcher(
+			new vscode.RelativePattern(workspaceFolderZeroIndex, 
+				"**/*.sln"));
+
+		newSolutionFileWatcher.onDidCreate(async uri => { 
+
+			solutionExplorerWebviewProvider.sendMessage(new MessageReadSolutionsInWorkspace());
+		});
+
+		newSolutionFileWatcher.onDidDelete(async uri => { 
+
+			solutionExplorerWebviewProvider.sendMessage(new MessageReadSolutionsInWorkspace());
+		});
+	}
 }
 
 export function deactivate() 
 { 
 	ActiveDotNetSolutionFileContainer.disposeSolutionFileWatcher();
+	newSolutionFileWatcher?.dispose();
 }

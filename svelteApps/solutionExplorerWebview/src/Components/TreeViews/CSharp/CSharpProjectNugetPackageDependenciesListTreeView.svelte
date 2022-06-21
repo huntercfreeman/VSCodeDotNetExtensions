@@ -12,9 +12,7 @@ import { FileKind } from "../../../../../../out/FileSystem/FileKind";
 
 	let children: IdeFile[] | undefined;
 
-    function getTitleText() {
-        return cSharpProjectNugetPackageDependenciesListFile.absoluteFilePath.filenameWithExtension;
-    }
+	$: titleText = cSharpProjectNugetPackageDependenciesListFile.absoluteFilePath.filenameWithExtension;
 
 	function titleOnClick() {
     }
@@ -71,7 +69,7 @@ import { FileKind } from "../../../../../../out/FileSystem/FileKind";
 </script>
 
 <TreeViewBase ideFile="{cSharpProjectNugetPackageDependenciesListFile}" 
-              getTitleText={getTitleText}
+              titleText={titleText}
               titleOnClick={titleOnClick}
               getChildFiles={getChildFiles}
               hasDifferentParentContainer={hasDifferentParentContainer}
