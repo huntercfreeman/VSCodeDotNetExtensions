@@ -20,7 +20,12 @@ export class SolutionExplorerDeleteMessageHandler {
 
         let deleteFileWorkspaceEdit = new vscode.WorkspaceEdit();
 
-        deleteFileWorkspaceEdit.deleteFile(vscode.Uri.file(message.toBeDeletedIdeFile.absoluteFilePath.initialAbsoluteFilePathStringInput));
+        let recursive = message.toBeDeletedIdeFile.absoluteFilePath.isDirectory;
+        
+        deleteFileWorkspaceEdit.deleteFile(vscode.Uri.file(message.toBeDeletedIdeFile.absoluteFilePath.initialAbsoluteFilePathStringInput),
+        {
+            recursive: recursive
+        });
 
         vscode.workspace.applyEdit(deleteFileWorkspaceEdit).then((value: boolean) => {
             // onfulfilled
