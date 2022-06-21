@@ -1,4 +1,3 @@
 export enum MessageDeleteKind {
-    genericFileInDirectory,
-    anyInDirectory
+    any
 }

@@ -166,21 +166,20 @@ export class SolutionExplorerUpdateMessageHandler {
         generalUseTerminal.show();
     }
 
-    private static handleMessageUpdateRenameAny(webviewView: vscode.WebviewView, message: IMessage) {
-        let messageUpdateRenameAny = message as MessageUpdateRenameAny;
+    private static handleMessageUpdateRenameAny(webviewView: vscode.WebviewView, messageUntyped: IMessage) {
+        let message = messageUntyped as MessageUpdateRenameAny;
 
         let renameWorkspaceEdit = new vscode.WorkspaceEdit();
 
-        let toBeAbsoluteFilePathString = messageUpdateRenameAny.ideFile.absoluteFilePath.initialAbsoluteFilePathStringInput
-            .replace(messageUpdateRenameAny.ideFile.absoluteFilePath.filenameWithExtension,
-                messageUpdateRenameAny.toBeFilenameWithExtension);
+        let toBeAbsoluteFilePathString = message.ideFile.absoluteFilePath.initialAbsoluteFilePathStringInput
+            .replace(message.ideFile.absoluteFilePath.filenameWithExtension,
+                message.toBeFilenameWithExtension);
 
-        renameWorkspaceEdit.renameFile(vscode.Uri.file(messageUpdateRenameAny.ideFile.absoluteFilePath.initialAbsoluteFilePathStringInput),
+        renameWorkspaceEdit.renameFile(vscode.Uri.file(message.ideFile.absoluteFilePath.initialAbsoluteFilePathStringInput),
             vscode.Uri.file(toBeAbsoluteFilePathString));
 
         vscode.workspace.applyEdit(renameWorkspaceEdit).then((value: boolean) => {
             // onfulfilled
-
             
         }, 
         (reason: any) => {
@@ -189,15 +188,15 @@ export class SolutionExplorerUpdateMessageHandler {
         });
     }
 
-    private static handleMessageUpdatePasteIntoAny(webviewView: vscode.WebviewView, message: IMessage) {
+    private static handleMessageUpdatePasteIntoAny(webviewView: vscode.WebviewView, messageUntyped: IMessage) {
         throw new Error('Method not implemented.');
     }
 
-    private static handleMessageUpdateCutAny(webviewView: vscode.WebviewView, message: IMessage) {
+    private static handleMessageUpdateCutAny(webviewView: vscode.WebviewView, messageUntyped: IMessage) {
         throw new Error('Method not implemented.');
     }
 
-    private static handleMessageUpdateCopyAny(webviewView: vscode.WebviewView, message: IMessage) {
+    private static handleMessageUpdateCopyAny(webviewView: vscode.WebviewView, messageUntyped: IMessage) {
         throw new Error('Method not implemented.');
     }
 }

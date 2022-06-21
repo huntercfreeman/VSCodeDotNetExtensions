@@ -5,11 +5,10 @@ import { MessageCategory } from "../MessageCategory";
 import { IMessageDelete } from "./IMessageDelete";
 import { MessageDeleteKind } from "./MessageDeleteKind";
 
-export class MessageDeleteAnyInDirectory implements IMessage, IMessageDelete {
-    constructor(public readonly ideFile: IdeFile,
-        public readonly directoryAbsoluteFilePath: AbsoluteFilePath) {
+export class MessageDeleteAny implements IMessage, IMessageDelete {
+    constructor(public readonly toBeDeletedIdeFile: IdeFile) {
     }
 
     public readonly messageCategory: MessageCategory = MessageCategory.delete;
-    public readonly messageDeleteKind: MessageDeleteKind = MessageDeleteKind.anyInDirectory;
+    public readonly messageDeleteKind: MessageDeleteKind = MessageDeleteKind.any;
 }
