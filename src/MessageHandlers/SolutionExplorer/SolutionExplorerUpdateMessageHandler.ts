@@ -3,8 +3,12 @@ import { ConstantsClipboard } from '../../Constants/ConstantsClipboard';
 import { ConstantsDotNetCli } from '../../Constants/ConstantsDotNetCli';
 import { ConstantsFilePath } from '../../Constants/ConstantsFilePath';
 import { AbsoluteFilePath } from '../../FileSystem/AbsoluteFilePath';
+import { CSharpProjectFile } from '../../FileSystem/Files/CSharp/CSharpProjectFile';
+import { DirectoryFile } from '../../FileSystem/Files/DirectoryFile';
 import { FileSystemReader } from '../../FileSystem/FileSystemReader';
 import { IMessage } from '../../Messages/IMessage';
+import { MessageReadFilesInDirectory } from '../../Messages/Read/MessageReadFilesInDirectory';
+import { MessageReadVirtualFilesInCSharpProject } from '../../Messages/Read/MessageReadVirtualFilesInCSharpProject';
 import { IMessageUpdate } from '../../Messages/Update/IMessageUpdate';
 import { MessageUpdateAddNugetPackageReference } from '../../Messages/Update/MessageUpdateAddNugetPackageReference';
 import { MessageUpdateAddProjectReference } from '../../Messages/Update/MessageUpdateAddProjectReference';
@@ -19,6 +23,7 @@ import { MessageUpdateRemoveProject } from '../../Messages/Update/MessageUpdateR
 import { MessageUpdateRemoveProjectReference } from '../../Messages/Update/MessageUpdateRemoveProjectReference';
 import { MessageUpdateRenameAny } from '../../Messages/Update/MessageUpdateRenameAny';
 import { TerminalService } from '../../Terminal/TerminalService';
+import { SolutionExplorerMessageTransporter } from './SolutionExplorerMessageTransporter';
 
 export class SolutionExplorerUpdateMessageHandler {
     public static async handleMessage(webviewView: vscode.WebviewView, message: IMessage): Promise<void> {
@@ -204,6 +209,16 @@ export class SolutionExplorerUpdateMessageHandler {
                     (clipboardText.startsWith(ConstantsClipboard.COPY_OPERATION) || 
                     clipboardText.startsWith(ConstantsClipboard.CUT_OPERATION))) {
 
+                        let directoryAbsoluteFilePath: AbsoluteFilePath = message.ideFile.absoluteFilePath;
+
+                        if ((message.ideFile as any).projectModel) {
+                            directoryAbsoluteFilePath = message.ideFile.absoluteFilePath
+                                        .parentDirectories[
+                                            message.ideFile.absoluteFilePath
+                                            .parentDirectories.length - 1
+                                    ];
+                        }
+
                         let copiedAbsoluteFilePathString = clipboardText
                             .replace(ConstantsClipboard.COPY_OPERATION + ConstantsClipboard.OPERATION_DELIMITER, "")
                             .replace(ConstantsClipboard.CUT_OPERATION + ConstantsClipboard.OPERATION_DELIMITER, "");
@@ -212,14 +227,14 @@ export class SolutionExplorerUpdateMessageHandler {
 
                         let absoluteFilePath = new AbsoluteFilePath(copiedAbsoluteFilePathString, isDir, null);
 
-                        let parentDirectoryWithFileDelimiter = message.directory.absoluteFilePath.initialAbsoluteFilePathStringInput.endsWith(ConstantsFilePath.STANDARDIZED_FILE_DELIMITER)
-                            ? message.directory.absoluteFilePath.initialAbsoluteFilePathStringInput
-                            : message.directory.absoluteFilePath.initialAbsoluteFilePathStringInput + ConstantsFilePath.STANDARDIZED_FILE_DELIMITER;
+                        let parentDirectoryWithFileDelimiter = directoryAbsoluteFilePath.initialAbsoluteFilePathStringInput.endsWith(ConstantsFilePath.STANDARDIZED_FILE_DELIMITER)
+                            ? directoryAbsoluteFilePath.initialAbsoluteFilePathStringInput
+                            : directoryAbsoluteFilePath.initialAbsoluteFilePathStringInput + ConstantsFilePath.STANDARDIZED_FILE_DELIMITER;
 
-                        let target = parentDirectoryWithFileDelimiter + absoluteFilePath.filenameNoExtension;
+                        let target = parentDirectoryWithFileDelimiter + absoluteFilePath.filenameWithExtension;
 
                         vscode.workspace.fs.copy(vscode.Uri.file(copiedAbsoluteFilePathString),
-                            vscode.Uri.file(target)).then(() => {
+                            vscode.Uri.file(target)).then((x) => {
                                 
                                 if (clipboardText.startsWith(ConstantsClipboard.CUT_OPERATION)) {
                                     vscode.workspace.fs.delete(vscode.Uri.file(copiedAbsoluteFilePathString),
@@ -227,6 +242,17 @@ export class SolutionExplorerUpdateMessageHandler {
                                         "recursive": true,
                                         "useTrash": true
                                     });
+                                }
+
+                                if ((message.ideFile as any).projectModel) {
+                                    SolutionExplorerMessageTransporter
+                                        .transportMessage(webviewView, 
+                                            new MessageReadVirtualFilesInCSharpProject(message.ideFile as CSharpProjectFile));
+                                }
+                                else {
+                                    SolutionExplorerMessageTransporter
+                                        .transportMessage(webviewView, 
+                                            new MessageReadFilesInDirectory(message.ideFile as DirectoryFile));
                                 }
                             });
             }
