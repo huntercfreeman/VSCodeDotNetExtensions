@@ -60,3 +60,7 @@
     min-width: 1rem !important;
     max-width: 100% !important;
 }
+
+.dni_inline-flex {
+    display: inline-flex;
+}

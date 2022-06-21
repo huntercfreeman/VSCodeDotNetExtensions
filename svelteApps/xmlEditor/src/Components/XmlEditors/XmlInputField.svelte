@@ -39,12 +39,12 @@ import { activeInputField } from "./xmlInputField";
 	}
 </script>
 
-<span class="dni_xml-input-field" 
+<span class="dni_inline-flex dni_xml-input-field" 
       on:click={setIsEditableOnClick} 
       bind:this={xmlInputFieldElement}>
 
     {#if isEditable}
-        <input bind:value={value} />
+        <input class="dni_inline-flex" bind:value={value} />
     {:else}
         {value}
     {/if}

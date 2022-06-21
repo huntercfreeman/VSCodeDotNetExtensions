@@ -7,29 +7,31 @@
 	export let xmlTagModel: XmlTagModel;
 </script>
 
-<div class="dni_xml-tag-model-editor">
-    <span class="dni_xml-tag-model-editor-tag-name">
-        <span>&lt;</span><!--
-        --><XmlInputField bind:value={xmlTagModel.tagName} />
+<div class="dni_inline-flex dni_xml-tag-model-editor">
+    <span class="dni_inline-flex dni_xml-tag-model-editor-tag-name">
+        <span class="dni_inline-flex">&lt;</span>
+        <XmlInputField bind:value={xmlTagModel.tagName} />
         
         {#if (xmlTagModel.xmlAttributeModels?.length ?? 0) === 0}
-            <span>&gt;</span>
+            <span class="dni_inline-flex">&gt;</span>
+        {:else}
+            &nbsp;
         {/if}
     </span>
 
-    <span class="dni_xml-tag-model-editor-attributes">
+    <span class="dni_inline-flex dni_xml-tag-model-editor-attributes">
         {#each xmlTagModel.xmlAttributeModels as xmlAttributeModel}
             <XmlAttributeModelEditor xmlAttributeModel={xmlAttributeModel} />
-        {/each}  
+        {/each}
     </span>
     
-    <span class="dni_xml-tag-model-editor-children">
+    <span class="dni_inline-flex dni_xml-tag-model-editor-children">
         {#if (xmlTagModel.children.xmlTagModels?.length ?? 0) > 0}
-            <span>&gt;</span>
+            <span class="dni_inline-flex">&gt;</span>
             <XmlFileEditor xmlFileModel={xmlTagModel.children} />
-            <div>&lt;/{xmlTagModel.tagName}&gt;</div>
+            <div class="dni_inline-flex">&lt;/{xmlTagModel.tagName}&gt;</div>
         {:else}
-            <span>/&gt;</span>
+            <span class="dni_inline-flex">/&gt;</span>
         {/if}
     </span>
 </div>
