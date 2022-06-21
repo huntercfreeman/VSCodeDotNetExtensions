@@ -10,6 +10,4 @@ export enum MessageReadKind {
     activeDotNetSolutionFile,
     nugetPackageReferencesInProject,
     undefinedSolution,
-    projectXmlIntoXmlEditor,
-    openXmlEditor
 }

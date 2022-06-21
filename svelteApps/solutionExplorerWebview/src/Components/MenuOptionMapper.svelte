@@ -13,7 +13,6 @@
     import MenuOptionStartDebugging from "./ContextMenuOptions/MenuOptionStartDebugging.svelte";
     import MenuOptionStartWithoutDebugging from "./ContextMenuOptions/MenuOptionStartWithoutDebugging.svelte";
     import MenuOptionPutProjectInSolutionFolder from "./ContextMenuOptions/MenuOptionPutProjectInSolutionFolder.svelte";
-    import MenuOptionOpenProjectInXmlEditor from "./ContextMenuOptions/MenuOptionOpenXmlEditor.svelte";
 
     export let contextualInformation: ContextualInformationDatum[];
     export let closeMenu;
@@ -46,7 +45,5 @@
         <MenuOptionPutProjectInSolutionFolder {closeMenu} />
     {:else if ContextualInformationDatum.checkDatumEquality(ContextualInformationDatum.removeCSharpProject, contextualInformationDatum)}
         <MenuOptionRemoveCSharpProject {closeMenu} />
-    {:else if ContextualInformationDatum.checkDatumEquality(ContextualInformationDatum.openXmlEditor, contextualInformationDatum)}
-        <MenuOptionOpenProjectInXmlEditor {closeMenu} />
     {/if}
 {/each}
