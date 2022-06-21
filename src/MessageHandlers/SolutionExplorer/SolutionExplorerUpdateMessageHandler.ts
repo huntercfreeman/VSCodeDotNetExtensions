@@ -202,7 +202,7 @@ export class SolutionExplorerUpdateMessageHandler {
 
             if (clipboardText &&
                     (clipboardText.startsWith(ConstantsClipboard.COPY_OPERATION) || 
-                    clipboardText.startsWith(ConstantsClipboard.COPY_OPERATION))) {
+                    clipboardText.startsWith(ConstantsClipboard.CUT_OPERATION))) {
 
                         let copiedAbsoluteFilePathString = clipboardText
                             .replace(ConstantsClipboard.COPY_OPERATION + ConstantsClipboard.OPERATION_DELIMITER, "")
@@ -219,11 +219,20 @@ export class SolutionExplorerUpdateMessageHandler {
                         let target = parentDirectoryWithFileDelimiter + absoluteFilePath.filenameNoExtension;
 
                         vscode.workspace.fs.copy(vscode.Uri.file(copiedAbsoluteFilePathString),
-                            vscode.Uri.file(target));
+                            vscode.Uri.file(target)).then(() => {
+                                
+                                if (clipboardText.startsWith(ConstantsClipboard.CUT_OPERATION)) {
+                                    vscode.workspace.fs.delete(vscode.Uri.file(copiedAbsoluteFilePathString),
+                                    {
+                                        "recursive": true,
+                                        "useTrash": true
+                                    });
+                                }
+                            });
             }
         }));
     }
-    
+
     private static handleMessageUpdateCutAny(webviewView: vscode.WebviewView, messageUntyped: IMessage) {
         let message = messageUntyped as MessageUpdateCutAny;
 
