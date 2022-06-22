@@ -4,6 +4,7 @@
 	import FileIconDisplay from "./FileIconDisplay.svelte";
 	import { contextMenuTarget } from "./menu.js";
 	import TreeViewMapper from "./TreeViewMapper.svelte";
+	import { activeIdeFileWrap } from "./activeIdeFile"
 
 	export let ideFile: IdeFile;
 	export let children: IdeFile[] | undefined;
@@ -11,13 +12,37 @@
 	export let titleOnClick: (e: MouseEvent) => void;
 	export let getChildFiles: () => IdeFile[];
 	export let hasDifferentParentContainer: (childIdeFile: IdeFile) => boolean;
+	
+	let activeIdeFileWrapValue;
+
+	activeIdeFileWrap.subscribe((value) => {
+		activeIdeFileWrapValue = value;
+	});
+	
+	$: activeIdeFile = activeIdeFileWrapValue as IdeFile;
+
+	$: isActiveCssClass = (activeIdeFile?.nonce ?? "") === ideFile.nonce
+		? "dni_active"
+		: "";
+
+	function fireTitleOnClick(e: MouseEvent) {
+
+		setActiveIdeFile();
+
+		titleOnClick(e);
+	}
+	
+	function setActiveIdeFile() {
+
+		activeIdeFileWrap.set(ideFile);
+	}
 </script>
 
 <div class="dni_tree-view">
 	<div
-		class="dni_tree-view-title"
+		class="dni_tree-view-title {isActiveCssClass}"
 		title={titleText}
-		on:click={(e) => titleOnClick(e)}
+		on:click={(e) => fireTitleOnClick(e)}
 		on:contextmenu={(e) => contextMenuTarget.set(ideFile)}
 	>
 		{#if ideFile.hideExpansionChevronWhenNoChildFiles && ((children ?? getChildFiles())?.length ?? 0) === 0}
@@ -26,11 +51,13 @@
 				tabindex="-1"
 				class="dni_unselectable"
 			>
-				<ExpansionChevron isExpanded={false} />
+				<ExpansionChevron isExpanded={false}
+				                  onClickAction={setActiveIdeFile} />
 			</span>
 		{:else}
 			<span class="dni_tree-view-title-expansion-chevron">
-				<ExpansionChevron bind:isExpanded={ideFile.isExpanded} />
+				<ExpansionChevron bind:isExpanded={ideFile.isExpanded}
+				                  onClickAction={setActiveIdeFile} />
 			</span>
 		{/if}
 
@@ -74,5 +101,16 @@
 
 	.dni_tree-view-title-text {
 		margin-left: 2px;
+		border: 1px solid transparent;
 	}
+
+	.dni_tree-view-title.dni_active {
+		background-color: var(--vscode-list-activeSelectionBackground);
+		border: 1px solid var(--vscode-focusBorder);
+		color: var(--vscode-list-activeSelectionIconForeground);
+	}
+	
+	/* ....when extensionactive.... .dni_tree-view-title.dni_active {
+		background-color: var(--vscode-list-inactiveSelectionBackground);
+	} */
 </style>

@@ -9,9 +9,12 @@
 	import ContextMenu from "./Components/ContextMenu.svelte";
 	import SolutionFileControlButtons from "./Components/SolutionFileControlButtons.svelte";
 	import TreeViewMapper from "./Components/TreeViewMapper.svelte";
+	import type { IdeFile } from "../../../out/FileSystem/Files/IdeFile";
 
 	let dotNetSolutionFiles: DotNetSolutionFile[] = [];
 	let selectedDotNetSolutionFile: DotNetSolutionFile | undefined;
+
+	let activeIdeFile: IdeFile | undefined;
 
 	function getSolutionFilesInWorkspace() {
 		let messageReadSolutionsInWorkspace =
@@ -40,7 +43,6 @@
 										x.absoluteFilePath.initialAbsoluteFilePathStringInput ===
 											selectedDotNetSolutionFile.absoluteFilePath.initialAbsoluteFilePathStringInput)) {
 
-												console.log("cleasssss");
 												// Was removed therefore set selected solution as undefined
 												selectedDotNetSolutionFile = undefined;
 								}

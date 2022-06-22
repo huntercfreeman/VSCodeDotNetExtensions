@@ -3,9 +3,14 @@
     import ChevronDown from "./Icons/ChevronDown.svelte";
 
     export let isExpanded: boolean;
+    export let onClickAction: (() => void) | undefined = undefined
 
     function toggleIsExpanded() {
         isExpanded = !isExpanded;
+
+        if (onClickAction) {
+            onClickAction();
+        }
     }
 </script>
 
