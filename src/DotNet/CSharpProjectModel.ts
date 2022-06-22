@@ -1,10 +1,6 @@
-import { ConstantsContextualInformation } from "../Constants/ConstantsContextualInformation";
 import { AbsoluteFilePath } from "../FileSystem/AbsoluteFilePath";
-import { ProjectNugetPackageDependenciesListFile } from "../FileSystem/Files/Nuget/ProjectNugetPackageDependenciesListFile";
 import { ProjectToProjectReferenceFile } from "../FileSystem/Files/ProjectReference/ProjectToProjectReferenceFile";
-import { ProjectToProjectReferencesListFile } from "../FileSystem/Files/ProjectReference/ProjectToProjectReferencesListFile";
 import { IdeFile } from "../FileSystem/Files/IdeFile";
-import { XmlProjectParser } from "../Parsers/XmlProjectParser";
 import { IProjectModel } from "./IProjectModel";
 import { ProjectKind } from "./ProjectKind";
 import { SolutionModel } from "./SolutionModel";
@@ -53,6 +49,4 @@ export class CSharpProjectModel implements IProjectModel {
     public readonly parentSolutionAbsoluteFilePath: AbsoluteFilePath;
     public initialIsExpandedState: boolean = false;
     public projectKind: ProjectKind = ProjectKind.cSharpProject;
-
-    public contextualInformation: string = ConstantsContextualInformation.TREE_VIEW_CSHARP_PROJECT_CONTEXT;
 }

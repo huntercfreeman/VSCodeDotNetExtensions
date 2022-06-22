@@ -11,7 +11,7 @@ const fs = require('fs');
 
 export class XmlProjectParser {
   constructor(public readonly xmlProjectAbsoluteFilePath: AbsoluteFilePath | undefined,
-    public readonly xmlProjectProjectReferencesFile: ProjectToProjectReferencesListFile | undefined,
+    public readonly xmlProjectToProjectReferencesFile: ProjectToProjectReferencesListFile | undefined,
     public readonly xmlProjectNugetPackageDependenciesFile: ProjectNugetPackageDependenciesListFile | undefined,
     public readonly xmlProjectModel: IProjectModel | undefined) {
   }
@@ -101,11 +101,11 @@ export class XmlProjectParser {
       }
       else {
         if (this.xmlProjectAbsoluteFilePath) {
-          // Only either projectProjectReferencesFile can be calculated or 
-          // projectProjectReferencesFile can be returned at a given time as
+          // Only either projectToProjectReferencesFile can be calculated or 
+          // projectToProjectReferencesFile can be returned at a given time as
           // the user interface that calls this method does not have a reference to both arrays.
 
-          if (this.xmlProjectProjectReferencesFile) {
+          if (this.xmlProjectToProjectReferencesFile) {
             let projectReferences: XmlTagModel[] = [];
 
             xmlFileModel.selectRecursively(
@@ -119,13 +119,13 @@ export class XmlProjectParser {
                 attribute.attributeName === ConstantsProjectFile.XML_INCLUDE_ATTRIBUTE_NAME);
 
               if (includeAttribute) {
-                if (!this.xmlProjectProjectReferencesFile.virtualChildFiles) {
-                  this.xmlProjectProjectReferencesFile.virtualChildFiles = [];
+                if (!this.xmlProjectToProjectReferencesFile.virtualChildFiles) {
+                  this.xmlProjectToProjectReferencesFile.virtualChildFiles = [];
                 }
 
-                this.xmlProjectProjectReferencesFile.virtualChildFiles.push(
+                this.xmlProjectToProjectReferencesFile.virtualChildFiles.push(
                   new ProjectToProjectReferenceFile(this.xmlProjectAbsoluteFilePath,
-                    this.xmlProjectProjectReferencesFile.absoluteFilePath, includeAttribute.attributeValue));
+                    this.xmlProjectToProjectReferencesFile.absoluteFilePath, includeAttribute.attributeValue));
               }
             }
           }
@@ -181,14 +181,14 @@ export class XmlProjectParser {
     projectParser.parse(callback);
 }
 
-public static async parseProjectProjectReferences(projectAbsoluteFilePath: AbsoluteFilePath,
-    projectProjectReferencesFile: ProjectToProjectReferencesListFile,
+public static async parseProjectToProjectReferences(projectAbsoluteFilePath: AbsoluteFilePath,
+    projectToProjectReferencesFile: ProjectToProjectReferencesListFile,
     callback: any): Promise<void> {
 
-    projectProjectReferencesFile.virtualChildFiles = [];
+    projectToProjectReferencesFile.virtualChildFiles = [];
 
     let projectParser = new XmlProjectParser(projectAbsoluteFilePath,
-        projectProjectReferencesFile,
+        projectToProjectReferencesFile,
         undefined,
         undefined);
 

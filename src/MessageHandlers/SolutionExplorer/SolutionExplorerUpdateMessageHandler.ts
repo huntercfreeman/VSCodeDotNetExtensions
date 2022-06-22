@@ -3,10 +3,7 @@ import { ConstantsClipboard } from '../../Constants/ConstantsClipboard';
 import { ConstantsDotNetCli } from '../../Constants/ConstantsDotNetCli';
 import { ConstantsFilePath } from '../../Constants/ConstantsFilePath';
 import { AbsoluteFilePath } from '../../FileSystem/AbsoluteFilePath';
-import { FileKind } from '../../FileSystem/FileKind';
-import { CSharpProjectFile } from '../../FileSystem/Files/CSharp/CSharpProjectFile';
 import { DirectoryFile } from '../../FileSystem/Files/DirectoryFile';
-import { FSharpProjectFile } from '../../FileSystem/Files/FSharp/FSharpProjectFile';
 import { FileSystemReader } from '../../FileSystem/FileSystemReader';
 import { IMessage } from '../../Messages/IMessage';
 import { MessageReadFilesInDirectory } from '../../Messages/Read/MessageReadFilesInDirectory';
@@ -33,7 +30,7 @@ export class SolutionExplorerUpdateMessageHandler {
 
         switch (updateMessage.messageUpdateKind) {
             case MessageUpdateKind.existingProjectIntoSolution:
-                await this.handleMessageUpdateExistingCSharpProjectIntoSolution(webviewView, message);
+                await this.handleMessageUpdateExistingProjectIntoSolution(webviewView, message);
                 break;
             case MessageUpdateKind.removeProject:
                 await this.handleMessageUpdateRemoveProject(webviewView, message);
@@ -65,7 +62,7 @@ export class SolutionExplorerUpdateMessageHandler {
         }
     }
 
-    public static async handleMessageUpdateExistingCSharpProjectIntoSolution(webviewView: vscode.WebviewView, iMessage: IMessage) {
+    public static async handleMessageUpdateExistingProjectIntoSolution(webviewView: vscode.WebviewView, iMessage: IMessage) {
         let message = iMessage as MessageUpdateExistingProjectIntoSolution;
 
         const options: vscode.OpenDialogOptions = {
@@ -135,7 +132,7 @@ export class SolutionExplorerUpdateMessageHandler {
                 let generalUseTerminal = TerminalService.getGeneralUseTerminal();
 
                 generalUseTerminal.sendText(
-                    ConstantsDotNetCli.formatDotNetAddProjectReferenceToProject(message.projectProjectReferencesFile.parentProjectInitialAbsoluteFilePath,
+                    ConstantsDotNetCli.formatDotNetAddProjectReferenceToProject(message.projectToProjectReferencesFile.parentProjectInitialAbsoluteFilePath,
                         fileUri[0].fsPath));
 
                 generalUseTerminal.show();
@@ -149,8 +146,8 @@ export class SolutionExplorerUpdateMessageHandler {
         let generalUseTerminal = TerminalService.getGeneralUseTerminal();
 
         generalUseTerminal.sendText(
-            ConstantsDotNetCli.formatDotNetRemoveProjectReferenceFromProject(message.cSharpProjectProjectReferenceFile.parentProjectInitialAbsoluteFilePath,
-                message.cSharpProjectProjectReferenceFile.projectReferenceAbsoluteFilePath));
+            ConstantsDotNetCli.formatDotNetRemoveProjectReferenceFromProject(message.projectToProjectReferenceFile.parentProjectInitialAbsoluteFilePath,
+                message.projectToProjectReferenceFile.projectReferenceAbsoluteFilePath));
 
         generalUseTerminal.show();
     }

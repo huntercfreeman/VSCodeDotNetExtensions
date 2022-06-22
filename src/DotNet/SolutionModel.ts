@@ -1,4 +1,3 @@
-import { ConstantsContextualInformation } from "../Constants/ConstantsContextualInformation";
 import { AbsoluteFilePath } from "../FileSystem/AbsoluteFilePath";
 import { DotNetSolutionFile } from "../FileSystem/Files/DotNetSolutionFile";
 import { IProjectFile } from "../FileSystem/Files/IProjectFile";
@@ -59,6 +58,4 @@ export class SolutionModel {
 
     public readonly fileHeader: SolutionModelFileHeader = new SolutionModelFileHeader();
     public readonly global: SolutionModelGlobal = new SolutionModelGlobal();
-
-    public readonly contextualInformation: string = ConstantsContextualInformation.TREE_VIEW_SOLUTION_CONTEXT;
 }

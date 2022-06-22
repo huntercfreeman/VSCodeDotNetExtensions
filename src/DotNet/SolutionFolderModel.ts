@@ -1,4 +1,3 @@
-import { ConstantsContextualInformation } from "../Constants/ConstantsContextualInformation";
 import { AbsoluteFilePath } from "../FileSystem/AbsoluteFilePath";
 import { ProjectToProjectReferenceFile } from "../FileSystem/Files/ProjectReference/ProjectToProjectReferenceFile";
 import { IdeFile } from "../FileSystem/Files/IdeFile";
@@ -49,6 +48,4 @@ export class SolutionFolderModel implements IProjectModel {
     public projectKind: ProjectKind = ProjectKind.solutionFolder;
     public targetFramework: string = "";
     public rootNamespace: string = "";
-
-    public contextualInformation: string = ConstantsContextualInformation.TREE_VIEW_SOLUTION_FOLDER_CONTEXT;
 }

@@ -178,7 +178,7 @@ export class SolutionExplorerReadMessageHandler {
     public static async handleMessageReadProjectReferencesInProjectAsync(webviewView: vscode.WebviewView, iMessage: IMessage) {
         let message = iMessage as MessageReadProjectReferencesInProject;
 
-        return await XmlProjectParser.parseProjectProjectReferences(message.projectToProjectReferencesFile.parentProjectInitialAbsoluteFilePath,
+        return await XmlProjectParser.parseProjectToProjectReferences(message.projectToProjectReferencesFile.parentProjectInitialAbsoluteFilePath,
             message.projectToProjectReferencesFile, () => {
 
                 webviewView.webview.postMessage(message);

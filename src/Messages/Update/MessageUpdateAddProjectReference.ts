@@ -5,7 +5,7 @@ import { IMessageUpdate } from "./IMessageUpdate";
 import { MessageUpdateKind } from "./MessageUpdateKind";
 
 export class MessageUpdateAddProjectReference implements IMessage, IMessageUpdate {
-    constructor(public readonly projectProjectReferencesFile: ProjectToProjectReferencesListFile) {
+    constructor(public readonly projectToProjectReferencesFile: ProjectToProjectReferencesListFile) {
     }
 
     public readonly messageCategory: MessageCategory = MessageCategory.update;

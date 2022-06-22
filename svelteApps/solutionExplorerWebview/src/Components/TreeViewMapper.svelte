@@ -24,8 +24,14 @@
     import DirectoryTreeView from "./TreeViews/DirectoryTreeView.svelte";
     import DotNetSolutionTreeView from "./TreeViews/DotNetSolutionTreeView.svelte";
     import DotNetSolutionFolderTreeView from "./TreeViews/DotNetSolutionFolderTreeView.svelte";
+    import ProjectToProjectReferencesListTreeView from "./TreeViews/ProjectReference/ProjectToProjectReferencesListTreeView.svelte";
+    import ProjectToProjectReferenceTreeView from "./TreeViews/ProjectReference/ProjectToProjectReferenceTreeView.svelte";
     import FSharpProjectTreeView from "./TreeViews/FSharp/FSharpProjectTreeView.svelte";
     import type { FSharpProjectFile } from "../../../../out/FileSystem/Files/FSharp/FSharpProjectFile";
+    import type { ProjectNugetPackageDependenciesListFile } from "../../../../out/FileSystem/Files/Nuget/ProjectNugetPackageDependenciesListFile";
+    import type { ProjectNugetPackageDependencyFile } from "../../../../out/FileSystem/Files/Nuget/ProjectNugetPackageDependencyFile";
+    import type { ProjectToProjectReferencesListFile } from "../../../../out/FileSystem/Files/ProjectReference/ProjectToProjectReferencesListFile";
+    import type { ProjectToProjectReferenceFile } from "../../../../out/FileSystem/Files/ProjectReference/ProjectToProjectReferenceFile";
 
     export let ideFile: IdeFile;
 
@@ -37,8 +43,8 @@
     $: cSharpProjectDependenciesListFile = ideFile as CSharpProjectDependenciesListFile;
     $: projectNugetPackageDependenciesListFile = ideFile as ProjectNugetPackageDependenciesListFile;
     $: projectNugetPackageDependencyFile = ideFile as ProjectNugetPackageDependencyFile;
-    $: projectProjectReferencesListFile = ideFile as ProjectProjectReferencesListFile;
-    $: projectProjectReferenceFile = ideFile as ProjectProjectReferenceFile;
+    $: projectToProjectReferencesListFile = ideFile as ProjectToProjectReferencesListFile;
+    $: projectToProjectReferenceFile = ideFile as ProjectToProjectReferenceFile;
     $: vcxProjectExternalDependenciesListFile = ideFile as VCXProjectExternalDependenciesListFile;
     $: vcxProjectHeaderFilesListFile = ideFile as VCXProjectHeaderFilesListFile;
     $: vcxProjectReferencesListFile = ideFile as VCXProjectReferencesListFile;

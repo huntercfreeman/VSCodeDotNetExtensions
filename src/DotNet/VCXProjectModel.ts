@@ -1,8 +1,6 @@
-import { ConstantsContextualInformation } from "../Constants/ConstantsContextualInformation";
 import { AbsoluteFilePath } from "../FileSystem/AbsoluteFilePath";
 import { ProjectToProjectReferenceFile } from "../FileSystem/Files/ProjectReference/ProjectToProjectReferenceFile";
 import { IdeFile } from "../FileSystem/Files/IdeFile";
-import { XmlProjectParser } from "../Parsers/XmlProjectParser";
 import { IProjectModel } from "./IProjectModel";
 import { ProjectKind } from "./ProjectKind";
 import { SolutionModel } from "./SolutionModel";
@@ -51,6 +49,4 @@ export class VCXProjectModel implements IProjectModel {
     public readonly parentSolutionAbsoluteFilePath: AbsoluteFilePath;
     public initialIsExpandedState: boolean = false;
     public projectKind: ProjectKind = ProjectKind.vcxProject;
-
-    public contextualInformation: string = ConstantsContextualInformation.TREE_VIEW_VCX_PROJECT_CONTEXT;
 }
