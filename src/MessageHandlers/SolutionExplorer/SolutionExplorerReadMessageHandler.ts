@@ -313,6 +313,32 @@ export class SolutionExplorerReadMessageHandler {
                     message.vcxProjectFile.virtualChildFiles = [];
                 }
 
+                filters = filters.filter(x => {
+                    let tagResults: XmlTagModel[] = [];
+                    
+                    x.children.selectRecursively((tag) =>
+                        tag.tagName === "UniqueIdentifier", tagResults);
+
+                    if ((tagResults?.length ?? 0) > 0) {
+                        return true;
+                    }
+
+                    return false;
+                });
+                
+                filters = filters.filter(x => {
+                    let tagResults: XmlTagModel[] = [];
+                    
+                    x.children.selectRecursively((tag) =>
+                        tag.tagName === "Extensions", tagResults);
+
+                    if ((tagResults?.length ?? 0) > 0) {
+                        return true;
+                    }
+
+                    return false;
+                });
+
                 message.vcxProjectFile.virtualChildFiles = filters
                     .map(filter => {
                         let includeAttribute = filter.xmlAttributeModels
