@@ -4,7 +4,7 @@ import { FileKind } from "../../FileKind";
 import { IdeFile } from "../IdeFile";
 
 export class VCXProjectFilterListFile extends IdeFile {
-    constructor(myAbsoluteFilePath: AbsoluteFilePath) {
+    constructor(myAbsoluteFilePath: AbsoluteFilePath, public uniqueIdentifier: string, public extensions: string) {
         super(myAbsoluteFilePath, "");
 
         this.constantChildFiles = [

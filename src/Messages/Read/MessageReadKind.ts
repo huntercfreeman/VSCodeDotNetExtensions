@@ -11,5 +11,6 @@ export enum MessageReadKind {
     nugetPackageReferencesInProject,
     undefinedSolution,
     requestForRefresh,
-    filtersInVCXProject
+    filtersInVCXProject,
+    vcxFilterMatches
 }
