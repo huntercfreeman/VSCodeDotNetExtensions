@@ -7,6 +7,7 @@
 	import { MessageCategory } from "../../../../../../out/Messages/MessageCategory";
 	import { MessageReadKind } from "../../../../../../out/Messages/Read/MessageReadKind";
 	import TreeViewBase from "../../TreeViewBase.svelte";
+import type { MessageReadRequestForRefresh } from "../../../../../../out/Messages/Read/MessageReadRequestForRefresh";
 	
     export let cSharpProjectFile: CSharpProjectFile;
 
@@ -69,6 +70,24 @@
 								children = cSharpProjectFile.constantChildFiles;
 								
 								children = children.concat(cSharpProjectFile.virtualChildFiles);
+							}
+							break;
+						case MessageReadKind.requestForRefresh:
+							let messageReadRequestForRefresh =
+								message as MessageReadRequestForRefresh;
+								
+							if (cSharpProjectFile.nonce ===
+								messageReadRequestForRefresh.ideFileNonce) {
+								
+									let messageReadVirtualFilesInProject =
+										new MessageReadVirtualFilesInProject(
+											cSharpProjectFile
+										);
+
+									tsVscode.postMessage({
+										type: undefined,
+										value: messageReadVirtualFilesInProject,
+									});
 							}
 							break;
 					}

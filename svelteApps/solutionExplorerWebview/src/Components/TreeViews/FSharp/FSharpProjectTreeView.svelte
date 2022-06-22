@@ -76,8 +76,9 @@ import type { MessageReadRequestForRefresh } from "../../../../../../out/Message
 						case MessageReadKind.requestForRefresh:
 							let messageReadRequestForRefresh =
 								message as MessageReadRequestForRefresh;
+								
 							if (fSharpProjectFile.nonce ===
-								messageReadRequestForRefresh.ideFileNonce.nonce) {
+								messageReadRequestForRefresh.ideFileNonce) {
 								
 									let messageReadVirtualFilesInProject =
 										new MessageReadVirtualFilesInProject(

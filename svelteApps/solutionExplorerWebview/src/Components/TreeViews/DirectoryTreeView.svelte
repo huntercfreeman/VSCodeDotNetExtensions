@@ -6,6 +6,8 @@
 	import { MessageReadFilesInDirectory } from "../../../../../out/Messages/Read/MessageReadFilesInDirectory";
 	import { MessageCategory } from "../../../../../out/Messages/MessageCategory";
 	import { MessageReadKind } from "../../../../../out/Messages/Read/MessageReadKind";
+	import type { MessageReadRequestForRefresh } from "../../../../../out/Messages/Read/MessageReadRequestForRefresh";
+	import { MessageReadVirtualFilesInProject } from "../../../../../out/Messages/Read/MessageReadVirtualFilesInProject";
 	
     export let directoryFile: DirectoryFile;
 
@@ -62,6 +64,24 @@
 							}
 							break;
 					}
+					case MessageReadKind.requestForRefresh:
+							let messageReadRequestForRefresh =
+								message as MessageReadRequestForRefresh;
+								
+							if (directoryFile.nonce ===
+								messageReadRequestForRefresh.ideFileNonce) {
+								
+									let messageReadFilesInDirectory =
+										new MessageReadFilesInDirectory(
+											directoryFile
+										);
+
+									tsVscode.postMessage({
+										type: undefined,
+										value: messageReadFilesInDirectory,
+									});
+							}
+							break;
 			}
 		});
 	});
