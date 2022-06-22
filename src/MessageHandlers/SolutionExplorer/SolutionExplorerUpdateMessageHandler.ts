@@ -248,6 +248,9 @@ export class SolutionExplorerUpdateMessageHandler {
                                         if (this.lastRefreshParentNonceFromCopyOrCutAction) {
                                             webviewView.webview.postMessage(new MessageReadRequestForRefresh(this.lastRefreshParentNonceFromCopyOrCutAction));
                                         }
+
+                                        vscode.env.clipboard.writeText("");
+                                        this.lastRefreshParentNonceFromCopyOrCutAction = undefined;
                                     });
                                 }
 
