@@ -103,5 +103,7 @@ export class ConstantsDotNetCli {;
                ` package \"${nugetPackageId}\"`;
     }
 
-    public static DOT_NET_NEW_LIST = "dotnet new --list";
+    public static readonly DOT_NET_NEW_LIST = "dotnet new --list";
+
+    public static readonly LANG_F_SHARP = "F#";
 }

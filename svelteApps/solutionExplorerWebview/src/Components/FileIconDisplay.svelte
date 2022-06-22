@@ -62,6 +62,8 @@
     <JsonIcon />
 {:else if fileKind === FileKind.cSharpProjectDependencies}
     <ProjectDependenciesIcon />
+{:else if fileKind === FileKind.fSharpProjectDependencies}
+    <ProjectDependenciesIcon />
 {:else if fileKind === FileKind.nugetPackageDependenciesList}
     <NugetPackageDependenciesIcon />
 {:else if fileKind === FileKind.nugetPackageDependency}

@@ -4,7 +4,8 @@
     import { FileKind } from "../../../../../out/FileSystem/FileKind";
     import { MessageReadNewProjectTemplatesOnComputer } from "../../../../../out/Messages/Read/MessageReadNewProjectTemplatesOnComputer";
     import { MessageCreateProjectInAny } from "../../../../../out/Messages/Create/MessageCreateProjectInAny";
-import { ConstantsFileExtensionsNoPeriod } from "../../../../../out/Constants/ConstantsFileExtensionsNoPeriod";
+    import { ConstantsFileExtensionsNoPeriod } from "../../../../../out/Constants/ConstantsFileExtensionsNoPeriod";
+    import { ConstantsDotNetCli } from "../../../../../out/Constants/ConstantsDotNetCli";
 
     export let closeMenu;
 
@@ -25,7 +26,7 @@ import { ConstantsFileExtensionsNoPeriod } from "../../../../../out/Constants/Co
                         addFSharpProjectFilename,
                         addFSharpProjectTemplate,
                         ConstantsFileExtensionsNoPeriod.F_SHARP_PROJECT_FILE_EXTENSION,
-                        undefined
+                        ConstantsDotNetCli.LANG_F_SHARP
                     );
 
                 tsVscode.postMessage({
