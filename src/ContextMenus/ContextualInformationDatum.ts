@@ -24,13 +24,13 @@ export class ContextualInformationDatum {
         new ContextualInformationDatum(ContextualInformationDatumKind.create,
             "createNewCSharpProject");
 
-    public static readonly removeCSharpProject: ContextualInformationDatum =
+    public static readonly removeProject: ContextualInformationDatum =
         new ContextualInformationDatum(ContextualInformationDatumKind.create,
-            "removeCSharpProject");
+            "removeProject");
 
-    public static readonly addExistingCSharpProject: ContextualInformationDatum =
+    public static readonly addExistingProject: ContextualInformationDatum =
         new ContextualInformationDatum(ContextualInformationDatumKind.create,
-            "addExistingCSharpProject");
+            "addExistingProject");
 
     public static readonly createNewFSharpProject: ContextualInformationDatum =
         new ContextualInformationDatum(ContextualInformationDatumKind.create,

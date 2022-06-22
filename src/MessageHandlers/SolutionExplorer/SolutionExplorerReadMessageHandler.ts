@@ -192,7 +192,7 @@ export class SolutionExplorerReadMessageHandler {
     public static async handleMessageReadNugetPackageReferencesInProject(webviewView: vscode.WebviewView, iMessage: IMessage) {
         let message = iMessage as MessageReadNugetPackageReferencesInProject;
 
-        return await XmlProjectParser.parseProjectNugetPackageReferences(message.projectNugetPackageDependenciesFile.parentCSharpProjectInitialAbsoluteFilePath,
+        return await XmlProjectParser.parseProjectNugetPackageReferences(message.projectNugetPackageDependenciesFile.parentProjectInitialAbsoluteFilePath,
             message.projectNugetPackageDependenciesFile, () => {
 
                 webviewView.webview.postMessage(message);

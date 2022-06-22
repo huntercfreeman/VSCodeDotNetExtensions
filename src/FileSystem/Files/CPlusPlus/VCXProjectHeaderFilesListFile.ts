@@ -5,10 +5,10 @@ import { FileKind } from "../../FileKind";
 import { IdeFile } from "../IdeFile";
 
 export class VCXProjectHeaderFilesListFile extends IdeFile {
-    constructor(cSharpProjectParentAbsoluteFilePath: AbsoluteFilePath) {
+    constructor(vcxProjectParentAbsoluteFilePath: AbsoluteFilePath) {
         let myAbsoluteFilePath = new AbsoluteFilePath(ConstantsFileExtensionsNoPeriod.VCX_PROJECT_HEADER_FILES_FILE_EXTENSION,
             false,
-            cSharpProjectParentAbsoluteFilePath.parentDirectories);
+            vcxProjectParentAbsoluteFilePath.parentDirectories);
 
         super(myAbsoluteFilePath, "");
 
@@ -17,7 +17,7 @@ export class VCXProjectHeaderFilesListFile extends IdeFile {
 
         this.fileKind = FileKind.vcxProjectHeaderFilesListFile;
 
-        this.parentCSharpProjectInitialAbsoluteFilePath = cSharpProjectParentAbsoluteFilePath;
+        this.parentVCXProjectInitialAbsoluteFilePath = vcxProjectParentAbsoluteFilePath;
     }
 
     public setVirtualChildFiles(siblingFiles: IdeFile[]): void {
@@ -26,7 +26,7 @@ export class VCXProjectHeaderFilesListFile extends IdeFile {
 
     public childFiles: any[] | undefined;
 
-    public parentCSharpProjectInitialAbsoluteFilePath: AbsoluteFilePath;
+    public parentVCXProjectInitialAbsoluteFilePath: AbsoluteFilePath;
 
     public hideExpansionChevronWhenNoChildFiles: boolean = false;
 

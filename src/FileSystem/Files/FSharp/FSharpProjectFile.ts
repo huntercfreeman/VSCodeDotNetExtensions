@@ -14,7 +14,7 @@ export class FSharpProjectFile extends IdeFile implements IProjectFile {
             ContextualInformationDatum.createNewEmptyFile,
             ContextualInformationDatum.createDirectory,
             ContextualInformationDatum.refreshChildFiles,
-            ContextualInformationDatum.removeCSharpProject,
+            ContextualInformationDatum.removeProject,
             ContextualInformationDatum.startWithoutDebugging,
             ContextualInformationDatum.startDebugging,
             ContextualInformationDatum.putProjectInSolutionFolder,
