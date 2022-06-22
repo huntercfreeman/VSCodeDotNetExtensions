@@ -25,7 +25,17 @@
 		? "dni_active"
 		: "";
 
-	function fireTitleOnClick(e: MouseEvent) {
+	let contextMenuTargetValue;
+
+	contextMenuTarget.subscribe((value) => {
+		contextMenuTargetValue = value;
+	});
+
+	$: isActiveContextMenuTarget = ((contextMenuTargetValue as IdeFile)?.nonce ?? "") === ideFile.nonce
+		? "dni_active-context-menu-target"
+		: "";
+
+	function fireTitleOnDoubleClick(e: MouseEvent) {
 
 		setActiveIdeFile();
 
@@ -40,16 +50,17 @@
 
 <div class="dni_tree-view">
 	<div
-		class="dni_tree-view-title {isActiveCssClass}"
+		class="dni_tree-view-title dni_unselectable {isActiveCssClass} {isActiveContextMenuTarget}"
 		title={titleText}
-		on:click={(e) => fireTitleOnClick(e)}
+		on:dblclick={(e) => fireTitleOnDoubleClick(e)}
+		on:click={(e) => setActiveIdeFile()}
 		on:contextmenu={(e) => contextMenuTarget.set(ideFile)}
 	>
 		{#if ideFile.hideExpansionChevronWhenNoChildFiles && ((children ?? getChildFiles())?.length ?? 0) === 0}
 			<span
 				style="visibility: hidden;"
 				tabindex="-1"
-				class="dni_unselectable"
+				class="dni_do-not-show-chevron"
 			>
 				<ExpansionChevron isExpanded={false}
 				                  onClickAction={setActiveIdeFile} />
@@ -108,6 +119,10 @@
 		background-color: var(--vscode-list-activeSelectionBackground);
 		border: 1px solid var(--vscode-focusBorder);
 		color: var(--vscode-list-activeSelectionIconForeground);
+	}
+
+	.dni_tree-view-title.dni_active-context-menu-target {
+		border: 1px solid var(--vscode-focusBorder);
 	}
 	
 	/* ....when extensionactive.... .dni_tree-view-title.dni_active {

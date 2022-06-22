@@ -51,16 +51,9 @@
     background-color: var(--vscode-button-hoverBackground);
 }
 
-.dni_unselectable .dni_tree-view-title-expansion-chevron:hover {
+.dni_do-not-show-chevron .dni_tree-view-title-expansion-chevron:hover {
     color: transparent;
     background-color: transparent;
-}
-
-.dni_xml-input-field input {
-    display: inline !important;
-    width: fit-content !important;
-    min-width: 1rem !important;
-    max-width: 100% !important;
 }
 
 .dni_inline-flex {
