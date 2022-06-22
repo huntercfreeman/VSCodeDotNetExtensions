@@ -22,8 +22,6 @@
 
 	function hasDifferentParentContainer(childIdeFile: IdeFile): boolean {
 
-		console.log((childIdeFile as any).projectModel);
-
 		if ((childIdeFile as any).projectModel) {
 			// IProjectModel
 			let projectModel: any = (childIdeFile as any)
