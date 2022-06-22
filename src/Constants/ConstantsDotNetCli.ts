@@ -5,8 +5,8 @@ import { DotNetSolutionFile } from "../FileSystem/Files/DotNetSolutionFile";
 
 /* eslint-disable @typescript-eslint/naming-convention */
 export class ConstantsDotNetCli {
-    public static formatDotNetRunCSharpProject(cSharpProjectAbsoluteFilePath: AbsoluteFilePath): string {
-        return `dotnet run --project \"${cSharpProjectAbsoluteFilePath.initialAbsoluteFilePathStringInput}\"`;
+    public static formatDotNetRunProject(projectAbsoluteFilePath: AbsoluteFilePath): string {
+        return `dotnet run --project \"${projectAbsoluteFilePath.initialAbsoluteFilePathStringInput}\"`;
     }
 
     public static formatDotNetNewSolution(solutionNameWithoutExtension: string): string {
@@ -17,21 +17,20 @@ export class ConstantsDotNetCli {
         return `dotnet new sln`;
     }
 
-    public static formatDotNetNewCSharpProject(projectNameWithoutExtension: string,
-        templateName: string): string {
+    public static formatDotNetNewProject(projectNameWithoutExtension: string,
+        templateName: string,
+        lang: string | undefined): string {
 
-        return `dotnet new ${templateName} -o \"${projectNameWithoutExtension}\"`;
+        let langString = lang
+            ? `-lang "${lang}"`
+            : "";
+
+        return `dotnet new ${templateName} ${langString} -o \"${projectNameWithoutExtension}\"`;
     }
-    
-    public static formatDotNetNewFSharpProject(projectNameWithoutExtension: string,
-        templateName: string): string {
 
-        return `dotnet new ${templateName} -lang "F#" -o \"${projectNameWithoutExtension}\"`;
-    }
+    public static formatDotNetAddProjectToSolutionUsingProjectName(projectNameNoExtension: string, projectNameWithExtension: string, dotNetSolutionFileAbsoluteFilePath: AbsoluteFilePath): string {
 
-    public static formatDotNetAddCSharpProjectToSolutionUsingProjectName(projectNameWithoutExtension: string, dotNetSolutionFileAbsoluteFilePath: AbsoluteFilePath): string {
-
-        return `dotnet sln \"${dotNetSolutionFileAbsoluteFilePath.initialAbsoluteFilePathStringInput}\" add \"${projectNameWithoutExtension}/${projectNameWithoutExtension}.csproj\"`;
+        return `dotnet sln \"${dotNetSolutionFileAbsoluteFilePath.initialAbsoluteFilePathStringInput}\" add \"${projectNameNoExtension}/${projectNameWithExtension}\"`;
     }
     
     public static formatDotNetAddFSharpProjectToSolutionUsingProjectName(projectNameWithoutExtension: string, dotNetSolutionFileAbsoluteFilePath: AbsoluteFilePath): string {

@@ -42,48 +42,7 @@ export class CSharpProjectModel implements IProjectModel {
             callback(err, data);
         });
     }
-
-    public static async parseRootNamespace(cSharpProjectModel: CSharpProjectModel,
-        callback: any): Promise<void> {
-
-        cSharpProjectModel.rootNamespace = cSharpProjectModel.displayName;
-
-        let cSharpProjectParser = new XmlProjectParser(undefined,
-            undefined,
-            undefined,
-            cSharpProjectModel);
-
-        cSharpProjectParser.parse(callback);
-    }
-
-    public static async parseCSharpProjectProjectReferences(cSharpProjectAbsoluteFilePath: AbsoluteFilePath,
-        cSharpProjectProjectReferencesFile: CSharpProjectProjectReferencesListFile,
-        callback: any): Promise<void> {
-
-        cSharpProjectProjectReferencesFile.virtualChildFiles = [];
-
-        let cSharpProjectParser = new XmlProjectParser(cSharpProjectAbsoluteFilePath,
-            cSharpProjectProjectReferencesFile,
-            undefined,
-            undefined);
-
-        cSharpProjectParser.parse(callback);
-    }
-
-    public static async parseCSharpProjectNugetPackageReferences(cSharpProjectAbsoluteFilePath: AbsoluteFilePath,
-        cSharpProjectNugetPackageDependenciesFile: CSharpProjectNugetPackageDependenciesListFile,
-        callback: any): Promise<void> {
-
-        cSharpProjectNugetPackageDependenciesFile.virtualChildFiles = [];
-
-        let cSharpProjectParser = new XmlProjectParser(cSharpProjectAbsoluteFilePath,
-            undefined,
-            cSharpProjectNugetPackageDependenciesFile,
-            undefined);
-
-        cSharpProjectParser.parse(callback);
-    }
-
+    
     public readonly absoluteFilePath: AbsoluteFilePath;
     public childFiles: IdeFile[] | undefined;
     public solutionFolderParentProjectIdGuid: string | undefined;

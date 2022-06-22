@@ -12,7 +12,7 @@ import { DotNetSolutionFile } from '../../FileSystem/Files/DotNetSolutionFile';
 import { IdeFileFactory } from '../../FileSystem/IdeFileFactory';
 import { IMessage } from '../../Messages/IMessage';
 import { IMessageCreate } from '../../Messages/Create/IMessageCreate';
-import { MessageCreateCSharpProjectInAny } from '../../Messages/Create/MessageCreateCSharpProjectInAny';
+import { MessageCreateProjectInAny } from '../../Messages/Create/MessageCreateCSharpProjectInAny';
 import { MessageCreateDirectoryInAny } from '../../Messages/Create/MessageCreateDirectoryInAny';
 import { MessageCreateDotNetSolutionInWorkspace } from '../../Messages/Create/MessageCreateDotNetSolutionInWorkspace';
 import { MessageCreateEmptyFileInAny } from '../../Messages/Create/MessageCreateEmptyFileInAny';
@@ -39,8 +39,8 @@ export class SolutionExplorerCreateMessageHandler {
             case MessageCreateKind.emptyFileInDirectory:
                 this.handleMessageCreateEmptyFileInAny(webviewView, message);
                 break;
-            case MessageCreateKind.cSharpProjectInAny:
-                await this.handleMessageCreateCSharpProjectInAny(webviewView, message);
+            case MessageCreateKind.projectInAny:
+                await this.handleMessageCreateProjectInAny(webviewView, message);
                 break;
             case MessageCreateKind.fSharpProjectInAny:
                 await this.handleMessageCreateFSharpProjectInAny(webviewView, message);
@@ -301,58 +301,22 @@ export class SolutionExplorerCreateMessageHandler {
         });
     }
 
-    public static async handleMessageCreateCSharpProjectInAny(webviewView: vscode.WebviewView, iMessage: IMessage) {
-        let message = iMessage as MessageCreateCSharpProjectInAny;
+    public static async handleMessageCreateProjectInAny(webviewView: vscode.WebviewView, iMessage: IMessage) {
+        
+        let message = iMessage as MessageCreateProjectInAny;
 
         let dotNetSolutionFileAbsoluteFilePath: AbsoluteFilePath | undefined;
 
-        let solutionFolder: CSharpProjectFile | undefined;
+        let dotNetSolutionFile = message.ideFile as DotNetSolutionFile;
 
-        if (message.ideFile.fileKind === FileKind.solution) {
-            let dotNetSolutionFile = message.ideFile as DotNetSolutionFile;
-
-            dotNetSolutionFileAbsoluteFilePath = dotNetSolutionFile.absoluteFilePath;
-        }
-        else if (message.ideFile.fileKind === FileKind.solutionFolder) {
-            solutionFolder = message.ideFile as CSharpProjectFile;
-
-            dotNetSolutionFileAbsoluteFilePath = solutionFolder.cSharpProjectModel.parentSolutionAbsoluteFilePath;
-        }
+        dotNetSolutionFileAbsoluteFilePath = dotNetSolutionFile.absoluteFilePath;
 
         let generalUseTerminal = TerminalService.getGeneralUseTerminal();
 
         generalUseTerminal.sendText(
-            ConstantsDotNetCli.formatDotNetNewCSharpProject(message.cSharpProjectNameNoExtension, message.templateName) +
+            ConstantsDotNetCli.formatDotNetNewProject(message.projectNameWithExtension, message.templateName, message.lang) +
             ` ${ConstantsTerminal.TERMINAL_RUN_IF_PREVIOUS_COMMAND_SUCCESSFUL_OPERATOR} ` +
-            ConstantsDotNetCli.formatDotNetAddCSharpProjectToSolutionUsingProjectName(message.cSharpProjectNameNoExtension, dotNetSolutionFileAbsoluteFilePath!));
-
-        generalUseTerminal.show();
-    }
-    
-    public static async handleMessageCreateFSharpProjectInAny(webviewView: vscode.WebviewView, iMessage: IMessage) {
-        let message = iMessage as MessageCreateFSharpProjectInAny;
-
-        let dotNetSolutionFileAbsoluteFilePath: AbsoluteFilePath | undefined;
-
-        let solutionFolder: CSharpProjectFile | undefined;
-
-        if (message.ideFile.fileKind === FileKind.solution) {
-            let dotNetSolutionFile = message.ideFile as DotNetSolutionFile;
-
-            dotNetSolutionFileAbsoluteFilePath = dotNetSolutionFile.absoluteFilePath;
-        }
-        else if (message.ideFile.fileKind === FileKind.solutionFolder) {
-            solutionFolder = message.ideFile as CSharpProjectFile;
-
-            dotNetSolutionFileAbsoluteFilePath = solutionFolder.cSharpProjectModel.parentSolutionAbsoluteFilePath;
-        }
-
-        let generalUseTerminal = TerminalService.getGeneralUseTerminal();
-
-        generalUseTerminal.sendText(
-            ConstantsDotNetCli.formatDotNetNewFSharpProject(message.fSharpProjectNameNoExtension, message.templateName) +
-            ` ${ConstantsTerminal.TERMINAL_RUN_IF_PREVIOUS_COMMAND_SUCCESSFUL_OPERATOR} ` +
-            ConstantsDotNetCli.formatDotNetAddFSharpProjectToSolutionUsingProjectName(message.fSharpProjectNameNoExtension, dotNetSolutionFileAbsoluteFilePath!));
+            ConstantsDotNetCli.formatDotNetAddProjectToSolutionUsingProjectName(message.projectNameNoExtension, message.projectNameWithExtension, dotNetSolutionFileAbsoluteFilePath!));
 
         generalUseTerminal.show();
     }

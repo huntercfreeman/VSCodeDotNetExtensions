@@ -2,9 +2,9 @@ import { ConstantsProjectFile } from "../Constants/ConstantsProjectFile";
 import { IProjectModel } from "../DotNet/IProjectModel";
 import { AbsoluteFilePath } from "../FileSystem/AbsoluteFilePath";
 import { ProjectNugetPackageDependenciesListFile } from "../FileSystem/Files/Nuget/ProjectNugetPackageDependenciesListFile";
-import { ProjectNugetPackageDependencyFile } from "../FileSystem/Files/CSharp/CSharpProjectNugetPackageDependencyFile";
+import { ProjectNugetPackageDependencyFile } from "../FileSystem/Files/Nuget/ProjectNugetPackageDependencyFile";
 import { ProjectToProjectReferenceFile } from "../FileSystem/Files/ProjectReference/ProjectToProjectReferenceFile";
-import { ProjectToProjectReferencesListFile } from "../FileSystem/Files/CSharp/CSharpProjectProjectReferencesListFile";
+import { ProjectToProjectReferencesListFile } from "../FileSystem/Files/ProjectReference/ProjectToProjectReferencesListFile";
 import { XmlParser, XmlTagModel } from "./XmlParseStateMachines";
 
 const fs = require('fs');
@@ -167,6 +167,47 @@ export class XmlProjectParser {
       }
     });
   }
+
+  public static async parseRootNamespace(projectModel: IProjectModel,
+    callback: any): Promise<void> {
+
+    projectModel.rootNamespace = projectModel.displayName;
+
+    let projectParser = new XmlProjectParser(undefined,
+        undefined,
+        undefined,
+        projectModel);
+
+    projectParser.parse(callback);
+}
+
+public static async parseProjectProjectReferences(projectAbsoluteFilePath: AbsoluteFilePath,
+    projectProjectReferencesFile: ProjectToProjectReferencesListFile,
+    callback: any): Promise<void> {
+
+    projectProjectReferencesFile.virtualChildFiles = [];
+
+    let projectParser = new XmlProjectParser(projectAbsoluteFilePath,
+        projectProjectReferencesFile,
+        undefined,
+        undefined);
+
+    projectParser.parse(callback);
+}
+
+public static async parseProjectNugetPackageReferences(projectAbsoluteFilePath: AbsoluteFilePath,
+    projectNugetPackageDependenciesFile: ProjectNugetPackageDependenciesListFile,
+    callback: any): Promise<void> {
+
+    projectNugetPackageDependenciesFile.virtualChildFiles = [];
+
+    let projectParser = new XmlProjectParser(projectAbsoluteFilePath,
+        undefined,
+        projectNugetPackageDependenciesFile,
+        undefined);
+
+    projectParser.parse(callback);
+}
 }
 
 

@@ -136,7 +136,7 @@ export class SolutionExplorerUpdateMessageHandler {
                 let generalUseTerminal = TerminalService.getGeneralUseTerminal();
 
                 generalUseTerminal.sendText(
-                    ConstantsDotNetCli.formatDotNetAddCSharpProjectReferenceToCSharpProject(message.projectProjectReferencesFile.parentCSharpProjectInitialAbsoluteFilePath,
+                    ConstantsDotNetCli.formatDotNetAddCSharpProjectReferenceToCSharpProject(message.projectProjectReferencesFile.parentProjectInitialAbsoluteFilePath,
                         fileUri[0].fsPath));
 
                 generalUseTerminal.show();

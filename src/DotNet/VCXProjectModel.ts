@@ -41,19 +41,6 @@ export class VCXProjectModel implements IProjectModel {
         });
     }
 
-    public static async parseRootNamespace(vCXProjectModel: VCXProjectModel,
-        callback: any): Promise<void> {
-
-        vCXProjectModel.rootNamespace = vCXProjectModel.displayName;
-
-        let xmlProjectParser = new XmlProjectParser(undefined,
-            undefined,
-            undefined,
-            vCXProjectModel);
-
-        xmlProjectParser.parse(callback);
-    }
-
     public readonly absoluteFilePath: AbsoluteFilePath;
     public childFiles: IdeFile[] | undefined;
     public solutionFolderParentProjectIdGuid: string | undefined;

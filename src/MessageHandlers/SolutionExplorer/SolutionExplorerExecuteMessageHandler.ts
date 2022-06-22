@@ -31,7 +31,7 @@ export class SolutionExplorerExecuteMessageHandler {
 
         if (message.projectModel.projectKind === ProjectKind.cSharpProject) {
             programExecutionTerminal.sendText(ConstantsDotNetCli
-                .formatDotNetRunCSharpProject(message.projectModel.absoluteFilePath));
+                .formatDotNetRunProject(message.projectModel.absoluteFilePath));
         }
         else if ((message.projectModel as any).vcxProjectModel) {
             // TODO: Start .vcx project without debugging

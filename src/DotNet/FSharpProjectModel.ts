@@ -1,8 +1,8 @@
 import { ConstantsContextualInformation } from "../Constants/ConstantsContextualInformation";
 import { AbsoluteFilePath } from "../FileSystem/AbsoluteFilePath";
-import { CSharpProjectNugetPackageDependenciesListFile } from "../FileSystem/Files/CSharp/CSharpProjectNugetPackageDependenciesListFile";
-import { CSharpProjectProjectReferenceFile } from "../FileSystem/Files/CSharp/CSharpProjectProjectReferenceFile";
-import { CSharpProjectProjectReferencesListFile } from "../FileSystem/Files/CSharp/CSharpProjectProjectReferencesListFile";
+import { ProjectNugetPackageDependenciesListFile } from "../FileSystem/Files/Nuget/ProjectNugetPackageDependenciesListFile";
+import { ProjectToProjectReferenceFile } from "../FileSystem/Files/ProjectReference/ProjectToProjectReferenceFile";
+import { ProjectToProjectReferencesListFile } from "../FileSystem/Files/ProjectReference/ProjectToProjectReferencesListFile";
 import { IdeFile } from "../FileSystem/Files/IdeFile";
 import { XmlProjectParser } from "../Parsers/XmlProjectParser";
 import { IProjectModel } from "./IProjectModel";
@@ -42,24 +42,11 @@ export class FSharpProjectModel implements IProjectModel {
             callback(err, data);
         });
     }
-
-    public static async parseRootNamespace(fSharpProjectModel: FSharpProjectModel,
-        callback: any): Promise<void> {
-
-        fSharpProjectModel.rootNamespace = fSharpProjectModel.displayName;
-
-        let cSharpProjectParser = new XmlProjectParser(undefined,
-            undefined,
-            undefined,
-            fSharpProjectModel);
-
-        cSharpProjectParser.parse(callback);
-    }
     
     public readonly absoluteFilePath: AbsoluteFilePath;
     public childFiles: IdeFile[] | undefined;
     public solutionFolderParentProjectIdGuid: string | undefined;
-    public projectReferences: CSharpProjectProjectReferenceFile[] = [];
+    public projectReferences: ProjectToProjectReferenceFile[] = [];
     public rootNamespace: string;
     public targetFramework: string = "";
     public isExecutable: boolean = true;;
