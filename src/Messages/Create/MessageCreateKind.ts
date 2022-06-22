@@ -13,5 +13,6 @@ export enum MessageCreateKind {
     cSharpProjectInAny,
     projectInSolutionFolder,
     directoryInAny,
-    dotNetSolutionInWorkspace
+    dotNetSolutionInWorkspace,
+    fSharpProjectInAny
 }

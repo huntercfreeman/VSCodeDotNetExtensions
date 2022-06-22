@@ -2,10 +2,12 @@ export enum FileKind {
     solution,
     solutionFolder,
     cSharpProject,
+    fSharpProject,
     vcxProject,
     default,
     directory,
     cSharp,
+    fSharp,
     cshtml,
     razor,
     css,
@@ -19,5 +21,5 @@ export enum FileKind {
     vcxProjectHeaderFilesListFile,
     vcxProjectReferencesListFile,
     vcxProjectResourceFilesListFile,
-    vcxProjectSourceFilesListFile
+    vcxProjectSourceFilesListFile,
 }

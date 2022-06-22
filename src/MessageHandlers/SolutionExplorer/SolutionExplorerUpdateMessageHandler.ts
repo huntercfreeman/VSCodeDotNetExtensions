@@ -3,18 +3,21 @@ import { ConstantsClipboard } from '../../Constants/ConstantsClipboard';
 import { ConstantsDotNetCli } from '../../Constants/ConstantsDotNetCli';
 import { ConstantsFilePath } from '../../Constants/ConstantsFilePath';
 import { AbsoluteFilePath } from '../../FileSystem/AbsoluteFilePath';
+import { FileKind } from '../../FileSystem/FileKind';
 import { CSharpProjectFile } from '../../FileSystem/Files/CSharp/CSharpProjectFile';
 import { DirectoryFile } from '../../FileSystem/Files/DirectoryFile';
+import { FSharpProjectFile } from '../../FileSystem/Files/FSharp/FSharpProjectFile';
 import { FileSystemReader } from '../../FileSystem/FileSystemReader';
 import { IMessage } from '../../Messages/IMessage';
 import { MessageReadFilesInDirectory } from '../../Messages/Read/MessageReadFilesInDirectory';
 import { MessageReadVirtualFilesInCSharpProject } from '../../Messages/Read/MessageReadVirtualFilesInCSharpProject';
+import { MessageReadVirtualFilesInFSharpProject } from '../../Messages/Read/MessageReadVirtualFilesInFSharpProject';
 import { IMessageUpdate } from '../../Messages/Update/IMessageUpdate';
 import { MessageUpdateAddNugetPackageReference } from '../../Messages/Update/MessageUpdateAddNugetPackageReference';
 import { MessageUpdateAddProjectReference } from '../../Messages/Update/MessageUpdateAddProjectReference';
 import { MessageUpdateCopyAny } from '../../Messages/Update/MessageUpdateCopyAny';
 import { MessageUpdateCutAny } from '../../Messages/Update/MessageUpdateCutAny';
-import { MessageUpdateExistingCSharpProjectIntoSolution } from '../../Messages/Update/MessageUpdateExistingCSharpProjectIntoSolution';
+import { MessageUpdateExistingProjectIntoSolution } from '../../Messages/Update/MessageUpdateExistingProjectIntoSolution';
 import { MessageUpdateKind } from '../../Messages/Update/MessageUpdateKind';
 import { MessageUpdatePasteIntoAny } from '../../Messages/Update/MessageUpdatePasteIntoAny';
 import { MessageUpdatePutProjectInSolutionFolder } from '../../Messages/Update/MessageUpdatePutProjectInSolutionFolder';
@@ -30,7 +33,7 @@ export class SolutionExplorerUpdateMessageHandler {
         let updateMessage = message as unknown as IMessageUpdate;
 
         switch (updateMessage.messageUpdateKind) {
-            case MessageUpdateKind.existingCSharpProjectIntoSolution:
+            case MessageUpdateKind.existingProjectIntoSolution:
                 await this.handleMessageUpdateExistingCSharpProjectIntoSolution(webviewView, message);
                 break;
             case MessageUpdateKind.removeProject:
@@ -64,7 +67,7 @@ export class SolutionExplorerUpdateMessageHandler {
     }
 
     public static async handleMessageUpdateExistingCSharpProjectIntoSolution(webviewView: vscode.WebviewView, iMessage: IMessage) {
-        let message = iMessage as MessageUpdateExistingCSharpProjectIntoSolution;
+        let message = iMessage as MessageUpdateExistingProjectIntoSolution;
 
         const options: vscode.OpenDialogOptions = {
             canSelectMany: false,
@@ -94,8 +97,8 @@ export class SolutionExplorerUpdateMessageHandler {
         let generalUseTerminal = TerminalService.getGeneralUseTerminal();
 
         generalUseTerminal.sendText(
-            ConstantsDotNetCli.formatDotNetRemoveCSharpProjectFromSolutionUsingProjectUsingAbsoluteFilePath(message.cSharpProjectFile.absoluteFilePath,
-                message.cSharpProjectFile.cSharpProjectModel.parentSolutionAbsoluteFilePath));
+            ConstantsDotNetCli.formatDotNetRemoveCSharpProjectFromSolutionUsingProjectUsingAbsoluteFilePath(message.projectFile.projectModel.absoluteFilePath,
+                message.projectFile.projectModel.parentSolutionAbsoluteFilePath));
 
         generalUseTerminal.show();
     }
@@ -245,9 +248,17 @@ export class SolutionExplorerUpdateMessageHandler {
                                 }
 
                                 if ((message.ideFile as any).projectModel) {
-                                    SolutionExplorerMessageTransporter
-                                        .transportMessage(webviewView, 
-                                            new MessageReadVirtualFilesInCSharpProject(message.ideFile as CSharpProjectFile));
+
+                                    if (message.ideFile.fileKind === FileKind.cSharpProject) {
+                                        SolutionExplorerMessageTransporter
+                                            .transportMessage(webviewView, 
+                                                new MessageReadVirtualFilesInCSharpProject(message.ideFile as CSharpProjectFile));
+                                    }
+                                    else if (message.ideFile.fileKind === FileKind.fSharpProject) {
+                                        SolutionExplorerMessageTransporter
+                                            .transportMessage(webviewView, 
+                                                new MessageReadVirtualFilesInFSharpProject(message.ideFile as FSharpProjectFile));
+                                    }
                                 }
                                 else {
                                     SolutionExplorerMessageTransporter

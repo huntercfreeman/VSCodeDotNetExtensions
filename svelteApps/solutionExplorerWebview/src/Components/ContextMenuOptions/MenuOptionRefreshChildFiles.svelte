@@ -3,6 +3,7 @@
     import MenuOption from "../MenuOption.svelte";
     import { FileKind } from "../../../../../out/FileSystem/FileKind";
     import { MessageReadVirtualFilesInCSharpProject } from "../../../../../out/Messages/Read/MessageReadVirtualFilesInCSharpProject";
+    import { MessageReadVirtualFilesInFSharpProject } from "../../../../../out/Messages/Read/MessageReadVirtualFilesInFSharpProject";
     import { MessageReadFilesInDirectory } from "../../../../../out/Messages/Read/MessageReadFilesInDirectory";
     import { MessageReadVirtualFilesInSolution } from "../../../../../out/Messages/Read/MessageReadVirtualFilesInSolution";
     import { MessageReadProjectReferencesInProject } from "../../../../../out/Messages/Read/MessageReadProjectReferencesInProject";
@@ -38,6 +39,17 @@
                 tsVscode.postMessage({
                     type: undefined,
                     value: messageReadVirtualFilesInCSharpProject,
+                });
+                break;
+            case FileKind.fSharpProject:
+                let messageReadVirtualFilesInFSharpProject =
+                    new MessageReadVirtualFilesInFSharpProject(
+                        contextMenuTargetValue
+                    );
+
+                tsVscode.postMessage({
+                    type: undefined,
+                    value: messageReadVirtualFilesInFSharpProject,
                 });
                 break;
             case FileKind.cSharpProjectReferencesList:

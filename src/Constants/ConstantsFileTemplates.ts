@@ -10,11 +10,14 @@ export class ConstantsFileTemplates {
 
         switch (ideFile.absoluteFilePath.extensionNoPeriod) {
             case ConstantsFileExtensionsNoPeriod.C_SHARP_FILE_EXTENSION: {
-                if (ideFile.absoluteFilePath.filenameWithExtension.indexOf(ConstantsFileExtensionsNoPeriod.RAZOR__CODEBEHIND_FILE_EXTENSION) !== -1) {
+                if (ideFile.absoluteFilePath.filenameWithExtension.indexOf("." + ConstantsFileExtensionsNoPeriod.RAZOR__CODEBEHIND_FILE_EXTENSION) !== -1) {
                     return this.razorCodebehindFileTemplate(ideFile.absoluteFilePath.filenameWithExtension, this.getNamespace(ideFile));
                 }
 
-                return this.csFileTemplate(ideFile.absoluteFilePath.filenameWithExtension, this.getNamespace(ideFile));
+                return this.cSharpFileTemplate(ideFile.absoluteFilePath.filenameWithExtension, this.getNamespace(ideFile));
+            }
+            case ConstantsFileExtensionsNoPeriod.F_SHARP_FILE_EXTENSION: {
+                return this.fSharpFileTemplate(ideFile.absoluteFilePath.filenameWithExtension, this.getNamespace(ideFile));
             }
             case ConstantsFileExtensionsNoPeriod.RAZOR_FILE_EXTENSION: {
                 return this.razorMarkupFileTemplate(ideFile.absoluteFilePath.filenameWithExtension);
@@ -29,7 +32,7 @@ export class ConstantsFileTemplates {
         return ideFile.namespace;
     }
 
-    public static csFileTemplate(filenameWithExtension: string, namespace: string): string {
+    public static cSharpFileTemplate(filenameWithExtension: string, namespace: string): string {
         return `using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -41,6 +44,10 @@ public class ${filenameWithExtension.replace(".cs", "")}
 {
 }
 `;
+    }
+    
+    public static fSharpFileTemplate(filenameWithExtension: string, namespace: string): string {
+        return `namespace ${namespace}`;
     }
 
     public static razorCodebehindFileTemplate(filenameWithExtension: string, namespace: string): string {

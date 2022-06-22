@@ -2,7 +2,7 @@
     import { contextMenuTarget } from "../menu";
     import MenuOption from "../MenuOption.svelte";
     import { FileKind } from "../../../../../out/FileSystem/FileKind";
-    import { MessageUpdateExistingCSharpProjectIntoSolution } from "../../../../../out/Messages/Update/MessageUpdateExistingCSharpProjectIntoSolution";
+    import { MessageUpdateExistingProjectIntoSolution } from "../../../../../out/Messages/Update/MessageUpdateExistingProjectIntoSolution";
 
     export let closeMenu;
 
@@ -12,17 +12,17 @@
         contextMenuTargetValue = value;
     });
 
-    function createNewCSharpProject() {
+    function addExistingProject() {
         switch (contextMenuTargetValue.fileKind) {
             case FileKind.solution:
-                let messageUpdateExistingCSharpProjectIntoSolution =
-                    new MessageUpdateExistingCSharpProjectIntoSolution(
+                let messageUpdateExistingProjectIntoSolution =
+                    new MessageUpdateExistingProjectIntoSolution(
                         contextMenuTargetValue
                     );
 
                 tsVscode.postMessage({
                     type: undefined,
-                    value: messageUpdateExistingCSharpProjectIntoSolution,
+                    value: messageUpdateExistingProjectIntoSolution,
                 });
         }
 
@@ -33,7 +33,7 @@
 {#if contextMenuTargetValue}
     <MenuOption
         onClickStopPropagation={true}
-        onClick={createNewCSharpProject}
-        text="Add Existing C# Project."
+        onClick={addExistingProject}
+        text="Add Existing Project."
     />
 {/if}

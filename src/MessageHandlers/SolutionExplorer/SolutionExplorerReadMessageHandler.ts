@@ -3,6 +3,7 @@ import { ActiveDotNetSolutionFileContainer } from '../../ActiveDotNetSolutionFil
 import { ConstantsDotNetCli } from '../../Constants/ConstantsDotNetCli';
 import { ConstantsFilePath } from '../../Constants/ConstantsFilePath';
 import { CSharpProjectModel } from '../../DotNet/CSharpProjectModel';
+import { FSharpProjectModel } from '../../DotNet/FSharpProjectModel';
 import { ProjectKind } from '../../DotNet/ProjectKind';
 import { SolutionFolderModel } from '../../DotNet/SolutionFolderModel';
 import { SolutionModel } from '../../DotNet/SolutionModel';
@@ -12,6 +13,7 @@ import { FileKind } from '../../FileSystem/FileKind';
 import { VCXProjectFile } from '../../FileSystem/Files/CPlusPlus/VCXProjectFile';
 import { CSharpProjectFile } from '../../FileSystem/Files/CSharp/CSharpProjectFile';
 import { DotNetSolutionFile } from '../../FileSystem/Files/DotNetSolutionFile';
+import { FSharpProjectFile } from '../../FileSystem/Files/FSharp/FSharpProjectFile';
 import { SolutionFolderFile } from '../../FileSystem/Files/SolutionFolderFile';
 import { FileSorter } from '../../FileSystem/FileSorter';
 import { FileSystemReader } from '../../FileSystem/FileSystemReader';
@@ -28,6 +30,7 @@ import { MessageReadProjectReferencesInProject } from '../../Messages/Read/Messa
 import { MessageReadSolutionIntoTreeView } from '../../Messages/Read/MessageReadSolutionIntoTreeView';
 import { MessageReadSolutionsInWorkspace } from '../../Messages/Read/MessageReadSolutionsInWorkspace';
 import { MessageReadVirtualFilesInCSharpProject } from '../../Messages/Read/MessageReadVirtualFilesInCSharpProject';
+import { MessageReadVirtualFilesInFSharpProject } from '../../Messages/Read/MessageReadVirtualFilesInFSharpProject';
 import { TerminalService } from '../../Terminal/TerminalService';
 
 export class SolutionExplorerReadMessageHandler {
@@ -43,6 +46,9 @@ export class SolutionExplorerReadMessageHandler {
                 break;
             case MessageReadKind.virtualFilesInCSharpProject:
                 await this.handleMessageReadVirtualFilesInCSharpProjectAsync(webviewView, message);
+                break;
+            case MessageReadKind.virtualFilesInFSharpProject:
+                await this.handleMessageReadVirtualFilesInFSharpProjectAsync(webviewView, message);
                 break;
             case MessageReadKind.solutionIntoTreeView:
                 await this.handleMessageReadSolutionIntoTreeViewAsync(webviewView, message);
@@ -149,6 +155,8 @@ export class SolutionExplorerReadMessageHandler {
                             return new SolutionFolderFile(x as SolutionFolderModel);
                         case ProjectKind.cSharpProject:
                             return new CSharpProjectFile(x as CSharpProjectModel);
+                        case ProjectKind.fSharpProject:
+                            return new FSharpProjectFile(x as FSharpProjectModel);
                         case ProjectKind.vcxProject:
                             return new VCXProjectFile(x as VCXProjectModel);
                         default:
@@ -201,6 +209,8 @@ export class SolutionExplorerReadMessageHandler {
                             return new SolutionFolderFile(x as SolutionFolderModel);
                         case ProjectKind.cSharpProject:
                             return new CSharpProjectFile(x as CSharpProjectModel);
+                        case ProjectKind.fSharpProject:
+                            return new FSharpProjectFile(x as FSharpProjectModel);
                         case ProjectKind.vcxProject:
                             return new VCXProjectFile(x as VCXProjectModel);
                         default:
@@ -237,6 +247,45 @@ export class SolutionExplorerReadMessageHandler {
                 let file = message.cSharpProjectFile.virtualChildFiles[i];
 
                 file.setVirtualChildFiles(message.cSharpProjectFile.virtualChildFiles);
+
+                if (previousVirtualChildFiles) {
+                    let previousFileState = previousVirtualChildFiles.find(x => x.absoluteFilePath.initialAbsoluteFilePathStringInput ===
+                        file.absoluteFilePath.initialAbsoluteFilePathStringInput);
+
+                    if (previousFileState) {
+                        file.isExpanded = previousFileState.isExpanded;
+                    }
+                }
+            }
+
+            webviewView.webview.postMessage(message);
+        });
+    }
+    
+    public static async handleMessageReadVirtualFilesInFSharpProjectAsync(webviewView: vscode.WebviewView, iMessage: IMessage) {
+        let message = iMessage as MessageReadVirtualFilesInFSharpProject;
+
+        await FileSystemReader.getSiblingFiles(message.fSharpProjectFile.absoluteFilePath, (siblingFiles: string[]) => {
+            let previousVirtualChildFiles = message.fSharpProjectFile.virtualChildFiles;
+
+            siblingFiles = siblingFiles
+                .filter(x => x !== message.fSharpProjectFile.absoluteFilePath.filenameWithExtension);
+
+            let siblingAbsoluteFilePaths: AbsoluteFilePath[] = siblingFiles
+                .map(x => message.fSharpProjectFile.absoluteFilePath.initialAbsoluteFilePathStringInput
+                    .replace(message.fSharpProjectFile.absoluteFilePath.filenameWithExtension, x))
+                .map(x => new AbsoluteFilePath(x, FileSystemReader.isDir(x), null));
+
+            message.fSharpProjectFile.virtualChildFiles = siblingAbsoluteFilePaths
+                .map(absoluteFilePath => IdeFileFactory
+                    .constructIdeFile(absoluteFilePath, message.fSharpProjectFile.namespace));
+
+            message.fSharpProjectFile.virtualChildFiles = FileSorter.organizeContainer(message.fSharpProjectFile.virtualChildFiles);
+
+            for (let i = 0; i < message.fSharpProjectFile.virtualChildFiles.length; i++) {
+                let file = message.fSharpProjectFile.virtualChildFiles[i];
+
+                file.setVirtualChildFiles(message.fSharpProjectFile.virtualChildFiles);
 
                 if (previousVirtualChildFiles) {
                     let previousFileState = previousVirtualChildFiles.find(x => x.absoluteFilePath.initialAbsoluteFilePathStringInput ===

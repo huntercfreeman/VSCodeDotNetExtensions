@@ -1,6 +1,7 @@
 import { ConstantsFileExtensionsNoPeriod } from "../../Constants/ConstantsFileExtensionsNoPeriod";
 import { ConstantsSolutionFile } from "../../Constants/ConstantsSolutionFile";
 import { CSharpProjectModel } from "../../DotNet/CSharpProjectModel";
+import { FSharpProjectModel } from "../../DotNet/FSharpProjectModel";
 import { IProjectModel } from "../../DotNet/IProjectModel";
 import { SolutionFolderModel } from "../../DotNet/SolutionFolderModel";
 import { SolutionModel } from "../../DotNet/SolutionModel";
@@ -55,6 +56,16 @@ export class FileSlnParseStateMachine extends SlnParseStateMachineBase {
                         .endsWith(ConstantsFileExtensionsNoPeriod.C_SHARP_PROJECT_FILE_EXTENSION)) {
                     
                             projectModel = new CSharpProjectModel(this.solutionModel,
+                                temporaryProjectModel.projectTypeGuid,
+                                temporaryProjectModel.displayName,
+                                temporaryProjectModel.projectRelativePathFromSolution,
+                                temporaryProjectModel.projectIdGuid,
+                                null);
+                }
+                else if (temporaryProjectModel.projectRelativePathFromSolution
+                        .endsWith(ConstantsFileExtensionsNoPeriod.F_SHARP_PROJECT_FILE_EXTENSION)) {
+                    
+                            projectModel = new FSharpProjectModel(this.solutionModel,
                                 temporaryProjectModel.projectTypeGuid,
                                 temporaryProjectModel.displayName,
                                 temporaryProjectModel.projectRelativePathFromSolution,

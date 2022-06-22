@@ -3,7 +3,8 @@
     import CSharpProjectIcon from "./Icons/CSharpProjectIcon.svelte";
     import SolutionIcon from "./Icons/SolutionIcon.svelte";
     import DirectoryIcon from "./Icons/DirectoryIcon.svelte";
-    import CsIcon from "./Icons/CsIcon.svelte";
+    import CSharpIcon from "./Icons/CSharpIcon.svelte";
+    import FSharpIcon from "./Icons/FSharpIcon.svelte";
     import CshtmlIcon from "./Icons/CshtmlIcon.svelte";
     import RazorIcon from "./Icons/RazorIcon.svelte";
     import CssIcon from "./Icons/CssIcon.svelte";
@@ -20,6 +21,7 @@
     import { ConstantsUniqueFiles } from "../../../../out/Constants/ConstantsUniqueFiles";
     import PropertiesIcon from "./Icons/PropertiesIcon.svelte";
     import VcxProjectIcon from "./Icons/VCXProjectIcon.svelte";
+    import FSharpProjectIcon from "./Icons/FSharpProjectIcon.svelte";
 
     export let ideFile: IdeFile;
 
@@ -32,6 +34,8 @@
     <SolutionFolderIcon />
 {:else if fileKind === FileKind.cSharpProject}
     <CSharpProjectIcon />
+{:else if fileKind === FileKind.fSharpProject}
+    <FSharpProjectIcon />
 {:else if fileKind === FileKind.vcxProject}
     <VcxProjectIcon />
 {:else if fileKind === FileKind.default}
@@ -45,7 +49,9 @@
         <DirectoryIcon />
     {/if}
 {:else if fileKind === FileKind.cSharp}
-    <CsIcon />
+    <CSharpIcon />
+{:else if fileKind === FileKind.fSharp}
+    <FSharpIcon />
 {:else if fileKind === FileKind.cshtml}
     <CshtmlIcon />
 {:else if fileKind === FileKind.razor}

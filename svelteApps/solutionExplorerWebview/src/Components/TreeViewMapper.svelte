@@ -30,6 +30,8 @@
     import DirectoryTreeView from "./TreeViews/DirectoryTreeView.svelte";
     import DotNetSolutionTreeView from "./TreeViews/DotNetSolutionTreeView.svelte";
     import DotNetSolutionFolderTreeView from "./TreeViews/DotNetSolutionFolderTreeView.svelte";
+    import FSharpProjectTreeView from "./TreeViews/FSharp/FSharpProjectTreeView.svelte";
+    import type { FSharpProjectFile } from "../../../../out/FileSystem/Files/FSharp/FSharpProjectFile";
 
     export let ideFile: IdeFile;
 
@@ -47,6 +49,7 @@
     $: vcxProjectHeaderFilesListFile = ideFile as VCXProjectHeaderFilesListFile;
     $: vcxProjectReferencesListFile = ideFile as VCXProjectReferencesListFile;
     $: vcxProjectResourceFilesListFile = ideFile as VCXProjectResourceFilesListFile;
+    $: fSharpProjectFile = ideFile as FSharpProjectFile;
 </script>
 
 {#if ideFile.fileKind === FileKind.solution}
@@ -57,6 +60,9 @@
 
 {:else if ideFile.fileKind === FileKind.cSharpProject}
     <CSharpProjectTreeView cSharpProjectFile={cSharpProjectFile} />
+
+{:else if ideFile.fileKind === FileKind.fSharpProject}
+    <FSharpProjectTreeView fSharpProjectFile={fSharpProjectFile} />
 
 {:else if ideFile.fileKind === FileKind.vcxProject}
     <VcxProjectTreeView vcxProjectFile={vcxProjectFile} />

@@ -10,4 +10,5 @@ export enum MessageReadKind {
     activeDotNetSolutionFile,
     nugetPackageReferencesInProject,
     undefinedSolution,
+    virtualFilesInFSharpProject
 }

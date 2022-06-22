@@ -32,6 +32,10 @@ export class ContextualInformationDatum {
         new ContextualInformationDatum(ContextualInformationDatumKind.create,
             "addExistingCSharpProject");
 
+    public static readonly createNewFSharpProject: ContextualInformationDatum =
+        new ContextualInformationDatum(ContextualInformationDatumKind.create,
+            "createNewFSharpProject");
+
     public static readonly refreshChildFiles: ContextualInformationDatum =
         new ContextualInformationDatum(ContextualInformationDatumKind.read,
             "refreshChildFiles");
@@ -60,26 +64,26 @@ export class ContextualInformationDatum {
         new ContextualInformationDatum(ContextualInformationDatumKind.update,
             "putProjectInSolutionFolder");
 
-    public static readonly rename: ContextualInformationDatum = 
+    public static readonly rename: ContextualInformationDatum =
         new ContextualInformationDatum(ContextualInformationDatumKind.delete,
             "rename");
 
-    public static readonly deleteFile: ContextualInformationDatum = 
+    public static readonly deleteFile: ContextualInformationDatum =
         new ContextualInformationDatum(ContextualInformationDatumKind.delete,
             "deleteFile");
 
-    public static readonly copyFile: ContextualInformationDatum = 
+    public static readonly copyFile: ContextualInformationDatum =
         new ContextualInformationDatum(ContextualInformationDatumKind.control,
             "copyFile");
 
-    public static readonly cutFile: ContextualInformationDatum = 
+    public static readonly cutFile: ContextualInformationDatum =
         new ContextualInformationDatum(ContextualInformationDatumKind.control,
             "cutFile");
 
-    public static readonly paste: ContextualInformationDatum = 
-            new ContextualInformationDatum(ContextualInformationDatumKind.control,
-                "paste");
-                
+    public static readonly paste: ContextualInformationDatum =
+        new ContextualInformationDatum(ContextualInformationDatumKind.control,
+            "paste");
+
     public static checkDatumEquality(datumOne: ContextualInformationDatum, datumTwo: ContextualInformationDatum) {
         return (datumOne.contextualInformationDatumKind === datumTwo.contextualInformationDatumKind) &&
             (datumOne.contextualInformationIdentifier === datumTwo.contextualInformationIdentifier);

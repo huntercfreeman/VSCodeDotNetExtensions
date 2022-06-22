@@ -48,7 +48,7 @@
 
             <div style="margin-left: 12px;">
                 <em
-                    >{contextMenuTargetValue.cSharpProjectModel.absoluteFilePath
+                    >{contextMenuTargetValue.projectModel.absoluteFilePath
                         .filenameWithExtension}</em
                 >
             </div>
@@ -57,7 +57,7 @@
             From Solution:
 
             <div style="margin-left: 12px;">
-                {contextMenuTargetValue.cSharpProjectModel
+                {contextMenuTargetValue.projectModel
                     .parentSolutionAbsoluteFilePath.filenameWithExtension}
             </div>
         </div>

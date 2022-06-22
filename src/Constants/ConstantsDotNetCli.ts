@@ -22,10 +22,21 @@ export class ConstantsDotNetCli {
 
         return `dotnet new ${templateName} -o \"${projectNameWithoutExtension}\"`;
     }
+    
+    public static formatDotNetNewFSharpProject(projectNameWithoutExtension: string,
+        templateName: string): string {
+
+        return `dotnet new ${templateName} -lang "F#" -o \"${projectNameWithoutExtension}\"`;
+    }
 
     public static formatDotNetAddCSharpProjectToSolutionUsingProjectName(projectNameWithoutExtension: string, dotNetSolutionFileAbsoluteFilePath: AbsoluteFilePath): string {
 
         return `dotnet sln \"${dotNetSolutionFileAbsoluteFilePath.initialAbsoluteFilePathStringInput}\" add \"${projectNameWithoutExtension}/${projectNameWithoutExtension}.csproj\"`;
+    }
+    
+    public static formatDotNetAddFSharpProjectToSolutionUsingProjectName(projectNameWithoutExtension: string, dotNetSolutionFileAbsoluteFilePath: AbsoluteFilePath): string {
+
+        return `dotnet sln \"${dotNetSolutionFileAbsoluteFilePath.initialAbsoluteFilePathStringInput}\" add \"${projectNameWithoutExtension}/${projectNameWithoutExtension}.fsproj\"`;
     }
 
     public static formatDotNetRemoveCSharpProjectFromSolutionUsingProjectName(projectNameWithoutExtension: string, dotNetSolutionFileAbsoluteFilePath: AbsoluteFilePath): string {
