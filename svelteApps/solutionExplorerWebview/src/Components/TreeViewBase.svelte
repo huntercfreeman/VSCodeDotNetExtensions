@@ -20,6 +20,10 @@
 
 	activeIdeFileWrap.subscribe((value) => {
 		activeIdeFileWrapValue = value;
+
+		if (value && ((value as IdeFile).nonce === ideFile.nonce)) {
+			activeIdeFileHandleOnKeyDownWrap.set(handleOnKeyDown);
+		}
 	});
 	
 	$: activeIdeFile = activeIdeFileWrapValue as IdeFile;
@@ -40,24 +44,31 @@
 
 	function fireTitleOnDoubleClick(e: MouseEvent) {
 
-		setActiveIdeFile();
+		setActiveIdeFileAsSelf();
 
 		titleOnClick(e);
 	}
 	
-	function setActiveIdeFile() {
+	function setActiveIdeFileAsSelf() {
 
 		activeIdeFileWrap.set(ideFile);
-		setActiveIdeFileHandleOnKeyDownWrap();
+		activeIdeFileHandleOnKeyDownWrap.set(handleOnKeyDown);
 	}
 	
-	function setActiveIdeFileHandleOnKeyDownWrap() {
+	function setActiveIdeFileAsParent() {
 
-		activeIdeFileHandleOnKeyDownWrap.set(handleOnKeyDown);
+		activeIdeFileWrap.set(parent);
 	}
 
 	function handleOnKeyDown(e: KeyboardEvent) {
-
+		if (e.key === "ArrowLeft") {
+			if (ideFile.isExpanded) {
+				ideFile.isExpanded = false;
+			}
+			else if (parent) {
+				setActiveIdeFileAsParent();
+			}
+		}
 	}
 </script>
 
@@ -66,7 +77,7 @@
 		class="dni_tree-view-title dni_unselectable {isActiveCssClass} {isActiveContextMenuTarget}"
 		title={titleText}
 		on:dblclick={(e) => fireTitleOnDoubleClick(e)}
-		on:click={(e) => setActiveIdeFile()}
+		on:click={(e) => setActiveIdeFileAsSelf()}
 		on:contextmenu={(e) => contextMenuTarget.set(ideFile)}
 	>
 		{#if ideFile.hideExpansionChevronWhenNoChildFiles && ((children ?? getChildFiles())?.length ?? 0) === 0}
@@ -76,12 +87,12 @@
 				class="dni_do-not-show-chevron"
 			>
 				<ExpansionChevron isExpanded={false}
-				                  onClickAction={setActiveIdeFile} />
+				                  onClickAction={setActiveIdeFileAsSelf} />
 			</span>
 		{:else}
 			<span class="dni_tree-view-title-expansion-chevron">
 				<ExpansionChevron bind:isExpanded={ideFile.isExpanded}
-				                  onClickAction={setActiveIdeFile} />
+				                  onClickAction={setActiveIdeFileAsSelf} />
 			</span>
 		{/if}
 
@@ -96,7 +107,7 @@
 		{#if ideFile.isExpanded}
 			{#each children ?? getChildFiles() as child, i (child.nonce)}
 				{#if !hasDifferentParentContainer(child)}
-					<TreeViewMapper ideFile={child} index={i} />
+					<TreeViewMapper ideFile={child} index={i} parent={ideFile} />
 				{/if}
 			{/each}
 		{/if}
