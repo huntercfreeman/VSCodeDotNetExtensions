@@ -274,11 +274,11 @@ export class SolutionExplorerReadMessageHandler {
     public static async handleMessageReadFiltersInVCXProject(webviewView: vscode.WebviewView, iMessage: IMessage) {
         let message = iMessage as MessageReadFiltersInVCXProject;
 
-        await FileSystemReader.getSiblingFiles(message.vCXProjectFile.absoluteFilePath, async (siblingFiles: string[]) => {
-            let previousVirtualChildFiles = message.vCXProjectFile.virtualChildFiles;
+        await FileSystemReader.getSiblingFiles(message.vcxProjectFile.absoluteFilePath, async (siblingFiles: string[]) => {
+            let previousVirtualChildFiles = message.vcxProjectFile.virtualChildFiles;
 
             let vcxProjectFilters = siblingFiles.find(sibling => 
-                sibling === message.vCXProjectFile.absoluteFilePath.filenameWithExtension 
+                sibling === message.vcxProjectFile.absoluteFilePath.filenameWithExtension 
                             + '.'
                             + ConstantsFileExtensionsNoPeriod.VCX_PROJECT_FILTERS_FILE_EXTENSION);
 
@@ -286,8 +286,8 @@ export class SolutionExplorerReadMessageHandler {
                 return;
             }
 
-            let vcxProjectFiltersAbsoluteFilePathString = message.vCXProjectFile.absoluteFilePath.initialAbsoluteFilePathStringInput
-                .replace(message.vCXProjectFile.absoluteFilePath.filenameWithExtension, vcxProjectFilters);
+            let vcxProjectFiltersAbsoluteFilePathString = message.vcxProjectFile.absoluteFilePath.initialAbsoluteFilePathStringInput
+                .replace(message.vcxProjectFile.absoluteFilePath.filenameWithExtension, vcxProjectFilters);
 
             let vcxProjectFiltersAbsoluteFilePath = new AbsoluteFilePath(vcxProjectFiltersAbsoluteFilePathString, false, null);
 
@@ -307,17 +307,17 @@ export class SolutionExplorerReadMessageHandler {
                     return tag.tagName === 'Filter';
                 }, filters);
 
-                if (!message.vCXProjectFile.virtualChildFiles) {
-                    message.vCXProjectFile.virtualChildFiles = [];
+                if (!message.vcxProjectFile.virtualChildFiles) {
+                    message.vcxProjectFile.virtualChildFiles = [];
                 }
 
-                message.vCXProjectFile.virtualChildFiles = filters
+                message.vcxProjectFile.virtualChildFiles = filters
                     .map(filter => {
                         let includeAttribute = filter.xmlAttributeModels
                             .find(attribute => attribute.attributeName === ConstantsProjectFile.INCLUDE_TAG_NAME);
 
-                        let absoluteFilePathString = message.vCXProjectFile.absoluteFilePath.initialAbsoluteFilePathStringInput
-                            .replace(message.vCXProjectFile.absoluteFilePath.filenameWithExtension, (includeAttribute?.attributeValue ?? "undefined filter name"));
+                        let absoluteFilePathString = message.vcxProjectFile.absoluteFilePath.initialAbsoluteFilePathStringInput
+                            .replace(message.vcxProjectFile.absoluteFilePath.filenameWithExtension, (includeAttribute?.attributeValue ?? "undefined filter name"));
 
                         let absoluteFilePath = new AbsoluteFilePath(absoluteFilePathString, 
                             false, 
@@ -325,12 +325,10 @@ export class SolutionExplorerReadMessageHandler {
 
                         let vcxProjectFilterListFile = new VCXProjectFilterListFile(absoluteFilePath);
 
-                        vcxProjectFilterListFile.refreshParentNonce = message.vCXProjectFile.nonce;
+                        vcxProjectFilterListFile.refreshParentNonce = message.vcxProjectFile.nonce;
 
                         return vcxProjectFilterListFile;
                     });
-
-                let xzx = 2;
 
                 // TODO: This will grab any files that match the filter
                 // let test = filters[0];

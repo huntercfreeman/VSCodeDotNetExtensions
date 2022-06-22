@@ -5,7 +5,7 @@ import { IMessageRead } from "./IMessageRead";
 import { MessageReadKind } from "./MessageReadKind";
 
 export class MessageReadFiltersInVCXProject implements IMessage, IMessageRead {
-    constructor(public readonly vCXProjectFile: VCXProjectFile) {
+    constructor(public readonly vcxProjectFile: VCXProjectFile) {
     }
 
     public readonly messageCategory: MessageCategory = MessageCategory.read;

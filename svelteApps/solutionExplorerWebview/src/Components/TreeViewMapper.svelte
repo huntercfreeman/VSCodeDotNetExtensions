@@ -12,9 +12,7 @@
     import type { SolutionFolderFile } from "../../../../out/FileSystem/Files/SolutionFolderFile";
     import VcxProjectExternalDependenciesListTreeView from "./TreeViews/CPlusPlus/VCXProjectExternalDependenciesListTreeView.svelte";
     import VCXProjectFilterListTreeView from "./TreeViews/CPlusPlus/VCXProjectFilterListTreeView.svelte";
-    import VCXProjectFilterTreeView from "./TreeViews/CPlusPlus/VCXProjectFilterTreeView.svelte";
     import VcxProjectReferencesListTreeView from "./TreeViews/CPlusPlus/VCXProjectReferencesListTreeView.svelte";
-    import VcxProjectResourceFilesListTreeView from "./TreeViews/CPlusPlus/VCXProjectResourceFilesListTreeView.svelte";
     import VcxProjectTreeView from "./TreeViews/CPlusPlus/VCXProjectTreeView.svelte";
     import CSharpProjectDependenciesListTreeView from "./TreeViews/CSharp/CSharpProjectDependenciesListTreeView.svelte";
     import FSharpProjectDependenciesListTreeView from "./TreeViews/FSharp/FSharpProjectDependenciesListTreeView.svelte";
