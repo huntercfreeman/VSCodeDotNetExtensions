@@ -22,6 +22,7 @@
     import PropertiesIcon from "./Icons/PropertiesIcon.svelte";
     import VcxProjectIcon from "./Icons/VCXProjectIcon.svelte";
     import FSharpProjectIcon from "./Icons/FSharpProjectIcon.svelte";
+    import FSXIcon from "./Icons/FSXIcon.svelte";
 
     export let ideFile: IdeFile;
 
@@ -52,6 +53,8 @@
     <CSharpIcon />
 {:else if fileKind === FileKind.fSharp}
     <FSharpIcon />
+{:else if fileKind === FileKind.fSX}
+    <FSXIcon />
 {:else if fileKind === FileKind.cshtml}
     <CshtmlIcon />
 {:else if fileKind === FileKind.razor}

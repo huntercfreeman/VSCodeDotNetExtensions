@@ -4,7 +4,7 @@ import { AbsoluteFilePath } from "../FileSystem/AbsoluteFilePath";
 import { DotNetSolutionFile } from "../FileSystem/Files/DotNetSolutionFile";
 
 /* eslint-disable @typescript-eslint/naming-convention */
-export class ConstantsDotNetCli {;
+export class ConstantsDotNetCli {
     public static readonly DOTNET_CLI: string = "dotnet";
 
     public static formatRunProject(projectAbsoluteFilePath: AbsoluteFilePath): string {
@@ -102,6 +102,10 @@ export class ConstantsDotNetCli {;
         return `${this.DOTNET_CLI} remove \"${projectInitialAbsoluteFilePath.initialAbsoluteFilePathStringInput}\"` + 
                ` package \"${nugetPackageId}\"`;
     }
+
+    static formatRunFSharpScript(absoluteFilePath: AbsoluteFilePath): string {
+        return `${this.DOTNET_CLI} fsi \"${absoluteFilePath.initialAbsoluteFilePathStringInput}\"`;
+    };
 
     public static readonly DOT_NET_NEW_LIST = "dotnet new --list";
 

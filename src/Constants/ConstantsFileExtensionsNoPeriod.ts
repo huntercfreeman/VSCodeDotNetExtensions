@@ -9,6 +9,7 @@ export class ConstantsFileExtensionsNoPeriod {
     public static readonly SOLUTION_FILE_EXTENSION: string = "sln";
     public static readonly C_SHARP_FILE_EXTENSION: string = "cs";
     public static readonly F_SHARP_FILE_EXTENSION: string = "fs";
+    public static readonly FSX_FILE_EXTENSION: string = "fsx";
     public static readonly CSHMTL_FILE_EXTENSION: string = "cshtml";
     public static readonly CSS_FILE_EXTENSION: string = "css";
     // TODO: Ensure Directories always end in a '/' except when accessing filenameWithoutExtension

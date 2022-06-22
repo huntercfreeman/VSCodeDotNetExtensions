@@ -8,6 +8,7 @@ export enum FileKind {
     directory,
     cSharp,
     fSharp,
+    fSX,
     cshtml,
     razor,
     css,

@@ -1,4 +1,5 @@
 export enum MessageExecuteKind {
     projectDebugging,
-    projectWithoutDebugging
+    projectWithoutDebugging,
+    fSharpScript
 }

@@ -3,6 +3,7 @@ import { ConstantsDotNetCli } from '../../Constants/ConstantsDotNetCli';
 import { ConstantsOmniSharp } from '../../Constants/ConstantsOmniSharp';
 import { ProjectKind } from '../../DotNet/ProjectKind';
 import { IMessageExecute } from '../../Messages/Execute/IMessageExecute';
+import { MessageExecuteFSharpScript } from '../../Messages/Execute/MessageExecuteFSharpScript';
 import { MessageExecuteKind } from '../../Messages/Execute/MessageExecuteKind';
 import { MessageExecuteProjectWithoutDebugging } from '../../Messages/Execute/MessageExecuteProjectWithoutDebugging';
 import { IMessage } from '../../Messages/IMessage';
@@ -20,6 +21,9 @@ export class SolutionExplorerExecuteMessageHandler {
                 break;
             case MessageExecuteKind.projectDebugging:
                 await this.handleMessageExecuteProjectDebugging(webviewView, message);
+                break;
+            case MessageExecuteKind.fSharpScript:
+                await this.handleMessageExecuteFSharpScript(webviewView, message);
                 break;
         }
     }
@@ -44,5 +48,16 @@ export class SolutionExplorerExecuteMessageHandler {
         let message = iMessage as MessageExecuteProjectWithoutDebugging;
 
         vscode.commands.executeCommand(ConstantsOmniSharp.OMNI_SHARP_GENERATE_ASSETS);
+    }
+
+    public static async handleMessageExecuteFSharpScript(webviewView: vscode.WebviewView, iMessage: IMessage) {
+        let message = iMessage as MessageExecuteFSharpScript;
+
+        let programExecutionTerminal = TerminalService.getProgramExecutionTerminal();
+
+        programExecutionTerminal.sendText(ConstantsDotNetCli
+            .formatRunFSharpScript(message.fsxFile.absoluteFilePath));
+
+        programExecutionTerminal.show();
     }
 }

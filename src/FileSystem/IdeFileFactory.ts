@@ -10,6 +10,7 @@ import { RazorFile } from "./Files/CSharp/RazorFile";
 import { CshtmlFile } from "./Files/CSharp/CshtmlFile";
 import { JsonFile } from "./Files/Miscellaneous/JsonFile";
 import { FSharpFile } from "./Files/FSharp/FSharpFile";
+import { FSXFile } from "./Files/FSharp/FSXFile";
 
 export class IdeFileFactory {
     public static constructIdeFile(absoluteFilePath: AbsoluteFilePath, currentNamespaceString: string): IdeFile {
@@ -18,6 +19,8 @@ export class IdeFileFactory {
                 return new CSharpFile(absoluteFilePath, currentNamespaceString);
             case FileKind.fSharp:
                 return new FSharpFile(absoluteFilePath, currentNamespaceString);
+            case FileKind.fSX:
+                return new FSXFile(absoluteFilePath, currentNamespaceString);
             case FileKind.cshtml:
                 return new CshtmlFile(absoluteFilePath);
             case FileKind.css:

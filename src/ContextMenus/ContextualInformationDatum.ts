@@ -35,6 +35,10 @@ export class ContextualInformationDatum {
     public static readonly createNewFSharpProject: ContextualInformationDatum =
         new ContextualInformationDatum(ContextualInformationDatumKind.create,
             "createNewFSharpProject");
+    
+    public static readonly executeFSharpScriptFile: ContextualInformationDatum =
+        new ContextualInformationDatum(ContextualInformationDatumKind.execute,
+            "executeFSharpScriptFile");
 
     public static readonly refreshChildFiles: ContextualInformationDatum =
         new ContextualInformationDatum(ContextualInformationDatumKind.read,

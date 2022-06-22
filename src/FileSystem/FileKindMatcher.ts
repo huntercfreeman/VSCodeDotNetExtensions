@@ -16,6 +16,8 @@ export class FileKindMatcher {
                 return FileKind.cSharp;
             case ConstantsFileExtensionsNoPeriod.F_SHARP_FILE_EXTENSION:
                 return FileKind.fSharp;
+            case ConstantsFileExtensionsNoPeriod.FSX_FILE_EXTENSION:
+                return FileKind.fSX;
             case ConstantsFileExtensionsNoPeriod.CSHMTL_FILE_EXTENSION:
                 return FileKind.cshtml;
             case ConstantsFileExtensionsNoPeriod.CSS_FILE_EXTENSION:
