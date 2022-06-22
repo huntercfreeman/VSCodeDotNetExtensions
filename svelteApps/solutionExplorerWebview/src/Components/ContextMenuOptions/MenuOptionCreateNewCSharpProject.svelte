@@ -4,7 +4,7 @@
     import { FileKind } from "../../../../../out/FileSystem/FileKind";
     import { MessageReadNewProjectTemplatesOnComputer } from "../../../../../out/Messages/Read/MessageReadNewProjectTemplatesOnComputer";
     import { MessageCreateProjectInAny } from "../../../../../out/Messages/Create/MessageCreateProjectInAny";
-import { ConstantsFileExtensionsNoPeriod } from "../../../../../out/Constants/ConstantsFileExtensionsNoPeriod";
+    import { ConstantsFileExtensionsNoPeriod } from "../../../../../out/Constants/ConstantsFileExtensionsNoPeriod";
 
     export let closeMenu;
 
@@ -19,11 +19,6 @@ import { ConstantsFileExtensionsNoPeriod } from "../../../../../out/Constants/Co
     function createNewCSharpProject() {
         switch (contextMenuTargetValue.fileKind) {
             case FileKind.solution:
-        //     public readonly ideFile: IdeFile,
-        // public readonly projectNameWithExtension: string,
-        // public readonly projectNameNoExtension: string,
-        // public readonly templateName: string,
-        // public readonly lang: string
                 let messageCreateProjectInAny =
                     new MessageCreateProjectInAny(
                         contextMenuTargetValue,

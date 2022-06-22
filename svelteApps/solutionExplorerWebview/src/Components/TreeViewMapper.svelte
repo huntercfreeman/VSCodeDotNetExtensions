@@ -7,6 +7,7 @@
     import type { VCXProjectResourceFilesListFile } from "../../../../out/FileSystem/Files/CPlusPlus/VCXProjectResourceFilesListFile";
     import type { CSharpProjectDependenciesListFile } from "../../../../out/FileSystem/Files/CSharp/CSharpProjectDependenciesListFile";
     import type { CSharpProjectFile } from "../../../../out/FileSystem/Files/CSharp/CSharpProjectFile";
+    import type { FSharpProjectDependenciesListFile } from "../../../../out/FileSystem/Files/FSharp/FSharpProjectDependenciesListFile";
     import type { DirectoryFile } from "../../../../out/FileSystem/Files/DirectoryFile";
     import type { DotNetSolutionFile } from "../../../../out/FileSystem/Files/DotNetSolutionFile";
 	import type { IdeFile } from "../../../../out/FileSystem/Files/IdeFile";
@@ -17,6 +18,7 @@
     import VcxProjectResourceFilesListTreeView from "./TreeViews/CPlusPlus/VCXProjectResourceFilesListTreeView.svelte";
     import VcxProjectTreeView from "./TreeViews/CPlusPlus/VCXProjectTreeView.svelte";
     import CSharpProjectDependenciesListTreeView from "./TreeViews/CSharp/CSharpProjectDependenciesListTreeView.svelte";
+    import FSharpProjectDependenciesListTreeView from "./TreeViews/FSharp/FSharpProjectDependenciesListTreeView.svelte";
     import ProjectNugetPackageDependenciesListTreeView from "./TreeViews/Nuget/ProjectNugetPackageDependenciesListTreeView.svelte";
     import ProjectNugetPackageDependencyTreeView from "./TreeViews/Nuget/ProjectNugetPackageDependencyTreeView.svelte";
     import CSharpProjectTreeView from "./TreeViews/CSharp/CSharpProjectTreeView.svelte";
@@ -41,6 +43,7 @@
     $: vcxProjectFile = ideFile as VCXProjectFile;
     $: directoryFile = ideFile as DirectoryFile;
     $: cSharpProjectDependenciesListFile = ideFile as CSharpProjectDependenciesListFile;
+    $: fSharpProjectDependenciesListFile = ideFile as FSharpProjectDependenciesListFile;
     $: projectNugetPackageDependenciesListFile = ideFile as ProjectNugetPackageDependenciesListFile;
     $: projectNugetPackageDependencyFile = ideFile as ProjectNugetPackageDependencyFile;
     $: projectToProjectReferencesListFile = ideFile as ProjectToProjectReferencesListFile;
@@ -67,14 +70,14 @@
 {:else if ideFile.fileKind === FileKind.vcxProject}
     <VcxProjectTreeView vcxProjectFile={vcxProjectFile} />
 
-<!-- {:else if ideFile.fileKind === FileKind.vcxProject}]
-    <VCX -->
-
 {:else if ideFile.fileKind === FileKind.directory}
     <DirectoryTreeView directoryFile={directoryFile} />
 
 {:else if ideFile.fileKind === FileKind.cSharpProjectDependencies}
     <CSharpProjectDependenciesListTreeView cSharpProjectDependenciesListFile={cSharpProjectDependenciesListFile} />
+
+{:else if ideFile.fileKind === FileKind.fSharpProjectDependencies}
+    <FSharpProjectDependenciesListTreeView fSharpProjectDependenciesListFile={fSharpProjectDependenciesListFile} />
 
 {:else if ideFile.fileKind === FileKind.nugetPackageDependenciesList}
     <ProjectNugetPackageDependenciesListTreeView projectNugetPackageDependenciesListFile={projectNugetPackageDependenciesListFile} />

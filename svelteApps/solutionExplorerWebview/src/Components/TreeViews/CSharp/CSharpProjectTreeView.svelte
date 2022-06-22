@@ -57,14 +57,14 @@
 			switch (message.messageCategory) {
 				case MessageCategory.read:
 					switch (message.messageReadKind) {
-						case MessageReadKind.virtualFilesInCSharpProject:
-							let messageReadVirtualFilesInCSharpProject =
-								message as MessageReadVirtualFilesInCSharpProject;
+						case MessageReadKind.virtualFilesInProject:
+							let messageReadVirtualFilesInProject =
+								message as MessageReadVirtualFilesInProject;
 							if (cSharpProjectFile.nonce ===
-									messageReadVirtualFilesInCSharpProject.cSharpProjectFile.nonce) {
+									messageReadVirtualFilesInProject.projectFile.nonce) {
 								
 								cSharpProjectFile =
-									messageReadVirtualFilesInCSharpProject.cSharpProjectFile;
+									messageReadVirtualFilesInProject.projectFile;
 
 								children = cSharpProjectFile.constantChildFiles;
 								

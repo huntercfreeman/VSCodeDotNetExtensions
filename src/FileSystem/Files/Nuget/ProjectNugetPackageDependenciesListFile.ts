@@ -7,7 +7,7 @@ import { IdeFile } from "../IdeFile";
 
 export class ProjectNugetPackageDependenciesListFile extends IdeFile {
     constructor(projectParentAbsoluteFilePath: AbsoluteFilePath, projectDependenciesParentAbsoluteFilePath: AbsoluteFilePath) {
-        let myAbsoluteFilePath = new AbsoluteFilePath(ConstantsFileExtensionsNoPeriod.C_SHARP_NUGET_PACKAGE_DEPENDENCIES_FILE_EXTENSION,
+        let myAbsoluteFilePath = new AbsoluteFilePath(ConstantsFileExtensionsNoPeriod.NUGET_PACKAGE_DEPENDENCIES_FILE_EXTENSION,
             false,
             projectDependenciesParentAbsoluteFilePath.parentDirectories);
 

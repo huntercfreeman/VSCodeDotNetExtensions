@@ -17,10 +17,11 @@ export class ConstantsFileExtensionsNoPeriod {
     public static readonly RAZOR__CODEBEHIND_FILE_EXTENSION: string = "razor.cs";
     public static readonly JSON_FILE_EXTENSION: string = "json";
     public static readonly C_SHARP_PROJECT_DEPENDENCIES_FILE_EXTENSION: string = "Dependencies";
-    public static readonly C_SHARP_NUGET_PACKAGE_DEPENDENCIES_FILE_EXTENSION: string = "Nuget Packages";
-    public static readonly C_SHARP_NUGET_PACKAGE_DEPENDENCY_FILE_EXTENSION: string = "Nuget Package Entry";
+    public static readonly F_SHARP_PROJECT_DEPENDENCIES_FILE_EXTENSION: string = "Dependencies";
+    public static readonly NUGET_PACKAGE_DEPENDENCIES_FILE_EXTENSION: string = "Nuget Packages";
+    public static readonly NUGET_PACKAGE_DEPENDENCY_FILE_EXTENSION: string = "Nuget Package Entry";
     public static readonly PROJECT_REFERENCES_FILE_EXTENSION: string = "Project References";
-    public static readonly C_SHARP_PROJECT_REFERENCE_FILE_EXTENSION: string = "Project Reference Entry";
+    public static readonly PROJECT_REFERENCE_FILE_EXTENSION: string = "Project Reference Entry";
     public static readonly VCX_PROJECT_REFERENCES_FILE_EXTENSION: string = "References";
     public static readonly VCX_PROJECT_EXTERNAL_DEPENDENCIES_FILE_EXTENSION: string = "External Dependencies";
     public static readonly VCX_PROJECT_HEADER_FILES_FILE_EXTENSION: string = "Header Files";
