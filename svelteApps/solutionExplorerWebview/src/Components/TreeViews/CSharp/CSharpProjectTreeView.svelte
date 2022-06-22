@@ -3,7 +3,7 @@
 	import type { IdeFile } from "../../../../../../out/FileSystem/Files/IdeFile";
 	import type { CSharpProjectFile } from "../../../../../../out/FileSystem/Files/CSharp/CSharpProjectFile";
 	import { MessageReadFileIntoEditor } from "../../../../../../out/Messages/Read/MessageReadFileIntoEditor";
-	import { MessageReadVirtualFilesInCSharpProject } from "../../../../../../out/Messages/Read/MessageReadVirtualFilesInCSharpProject";
+	import { MessageReadVirtualFilesInProject } from "../../../../../../out/Messages/Read/MessageReadVirtualFilesInProject";
 	import { MessageCategory } from "../../../../../../out/Messages/MessageCategory";
 	import { MessageReadKind } from "../../../../../../out/Messages/Read/MessageReadKind";
 	import TreeViewBase from "../../TreeViewBase.svelte";
@@ -27,12 +27,12 @@
 		children = cSharpProjectFile.virtualChildFiles;
 
 		if (!children) {
-			let messageReadVirtualFilesInCSharpProject =
-				new MessageReadVirtualFilesInCSharpProject(cSharpProjectFile);
+			let messageReadVirtualFilesInProject =
+				new MessageReadVirtualFilesInProject(cSharpProjectFile);
 			
 			tsVscode.postMessage({
 				type: undefined,
-				value: messageReadVirtualFilesInCSharpProject,
+				value: messageReadVirtualFilesInProject,
 			});
 
 			return [];

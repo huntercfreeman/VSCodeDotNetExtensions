@@ -76,16 +76,16 @@
 {:else if ideFile.fileKind === FileKind.cSharpProjectDependencies}
     <CSharpProjectDependenciesListTreeView cSharpProjectDependenciesListFile={cSharpProjectDependenciesListFile} />
 
-{:else if ideFile.fileKind === FileKind.cSharpNugetPackageDependenciesList}
+{:else if ideFile.fileKind === FileKind.nugetPackageDependenciesList}
     <ProjectNugetPackageDependenciesListTreeView projectNugetPackageDependenciesListFile={projectNugetPackageDependenciesListFile} />
 
-{:else if ideFile.fileKind === FileKind.cSharpNugetPackageDependency}
+{:else if ideFile.fileKind === FileKind.nugetPackageDependency}
     <ProjectNugetPackageDependencyTreeView projectNugetPackageDependencyFile={projectNugetPackageDependencyFile} />
 
-{:else if ideFile.fileKind === FileKind.cSharpProjectReferencesList}
+{:else if ideFile.fileKind === FileKind.projectReferencesList}
     <ProjectToProjectReferencesListTreeView projectToProjectReferencesListFile={projectToProjectReferencesListFile} />
 
-{:else if ideFile.fileKind === FileKind.cSharpProjectReference}
+{:else if ideFile.fileKind === FileKind.projectReference}
     <ProjectToProjectReferenceTreeView projectToProjectReferenceFile={projectToProjectReferenceFile} />
 
     <!-- START OF C++ ------------------------------------------------------------------------------------------------------------------------->

@@ -5,7 +5,6 @@ import { ConstantsFileTemplates } from '../../Constants/ConstantsFileTemplates';
 import { ConstantsTerminal } from '../../Constants/ConstantsTerminal';
 import { AbsoluteFilePath } from '../../FileSystem/AbsoluteFilePath';
 import { FileKind } from '../../FileSystem/FileKind';
-import { CSharpProjectFile } from '../../FileSystem/Files/CSharp/CSharpProjectFile';
 import { DefaultFile } from '../../FileSystem/Files/DefaultFile';
 import { DirectoryFile } from '../../FileSystem/Files/DirectoryFile';
 import { DotNetSolutionFile } from '../../FileSystem/Files/DotNetSolutionFile';
@@ -22,8 +21,6 @@ import { TerminalService } from '../../Terminal/TerminalService';
 import { SolutionExplorerMessageTransporter } from './SolutionExplorerMessageTransporter';
 import { MessageReadFilesInDirectory } from '../../Messages/Read/MessageReadFilesInDirectory';
 import { MessageReadVirtualFilesInProject } from '../../Messages/Read/MessageReadVirtualFilesInProject';
-import { FSharpProjectFile } from '../../FileSystem/Files/FSharp/FSharpProjectFile';
-import { IProjectFile } from '../../FileSystem/Files/IProjectFile';
 
 const fs = require('fs');
 
