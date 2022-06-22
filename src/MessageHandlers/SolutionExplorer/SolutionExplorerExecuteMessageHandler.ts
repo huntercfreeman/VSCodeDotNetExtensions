@@ -29,12 +29,12 @@ export class SolutionExplorerExecuteMessageHandler {
 
         let programExecutionTerminal = TerminalService.getProgramExecutionTerminal();
 
-        if (message.projectModel.projectKind === ProjectKind.cSharpProject) {
+        if ((message.projectModel as any).vcxProjectModel) {
+            // TODO: Start .vcx project without debugging
+        }
+        else {
             programExecutionTerminal.sendText(ConstantsDotNetCli
                 .formatDotNetRunProject(message.projectModel.absoluteFilePath));
-        }
-        else if ((message.projectModel as any).vcxProjectModel) {
-            // TODO: Start .vcx project without debugging
         }
 
         programExecutionTerminal.show();

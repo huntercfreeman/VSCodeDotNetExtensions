@@ -21,7 +21,7 @@ import { MessageCreateTemplatedFileInAny } from '../../Messages/Create/MessageCr
 import { TerminalService } from '../../Terminal/TerminalService';
 import { SolutionExplorerMessageTransporter } from './SolutionExplorerMessageTransporter';
 import { MessageReadFilesInDirectory } from '../../Messages/Read/MessageReadFilesInDirectory';
-import { MessageReadVirtualFilesInCSharpProject } from '../../Messages/Read/MessageReadVirtualFilesInCSharpProject';
+import { MessageReadVirtualFilesInCSharpProject } from '../../Messages/Read/MessageReadVirtualFilesInProject';
 import { FSharpProjectFile } from '../../FileSystem/Files/FSharp/FSharpProjectFile';
 import { MessageReadVirtualFilesInFSharpProject } from '../../Messages/Read/MessageReadVirtualFilesInFSharpProject';
 

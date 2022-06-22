@@ -23,7 +23,7 @@ export class NugetPackageManagerUpdateMessageHandler {
         let generalUseTerminal = TerminalService.getGeneralUseTerminal();
 
         generalUseTerminal.sendText(
-            ConstantsDotNetCli.formatDotNetAddNugetPackageReferenceToCSharpProject(message.cSharpProjectFile.absoluteFilePath,
+            ConstantsDotNetCli.formatDotNetAddNugetPackageReferenceToProject(message.projectFile.absoluteFilePath,
                 message.nugetPackageModel,
                 message.nugetPackageVersionModel));
 

@@ -10,7 +10,7 @@ import { FSharpProjectFile } from '../../FileSystem/Files/FSharp/FSharpProjectFi
 import { FileSystemReader } from '../../FileSystem/FileSystemReader';
 import { IMessage } from '../../Messages/IMessage';
 import { MessageReadFilesInDirectory } from '../../Messages/Read/MessageReadFilesInDirectory';
-import { MessageReadVirtualFilesInCSharpProject } from '../../Messages/Read/MessageReadVirtualFilesInCSharpProject';
+import { MessageReadVirtualFilesInCSharpProject } from '../../Messages/Read/MessageReadVirtualFilesInProject';
 import { MessageReadVirtualFilesInFSharpProject } from '../../Messages/Read/MessageReadVirtualFilesInFSharpProject';
 import { IMessageUpdate } from '../../Messages/Update/IMessageUpdate';
 import { MessageUpdateAddNugetPackageReference } from '../../Messages/Update/MessageUpdateAddNugetPackageReference';
@@ -162,7 +162,7 @@ export class SolutionExplorerUpdateMessageHandler {
         let generalUseTerminal = TerminalService.getGeneralUseTerminal();
 
         generalUseTerminal.sendText(
-            ConstantsDotNetCli.formatDotNetAddNugetPackageReferenceToProject(message.cSharpProjectFile.absoluteFilePath,
+            ConstantsDotNetCli.formatDotNetAddNugetPackageReferenceToProject(message.projectFile.absoluteFilePath,
                 message.nugetPackageModel,
                 message.nugetPackageVersionModel));
 
@@ -175,7 +175,7 @@ export class SolutionExplorerUpdateMessageHandler {
         let generalUseTerminal = TerminalService.getGeneralUseTerminal();
 
         generalUseTerminal.sendText(
-            ConstantsDotNetCli.formatDotNetRemoveNugetPackageReferenceFromProject(message.projectNugetPackageDependencyFile.parentCSharpProjectInitialAbsoluteFilePath,
+            ConstantsDotNetCli.formatDotNetRemoveNugetPackageReferenceFromProject(message.projectNugetPackageDependencyFile.parentProjectInitialAbsoluteFilePath,
                 message.projectNugetPackageDependencyFile.nugetPackageId));
 
         generalUseTerminal.show();

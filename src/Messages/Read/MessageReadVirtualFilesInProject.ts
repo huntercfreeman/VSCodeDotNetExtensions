@@ -1,13 +1,13 @@
-import { CSharpProjectFile } from "../../FileSystem/Files/CSharp/CSharpProjectFile";
+import { IProjectFile } from "../../FileSystem/Files/IProjectFile";
 import { IMessage } from "../IMessage";
 import { MessageCategory } from "../MessageCategory";
 import { IMessageRead } from "./IMessageRead";
 import { MessageReadKind } from "./MessageReadKind";
 
 export class MessageReadVirtualFilesInCSharpProject implements IMessage, IMessageRead {
-    constructor(public readonly cSharpProjectFile: CSharpProjectFile) {
+    constructor(public readonly projectFile: IProjectFile) {
     }
 
     public readonly messageCategory: MessageCategory = MessageCategory.read;
-    public readonly messageReadKind: MessageReadKind = MessageReadKind.virtualFilesInCSharpProject;
+    public readonly messageReadKind: MessageReadKind = MessageReadKind.virtualFilesInProject;
 }

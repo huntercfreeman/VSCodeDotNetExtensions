@@ -3,7 +3,7 @@ export enum MessageReadKind {
     solutionsInWorkspace,
     fileIntoEditor,
     solutionIntoTreeView,
-    virtualFilesInCSharpProject,
+    virtualFilesInProject,
     newProjectTemplatesOnComputer,
     virtualFilesInSolution,
     projectReferencesInProject,
