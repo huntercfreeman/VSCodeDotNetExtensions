@@ -38,22 +38,22 @@ export class ConstantsDotNetCli {
         return `dotnet sln \"${dotNetSolutionFileAbsoluteFilePath.initialAbsoluteFilePathStringInput}\" add \"${projectNameWithoutExtension}/${projectNameWithoutExtension}.fsproj\"`;
     }
 
-    public static formatDotNetRemoveCSharpProjectFromSolutionUsingProjectName(projectNameWithoutExtension: string, dotNetSolutionFileAbsoluteFilePath: AbsoluteFilePath): string {
+    public static formatDotNetRemoveProjectFromSolutionUsingProjectName(projectNameWithoutExtension: string, dotNetSolutionFileAbsoluteFilePath: AbsoluteFilePath): string {
 
         return `dotnet sln \"${dotNetSolutionFileAbsoluteFilePath.initialAbsoluteFilePathStringInput}\" remove \"${projectNameWithoutExtension}/${projectNameWithoutExtension}.csproj\"`;
     }
 
-    public static formatDotNetRemoveCSharpProjectFromSolutionUsingProjectUsingAbsoluteFilePath(projectAbsoluteFilePath: AbsoluteFilePath, dotNetSolutionFileAbsoluteFilePath: AbsoluteFilePath): string {
+    public static formatDotNetRemoveProjectFromSolutionUsingProjectUsingAbsoluteFilePath(projectAbsoluteFilePath: AbsoluteFilePath, dotNetSolutionFileAbsoluteFilePath: AbsoluteFilePath): string {
 
         return `dotnet sln \"${dotNetSolutionFileAbsoluteFilePath.initialAbsoluteFilePathStringInput}\" remove \"${projectAbsoluteFilePath.initialAbsoluteFilePathStringInput}\"`;
     }
 
-    public static formatDotNetAddCSharpProjectToSolutionUsingProjectFsPath(projectFsPath: string, dotNetSolutionFile: DotNetSolutionFile): string {
+    public static formatDotNetAddProjectToSolutionUsingProjectFsPath(projectFsPath: string, dotNetSolutionFile: DotNetSolutionFile): string {
 
         return `dotnet sln \"${dotNetSolutionFile.absoluteFilePath.initialAbsoluteFilePathStringInput}\" add \"${projectFsPath}\"`;
     }
     
-    public static formatDotNetAddCSharpProjectReferenceToCSharpProject(receivingProjectAbsoluteFilePath: AbsoluteFilePath, referenceProjectAbsoluteFilePathString: string): string {
+    public static formatDotNetAddProjectReferenceToProject(receivingProjectAbsoluteFilePath: AbsoluteFilePath, referenceProjectAbsoluteFilePathString: string): string {
 
         return `dotnet add \"${receivingProjectAbsoluteFilePath.initialAbsoluteFilePathStringInput}\" reference \"${referenceProjectAbsoluteFilePathString}\"`;
     }
@@ -64,9 +64,9 @@ export class ConstantsDotNetCli {
      * these variable names correct? They seem nonsensically named.
      * 
      */
-    public static formatDotNetRemoveCSharpProjectReferenceFromCSharpProject(parentCSharpProjectInitialAbsoluteFilePath: AbsoluteFilePath, cSharpProjectReferenceAbsoluteFilePath: AbsoluteFilePath): string {
+    public static formatDotNetRemoveProjectReferenceFromProject(parentProjectInitialAbsoluteFilePath: AbsoluteFilePath, projectReferenceAbsoluteFilePath: AbsoluteFilePath): string {
 
-        return `dotnet remove \"${parentCSharpProjectInitialAbsoluteFilePath.initialAbsoluteFilePathStringInput}\" reference \"${cSharpProjectReferenceAbsoluteFilePath.initialAbsoluteFilePathStringInput}\"`;
+        return `dotnet remove \"${parentProjectInitialAbsoluteFilePath.initialAbsoluteFilePathStringInput}\" reference \"${projectReferenceAbsoluteFilePath.initialAbsoluteFilePathStringInput}\"`;
     }
     
     public static formatDotNetPutProjectInSolutionFolder(projectAbsoluteFilePath: AbsoluteFilePath, 
@@ -78,16 +78,16 @@ export class ConstantsDotNetCli {
                ` --solution-folder \"${solutionFolderName}\"`;
     }
 
-    public static formatDotNetAddNugetPackageReferenceToCSharpProject(cSharpProjectInitialAbsoluteFilePath: AbsoluteFilePath,
+    public static formatDotNetAddNugetPackageReferenceToProject(projectInitialAbsoluteFilePath: AbsoluteFilePath,
         nugetPackageModel: NugetPackageModel,
         nugetPackageVersionModel: NugetPackageVersionModel): string {
 
-        return `dotnet add \"${cSharpProjectInitialAbsoluteFilePath.initialAbsoluteFilePathStringInput}\" package \"${nugetPackageModel.id}\" --version ${nugetPackageVersionModel.version}`;
+        return `dotnet add \"${projectInitialAbsoluteFilePath.initialAbsoluteFilePathStringInput}\" package \"${nugetPackageModel.id}\" --version ${nugetPackageVersionModel.version}`;
     }
 
-    public static formatDotNetRemoveNugetPackageReferenceFromCSharpProject(cSharpProjectInitialAbsoluteFilePath: AbsoluteFilePath, nugetPackageId: string): string {
+    public static formatDotNetRemoveNugetPackageReferenceFromProject(projectInitialAbsoluteFilePath: AbsoluteFilePath, nugetPackageId: string): string {
 
-        return `dotnet remove \"${cSharpProjectInitialAbsoluteFilePath.initialAbsoluteFilePathStringInput}\" package \"${nugetPackageId}\"`;
+        return `dotnet remove \"${projectInitialAbsoluteFilePath.initialAbsoluteFilePathStringInput}\" package \"${nugetPackageId}\"`;
     }
 
     public static DOT_NET_NEW_LIST = "dotnet new --list";

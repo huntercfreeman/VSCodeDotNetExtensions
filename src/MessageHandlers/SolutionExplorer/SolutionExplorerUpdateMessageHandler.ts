@@ -83,7 +83,7 @@ export class SolutionExplorerUpdateMessageHandler {
                 let generalUseTerminal = TerminalService.getGeneralUseTerminal();
 
                 generalUseTerminal.sendText(
-                    ConstantsDotNetCli.formatDotNetAddCSharpProjectToSolutionUsingProjectFsPath(fileUri[0].fsPath,
+                    ConstantsDotNetCli.formatDotNetAddProjectToSolutionUsingProjectFsPath(fileUri[0].fsPath,
                         message.dotNetSolutionFile));
 
                 generalUseTerminal.show();
@@ -97,7 +97,7 @@ export class SolutionExplorerUpdateMessageHandler {
         let generalUseTerminal = TerminalService.getGeneralUseTerminal();
 
         generalUseTerminal.sendText(
-            ConstantsDotNetCli.formatDotNetRemoveCSharpProjectFromSolutionUsingProjectUsingAbsoluteFilePath(message.projectFile.projectModel.absoluteFilePath,
+            ConstantsDotNetCli.formatDotNetRemoveProjectFromSolutionUsingProjectUsingAbsoluteFilePath(message.projectFile.projectModel.absoluteFilePath,
                 message.projectFile.projectModel.parentSolutionAbsoluteFilePath));
 
         generalUseTerminal.show();
@@ -108,7 +108,7 @@ export class SolutionExplorerUpdateMessageHandler {
 
         let generalUseTerminal = TerminalService.getGeneralUseTerminal();
 
-        let removeProjectCommand = ConstantsDotNetCli.formatDotNetRemoveCSharpProjectFromSolutionUsingProjectUsingAbsoluteFilePath(message.projectModel.absoluteFilePath,
+        let removeProjectCommand = ConstantsDotNetCli.formatDotNetRemoveProjectFromSolutionUsingProjectUsingAbsoluteFilePath(message.projectModel.absoluteFilePath,
             message.projectModel.parentSolutionAbsoluteFilePath);
 
         let addBackProjectButInSolutionFolderCommand = ConstantsDotNetCli.formatDotNetPutProjectInSolutionFolder(message.projectModel.absoluteFilePath,
@@ -136,7 +136,7 @@ export class SolutionExplorerUpdateMessageHandler {
                 let generalUseTerminal = TerminalService.getGeneralUseTerminal();
 
                 generalUseTerminal.sendText(
-                    ConstantsDotNetCli.formatDotNetAddCSharpProjectReferenceToCSharpProject(message.projectProjectReferencesFile.parentProjectInitialAbsoluteFilePath,
+                    ConstantsDotNetCli.formatDotNetAddProjectReferenceToProject(message.projectProjectReferencesFile.parentProjectInitialAbsoluteFilePath,
                         fileUri[0].fsPath));
 
                 generalUseTerminal.show();
@@ -150,7 +150,7 @@ export class SolutionExplorerUpdateMessageHandler {
         let generalUseTerminal = TerminalService.getGeneralUseTerminal();
 
         generalUseTerminal.sendText(
-            ConstantsDotNetCli.formatDotNetRemoveCSharpProjectReferenceFromCSharpProject(message.cSharpProjectProjectReferenceFile.parentProjectInitialAbsoluteFilePath,
+            ConstantsDotNetCli.formatDotNetRemoveProjectReferenceFromProject(message.cSharpProjectProjectReferenceFile.parentProjectInitialAbsoluteFilePath,
                 message.cSharpProjectProjectReferenceFile.projectReferenceAbsoluteFilePath));
 
         generalUseTerminal.show();
@@ -162,7 +162,7 @@ export class SolutionExplorerUpdateMessageHandler {
         let generalUseTerminal = TerminalService.getGeneralUseTerminal();
 
         generalUseTerminal.sendText(
-            ConstantsDotNetCli.formatDotNetAddNugetPackageReferenceToCSharpProject(message.cSharpProjectFile.absoluteFilePath,
+            ConstantsDotNetCli.formatDotNetAddNugetPackageReferenceToProject(message.cSharpProjectFile.absoluteFilePath,
                 message.nugetPackageModel,
                 message.nugetPackageVersionModel));
 
@@ -175,7 +175,7 @@ export class SolutionExplorerUpdateMessageHandler {
         let generalUseTerminal = TerminalService.getGeneralUseTerminal();
 
         generalUseTerminal.sendText(
-            ConstantsDotNetCli.formatDotNetRemoveNugetPackageReferenceFromCSharpProject(message.projectNugetPackageDependencyFile.parentCSharpProjectInitialAbsoluteFilePath,
+            ConstantsDotNetCli.formatDotNetRemoveNugetPackageReferenceFromProject(message.projectNugetPackageDependencyFile.parentCSharpProjectInitialAbsoluteFilePath,
                 message.projectNugetPackageDependencyFile.nugetPackageId));
 
         generalUseTerminal.show();
