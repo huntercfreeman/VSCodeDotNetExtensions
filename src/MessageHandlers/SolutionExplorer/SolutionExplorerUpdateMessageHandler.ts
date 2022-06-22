@@ -136,7 +136,7 @@ export class SolutionExplorerUpdateMessageHandler {
                 let generalUseTerminal = TerminalService.getGeneralUseTerminal();
 
                 generalUseTerminal.sendText(
-                    ConstantsDotNetCli.formatDotNetAddCSharpProjectReferenceToCSharpProject(message.cSharpProjectProjectReferencesFile.parentCSharpProjectInitialAbsoluteFilePath,
+                    ConstantsDotNetCli.formatDotNetAddCSharpProjectReferenceToCSharpProject(message.projectProjectReferencesFile.parentCSharpProjectInitialAbsoluteFilePath,
                         fileUri[0].fsPath));
 
                 generalUseTerminal.show();
@@ -150,8 +150,8 @@ export class SolutionExplorerUpdateMessageHandler {
         let generalUseTerminal = TerminalService.getGeneralUseTerminal();
 
         generalUseTerminal.sendText(
-            ConstantsDotNetCli.formatDotNetRemoveCSharpProjectReferenceFromCSharpProject(message.cSharpProjectProjectReferenceFile.parentCSharpProjectInitialAbsoluteFilePath,
-                message.cSharpProjectProjectReferenceFile.cSharpProjectReferenceAbsoluteFilePath));
+            ConstantsDotNetCli.formatDotNetRemoveCSharpProjectReferenceFromCSharpProject(message.cSharpProjectProjectReferenceFile.parentProjectInitialAbsoluteFilePath,
+                message.cSharpProjectProjectReferenceFile.projectReferenceAbsoluteFilePath));
 
         generalUseTerminal.show();
     }
@@ -175,8 +175,8 @@ export class SolutionExplorerUpdateMessageHandler {
         let generalUseTerminal = TerminalService.getGeneralUseTerminal();
 
         generalUseTerminal.sendText(
-            ConstantsDotNetCli.formatDotNetRemoveNugetPackageReferenceFromCSharpProject(message.cSharpProjectNugetPackageDependencyFile.parentCSharpProjectInitialAbsoluteFilePath,
-                message.cSharpProjectNugetPackageDependencyFile.nugetPackageId));
+            ConstantsDotNetCli.formatDotNetRemoveNugetPackageReferenceFromCSharpProject(message.projectNugetPackageDependencyFile.parentCSharpProjectInitialAbsoluteFilePath,
+                message.projectNugetPackageDependencyFile.nugetPackageId));
 
         generalUseTerminal.show();
     }

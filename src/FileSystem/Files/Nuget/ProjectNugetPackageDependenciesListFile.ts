@@ -5,7 +5,7 @@ import { FileKind } from "../../FileKind";
 import { IdeFile } from "../IdeFile";
 
 
-export class CSharpProjectNugetPackageDependenciesListFile extends IdeFile {
+export class ProjectNugetPackageDependenciesListFile extends IdeFile {
     constructor(cSharpProjectParentAbsoluteFilePath: AbsoluteFilePath, projectDependenciesParentAbsoluteFilePath: AbsoluteFilePath) {
         let myAbsoluteFilePath = new AbsoluteFilePath(ConstantsFileExtensionsNoPeriod.C_SHARP_NUGET_PACKAGE_DEPENDENCIES_FILE_EXTENSION,
             false,
@@ -13,7 +13,7 @@ export class CSharpProjectNugetPackageDependenciesListFile extends IdeFile {
 
         super(myAbsoluteFilePath, "");
 
-        this.fileKind = FileKind.cSharpNugetPackageDependenciesList;
+        this.fileKind = FileKind.nugetPackageDependenciesList;
 
         this.parentCSharpProjectInitialAbsoluteFilePath = cSharpProjectParentAbsoluteFilePath;
     }
