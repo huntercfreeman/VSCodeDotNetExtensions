@@ -243,6 +243,8 @@ export class SolutionExplorerReadMessageHandler {
             for (let i = 0; i < message.projectFile.virtualChildFiles.length; i++) {
                 let file = message.projectFile.virtualChildFiles[i];
 
+                file.refreshParentNonce = message.projectFile.nonce;
+
                 file.setVirtualChildFiles(message.projectFile.virtualChildFiles);
 
                 if (previousVirtualChildFiles) {
@@ -280,6 +282,8 @@ export class SolutionExplorerReadMessageHandler {
             for (let i = 0; i < message.directoryFile.childFiles.length; i++) {
                 let file = message.directoryFile.childFiles[i];
 
+                file.refreshParentNonce = message.directoryFile.nonce;
+                
                 file.setVirtualChildFiles(message.directoryFile.childFiles);
 
                 if (previousChildFiles) {

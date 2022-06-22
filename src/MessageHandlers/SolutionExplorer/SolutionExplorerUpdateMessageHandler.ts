@@ -7,6 +7,7 @@ import { DirectoryFile } from '../../FileSystem/Files/DirectoryFile';
 import { FileSystemReader } from '../../FileSystem/FileSystemReader';
 import { IMessage } from '../../Messages/IMessage';
 import { MessageReadFilesInDirectory } from '../../Messages/Read/MessageReadFilesInDirectory';
+import { MessageReadRequestForRefresh } from '../../Messages/Read/MessageReadRequestForRefresh';
 import { MessageReadVirtualFilesInProject } from '../../Messages/Read/MessageReadVirtualFilesInProject';
 import { IMessageUpdate } from '../../Messages/Update/IMessageUpdate';
 import { MessageUpdateAddNugetPackageReference } from '../../Messages/Update/MessageUpdateAddNugetPackageReference';
@@ -25,6 +26,8 @@ import { TerminalService } from '../../Terminal/TerminalService';
 import { SolutionExplorerMessageTransporter } from './SolutionExplorerMessageTransporter';
 
 export class SolutionExplorerUpdateMessageHandler {
+    private static lastRefreshParentNonceFromCopyOrCutAction: string | undefined;
+
     public static async handleMessage(webviewView: vscode.WebviewView, message: IMessage): Promise<void> {
         let updateMessage = message as unknown as IMessageUpdate;
 
@@ -240,6 +243,11 @@ export class SolutionExplorerUpdateMessageHandler {
                                     {
                                         "recursive": true,
                                         "useTrash": true
+                                    }).then(() => {
+                                        // Refresh parent container in TreeView of the deleted file
+                                        if (this.lastRefreshParentNonceFromCopyOrCutAction) {
+                                            webviewView.webview.postMessage(new MessageReadRequestForRefresh(this.lastRefreshParentNonceFromCopyOrCutAction));
+                                        }
                                     });
                                 }
 
@@ -266,7 +274,9 @@ export class SolutionExplorerUpdateMessageHandler {
             .writeText(ConstantsClipboard.CUT_OPERATION +
                        ConstantsClipboard.OPERATION_DELIMITER +
                        message.ideFile.absoluteFilePath.initialAbsoluteFilePathStringInput 
-            );
+            ).then(() => {
+                this.lastRefreshParentNonceFromCopyOrCutAction = message.ideFile.refreshParentNonce;
+            });
     }
 
     private static handleMessageUpdateCopyAny(webviewView: vscode.WebviewView, messageUntyped: IMessage) {
@@ -276,6 +286,8 @@ export class SolutionExplorerUpdateMessageHandler {
             .writeText(ConstantsClipboard.COPY_OPERATION +
                        ConstantsClipboard.OPERATION_DELIMITER +
                        message.ideFile.absoluteFilePath.initialAbsoluteFilePathStringInput 
-            );
+            ).then(() => {
+                this.lastRefreshParentNonceFromCopyOrCutAction = message.ideFile.refreshParentNonce;
+            });
     }
 }
