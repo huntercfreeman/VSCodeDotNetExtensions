@@ -34,7 +34,7 @@ export class SolutionExplorerExecuteMessageHandler {
         }
         else {
             programExecutionTerminal.sendText(ConstantsDotNetCli
-                .formatDotNetRunProject(message.projectModel.absoluteFilePath));
+                .formatRunProject(message.projectModel.absoluteFilePath));
         }
 
         programExecutionTerminal.show();

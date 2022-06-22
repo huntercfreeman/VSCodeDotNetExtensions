@@ -4,6 +4,7 @@
     import { FileKind } from "../../../../../out/FileSystem/FileKind";
     import { MessageReadNewProjectTemplatesOnComputer } from "../../../../../out/Messages/Read/MessageReadNewProjectTemplatesOnComputer";
     import { MessageCreateProjectInAny } from "../../../../../out/Messages/Create/MessageCreateProjectInAny";
+import { ConstantsFileExtensionsNoPeriod } from "../../../../../out/Constants/ConstantsFileExtensionsNoPeriod";
 
     export let closeMenu;
 
@@ -18,12 +19,18 @@
     function createNewCSharpProject() {
         switch (contextMenuTargetValue.fileKind) {
             case FileKind.solution:
-            case FileKind.solutionFolder:
+        //     public readonly ideFile: IdeFile,
+        // public readonly projectNameWithExtension: string,
+        // public readonly projectNameNoExtension: string,
+        // public readonly templateName: string,
+        // public readonly lang: string
                 let messageCreateProjectInAny =
                     new MessageCreateProjectInAny(
                         contextMenuTargetValue,
                         addCSharpProjectFilename,
-                        addCSharpProjectTemplate
+                        addCSharpProjectTemplate,
+                        ConstantsFileExtensionsNoPeriod.C_SHARP_PROJECT_FILE_EXTENSION,
+                        undefined
                     );
 
                 tsVscode.postMessage({

@@ -4,20 +4,24 @@ import { AbsoluteFilePath } from "../FileSystem/AbsoluteFilePath";
 import { DotNetSolutionFile } from "../FileSystem/Files/DotNetSolutionFile";
 
 /* eslint-disable @typescript-eslint/naming-convention */
-export class ConstantsDotNetCli {
-    public static formatDotNetRunProject(projectAbsoluteFilePath: AbsoluteFilePath): string {
-        return `dotnet run --project \"${projectAbsoluteFilePath.initialAbsoluteFilePathStringInput}\"`;
+export class ConstantsDotNetCli {;
+    public static readonly DOTNET_CLI: string = "dotnet";
+
+    public static formatRunProject(projectAbsoluteFilePath: AbsoluteFilePath): string {
+        return `${this.DOTNET_CLI} run --project` + 
+               ` \"${projectAbsoluteFilePath.initialAbsoluteFilePathStringInput}\"`;
     }
 
-    public static formatDotNetNewSolution(solutionNameWithoutExtension: string): string {
+    public static formatNewSolution(solutionNameWithoutExtension: string): string {
         if (solutionNameWithoutExtension) {
-            return `dotnet new sln -o \"${solutionNameWithoutExtension}\"`;
+            return `${this.DOTNET_CLI} new sln` + 
+                   ` -o \"${solutionNameWithoutExtension}\"`;
         }
 
-        return `dotnet new sln`;
+        return `${this.DOTNET_CLI} new sln`;
     }
 
-    public static formatDotNetNewProject(projectNameWithoutExtension: string,
+    public static formatNewProject(projectNameWithoutExtension: string,
         templateName: string,
         lang: string | undefined): string {
 
@@ -25,37 +29,46 @@ export class ConstantsDotNetCli {
             ? `-lang "${lang}"`
             : "";
 
-        return `dotnet new ${templateName} ${langString} -o \"${projectNameWithoutExtension}\"`;
+        return `${this.DOTNET_CLI} new ${templateName}` + 
+               ` ${langString}` + 
+               ` -o \"${projectNameWithoutExtension}\"`;
     }
 
-    public static formatDotNetAddProjectToSolutionUsingProjectName(projectNameNoExtension: string, projectNameWithExtension: string, dotNetSolutionFileAbsoluteFilePath: AbsoluteFilePath): string {
+    public static formatAddProjectToSolutionUsingProjectName(projectNameNoExtension: string, 
+        projectFileExtensionNoPeriod: string, 
+        dotNetSolutionFileAbsoluteFilePath: AbsoluteFilePath): string {
 
-        return `dotnet sln \"${dotNetSolutionFileAbsoluteFilePath.initialAbsoluteFilePathStringInput}\" add \"${projectNameNoExtension}/${projectNameWithExtension}\"`;
+        return `${this.DOTNET_CLI} sln \"${dotNetSolutionFileAbsoluteFilePath.initialAbsoluteFilePathStringInput}\"` + 
+               ` add \"${projectNameNoExtension}/${projectNameNoExtension}.${projectFileExtensionNoPeriod}\"`;
+    }
+
+    public static formatRemoveProjectFromSolutionUsingProjectName(projectNameNoExtension: string, 
+        projectFileExtensionNoPeriod: string, 
+        dotNetSolutionFileAbsoluteFilePath: AbsoluteFilePath): string {
+
+        return `${this.DOTNET_CLI} sln \"${dotNetSolutionFileAbsoluteFilePath.initialAbsoluteFilePathStringInput}\"` + 
+               ` remove \"${projectNameNoExtension}/.${projectFileExtensionNoPeriod}\"`;
+    }
+
+    public static formatRemoveProjectFromSolutionUsingProjectUsingAbsoluteFilePath(projectAbsoluteFilePath: AbsoluteFilePath, 
+        dotNetSolutionFileAbsoluteFilePath: AbsoluteFilePath): string {
+
+        return `${this.DOTNET_CLI} sln \"${dotNetSolutionFileAbsoluteFilePath.initialAbsoluteFilePathStringInput}\"` + 
+        ` remove \"${projectAbsoluteFilePath.initialAbsoluteFilePathStringInput}\"`;
+    }
+
+    public static formatAddProjectToSolutionUsingProjectFsPath(projectFsPath: string, 
+        dotNetSolutionFile: DotNetSolutionFile): string {
+
+        return `${this.DOTNET_CLI} sln \"${dotNetSolutionFile.absoluteFilePath.initialAbsoluteFilePathStringInput}\"` + 
+               ` add \"${projectFsPath}\"`;
     }
     
-    public static formatDotNetAddFSharpProjectToSolutionUsingProjectName(projectNameWithoutExtension: string, dotNetSolutionFileAbsoluteFilePath: AbsoluteFilePath): string {
+    public static formatAddProjectReferenceToProject(receivingProjectAbsoluteFilePath: AbsoluteFilePath, 
+        referenceProjectAbsoluteFilePathString: string): string {
 
-        return `dotnet sln \"${dotNetSolutionFileAbsoluteFilePath.initialAbsoluteFilePathStringInput}\" add \"${projectNameWithoutExtension}/${projectNameWithoutExtension}.fsproj\"`;
-    }
-
-    public static formatDotNetRemoveProjectFromSolutionUsingProjectName(projectNameWithoutExtension: string, dotNetSolutionFileAbsoluteFilePath: AbsoluteFilePath): string {
-
-        return `dotnet sln \"${dotNetSolutionFileAbsoluteFilePath.initialAbsoluteFilePathStringInput}\" remove \"${projectNameWithoutExtension}/${projectNameWithoutExtension}.csproj\"`;
-    }
-
-    public static formatDotNetRemoveProjectFromSolutionUsingProjectUsingAbsoluteFilePath(projectAbsoluteFilePath: AbsoluteFilePath, dotNetSolutionFileAbsoluteFilePath: AbsoluteFilePath): string {
-
-        return `dotnet sln \"${dotNetSolutionFileAbsoluteFilePath.initialAbsoluteFilePathStringInput}\" remove \"${projectAbsoluteFilePath.initialAbsoluteFilePathStringInput}\"`;
-    }
-
-    public static formatDotNetAddProjectToSolutionUsingProjectFsPath(projectFsPath: string, dotNetSolutionFile: DotNetSolutionFile): string {
-
-        return `dotnet sln \"${dotNetSolutionFile.absoluteFilePath.initialAbsoluteFilePathStringInput}\" add \"${projectFsPath}\"`;
-    }
-    
-    public static formatDotNetAddProjectReferenceToProject(receivingProjectAbsoluteFilePath: AbsoluteFilePath, referenceProjectAbsoluteFilePathString: string): string {
-
-        return `dotnet add \"${receivingProjectAbsoluteFilePath.initialAbsoluteFilePathStringInput}\" reference \"${referenceProjectAbsoluteFilePathString}\"`;
+        return `${this.DOTNET_CLI} add \"${receivingProjectAbsoluteFilePath.initialAbsoluteFilePathStringInput}\"` + 
+               ` reference \"${referenceProjectAbsoluteFilePathString}\"`;
     }
 
     /**
@@ -64,30 +77,36 @@ export class ConstantsDotNetCli {
      * these variable names correct? They seem nonsensically named.
      * 
      */
-    public static formatDotNetRemoveProjectReferenceFromProject(parentProjectInitialAbsoluteFilePath: AbsoluteFilePath, projectReferenceAbsoluteFilePath: AbsoluteFilePath): string {
+    public static formatRemoveProjectReferenceFromProject(parentProjectInitialAbsoluteFilePath: AbsoluteFilePath, 
+        projectReferenceAbsoluteFilePath: AbsoluteFilePath): string {
 
-        return `dotnet remove \"${parentProjectInitialAbsoluteFilePath.initialAbsoluteFilePathStringInput}\" reference \"${projectReferenceAbsoluteFilePath.initialAbsoluteFilePathStringInput}\"`;
+        return `${this.DOTNET_CLI} remove \"${parentProjectInitialAbsoluteFilePath.initialAbsoluteFilePathStringInput}\"` + 
+               ` reference \"${projectReferenceAbsoluteFilePath.initialAbsoluteFilePathStringInput}\"`;
     }
     
-    public static formatDotNetPutProjectInSolutionFolder(projectAbsoluteFilePath: AbsoluteFilePath, 
+    public static formatPutProjectInSolutionFolder(projectAbsoluteFilePath: AbsoluteFilePath, 
         dotNetSolutionFileAbsoluteFilePath: AbsoluteFilePath,
         solutionFolderName: string): string {
 
-        return `dotnet sln \"${dotNetSolutionFileAbsoluteFilePath.initialAbsoluteFilePathStringInput}\"` +
+        return `${this.DOTNET_CLI} sln \"${dotNetSolutionFileAbsoluteFilePath.initialAbsoluteFilePathStringInput}\"` +
                ` add \"${projectAbsoluteFilePath.initialAbsoluteFilePathStringInput}\"` +
                ` --solution-folder \"${solutionFolderName}\"`;
     }
 
-    public static formatDotNetAddNugetPackageReferenceToProject(projectInitialAbsoluteFilePath: AbsoluteFilePath,
+    public static formatAddNugetPackageReferenceToProject(projectInitialAbsoluteFilePath: AbsoluteFilePath,
         nugetPackageModel: NugetPackageModel,
         nugetPackageVersionModel: NugetPackageVersionModel): string {
 
-        return `dotnet add \"${projectInitialAbsoluteFilePath.initialAbsoluteFilePathStringInput}\" package \"${nugetPackageModel.id}\" --version ${nugetPackageVersionModel.version}`;
+        return `${this.DOTNET_CLI} add \"${projectInitialAbsoluteFilePath.initialAbsoluteFilePathStringInput}\"` + 
+               ` package \"${nugetPackageModel.id}\"` + 
+               ` --version ${nugetPackageVersionModel.version}`;
     }
 
-    public static formatDotNetRemoveNugetPackageReferenceFromProject(projectInitialAbsoluteFilePath: AbsoluteFilePath, nugetPackageId: string): string {
+    public static formatRemoveNugetPackageReferenceFromProject(projectInitialAbsoluteFilePath: AbsoluteFilePath, 
+        nugetPackageId: string): string {
 
-        return `dotnet remove \"${projectInitialAbsoluteFilePath.initialAbsoluteFilePathStringInput}\" package \"${nugetPackageId}\"`;
+        return `${this.DOTNET_CLI} remove \"${projectInitialAbsoluteFilePath.initialAbsoluteFilePathStringInput}\"` + 
+               ` package \"${nugetPackageId}\"`;
     }
 
     public static DOT_NET_NEW_LIST = "dotnet new --list";

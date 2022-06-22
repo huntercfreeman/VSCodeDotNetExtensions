@@ -53,7 +53,7 @@ export class SolutionExplorerCreateMessageHandler {
         let generalUseTerminal = TerminalService.getGeneralUseTerminal();
 
         generalUseTerminal.sendText(ConstantsDotNetCli
-            .formatDotNetNewSolution(message.solutionNameWithoutExtension));
+            .formatNewSolution(message.solutionNameWithoutExtension));
 
         generalUseTerminal.show();
     }
@@ -272,21 +272,16 @@ export class SolutionExplorerCreateMessageHandler {
     }
 
     public static async handleMessageCreateProjectInAny(webviewView: vscode.WebviewView, iMessage: IMessage) {
-        
         let message = iMessage as MessageCreateProjectInAny;
-
-        let dotNetSolutionFileAbsoluteFilePath: AbsoluteFilePath | undefined;
-
-        let dotNetSolutionFile = message.ideFile as DotNetSolutionFile;
-
-        dotNetSolutionFileAbsoluteFilePath = dotNetSolutionFile.absoluteFilePath;
 
         let generalUseTerminal = TerminalService.getGeneralUseTerminal();
 
         generalUseTerminal.sendText(
-            ConstantsDotNetCli.formatDotNetNewProject(message.projectNameWithExtension, message.templateName, message.lang) +
+            ConstantsDotNetCli.formatNewProject(message.projectNameNoExtension, message.templateName, message.lang) +
             ` ${ConstantsTerminal.TERMINAL_RUN_IF_PREVIOUS_COMMAND_SUCCESSFUL_OPERATOR} ` +
-            ConstantsDotNetCli.formatDotNetAddProjectToSolutionUsingProjectName(message.projectNameNoExtension, message.projectNameWithExtension, dotNetSolutionFileAbsoluteFilePath!));
+            ConstantsDotNetCli.formatAddProjectToSolutionUsingProjectName(message.projectNameNoExtension, 
+                message.projectFileExtensionNoPeriod, 
+                message.dotNetSolutionFile.absoluteFilePath!));
 
         generalUseTerminal.show();
     }
