@@ -109,6 +109,7 @@ All notable changes to the "dot-net-ide" extension will be documented in this fi
         - Nuget Package Manager Webview
         - Solution Explorer Webview
     - Many constants are clearly defined
+
 ## [1.1.0] - 2022-06-21
 ### Added
 - Solution Explorer
@@ -118,9 +119,15 @@ All notable changes to the "dot-net-ide" extension will be documented in this fi
         - Added Paste
         - Added Rename
         - Added Delete
+
 ## [1.2.0] - 2022-06-22
 ### Added
 - F# Support
+
+## [1.2.1] - 2022-06-22
+### Added
+- .vcxproj files have their the filters parsed and the solution explorer shows files matched by the extensions specified.
+- Renaming a file will invoke a refresh on its parent container showing the new name for the file instead of requiring manual refresh.
     
 ---
 

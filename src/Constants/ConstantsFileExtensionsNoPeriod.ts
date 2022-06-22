@@ -6,6 +6,7 @@ export class ConstantsFileExtensionsNoPeriod {
      * C++ Projects use this extension.
      */
     public static readonly VCX_PROJECT_FILE_EXTENSION: string = "vcxproj";
+    public static readonly VCX_PROJECT_FILTERS_FILE_EXTENSION: string = "filters";
     public static readonly SOLUTION_FILE_EXTENSION: string = "sln";
     public static readonly C_SHARP_FILE_EXTENSION: string = "cs";
     public static readonly F_SHARP_FILE_EXTENSION: string = "fs";
@@ -25,7 +26,4 @@ export class ConstantsFileExtensionsNoPeriod {
     public static readonly PROJECT_REFERENCE_FILE_EXTENSION: string = "Project Reference Entry";
     public static readonly VCX_PROJECT_REFERENCES_FILE_EXTENSION: string = "References";
     public static readonly VCX_PROJECT_EXTERNAL_DEPENDENCIES_FILE_EXTENSION: string = "External Dependencies";
-    public static readonly VCX_PROJECT_HEADER_FILES_FILE_EXTENSION: string = "Header Files";
-    public static readonly VCX_PROJECT_RESOURCE_FILES_FILE_EXTENSION: string = "Resource Files";
-    public static readonly VCX_PROJECT_SOURCE_FILES_FILE_EXTENSION: string = "Source Files";
 }

@@ -1,7 +1,9 @@
 import * as vscode from 'vscode';
 import { ActiveDotNetSolutionFileContainer } from '../../ActiveDotNetSolutionFileContainer';
 import { ConstantsDotNetCli } from '../../Constants/ConstantsDotNetCli';
+import { ConstantsFileExtensionsNoPeriod } from '../../Constants/ConstantsFileExtensionsNoPeriod';
 import { ConstantsFilePath } from '../../Constants/ConstantsFilePath';
+import { ConstantsProjectFile } from '../../Constants/ConstantsProjectFile';
 import { CSharpProjectModel } from '../../DotNet/CSharpProjectModel';
 import { FSharpProjectModel } from '../../DotNet/FSharpProjectModel';
 import { ProjectKind } from '../../DotNet/ProjectKind';
@@ -11,6 +13,7 @@ import { VCXProjectModel } from '../../DotNet/VCXProjectModel';
 import { AbsoluteFilePath } from '../../FileSystem/AbsoluteFilePath';
 import { FileKind } from '../../FileSystem/FileKind';
 import { VCXProjectFile } from '../../FileSystem/Files/CPlusPlus/VCXProjectFile';
+import { VCXProjectFilterListFile } from '../../FileSystem/Files/CPlusPlus/VCXProjectFilterListFile';
 import { CSharpProjectFile } from '../../FileSystem/Files/CSharp/CSharpProjectFile';
 import { DotNetSolutionFile } from '../../FileSystem/Files/DotNetSolutionFile';
 import { FSharpProjectFile } from '../../FileSystem/Files/FSharp/FSharpProjectFile';
@@ -23,15 +26,20 @@ import { IMessageRead } from '../../Messages/Read/IMessageRead';
 import { MessageReadActiveDotNetSolutionFile } from '../../Messages/Read/MessageReadActiveDotNetSolutionFile';
 import { MessageReadFileIntoEditor } from '../../Messages/Read/MessageReadFileIntoEditor';
 import { MessageReadFilesInDirectory } from '../../Messages/Read/MessageReadFilesInDirectory';
+import { MessageReadFiltersInVCXProject } from '../../Messages/Read/MessageReadFiltersInVCXProject';
 import { MessageReadKind } from '../../Messages/Read/MessageReadKind';
 import { MessageReadNewProjectTemplatesOnComputer } from '../../Messages/Read/MessageReadNewProjectTemplatesOnComputer';
 import { MessageReadNugetPackageReferencesInProject } from '../../Messages/Read/MessageReadNugetPackageReferencesInProject';
 import { MessageReadProjectReferencesInProject } from '../../Messages/Read/MessageReadProjectReferencesInProject';
 import { MessageReadSolutionIntoTreeView } from '../../Messages/Read/MessageReadSolutionIntoTreeView';
 import { MessageReadSolutionsInWorkspace } from '../../Messages/Read/MessageReadSolutionsInWorkspace';
+import { MessageReadVCXFilterMatches } from '../../Messages/Read/MessageReadVCXFilterMatches';
 import { MessageReadVirtualFilesInProject as MessageReadVirtualFilesInProject } from '../../Messages/Read/MessageReadVirtualFilesInProject';
+import { XmlParser, XmlTagModel, XmlTextModel } from '../../Parsers/XmlParseStateMachines';
 import { XmlProjectParser } from '../../Parsers/XmlProjectParser';
 import { TerminalService } from '../../Terminal/TerminalService';
+
+const fs = require('fs');
 
 export class SolutionExplorerReadMessageHandler {
     public static async handleMessage(webviewView: vscode.WebviewView, message: IMessage): Promise<void> {
@@ -46,6 +54,12 @@ export class SolutionExplorerReadMessageHandler {
                 break;
             case MessageReadKind.virtualFilesInProject:
                 await this.handleMessageReadVirtualFilesInProjectAsync(webviewView, message);
+                break;
+            case MessageReadKind.filtersInVCXProject:
+                await this.handleMessageReadFiltersInVCXProject(webviewView, message);
+                break;
+            case MessageReadKind.vcxFilterMatches:
+                await this.handleMessageReadVCXFilterMatches(webviewView, message);
                 break;
             case MessageReadKind.solutionIntoTreeView:
                 await this.handleMessageReadSolutionIntoTreeViewAsync(webviewView, message);
@@ -259,6 +273,171 @@ export class SolutionExplorerReadMessageHandler {
 
             webviewView.webview.postMessage(message);
         });
+    }
+    
+    public static async handleMessageReadFiltersInVCXProject(webviewView: vscode.WebviewView, iMessage: IMessage) {
+        let message = iMessage as MessageReadFiltersInVCXProject;
+
+        await FileSystemReader.getSiblingFiles(message.vcxProjectFile.absoluteFilePath, async (siblingFiles: string[]) => {
+            let previousVirtualChildFiles = message.vcxProjectFile.virtualChildFiles;
+
+            let vcxProjectFilters = siblingFiles.find(sibling => 
+                sibling === message.vcxProjectFile.absoluteFilePath.filenameWithExtension 
+                            + '.'
+                            + ConstantsFileExtensionsNoPeriod.VCX_PROJECT_FILTERS_FILE_EXTENSION);
+
+            if (!vcxProjectFilters) {
+                return;
+            }
+
+            let vcxProjectFiltersAbsoluteFilePathString = message.vcxProjectFile.absoluteFilePath.initialAbsoluteFilePathStringInput
+                .replace(message.vcxProjectFile.absoluteFilePath.filenameWithExtension, vcxProjectFilters);
+
+            let vcxProjectFiltersAbsoluteFilePath = new AbsoluteFilePath(vcxProjectFiltersAbsoluteFilePathString, false, null);
+
+            await fs.readFile(vcxProjectFiltersAbsoluteFilePath.initialAbsoluteFilePathStringInput, 'utf8', async (err: any, data: any) => {
+                if (err) {
+                    return;
+                }
+
+                let xmlParser: XmlParser = new XmlParser(data);
+                let xmlFileModel = xmlParser.parse();
+
+                let filters: XmlTagModel[] = [];
+
+                xmlFileModel.selectRecursively((tag) => {
+                    return tag.tagName === 'Filter';
+                }, filters);
+
+                if (!message.vcxProjectFile.virtualChildFiles) {
+                    message.vcxProjectFile.virtualChildFiles = [];
+                }
+
+                filters = filters.filter(x => {
+                    let tagResults: XmlTagModel[] = [];
+                    
+                    x.children.selectRecursively((tag) =>
+                        tag.tagName === "UniqueIdentifier", tagResults);
+
+                    if ((tagResults?.length ?? 0) > 0) {
+                        return true;
+                    }
+
+                    return false;
+                });
+                
+                filters = filters.filter(x => {
+                    let tagResults: XmlTagModel[] = [];
+                    
+                    x.children.selectRecursively((tag) =>
+                        tag.tagName === "Extensions", tagResults);
+
+                    if ((tagResults?.length ?? 0) > 0) {
+                        return true;
+                    }
+
+                    return false;
+                });
+
+                message.vcxProjectFile.virtualChildFiles = filters
+                    .map(filter => {
+                        let includeAttribute = filter.xmlAttributeModels
+                            .find(attribute => attribute.attributeName === ConstantsProjectFile.INCLUDE_TAG_NAME);
+
+                        let uniqueIdentifierResult: XmlTagModel[] = [];
+
+                        filter.children.selectRecursively((tag) => {
+                            return tag.tagName === "UniqueIdentifier";
+                        }, uniqueIdentifierResult);
+                
+                        let uniqueIdentifier = (uniqueIdentifierResult[0].children.xmlTagModels[0] as XmlTextModel)
+                            .text;
+                        
+                        let extensionsResult: XmlTagModel[] = [];
+                
+                        filter.children.selectRecursively((tag) => {
+                            return tag.tagName === "Extensions";
+                        }, extensionsResult);
+                
+                        let extensions = (extensionsResult[0].children.xmlTagModels[0] as XmlTextModel)
+                            .text;
+
+                        let absoluteFilePathString = message.vcxProjectFile.absoluteFilePath.initialAbsoluteFilePathStringInput
+                            .replace(message.vcxProjectFile.absoluteFilePath.filenameWithExtension, (includeAttribute?.attributeValue ?? "undefined filter name"));
+
+                        let absoluteFilePath = new AbsoluteFilePath(absoluteFilePathString, 
+                            false, 
+                            null);
+
+                        let vcxProjectFilterListFile = new VCXProjectFilterListFile(absoluteFilePath,
+                            uniqueIdentifier,
+                            extensions);
+
+                        vcxProjectFilterListFile.refreshParentNonce = message.vcxProjectFile.nonce;
+
+                        return vcxProjectFilterListFile;
+                    });
+
+                webviewView.webview.postMessage(message);
+            });
+        });
+    }
+
+    public static async handleMessageReadVCXFilterMatches(webviewView: vscode.WebviewView, iMessage: IMessage) {
+        let message = iMessage as MessageReadVCXFilterMatches;
+
+        let vcxProjectFilterListFile = message.vcxProjectFilterListFile;
+
+        let validExtensions = vcxProjectFilterListFile.extensions.split(';');
+
+        let matchedFiles: string[] = [];
+
+        for (let i = 0; i < validExtensions.length; i++) {
+            let extensionToMatch = validExtensions[i];
+
+            let currentMatches = (await vscode.workspace.findFiles(`**/*.${extensionToMatch}`))
+                .map(x => x.fsPath);
+            
+            if ((currentMatches?.length ?? 0) > 0) {
+
+                matchedFiles = matchedFiles.concat(currentMatches);
+            }
+        }
+
+        if (!message.vcxProjectFilterListFile.virtualChildFiles) {
+            message.vcxProjectFilterListFile.virtualChildFiles = [];
+        }
+
+        let previousChildFiles = message.vcxProjectFilterListFile.virtualChildFiles;
+
+            let childAbsoluteFilePaths: AbsoluteFilePath[] = matchedFiles
+                .map(x => new AbsoluteFilePath(x, FileSystemReader.isDir(x), null));
+
+                message.vcxProjectFilterListFile.virtualChildFiles = childAbsoluteFilePaths
+                .map(absoluteFilePath => IdeFileFactory
+                    .constructIdeFile(absoluteFilePath, message.vcxProjectFilterListFile.namespace));
+
+            message.vcxProjectFilterListFile.virtualChildFiles = FileSorter
+                .organizeContainer(message.vcxProjectFilterListFile.virtualChildFiles);
+
+            for (let i = 0; i < message.vcxProjectFilterListFile.virtualChildFiles.length; i++) {
+                let file = message.vcxProjectFilterListFile.virtualChildFiles[i];
+
+                file.refreshParentNonce = message.vcxProjectFilterListFile.nonce;
+                
+                file.setVirtualChildFiles(message.vcxProjectFilterListFile.virtualChildFiles);
+
+                if (previousChildFiles) {
+                    let previousFileState = previousChildFiles.find(x => x.absoluteFilePath.initialAbsoluteFilePathStringInput ===
+                        file.absoluteFilePath.initialAbsoluteFilePathStringInput);
+
+                    if (previousFileState) {
+                        file.isExpanded = previousFileState.isExpanded;
+                    }
+                }
+            }
+
+            webviewView.webview.postMessage(message);
     }
 
     public static async handleMessageReadFilesInDirectory(webviewView: vscode.WebviewView, iMessage: IMessage) {

@@ -45,4 +45,6 @@ export class ConstantsProjectFile {
      *     </ItemGroup>
      */
     public static readonly NUGET_PACKAGE_TAG_NAME: string = "PackageReference";
+
+    public static readonly INCLUDE_TAG_NAME: string = "Include";
 }

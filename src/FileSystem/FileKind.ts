@@ -22,6 +22,7 @@ export enum FileKind {
     vcxProjectHeaderFilesListFile,
     vcxProjectReferencesListFile,
     vcxProjectResourceFilesListFile,
-    vcxProjectSourceFilesListFile,
-    fSharpProjectDependencies
+    vcxProjectFilterFile,
+    fSharpProjectDependencies,
+    vcxProjectFilterListFile
 }
