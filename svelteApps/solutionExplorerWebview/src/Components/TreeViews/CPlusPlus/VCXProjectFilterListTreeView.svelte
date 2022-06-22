@@ -50,15 +50,15 @@
 			switch (message.messageCategory) {
 				case MessageCategory.read:
 					switch (message.messageReadKind) {
-						case MessageReadKind.filtersInVCXProject:
-							let messageReadFiltersInVCXProject =
+						case MessageReadKind.vcxFilterMatches:
+							let messageReadVCXFilterMatches =
 								message as MessageReadVCXFilterMatches;
 							if (
 								vcxProjectFilterListFile.nonce ===
-									messageReadFiltersInVCXProject.vcxProjectFilterListFile.nonce
+									messageReadVCXFilterMatches.vcxProjectFilterListFile.nonce
 							) {
 								vcxProjectFilterListFile =
-									messageReadFiltersInVCXProject.vcxProjectFilterListFile;
+									messageReadVCXFilterMatches.vcxProjectFilterListFile;
 
 								children = vcxProjectFilterListFile.virtualChildFiles;
 							}
