@@ -3,7 +3,7 @@
 	import type { IdeFile } from "../../../../../../out/FileSystem/Files/IdeFile";
 	import type { FSharpProjectFile } from "../../../../../../out/FileSystem/Files/FSharp/FSharpProjectFile";
 	import { MessageReadFileIntoEditor } from "../../../../../../out/Messages/Read/MessageReadFileIntoEditor";
-	import { MessageReadVirtualFilesInFSharpProject } from "../../../../../../out/Messages/Read/MessageReadVirtualFilesInFSharpProject";
+	import { MessageReadVirtualFilesInProject } from "../../../../../../out/Messages/Read/MessageReadVirtualFilesInProject";
 	import { MessageCategory } from "../../../../../../out/Messages/MessageCategory";
 	import { MessageReadKind } from "../../../../../../out/Messages/Read/MessageReadKind";
 	import TreeViewBase from "../../TreeViewBase.svelte";
@@ -27,12 +27,12 @@
 		children = fSharpProjectFile.virtualChildFiles;
 
 		if (!children) {
-			let messageReadVirtualFilesInFSharpProject =
-				new MessageReadVirtualFilesInFSharpProject(fSharpProjectFile);
+			let messageReadVirtualFilesInProject =
+				new MessageReadVirtualFilesInProject(fSharpProjectFile);
 			
 			tsVscode.postMessage({
 				type: undefined,
-				value: messageReadVirtualFilesInFSharpProject,
+				value: messageReadVirtualFilesInProject,
 			});
 
 			return [];
@@ -53,24 +53,23 @@
 
 	onMount(async () => {
 		window.addEventListener("message", async (event) => {
- console.log("fshpi");
 			const message = event.data;
+
 			switch (message.messageCategory) {
 				case MessageCategory.read:
 					switch (message.messageReadKind) {
 						case MessageReadKind.virtualFilesInFSharpProject:
 							let messageReadVirtualFilesInFSharpProject =
-								message as MessageReadVirtualFilesInFSharpProject;
+								message as MessageReadVirtualFilesInProject;
 							if (fSharpProjectFile.nonce ===
-									messageReadVirtualFilesInFSharpProject.fSharpProjectFile.nonce) {
+									messageReadVirtualFilesInFSharpProject.projectFile.nonce) {
 								
 								fSharpProjectFile =
-									messageReadVirtualFilesInFSharpProject.fSharpProjectFile;
-									children = fSharpProjectFile.virtualChildFiles;
-
-// 								children = fSharpProjectFile.constantChildFiles;
+									messageReadVirtualFilesInFSharpProject.projectFile;
+							
+								children = fSharpProjectFile.constantChildFiles;
 								
-// 								children = children.concat(fSharpProjectFile.virtualChildFiles);
+								children = children.concat(fSharpProjectFile.virtualChildFiles);
 							}
 							break;
 					}

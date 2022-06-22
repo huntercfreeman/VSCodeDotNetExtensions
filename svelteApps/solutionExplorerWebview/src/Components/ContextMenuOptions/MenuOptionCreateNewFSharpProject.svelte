@@ -3,7 +3,7 @@
     import MenuOption from "../MenuOption.svelte";
     import { FileKind } from "../../../../../out/FileSystem/FileKind";
     import { MessageReadNewProjectTemplatesOnComputer } from "../../../../../out/Messages/Read/MessageReadNewProjectTemplatesOnComputer";
-    import { MessageCreateFSharpProjectInAny } from "../../../../../out/Messages/Create/MessageCreateFSharpProjectInAny";
+    import { MessageCreateProjectInAny } from "../../../../../out/Messages/Create/MessageCreateProjectInAny";
 
     export let closeMenu;
 
@@ -19,8 +19,8 @@
         switch (contextMenuTargetValue.fileKind) {
             case FileKind.solution:
             case FileKind.solutionFolder:
-                let messageCreateFSharpProjectInAny =
-                    new MessageCreateFSharpProjectInAny(
+                let messageCreateProjectInAny =
+                    new MessageCreateProjectInAny(
                         contextMenuTargetValue,
                         addFSharpProjectFilename,
                         addFSharpProjectTemplate
@@ -28,7 +28,7 @@
 
                 tsVscode.postMessage({
                     type: undefined,
-                    value: messageCreateFSharpProjectInAny,
+                    value: messageCreateProjectInAny,
                 });
         }
 
