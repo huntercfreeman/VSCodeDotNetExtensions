@@ -9,6 +9,7 @@
 		"vscode": "^1.68.0"
 	},
 	"repository": "https://github.com/huntercfreeman/dot-net-ide",
+	"icon": "dotnetideicon.png",
 	"categories": [
 		"Other"
 	],
