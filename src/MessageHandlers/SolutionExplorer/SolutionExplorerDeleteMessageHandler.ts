@@ -3,6 +3,7 @@ import { IMessage } from '../../Messages/IMessage';
 import { IMessageDelete } from '../../Messages/Delete/IMessageDelete';
 import { MessageDeleteKind } from '../../Messages/Delete/MessageDeleteKind';
 import { MessageDeleteAny } from '../../Messages/Delete/MessageDeleteAny';
+import { MessageReadRequestForRefresh } from '../../Messages/Read/MessageReadRequestForRefresh';
 
 export class SolutionExplorerDeleteMessageHandler {
     public static async handleMessage(webviewView: vscode.WebviewView, message: IMessage): Promise<void> {
@@ -29,7 +30,11 @@ export class SolutionExplorerDeleteMessageHandler {
 
         vscode.workspace.applyEdit(deleteFileWorkspaceEdit).then((value: boolean) => {
             // onfulfilled
-
+            
+            // Refresh parent container in TreeView of the deleted file
+            if (message.toBeDeletedIdeFile.refreshParentNonce) {
+                webviewView.webview.postMessage(new MessageReadRequestForRefresh(message.toBeDeletedIdeFile.refreshParentNonce));
+            }
         }, 
         (reason: any) => {
             // onrejected
