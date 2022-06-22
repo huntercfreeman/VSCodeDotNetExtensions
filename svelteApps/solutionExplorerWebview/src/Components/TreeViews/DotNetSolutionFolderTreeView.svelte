@@ -4,8 +4,7 @@
 	import { FileKind } from "../../../../../out/FileSystem/FileKind";
 	import type { SolutionFolderFile } from "../../../../../out/FileSystem/Files/SolutionFolderFile";
 	import TreeViewBase from "../TreeViewBase.svelte";
-	import type { CSharpProjectFile } from "../../../../../out/FileSystem/Files/CSharp/CSharpProjectFile";
-	
+		
     export let solutionFolderFile: SolutionFolderFile;
 
 	let children: IdeFile[] | undefined;

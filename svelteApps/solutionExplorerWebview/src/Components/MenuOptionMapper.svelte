@@ -1,7 +1,7 @@
 <script lang="ts">
     import { ContextualInformationDatum } from "../../../../out/ContextMenus/ContextualInformationDatum";
-    import MenuOptionAddCSharpProjectReference from "./ContextMenuOptions/MenuOptionAddCSharpProjectReference.svelte";
-    import MenuOptionAddExistingCSharpProject from "./ContextMenuOptions/MenuOptionAddExistingProject.svelte";
+    import MenuOptionAddProjectReference from "./ContextMenuOptions/MenuOptionAddProjectReference.svelte";
+    import MenuOptionAddExistingProject from "./ContextMenuOptions/MenuOptionAddExistingProject.svelte";
     import MenuOptionCreateDirectory from "./ContextMenuOptions/MenuOptionCreateDirectory.svelte";
     import MenuOptionCreateNewCSharpProject from "./ContextMenuOptions/MenuOptionCreateNewCSharpProject.svelte";
     import MenuOptionCreateNewFSharpProject from "./ContextMenuOptions/MenuOptionCreateNewFSharpProject.svelte";
@@ -9,7 +9,7 @@
     import MenuOptionCreateNewTemplatedFile from "./ContextMenuOptions/MenuOptionCreateNewTemplatedFile.svelte";
     import MenuOptionRefreshChildFiles from "./ContextMenuOptions/MenuOptionRefreshChildFiles.svelte";
     import MenuOptionRemoveProject from "./ContextMenuOptions/MenuOptionRemoveProject.svelte";
-    import MenuOptionRemoveCSharpProjectReference from "./ContextMenuOptions/MenuOptionRemoveCSharpProjectReference.svelte";
+    import MenuOptionRemoveProjectReference from "./ContextMenuOptions/MenuOptionRemoveProjectReference.svelte";
     import MenuOptionRemoveNugetPackageReference from "./ContextMenuOptions/MenuOptionRemoveNugetPackageReference.svelte";
     import MenuOptionStartDebugging from "./ContextMenuOptions/MenuOptionStartDebugging.svelte";
     import MenuOptionStartWithoutDebugging from "./ContextMenuOptions/MenuOptionStartWithoutDebugging.svelte";
@@ -41,17 +41,17 @@
         <MenuOptionCreateNewCSharpProject {closeMenu} />
     {:else if ContextualInformationDatum.checkDatumEquality(ContextualInformationDatum.createNewFSharpProject, contextualInformationDatum)}
         <MenuOptionCreateNewFSharpProject {closeMenu} />
-    {:else if ContextualInformationDatum.checkDatumEquality(ContextualInformationDatum.addExistingCSharpProject, contextualInformationDatum)}
-        <MenuOptionAddExistingCSharpProject {closeMenu} />
+    {:else if ContextualInformationDatum.checkDatumEquality(ContextualInformationDatum.addExistingProject, contextualInformationDatum)}
+        <MenuOptionAddExistingProject {closeMenu} />
     {:else if ContextualInformationDatum.checkDatumEquality(ContextualInformationDatum.addProjectReference, contextualInformationDatum)}
-        <MenuOptionAddCSharpProjectReference {closeMenu} />
+        <MenuOptionAddProjectReference {closeMenu} />
     {:else if ContextualInformationDatum.checkDatumEquality(ContextualInformationDatum.removeProjectReference, contextualInformationDatum)}
-        <MenuOptionRemoveCSharpProjectReference {closeMenu} />
+        <MenuOptionRemoveProjectReference {closeMenu} />
     {:else if ContextualInformationDatum.checkDatumEquality(ContextualInformationDatum.removeNugetPackageReference, contextualInformationDatum)}
         <MenuOptionRemoveNugetPackageReference {closeMenu} />
     {:else if ContextualInformationDatum.checkDatumEquality(ContextualInformationDatum.putProjectInSolutionFolder, contextualInformationDatum)}
         <MenuOptionPutProjectInSolutionFolder {closeMenu} />
-    {:else if ContextualInformationDatum.checkDatumEquality(ContextualInformationDatum.removeCSharpProject, contextualInformationDatum)}
+    {:else if ContextualInformationDatum.checkDatumEquality(ContextualInformationDatum.removeProject, contextualInformationDatum)}
         <MenuOptionRemoveProject {closeMenu} />
     {:else if ContextualInformationDatum.checkDatumEquality(ContextualInformationDatum.copyFile, contextualInformationDatum)}
         <MenuOptionCopyFile {closeMenu} />

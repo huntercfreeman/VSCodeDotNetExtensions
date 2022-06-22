@@ -3,15 +3,11 @@ import { ConstantsClipboard } from '../../Constants/ConstantsClipboard';
 import { ConstantsDotNetCli } from '../../Constants/ConstantsDotNetCli';
 import { ConstantsFilePath } from '../../Constants/ConstantsFilePath';
 import { AbsoluteFilePath } from '../../FileSystem/AbsoluteFilePath';
-import { FileKind } from '../../FileSystem/FileKind';
-import { CSharpProjectFile } from '../../FileSystem/Files/CSharp/CSharpProjectFile';
 import { DirectoryFile } from '../../FileSystem/Files/DirectoryFile';
-import { FSharpProjectFile } from '../../FileSystem/Files/FSharp/FSharpProjectFile';
 import { FileSystemReader } from '../../FileSystem/FileSystemReader';
 import { IMessage } from '../../Messages/IMessage';
 import { MessageReadFilesInDirectory } from '../../Messages/Read/MessageReadFilesInDirectory';
-import { MessageReadVirtualFilesInCSharpProject } from '../../Messages/Read/MessageReadVirtualFilesInCSharpProject';
-import { MessageReadVirtualFilesInFSharpProject } from '../../Messages/Read/MessageReadVirtualFilesInFSharpProject';
+import { MessageReadVirtualFilesInProject } from '../../Messages/Read/MessageReadVirtualFilesInProject';
 import { IMessageUpdate } from '../../Messages/Update/IMessageUpdate';
 import { MessageUpdateAddNugetPackageReference } from '../../Messages/Update/MessageUpdateAddNugetPackageReference';
 import { MessageUpdateAddProjectReference } from '../../Messages/Update/MessageUpdateAddProjectReference';
@@ -34,7 +30,7 @@ export class SolutionExplorerUpdateMessageHandler {
 
         switch (updateMessage.messageUpdateKind) {
             case MessageUpdateKind.existingProjectIntoSolution:
-                await this.handleMessageUpdateExistingCSharpProjectIntoSolution(webviewView, message);
+                await this.handleMessageUpdateExistingProjectIntoSolution(webviewView, message);
                 break;
             case MessageUpdateKind.removeProject:
                 await this.handleMessageUpdateRemoveProject(webviewView, message);
@@ -66,7 +62,7 @@ export class SolutionExplorerUpdateMessageHandler {
         }
     }
 
-    public static async handleMessageUpdateExistingCSharpProjectIntoSolution(webviewView: vscode.WebviewView, iMessage: IMessage) {
+    public static async handleMessageUpdateExistingProjectIntoSolution(webviewView: vscode.WebviewView, iMessage: IMessage) {
         let message = iMessage as MessageUpdateExistingProjectIntoSolution;
 
         const options: vscode.OpenDialogOptions = {
@@ -83,7 +79,7 @@ export class SolutionExplorerUpdateMessageHandler {
                 let generalUseTerminal = TerminalService.getGeneralUseTerminal();
 
                 generalUseTerminal.sendText(
-                    ConstantsDotNetCli.formatDotNetAddCSharpProjectToSolutionUsingProjectFsPath(fileUri[0].fsPath,
+                    ConstantsDotNetCli.formatAddProjectToSolutionUsingProjectFsPath(fileUri[0].fsPath,
                         message.dotNetSolutionFile));
 
                 generalUseTerminal.show();
@@ -97,7 +93,7 @@ export class SolutionExplorerUpdateMessageHandler {
         let generalUseTerminal = TerminalService.getGeneralUseTerminal();
 
         generalUseTerminal.sendText(
-            ConstantsDotNetCli.formatDotNetRemoveCSharpProjectFromSolutionUsingProjectUsingAbsoluteFilePath(message.projectFile.projectModel.absoluteFilePath,
+            ConstantsDotNetCli.formatRemoveProjectFromSolutionUsingProjectUsingAbsoluteFilePath(message.projectFile.projectModel.absoluteFilePath,
                 message.projectFile.projectModel.parentSolutionAbsoluteFilePath));
 
         generalUseTerminal.show();
@@ -108,10 +104,10 @@ export class SolutionExplorerUpdateMessageHandler {
 
         let generalUseTerminal = TerminalService.getGeneralUseTerminal();
 
-        let removeProjectCommand = ConstantsDotNetCli.formatDotNetRemoveCSharpProjectFromSolutionUsingProjectUsingAbsoluteFilePath(message.projectModel.absoluteFilePath,
+        let removeProjectCommand = ConstantsDotNetCli.formatRemoveProjectFromSolutionUsingProjectUsingAbsoluteFilePath(message.projectModel.absoluteFilePath,
             message.projectModel.parentSolutionAbsoluteFilePath);
 
-        let addBackProjectButInSolutionFolderCommand = ConstantsDotNetCli.formatDotNetPutProjectInSolutionFolder(message.projectModel.absoluteFilePath,
+        let addBackProjectButInSolutionFolderCommand = ConstantsDotNetCli.formatPutProjectInSolutionFolder(message.projectModel.absoluteFilePath,
             message.projectModel.parentSolutionAbsoluteFilePath,
             message.solutionFolderName);
 
@@ -136,7 +132,7 @@ export class SolutionExplorerUpdateMessageHandler {
                 let generalUseTerminal = TerminalService.getGeneralUseTerminal();
 
                 generalUseTerminal.sendText(
-                    ConstantsDotNetCli.formatDotNetAddCSharpProjectReferenceToCSharpProject(message.cSharpProjectProjectReferencesFile.parentCSharpProjectInitialAbsoluteFilePath,
+                    ConstantsDotNetCli.formatAddProjectReferenceToProject(message.projectToProjectReferencesFile.parentProjectInitialAbsoluteFilePath,
                         fileUri[0].fsPath));
 
                 generalUseTerminal.show();
@@ -150,8 +146,8 @@ export class SolutionExplorerUpdateMessageHandler {
         let generalUseTerminal = TerminalService.getGeneralUseTerminal();
 
         generalUseTerminal.sendText(
-            ConstantsDotNetCli.formatDotNetRemoveCSharpProjectReferenceFromCSharpProject(message.cSharpProjectProjectReferenceFile.parentCSharpProjectInitialAbsoluteFilePath,
-                message.cSharpProjectProjectReferenceFile.cSharpProjectReferenceAbsoluteFilePath));
+            ConstantsDotNetCli.formatRemoveProjectReferenceFromProject(message.projectToProjectReferenceFile.receivingProjectInitialAbsoluteFilePath,
+                message.projectToProjectReferenceFile.referenceProjectAbsoluteFilePath));
 
         generalUseTerminal.show();
     }
@@ -162,7 +158,7 @@ export class SolutionExplorerUpdateMessageHandler {
         let generalUseTerminal = TerminalService.getGeneralUseTerminal();
 
         generalUseTerminal.sendText(
-            ConstantsDotNetCli.formatDotNetAddNugetPackageReferenceToCSharpProject(message.cSharpProjectFile.absoluteFilePath,
+            ConstantsDotNetCli.formatAddNugetPackageReferenceToProject(message.projectFile.absoluteFilePath,
                 message.nugetPackageModel,
                 message.nugetPackageVersionModel));
 
@@ -175,8 +171,8 @@ export class SolutionExplorerUpdateMessageHandler {
         let generalUseTerminal = TerminalService.getGeneralUseTerminal();
 
         generalUseTerminal.sendText(
-            ConstantsDotNetCli.formatDotNetRemoveNugetPackageReferenceFromCSharpProject(message.cSharpProjectNugetPackageDependencyFile.parentCSharpProjectInitialAbsoluteFilePath,
-                message.cSharpProjectNugetPackageDependencyFile.nugetPackageId));
+            ConstantsDotNetCli.formatRemoveNugetPackageReferenceFromProject(message.projectNugetPackageDependencyFile.parentProjectInitialAbsoluteFilePath,
+                message.projectNugetPackageDependencyFile.nugetPackageId));
 
         generalUseTerminal.show();
     }
@@ -249,16 +245,9 @@ export class SolutionExplorerUpdateMessageHandler {
 
                                 if ((message.ideFile as any).projectModel) {
 
-                                    if (message.ideFile.fileKind === FileKind.cSharpProject) {
-                                        SolutionExplorerMessageTransporter
+                                    SolutionExplorerMessageTransporter
                                             .transportMessage(webviewView, 
-                                                new MessageReadVirtualFilesInCSharpProject(message.ideFile as CSharpProjectFile));
-                                    }
-                                    else if (message.ideFile.fileKind === FileKind.fSharpProject) {
-                                        SolutionExplorerMessageTransporter
-                                            .transportMessage(webviewView, 
-                                                new MessageReadVirtualFilesInFSharpProject(message.ideFile as FSharpProjectFile));
-                                    }
+                                                new MessageReadVirtualFilesInProject(message.ideFile as any));
                                 }
                                 else {
                                     SolutionExplorerMessageTransporter

@@ -1,35 +1,34 @@
 <script lang="ts">
 	import type { IdeFile } from "../../../../../../out/FileSystem/Files/IdeFile";
 	import TreeViewBase from "../../TreeViewBase.svelte";
-	import type { CSharpProjectProjectReferenceFile } from "../../../../../../out/FileSystem/Files/CSharp/CSharpProjectProjectReferenceFile";
+	import type { FSharpProjectDependenciesListFile } from "../../../../../../out/FileSystem/Files/FSharp/FSharpProjectDependenciesListFile";
 	
-    export let cSharpProjectProjectReferenceFile: CSharpProjectProjectReferenceFile;
+    export let fSharpProjectDependenciesListFile: FSharpProjectDependenciesListFile;
 
 	let children: IdeFile[] | undefined;
 
-	$: titleText = cSharpProjectProjectReferenceFile.absoluteFilePath.filenameWithExtension;
+	$: titleText = fSharpProjectDependenciesListFile.absoluteFilePath.filenameWithExtension;
 
 	function titleOnClick() {
     }
 
 	function getChildFiles(): IdeFile[] {
-        children = cSharpProjectProjectReferenceFile.virtualChildFiles;
-
+		children = fSharpProjectDependenciesListFile.constantChildFiles;
+		
 		return children;
 	}
 
 	function hasDifferentParentContainer(childIdeFile: IdeFile): boolean {
 		if (childIdeFile.virtualParentNonce) {
-			if (childIdeFile.virtualParentNonce !== cSharpProjectProjectReferenceFile.nonce) {
+			if (childIdeFile.virtualParentNonce !== fSharpProjectDependenciesListFile.nonce) {
 				return true;
 			}
 		}
-
 		return false;
 	}
 </script>
 
-<TreeViewBase ideFile="{cSharpProjectProjectReferenceFile}" 
+<TreeViewBase ideFile="{fSharpProjectDependenciesListFile}" 
               titleText={titleText}
               titleOnClick={titleOnClick}
               getChildFiles={getChildFiles}

@@ -62,12 +62,14 @@
     <JsonIcon />
 {:else if fileKind === FileKind.cSharpProjectDependencies}
     <ProjectDependenciesIcon />
-{:else if fileKind === FileKind.cSharpNugetPackageDependenciesList}
+{:else if fileKind === FileKind.fSharpProjectDependencies}
+    <ProjectDependenciesIcon />
+{:else if fileKind === FileKind.nugetPackageDependenciesList}
     <NugetPackageDependenciesIcon />
-{:else if fileKind === FileKind.cSharpNugetPackageDependency}
+{:else if fileKind === FileKind.nugetPackageDependency}
     <NugetPackageDependencyIcon />
-{:else if fileKind === FileKind.cSharpProjectReferencesList}
+{:else if fileKind === FileKind.projectReferencesList}
     <ProjectReferencesIcon />
-{:else if fileKind === FileKind.cSharpProjectReference}
+{:else if fileKind === FileKind.projectReference}
     <ProjectReferenceIcon />
 {/if}

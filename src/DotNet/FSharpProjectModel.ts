@@ -1,10 +1,6 @@
-import { ConstantsContextualInformation } from "../Constants/ConstantsContextualInformation";
 import { AbsoluteFilePath } from "../FileSystem/AbsoluteFilePath";
-import { CSharpProjectNugetPackageDependenciesListFile } from "../FileSystem/Files/CSharp/CSharpProjectNugetPackageDependenciesListFile";
-import { CSharpProjectProjectReferenceFile } from "../FileSystem/Files/CSharp/CSharpProjectProjectReferenceFile";
-import { CSharpProjectProjectReferencesListFile } from "../FileSystem/Files/CSharp/CSharpProjectProjectReferencesListFile";
+import { ProjectToProjectReferenceFile } from "../FileSystem/Files/ProjectReference/ProjectToProjectReferenceFile";
 import { IdeFile } from "../FileSystem/Files/IdeFile";
-import { XmlProjectParser } from "../Parsers/XmlProjectParser";
 import { IProjectModel } from "./IProjectModel";
 import { ProjectKind } from "./ProjectKind";
 import { SolutionModel } from "./SolutionModel";
@@ -42,30 +38,15 @@ export class FSharpProjectModel implements IProjectModel {
             callback(err, data);
         });
     }
-
-    public static async parseRootNamespace(fSharpProjectModel: FSharpProjectModel,
-        callback: any): Promise<void> {
-
-        fSharpProjectModel.rootNamespace = fSharpProjectModel.displayName;
-
-        let cSharpProjectParser = new XmlProjectParser(undefined,
-            undefined,
-            undefined,
-            fSharpProjectModel);
-
-        cSharpProjectParser.parse(callback);
-    }
     
     public readonly absoluteFilePath: AbsoluteFilePath;
     public childFiles: IdeFile[] | undefined;
     public solutionFolderParentProjectIdGuid: string | undefined;
-    public projectReferences: CSharpProjectProjectReferenceFile[] = [];
+    public projectReferences: ProjectToProjectReferenceFile[] = [];
     public rootNamespace: string;
     public targetFramework: string = "";
     public isExecutable: boolean = true;;
     public readonly parentSolutionAbsoluteFilePath: AbsoluteFilePath;
     public initialIsExpandedState: boolean = false;
     public projectKind: ProjectKind = ProjectKind.fSharpProject;
-
-    public contextualInformation: string = ConstantsContextualInformation.TREE_VIEW_FSHARP_PROJECT_CONTEXT;
 }

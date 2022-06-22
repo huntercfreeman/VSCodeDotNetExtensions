@@ -48,7 +48,7 @@
             <div style="margin-left: 12px;">
                 <em
                     >{contextMenuTargetValue
-                        .cSharpProjectReferenceAbsoluteFilePath
+                        .referenceProjectAbsoluteFilePath
                         .filenameWithExtension}</em
                 >
             </div>
@@ -58,7 +58,7 @@
 
             <div style="margin-left: 12px;">
                 {contextMenuTargetValue
-                    .parentCSharpProjectInitialAbsoluteFilePath
+                    .receivingProjectInitialAbsoluteFilePath
                     .filenameWithExtension}
             </div>
         </div>

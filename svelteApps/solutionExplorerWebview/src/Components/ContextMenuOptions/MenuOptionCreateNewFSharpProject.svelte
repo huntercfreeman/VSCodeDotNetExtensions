@@ -3,7 +3,9 @@
     import MenuOption from "../MenuOption.svelte";
     import { FileKind } from "../../../../../out/FileSystem/FileKind";
     import { MessageReadNewProjectTemplatesOnComputer } from "../../../../../out/Messages/Read/MessageReadNewProjectTemplatesOnComputer";
-    import { MessageCreateFSharpProjectInAny } from "../../../../../out/Messages/Create/MessageCreateFSharpProjectInAny";
+    import { MessageCreateProjectInAny } from "../../../../../out/Messages/Create/MessageCreateProjectInAny";
+    import { ConstantsFileExtensionsNoPeriod } from "../../../../../out/Constants/ConstantsFileExtensionsNoPeriod";
+    import { ConstantsDotNetCli } from "../../../../../out/Constants/ConstantsDotNetCli";
 
     export let closeMenu;
 
@@ -18,17 +20,18 @@
     function createNewFSharpProject() {
         switch (contextMenuTargetValue.fileKind) {
             case FileKind.solution:
-            case FileKind.solutionFolder:
-                let messageCreateFSharpProjectInAny =
-                    new MessageCreateFSharpProjectInAny(
+                let messageCreateProjectInAny =
+                    new MessageCreateProjectInAny(
                         contextMenuTargetValue,
                         addFSharpProjectFilename,
-                        addFSharpProjectTemplate
+                        addFSharpProjectTemplate,
+                        ConstantsFileExtensionsNoPeriod.F_SHARP_PROJECT_FILE_EXTENSION,
+                        ConstantsDotNetCli.LANG_F_SHARP
                     );
 
                 tsVscode.postMessage({
                     type: undefined,
-                    value: messageCreateFSharpProjectInAny,
+                    value: messageCreateProjectInAny,
                 });
         }
 

@@ -6,22 +6,22 @@ import { IdeFile } from "../IdeFile";
 import { ProjectNugetPackageDependenciesListFile } from "../Nuget/ProjectNugetPackageDependenciesListFile";
 import { ProjectToProjectReferencesListFile } from "../ProjectReference/ProjectToProjectReferencesListFile";
 
-export class CSharpProjectDependenciesListFile extends IdeFile {
-    constructor(cSharpProjectParentAbsoluteFilePath: AbsoluteFilePath) {
-        let myAbsoluteFilePath = new AbsoluteFilePath(ConstantsFileExtensionsNoPeriod.C_SHARP_PROJECT_DEPENDENCIES_FILE_EXTENSION,
+export class FSharpProjectDependenciesListFile extends IdeFile {
+    constructor(fSharpProjectParentAbsoluteFilePath: AbsoluteFilePath) {
+        let myAbsoluteFilePath = new AbsoluteFilePath(ConstantsFileExtensionsNoPeriod.F_SHARP_PROJECT_DEPENDENCIES_FILE_EXTENSION,
             false,
-            cSharpProjectParentAbsoluteFilePath.parentDirectories);
+            fSharpProjectParentAbsoluteFilePath.parentDirectories);
 
         super(myAbsoluteFilePath, "");
 
         this.constantChildFiles = [
-            new ProjectNugetPackageDependenciesListFile(cSharpProjectParentAbsoluteFilePath, myAbsoluteFilePath),
-            new ProjectToProjectReferencesListFile(cSharpProjectParentAbsoluteFilePath, myAbsoluteFilePath),
+            new ProjectNugetPackageDependenciesListFile(fSharpProjectParentAbsoluteFilePath, myAbsoluteFilePath),
+            new ProjectToProjectReferencesListFile(fSharpProjectParentAbsoluteFilePath, myAbsoluteFilePath),
         ];
 
-        this.fileKind = FileKind.cSharpProjectDependencies;
+        this.fileKind = FileKind.fSharpProjectDependencies;
 
-        this.parentCSharpProjectInitialAbsoluteFilePath = cSharpProjectParentAbsoluteFilePath;
+        this.parentFSharpProjectInitialAbsoluteFilePath = fSharpProjectParentAbsoluteFilePath;
     }
 
     public setVirtualChildFiles(siblingFiles: IdeFile[]): void {
@@ -30,7 +30,7 @@ export class CSharpProjectDependenciesListFile extends IdeFile {
 
     public childFiles: any[] | undefined;
 
-    public parentCSharpProjectInitialAbsoluteFilePath: AbsoluteFilePath;
+    public parentFSharpProjectInitialAbsoluteFilePath: AbsoluteFilePath;
 
     public hideExpansionChevronWhenNoChildFiles: boolean = false;
 

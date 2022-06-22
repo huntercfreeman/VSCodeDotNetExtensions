@@ -3,24 +3,24 @@
 	import type { IdeFile } from "../../../../../../out/FileSystem/Files/IdeFile";
 	import { FileKind } from "../../../../../../out/FileSystem/FileKind";import { MessageCategory } from "../../../../../../out/Messages/MessageCategory";
 	import { MessageReadKind } from "../../../../../../out/Messages/Read/MessageReadKind";import TreeViewBase from "../../TreeViewBase.svelte";
-	import type { CSharpProjectProjectReferencesListFile } from "../../../../../../out/FileSystem/Files/CSharp/CSharpProjectProjectReferencesListFile";
+	import type { ProjectToProjectReferencesListFile } from "../../../../../../out/FileSystem/Files/ProjectReference/ProjectToProjectReferencesListFile";
 	import { MessageReadProjectReferencesInProject } from "../../../../../../out/Messages/Read/MessageReadProjectReferencesInProject";
 	
-    export let cSharpProjectProjectReferencesListFile: CSharpProjectProjectReferencesListFile;
+    export let projectToProjectReferencesListFile: ProjectToProjectReferencesListFile;
 
 	let children: IdeFile[] | undefined;
 
-	$: titleText = cSharpProjectProjectReferencesListFile.absoluteFilePath.filenameWithExtension;
+	$: titleText = projectToProjectReferencesListFile.absoluteFilePath.filenameWithExtension;
 
 	function titleOnClick() {
     }
 
 	function getChildFiles(): IdeFile[] {
-		children = cSharpProjectProjectReferencesListFile.virtualChildFiles;
+		children = projectToProjectReferencesListFile.virtualChildFiles;
 
 		if (!children) {
 			let messageReadProjectReferencesInProject =
-				new MessageReadProjectReferencesInProject(cSharpProjectProjectReferencesListFile);
+				new MessageReadProjectReferencesInProject(projectToProjectReferencesListFile);
 						
 			tsVscode.postMessage({
 				type: undefined,
@@ -34,7 +34,7 @@
 
 	function hasDifferentParentContainer(childIdeFile: IdeFile): boolean {
 		if (childIdeFile.virtualParentNonce) {
-			if (childIdeFile.virtualParentNonce !== cSharpProjectProjectReferencesListFile.nonce) {
+			if (childIdeFile.virtualParentNonce !== projectToProjectReferencesListFile.nonce) {
 				return true;
 			}
 		}
@@ -51,12 +51,12 @@
 						case MessageReadKind.projectReferencesInProject:
 							let messageReadProjectReferencesInProject =
 								message as MessageReadProjectReferencesInProject;
-							if (cSharpProjectProjectReferencesListFile.nonce === messageReadProjectReferencesInProject.cSharpProjectProjectReferencesFile.nonce) {
+							if (projectToProjectReferencesListFile.nonce === messageReadProjectReferencesInProject.projectToProjectReferencesFile.nonce) {
 								
-								cSharpProjectProjectReferencesListFile =
-									messageReadProjectReferencesInProject.cSharpProjectProjectReferencesFile;
+								projectToProjectReferencesListFile =
+									messageReadProjectReferencesInProject.projectToProjectReferencesFile;
 									
-								children = cSharpProjectProjectReferencesListFile.virtualChildFiles;
+								children = projectToProjectReferencesListFile.virtualChildFiles;
 							}
 							break;
 					}
@@ -65,7 +65,7 @@
 	});
 </script>
 
-<TreeViewBase ideFile="{cSharpProjectProjectReferencesListFile}" 
+<TreeViewBase ideFile="{projectToProjectReferencesListFile}" 
               titleText={titleText}
               titleOnClick={titleOnClick}
               getChildFiles={getChildFiles}

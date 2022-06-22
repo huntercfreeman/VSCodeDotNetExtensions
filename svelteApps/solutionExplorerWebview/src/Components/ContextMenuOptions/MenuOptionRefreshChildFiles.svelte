@@ -2,8 +2,7 @@
     import { contextMenuTarget } from "../menu";
     import MenuOption from "../MenuOption.svelte";
     import { FileKind } from "../../../../../out/FileSystem/FileKind";
-    import { MessageReadVirtualFilesInCSharpProject } from "../../../../../out/Messages/Read/MessageReadVirtualFilesInCSharpProject";
-    import { MessageReadVirtualFilesInFSharpProject } from "../../../../../out/Messages/Read/MessageReadVirtualFilesInFSharpProject";
+    import { MessageReadVirtualFilesInProject } from "../../../../../out/Messages/Read/MessageReadVirtualFilesInProject";
     import { MessageReadFilesInDirectory } from "../../../../../out/Messages/Read/MessageReadFilesInDirectory";
     import { MessageReadVirtualFilesInSolution } from "../../../../../out/Messages/Read/MessageReadVirtualFilesInSolution";
     import { MessageReadProjectReferencesInProject } from "../../../../../out/Messages/Read/MessageReadProjectReferencesInProject";
@@ -30,29 +29,20 @@
                     value: messageReadVirtualFilesInSolution,
                 });
                 break;
-            case FileKind.cSharpProject:
-                let messageReadVirtualFilesInCSharpProject =
-                    new MessageReadVirtualFilesInCSharpProject(
-                        contextMenuTargetValue
-                    );
-
-                tsVscode.postMessage({
-                    type: undefined,
-                    value: messageReadVirtualFilesInCSharpProject,
-                });
-                break;
             case FileKind.fSharpProject:
-                let messageReadVirtualFilesInFSharpProject =
-                    new MessageReadVirtualFilesInFSharpProject(
+            case FileKind.cSharpProject:
+                let messageReadVirtualFilesInProject =
+                    new MessageReadVirtualFilesInProject(
                         contextMenuTargetValue
                     );
 
                 tsVscode.postMessage({
                     type: undefined,
-                    value: messageReadVirtualFilesInFSharpProject,
+                    value: messageReadVirtualFilesInProject,
                 });
+
                 break;
-            case FileKind.cSharpProjectReferencesList:
+            case FileKind.projectReferencesList:
                 let messageReadProjectReferencesInProject =
                     new MessageReadProjectReferencesInProject(
                         contextMenuTargetValue
@@ -63,7 +53,7 @@
                     value: messageReadProjectReferencesInProject,
                 });
                 break;
-            case FileKind.cSharpNugetPackageDependenciesList:
+            case FileKind.nugetPackageDependenciesList:
                 let messageReadNugetPackageReferencesInProject =
                     new MessageReadNugetPackageReferencesInProject(
                         contextMenuTargetValue

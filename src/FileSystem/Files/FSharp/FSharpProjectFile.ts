@@ -3,6 +3,7 @@ import { FSharpProjectModel } from "../../../DotNet/FSharpProjectModel";
 import { IProjectModel } from "../../../DotNet/IProjectModel";
 import { IdeFile } from "../IdeFile";
 import { IProjectFile } from "../IProjectFile";
+import { FSharpProjectDependenciesListFile } from "./FSharpProjectDependenciesListFile";
 
 export class FSharpProjectFile extends IdeFile implements IProjectFile {
 
@@ -14,7 +15,7 @@ export class FSharpProjectFile extends IdeFile implements IProjectFile {
             ContextualInformationDatum.createNewEmptyFile,
             ContextualInformationDatum.createDirectory,
             ContextualInformationDatum.refreshChildFiles,
-            ContextualInformationDatum.removeCSharpProject,
+            ContextualInformationDatum.removeProject,
             ContextualInformationDatum.startWithoutDebugging,
             ContextualInformationDatum.startDebugging,
             ContextualInformationDatum.putProjectInSolutionFolder,
@@ -22,6 +23,7 @@ export class FSharpProjectFile extends IdeFile implements IProjectFile {
         ];
 
         this.constantChildFiles = [
+            new FSharpProjectDependenciesListFile(this.fSharpProjectModel.absoluteFilePath),
         ];
         
         this.isExpanded = fSharpProjectModel.initialIsExpandedState;

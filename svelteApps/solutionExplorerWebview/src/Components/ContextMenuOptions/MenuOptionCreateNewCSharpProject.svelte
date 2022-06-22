@@ -3,7 +3,8 @@
     import MenuOption from "../MenuOption.svelte";
     import { FileKind } from "../../../../../out/FileSystem/FileKind";
     import { MessageReadNewProjectTemplatesOnComputer } from "../../../../../out/Messages/Read/MessageReadNewProjectTemplatesOnComputer";
-    import { MessageCreateCSharpProjectInAny } from "../../../../../out/Messages/Create/MessageCreateCSharpProjectInAny";
+    import { MessageCreateProjectInAny } from "../../../../../out/Messages/Create/MessageCreateProjectInAny";
+    import { ConstantsFileExtensionsNoPeriod } from "../../../../../out/Constants/ConstantsFileExtensionsNoPeriod";
 
     export let closeMenu;
 
@@ -18,17 +19,18 @@
     function createNewCSharpProject() {
         switch (contextMenuTargetValue.fileKind) {
             case FileKind.solution:
-            case FileKind.solutionFolder:
-                let messageCreateCSharpProjectInAny =
-                    new MessageCreateCSharpProjectInAny(
+                let messageCreateProjectInAny =
+                    new MessageCreateProjectInAny(
                         contextMenuTargetValue,
                         addCSharpProjectFilename,
-                        addCSharpProjectTemplate
+                        addCSharpProjectTemplate,
+                        ConstantsFileExtensionsNoPeriod.C_SHARP_PROJECT_FILE_EXTENSION,
+                        undefined
                     );
 
                 tsVscode.postMessage({
                     type: undefined,
-                    value: messageCreateCSharpProjectInAny,
+                    value: messageCreateProjectInAny,
                 });
         }
 

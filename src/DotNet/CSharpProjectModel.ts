@@ -1,10 +1,6 @@
-import { ConstantsContextualInformation } from "../Constants/ConstantsContextualInformation";
 import { AbsoluteFilePath } from "../FileSystem/AbsoluteFilePath";
-import { CSharpProjectNugetPackageDependenciesListFile } from "../FileSystem/Files/CSharp/CSharpProjectNugetPackageDependenciesListFile";
-import { CSharpProjectProjectReferenceFile } from "../FileSystem/Files/CSharp/CSharpProjectProjectReferenceFile";
-import { CSharpProjectProjectReferencesListFile } from "../FileSystem/Files/CSharp/CSharpProjectProjectReferencesListFile";
+import { ProjectToProjectReferenceFile } from "../FileSystem/Files/ProjectReference/ProjectToProjectReferenceFile";
 import { IdeFile } from "../FileSystem/Files/IdeFile";
-import { XmlProjectParser } from "../Parsers/XmlProjectParser";
 import { IProjectModel } from "./IProjectModel";
 import { ProjectKind } from "./ProjectKind";
 import { SolutionModel } from "./SolutionModel";
@@ -42,58 +38,15 @@ export class CSharpProjectModel implements IProjectModel {
             callback(err, data);
         });
     }
-
-    public static async parseRootNamespace(cSharpProjectModel: CSharpProjectModel,
-        callback: any): Promise<void> {
-
-        cSharpProjectModel.rootNamespace = cSharpProjectModel.displayName;
-
-        let cSharpProjectParser = new XmlProjectParser(undefined,
-            undefined,
-            undefined,
-            cSharpProjectModel);
-
-        cSharpProjectParser.parse(callback);
-    }
-
-    public static async parseCSharpProjectProjectReferences(cSharpProjectAbsoluteFilePath: AbsoluteFilePath,
-        cSharpProjectProjectReferencesFile: CSharpProjectProjectReferencesListFile,
-        callback: any): Promise<void> {
-
-        cSharpProjectProjectReferencesFile.virtualChildFiles = [];
-
-        let cSharpProjectParser = new XmlProjectParser(cSharpProjectAbsoluteFilePath,
-            cSharpProjectProjectReferencesFile,
-            undefined,
-            undefined);
-
-        cSharpProjectParser.parse(callback);
-    }
-
-    public static async parseCSharpProjectNugetPackageReferences(cSharpProjectAbsoluteFilePath: AbsoluteFilePath,
-        cSharpProjectNugetPackageDependenciesFile: CSharpProjectNugetPackageDependenciesListFile,
-        callback: any): Promise<void> {
-
-        cSharpProjectNugetPackageDependenciesFile.virtualChildFiles = [];
-
-        let cSharpProjectParser = new XmlProjectParser(cSharpProjectAbsoluteFilePath,
-            undefined,
-            cSharpProjectNugetPackageDependenciesFile,
-            undefined);
-
-        cSharpProjectParser.parse(callback);
-    }
-
+    
     public readonly absoluteFilePath: AbsoluteFilePath;
     public childFiles: IdeFile[] | undefined;
     public solutionFolderParentProjectIdGuid: string | undefined;
-    public projectReferences: CSharpProjectProjectReferenceFile[] = [];
+    public projectReferences: ProjectToProjectReferenceFile[] = [];
     public rootNamespace: string;
     public targetFramework: string = "";
     public isExecutable: boolean = true;;
     public readonly parentSolutionAbsoluteFilePath: AbsoluteFilePath;
     public initialIsExpandedState: boolean = false;
     public projectKind: ProjectKind = ProjectKind.cSharpProject;
-
-    public contextualInformation: string = ConstantsContextualInformation.TREE_VIEW_CSHARP_PROJECT_CONTEXT;
 }

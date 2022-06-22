@@ -1,4 +1,3 @@
-import { CSharpProjectFile } from "../../FileSystem/Files/CSharp/CSharpProjectFile";
 import { IProjectFile } from "../../FileSystem/Files/IProjectFile";
 import { IMessage } from "../IMessage";
 import { MessageCategory } from "../MessageCategory";

@@ -6,9 +6,9 @@ import { MessageExecuteKind } from "./MessageExecuteKind";
  * `MessageExecute${adjective | undefined}${noun}${* (WildCard) | undefined}`
  *
  * 
- * Example: `MessageExecuteCSharpProjectWithoutDebugging`
+ * Example: `MessageExecuteProjectWithoutDebugging`
  *     - MessageExecute => Constant in every filename
- *     - Adjective | Undefined => "CSharp"
+ *     - Adjective | Undefined => Undefined
  *     - Noun => "Project"
  *     - * (WildCard) => "Without Debugging"
  *     

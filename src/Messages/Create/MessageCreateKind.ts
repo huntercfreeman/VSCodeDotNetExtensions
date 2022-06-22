@@ -10,9 +10,7 @@ export enum MessageCreateKind {
     emptyFileInDirectory,
     solutionFolderInAny,
     templatedFileInAny,
-    cSharpProjectInAny,
-    projectInSolutionFolder,
+    projectInAny,
     directoryInAny,
     dotNetSolutionInWorkspace,
-    fSharpProjectInAny
 }

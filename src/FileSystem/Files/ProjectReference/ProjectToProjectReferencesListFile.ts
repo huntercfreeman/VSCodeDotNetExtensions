@@ -5,17 +5,17 @@ import { FileKind } from "../../FileKind";
 import { IdeFile } from "../IdeFile";
 
 
-export class CSharpProjectProjectReferencesListFile extends IdeFile {
-    constructor(cSharpProjectParentAbsoluteFilePath: AbsoluteFilePath, projectDependenciesParentAbsoluteFilePath: AbsoluteFilePath) {
-        let myAbsoluteFilePath = new AbsoluteFilePath(ConstantsFileExtensionsNoPeriod.C_SHARP_PROJECT_REFERENCES_FILE_EXTENSION,
+export class ProjectToProjectReferencesListFile extends IdeFile {
+    constructor(projectParentAbsoluteFilePath: AbsoluteFilePath, projectDependenciesParentAbsoluteFilePath: AbsoluteFilePath) {
+        let myAbsoluteFilePath = new AbsoluteFilePath(ConstantsFileExtensionsNoPeriod.PROJECT_REFERENCES_FILE_EXTENSION,
             false,
             projectDependenciesParentAbsoluteFilePath.parentDirectories);
 
         super(myAbsoluteFilePath, "");
 
-        this.fileKind = FileKind.cSharpProjectReferencesList;
+        this.fileKind = FileKind.projectReferencesList;
 
-        this.parentCSharpProjectInitialAbsoluteFilePath = cSharpProjectParentAbsoluteFilePath;
+        this.parentProjectInitialAbsoluteFilePath = projectParentAbsoluteFilePath;
     }
 
     public setVirtualChildFiles(siblingFiles: IdeFile[]): void {
@@ -24,7 +24,7 @@ export class CSharpProjectProjectReferencesListFile extends IdeFile {
 
     public childFiles: any[] | undefined;
 
-    public parentCSharpProjectInitialAbsoluteFilePath: AbsoluteFilePath;
+    public parentProjectInitialAbsoluteFilePath: AbsoluteFilePath;
 
     public hideExpansionChevronWhenNoChildFiles: boolean = false;
 

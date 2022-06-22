@@ -29,8 +29,8 @@ import { MessageReadNugetPackageReferencesInProject } from '../../Messages/Read/
 import { MessageReadProjectReferencesInProject } from '../../Messages/Read/MessageReadProjectReferencesInProject';
 import { MessageReadSolutionIntoTreeView } from '../../Messages/Read/MessageReadSolutionIntoTreeView';
 import { MessageReadSolutionsInWorkspace } from '../../Messages/Read/MessageReadSolutionsInWorkspace';
-import { MessageReadVirtualFilesInCSharpProject } from '../../Messages/Read/MessageReadVirtualFilesInCSharpProject';
-import { MessageReadVirtualFilesInFSharpProject } from '../../Messages/Read/MessageReadVirtualFilesInFSharpProject';
+import { MessageReadVirtualFilesInProject as MessageReadVirtualFilesInProject } from '../../Messages/Read/MessageReadVirtualFilesInProject';
+import { XmlProjectParser } from '../../Parsers/XmlProjectParser';
 import { TerminalService } from '../../Terminal/TerminalService';
 
 export class SolutionExplorerReadMessageHandler {
@@ -44,11 +44,8 @@ export class SolutionExplorerReadMessageHandler {
             case MessageReadKind.filesInDirectory:
                 await this.handleMessageReadFilesInDirectory(webviewView, message);
                 break;
-            case MessageReadKind.virtualFilesInCSharpProject:
-                await this.handleMessageReadVirtualFilesInCSharpProjectAsync(webviewView, message);
-                break;
-            case MessageReadKind.virtualFilesInFSharpProject:
-                await this.handleMessageReadVirtualFilesInFSharpProjectAsync(webviewView, message);
+            case MessageReadKind.virtualFilesInProject:
+                await this.handleMessageReadVirtualFilesInProjectAsync(webviewView, message);
                 break;
             case MessageReadKind.solutionIntoTreeView:
                 await this.handleMessageReadSolutionIntoTreeViewAsync(webviewView, message);
@@ -135,7 +132,7 @@ export class SolutionExplorerReadMessageHandler {
                 else {
                     parsedRootNamespaces.push(0);
 
-                    await CSharpProjectModel.parseRootNamespace(projectModel as CSharpProjectModel,
+                    await XmlProjectParser.parseRootNamespace(projectModel,
                         () => parsedRootNamespaces[i] = 1);
                 }
             }
@@ -181,8 +178,8 @@ export class SolutionExplorerReadMessageHandler {
     public static async handleMessageReadProjectReferencesInProjectAsync(webviewView: vscode.WebviewView, iMessage: IMessage) {
         let message = iMessage as MessageReadProjectReferencesInProject;
 
-        return await CSharpProjectModel.parseCSharpProjectProjectReferences(message.cSharpProjectProjectReferencesFile.parentCSharpProjectInitialAbsoluteFilePath,
-            message.cSharpProjectProjectReferencesFile, () => {
+        return await XmlProjectParser.parseProjectToProjectReferences(message.projectToProjectReferencesFile.parentProjectInitialAbsoluteFilePath,
+            message.projectToProjectReferencesFile, () => {
 
                 webviewView.webview.postMessage(message);
             });
@@ -191,8 +188,8 @@ export class SolutionExplorerReadMessageHandler {
     public static async handleMessageReadNugetPackageReferencesInProject(webviewView: vscode.WebviewView, iMessage: IMessage) {
         let message = iMessage as MessageReadNugetPackageReferencesInProject;
 
-        return await CSharpProjectModel.parseCSharpProjectNugetPackageReferences(message.cSharpProjectNugetPackageDependenciesFile.parentCSharpProjectInitialAbsoluteFilePath,
-            message.cSharpProjectNugetPackageDependenciesFile, () => {
+        return await XmlProjectParser.parseProjectNugetPackageReferences(message.projectNugetPackageDependenciesFile.parentProjectInitialAbsoluteFilePath,
+            message.projectNugetPackageDependenciesFile, () => {
 
                 webviewView.webview.postMessage(message);
             });
@@ -223,69 +220,30 @@ export class SolutionExplorerReadMessageHandler {
         });
     }
 
-    public static async handleMessageReadVirtualFilesInCSharpProjectAsync(webviewView: vscode.WebviewView, iMessage: IMessage) {
-        let message = iMessage as MessageReadVirtualFilesInCSharpProject;
+    public static async handleMessageReadVirtualFilesInProjectAsync(webviewView: vscode.WebviewView, iMessage: IMessage) {
+        let message = iMessage as MessageReadVirtualFilesInProject;
 
-        await FileSystemReader.getSiblingFiles(message.cSharpProjectFile.absoluteFilePath, (siblingFiles: string[]) => {
-            let previousVirtualChildFiles = message.cSharpProjectFile.virtualChildFiles;
-
-            siblingFiles = siblingFiles
-                .filter(x => x !== message.cSharpProjectFile.absoluteFilePath.filenameWithExtension);
-
-            let siblingAbsoluteFilePaths: AbsoluteFilePath[] = siblingFiles
-                .map(x => message.cSharpProjectFile.absoluteFilePath.initialAbsoluteFilePathStringInput
-                    .replace(message.cSharpProjectFile.absoluteFilePath.filenameWithExtension, x))
-                .map(x => new AbsoluteFilePath(x, FileSystemReader.isDir(x), null));
-
-            message.cSharpProjectFile.virtualChildFiles = siblingAbsoluteFilePaths
-                .map(absoluteFilePath => IdeFileFactory
-                    .constructIdeFile(absoluteFilePath, message.cSharpProjectFile.namespace));
-
-            message.cSharpProjectFile.virtualChildFiles = FileSorter.organizeContainer(message.cSharpProjectFile.virtualChildFiles);
-
-            for (let i = 0; i < message.cSharpProjectFile.virtualChildFiles.length; i++) {
-                let file = message.cSharpProjectFile.virtualChildFiles[i];
-
-                file.setVirtualChildFiles(message.cSharpProjectFile.virtualChildFiles);
-
-                if (previousVirtualChildFiles) {
-                    let previousFileState = previousVirtualChildFiles.find(x => x.absoluteFilePath.initialAbsoluteFilePathStringInput ===
-                        file.absoluteFilePath.initialAbsoluteFilePathStringInput);
-
-                    if (previousFileState) {
-                        file.isExpanded = previousFileState.isExpanded;
-                    }
-                }
-            }
-
-            webviewView.webview.postMessage(message);
-        });
-    }
-    
-    public static async handleMessageReadVirtualFilesInFSharpProjectAsync(webviewView: vscode.WebviewView, iMessage: IMessage) {
-        let message = iMessage as MessageReadVirtualFilesInFSharpProject;
-
-        await FileSystemReader.getSiblingFiles(message.fSharpProjectFile.absoluteFilePath, (siblingFiles: string[]) => {
-            let previousVirtualChildFiles = message.fSharpProjectFile.virtualChildFiles;
+        await FileSystemReader.getSiblingFiles(message.projectFile.absoluteFilePath, (siblingFiles: string[]) => {
+            let previousVirtualChildFiles = message.projectFile.virtualChildFiles;
 
             siblingFiles = siblingFiles
-                .filter(x => x !== message.fSharpProjectFile.absoluteFilePath.filenameWithExtension);
+                .filter(x => x !== message.projectFile.absoluteFilePath.filenameWithExtension);
 
             let siblingAbsoluteFilePaths: AbsoluteFilePath[] = siblingFiles
-                .map(x => message.fSharpProjectFile.absoluteFilePath.initialAbsoluteFilePathStringInput
-                    .replace(message.fSharpProjectFile.absoluteFilePath.filenameWithExtension, x))
+                .map(x => message.projectFile.absoluteFilePath.initialAbsoluteFilePathStringInput
+                    .replace(message.projectFile.absoluteFilePath.filenameWithExtension, x))
                 .map(x => new AbsoluteFilePath(x, FileSystemReader.isDir(x), null));
 
-            message.fSharpProjectFile.virtualChildFiles = siblingAbsoluteFilePaths
+            message.projectFile.virtualChildFiles = siblingAbsoluteFilePaths
                 .map(absoluteFilePath => IdeFileFactory
-                    .constructIdeFile(absoluteFilePath, message.fSharpProjectFile.namespace));
+                    .constructIdeFile(absoluteFilePath, message.projectFile.namespace));
 
-            message.fSharpProjectFile.virtualChildFiles = FileSorter.organizeContainer(message.fSharpProjectFile.virtualChildFiles);
+            message.projectFile.virtualChildFiles = FileSorter.organizeContainer(message.projectFile.virtualChildFiles);
 
-            for (let i = 0; i < message.fSharpProjectFile.virtualChildFiles.length; i++) {
-                let file = message.fSharpProjectFile.virtualChildFiles[i];
+            for (let i = 0; i < message.projectFile.virtualChildFiles.length; i++) {
+                let file = message.projectFile.virtualChildFiles[i];
 
-                file.setVirtualChildFiles(message.fSharpProjectFile.virtualChildFiles);
+                file.setVirtualChildFiles(message.projectFile.virtualChildFiles);
 
                 if (previousVirtualChildFiles) {
                     let previousFileState = previousVirtualChildFiles.find(x => x.absoluteFilePath.initialAbsoluteFilePathStringInput ===
