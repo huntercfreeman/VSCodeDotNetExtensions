@@ -4,9 +4,9 @@ import { AbsoluteFilePath } from "../../AbsoluteFilePath";
 import { FileKind } from "../../FileKind";
 import { IdeFile } from "../IdeFile";
 
-export class VCXProjectSourceFilesListFile extends IdeFile {
+export class VCXProjectFilterListFile extends IdeFile {
     constructor(vcxProjectParentAbsoluteFilePath: AbsoluteFilePath) {
-        let myAbsoluteFilePath = new AbsoluteFilePath(ConstantsFileExtensionsNoPeriod.VCX_PROJECT_SOURCE_FILES_FILE_EXTENSION,
+        let myAbsoluteFilePath = new AbsoluteFilePath(ConstantsFileExtensionsNoPeriod.VCX_PROJECT_FILTER_FILE_EXTENSION,
             false,
             vcxProjectParentAbsoluteFilePath.parentDirectories);
 

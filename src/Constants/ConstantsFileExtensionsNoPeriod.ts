@@ -25,7 +25,5 @@ export class ConstantsFileExtensionsNoPeriod {
     public static readonly PROJECT_REFERENCE_FILE_EXTENSION: string = "Project Reference Entry";
     public static readonly VCX_PROJECT_REFERENCES_FILE_EXTENSION: string = "References";
     public static readonly VCX_PROJECT_EXTERNAL_DEPENDENCIES_FILE_EXTENSION: string = "External Dependencies";
-    public static readonly VCX_PROJECT_HEADER_FILES_FILE_EXTENSION: string = "Header Files";
-    public static readonly VCX_PROJECT_RESOURCE_FILES_FILE_EXTENSION: string = "Resource Files";
-    public static readonly VCX_PROJECT_SOURCE_FILES_FILE_EXTENSION: string = "Source Files";
+    public static readonly VCX_PROJECT_FILTER_FILE_EXTENSION: string = "Filter";
 }
