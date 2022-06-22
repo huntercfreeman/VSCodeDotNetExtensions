@@ -21,9 +21,9 @@ import { MessageCreateTemplatedFileInAny } from '../../Messages/Create/MessageCr
 import { TerminalService } from '../../Terminal/TerminalService';
 import { SolutionExplorerMessageTransporter } from './SolutionExplorerMessageTransporter';
 import { MessageReadFilesInDirectory } from '../../Messages/Read/MessageReadFilesInDirectory';
-import { MessageReadVirtualFilesInCSharpProject } from '../../Messages/Read/MessageReadVirtualFilesInProject';
+import { MessageReadVirtualFilesInProject } from '../../Messages/Read/MessageReadVirtualFilesInProject';
 import { FSharpProjectFile } from '../../FileSystem/Files/FSharp/FSharpProjectFile';
-import { MessageReadVirtualFilesInFSharpProject } from '../../Messages/Read/MessageReadVirtualFilesInFSharpProject';
+import { IProjectFile } from '../../FileSystem/Files/IProjectFile';
 
 const fs = require('fs');
 
@@ -116,16 +116,9 @@ export class SolutionExplorerCreateMessageHandler {
 
                         message.ideFile.virtualChildFiles.push(templatedIdeFile);
 
-                        if (message.ideFile.fileKind === FileKind.cSharpProject) {
-                            SolutionExplorerMessageTransporter
+                        SolutionExplorerMessageTransporter
                                 .transportMessage(webviewView, 
-                                    new MessageReadVirtualFilesInCSharpProject(message.ideFile as CSharpProjectFile));
-                        }
-                        else if (message.ideFile.fileKind === FileKind.fSharpProject) {
-                            SolutionExplorerMessageTransporter
-                                .transportMessage(webviewView, 
-                                    new MessageReadVirtualFilesInFSharpProject(message.ideFile as FSharpProjectFile));
-                        }
+                                    new MessageReadVirtualFilesInProject(message.ideFile as any));
                     }
 
                     const openPath = vscode.Uri.file(absoluteFilePath.initialAbsoluteFilePathStringInput);
@@ -199,16 +192,9 @@ export class SolutionExplorerCreateMessageHandler {
 
                         message.ideFile.virtualChildFiles.push(defaultFile);
 
-                        if (message.ideFile.fileKind === FileKind.cSharpProject) {
-                            SolutionExplorerMessageTransporter
+                        SolutionExplorerMessageTransporter
                                 .transportMessage(webviewView, 
-                                    new MessageReadVirtualFilesInCSharpProject(message.ideFile as CSharpProjectFile));
-                        }
-                        else if (message.ideFile.fileKind === FileKind.fSharpProject) {
-                            SolutionExplorerMessageTransporter
-                                .transportMessage(webviewView, 
-                                    new MessageReadVirtualFilesInFSharpProject(message.ideFile as FSharpProjectFile));
-                        }
+                                    new MessageReadVirtualFilesInProject(message.ideFile as any));
                     }
 
                     const openPath = vscode.Uri.file(absoluteFilePath.initialAbsoluteFilePathStringInput);
@@ -280,16 +266,9 @@ export class SolutionExplorerCreateMessageHandler {
 
                     message.ideFile.virtualChildFiles.push(templatedIdeFile);
 
-                    if (message.ideFile.fileKind === FileKind.cSharpProject) {
-                        SolutionExplorerMessageTransporter
+                    SolutionExplorerMessageTransporter
                             .transportMessage(webviewView, 
-                                new MessageReadVirtualFilesInCSharpProject(message.ideFile as CSharpProjectFile));
-                    }
-                    else if (message.ideFile.fileKind === FileKind.fSharpProject) {
-                        SolutionExplorerMessageTransporter
-                            .transportMessage(webviewView, 
-                                new MessageReadVirtualFilesInFSharpProject(message.ideFile as FSharpProjectFile));
-                    }
+                                new MessageReadVirtualFilesInProject(message.ideFile as any));
                 }
             }
         });

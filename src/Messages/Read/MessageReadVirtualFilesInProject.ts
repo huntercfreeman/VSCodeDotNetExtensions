@@ -4,7 +4,7 @@ import { MessageCategory } from "../MessageCategory";
 import { IMessageRead } from "./IMessageRead";
 import { MessageReadKind } from "./MessageReadKind";
 
-export class MessageReadVirtualFilesInCSharpProject implements IMessage, IMessageRead {
+export class MessageReadVirtualFilesInProject implements IMessage, IMessageRead {
     constructor(public readonly projectFile: IProjectFile) {
     }
 

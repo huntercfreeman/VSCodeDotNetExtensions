@@ -10,8 +10,7 @@ import { FSharpProjectFile } from '../../FileSystem/Files/FSharp/FSharpProjectFi
 import { FileSystemReader } from '../../FileSystem/FileSystemReader';
 import { IMessage } from '../../Messages/IMessage';
 import { MessageReadFilesInDirectory } from '../../Messages/Read/MessageReadFilesInDirectory';
-import { MessageReadVirtualFilesInCSharpProject } from '../../Messages/Read/MessageReadVirtualFilesInProject';
-import { MessageReadVirtualFilesInFSharpProject } from '../../Messages/Read/MessageReadVirtualFilesInFSharpProject';
+import { MessageReadVirtualFilesInProject } from '../../Messages/Read/MessageReadVirtualFilesInProject';
 import { IMessageUpdate } from '../../Messages/Update/IMessageUpdate';
 import { MessageUpdateAddNugetPackageReference } from '../../Messages/Update/MessageUpdateAddNugetPackageReference';
 import { MessageUpdateAddProjectReference } from '../../Messages/Update/MessageUpdateAddProjectReference';
@@ -249,16 +248,9 @@ export class SolutionExplorerUpdateMessageHandler {
 
                                 if ((message.ideFile as any).projectModel) {
 
-                                    if (message.ideFile.fileKind === FileKind.cSharpProject) {
-                                        SolutionExplorerMessageTransporter
+                                    SolutionExplorerMessageTransporter
                                             .transportMessage(webviewView, 
-                                                new MessageReadVirtualFilesInCSharpProject(message.ideFile as CSharpProjectFile));
-                                    }
-                                    else if (message.ideFile.fileKind === FileKind.fSharpProject) {
-                                        SolutionExplorerMessageTransporter
-                                            .transportMessage(webviewView, 
-                                                new MessageReadVirtualFilesInFSharpProject(message.ideFile as FSharpProjectFile));
-                                    }
+                                                new MessageReadVirtualFilesInProject(message.ideFile as any));
                                 }
                                 else {
                                     SolutionExplorerMessageTransporter

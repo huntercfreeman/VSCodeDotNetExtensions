@@ -29,8 +29,7 @@ import { MessageReadNugetPackageReferencesInProject } from '../../Messages/Read/
 import { MessageReadProjectReferencesInProject } from '../../Messages/Read/MessageReadProjectReferencesInProject';
 import { MessageReadSolutionIntoTreeView } from '../../Messages/Read/MessageReadSolutionIntoTreeView';
 import { MessageReadSolutionsInWorkspace } from '../../Messages/Read/MessageReadSolutionsInWorkspace';
-import { MessageReadVirtualFilesInCSharpProject as MessageReadVirtualFilesInProject } from '../../Messages/Read/MessageReadVirtualFilesInProject';
-import { MessageReadVirtualFilesInFSharpProject } from '../../Messages/Read/MessageReadVirtualFilesInFSharpProject';
+import { MessageReadVirtualFilesInProject as MessageReadVirtualFilesInProject } from '../../Messages/Read/MessageReadVirtualFilesInProject';
 import { XmlProjectParser } from '../../Parsers/XmlProjectParser';
 import { TerminalService } from '../../Terminal/TerminalService';
 
@@ -47,9 +46,6 @@ export class SolutionExplorerReadMessageHandler {
                 break;
             case MessageReadKind.virtualFilesInProject:
                 await this.handleMessageReadVirtualFilesInProjectAsync(webviewView, message);
-                break;
-            case MessageReadKind.virtualFilesInFSharpProject:
-                await this.handleMessageReadVirtualFilesInFSharpProjectAsync(webviewView, message);
                 break;
             case MessageReadKind.solutionIntoTreeView:
                 await this.handleMessageReadSolutionIntoTreeViewAsync(webviewView, message);
@@ -248,45 +244,6 @@ export class SolutionExplorerReadMessageHandler {
                 let file = message.projectFile.virtualChildFiles[i];
 
                 file.setVirtualChildFiles(message.projectFile.virtualChildFiles);
-
-                if (previousVirtualChildFiles) {
-                    let previousFileState = previousVirtualChildFiles.find(x => x.absoluteFilePath.initialAbsoluteFilePathStringInput ===
-                        file.absoluteFilePath.initialAbsoluteFilePathStringInput);
-
-                    if (previousFileState) {
-                        file.isExpanded = previousFileState.isExpanded;
-                    }
-                }
-            }
-
-            webviewView.webview.postMessage(message);
-        });
-    }
-    
-    public static async handleMessageReadVirtualFilesInFSharpProjectAsync(webviewView: vscode.WebviewView, iMessage: IMessage) {
-        let message = iMessage as MessageReadVirtualFilesInFSharpProject;
-
-        await FileSystemReader.getSiblingFiles(message.fSharpProjectFile.absoluteFilePath, (siblingFiles: string[]) => {
-            let previousVirtualChildFiles = message.fSharpProjectFile.virtualChildFiles;
-
-            siblingFiles = siblingFiles
-                .filter(x => x !== message.fSharpProjectFile.absoluteFilePath.filenameWithExtension);
-
-            let siblingAbsoluteFilePaths: AbsoluteFilePath[] = siblingFiles
-                .map(x => message.fSharpProjectFile.absoluteFilePath.initialAbsoluteFilePathStringInput
-                    .replace(message.fSharpProjectFile.absoluteFilePath.filenameWithExtension, x))
-                .map(x => new AbsoluteFilePath(x, FileSystemReader.isDir(x), null));
-
-            message.fSharpProjectFile.virtualChildFiles = siblingAbsoluteFilePaths
-                .map(absoluteFilePath => IdeFileFactory
-                    .constructIdeFile(absoluteFilePath, message.fSharpProjectFile.namespace));
-
-            message.fSharpProjectFile.virtualChildFiles = FileSorter.organizeContainer(message.fSharpProjectFile.virtualChildFiles);
-
-            for (let i = 0; i < message.fSharpProjectFile.virtualChildFiles.length; i++) {
-                let file = message.fSharpProjectFile.virtualChildFiles[i];
-
-                file.setVirtualChildFiles(message.fSharpProjectFile.virtualChildFiles);
 
                 if (previousVirtualChildFiles) {
                     let previousFileState = previousVirtualChildFiles.find(x => x.absoluteFilePath.initialAbsoluteFilePathStringInput ===
