@@ -4,6 +4,7 @@ import { AbsoluteFilePath } from "../../AbsoluteFilePath";
 import { FileKind } from "../../FileKind";
 import { IdeFile } from "../IdeFile";
 import { ProjectNugetPackageDependenciesListFile } from "../Nuget/ProjectNugetPackageDependenciesListFile";
+import { ProjectToProjectReferencesListFile } from "../ProjectReference/ProjectToProjectReferencesListFile";
 
 export class CSharpProjectDependenciesListFile extends IdeFile {
     constructor(cSharpProjectParentAbsoluteFilePath: AbsoluteFilePath) {

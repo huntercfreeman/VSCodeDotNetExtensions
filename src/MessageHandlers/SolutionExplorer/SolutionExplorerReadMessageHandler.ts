@@ -31,6 +31,7 @@ import { MessageReadSolutionIntoTreeView } from '../../Messages/Read/MessageRead
 import { MessageReadSolutionsInWorkspace } from '../../Messages/Read/MessageReadSolutionsInWorkspace';
 import { MessageReadVirtualFilesInCSharpProject } from '../../Messages/Read/MessageReadVirtualFilesInCSharpProject';
 import { MessageReadVirtualFilesInFSharpProject } from '../../Messages/Read/MessageReadVirtualFilesInFSharpProject';
+import { XmlProjectParser } from '../../Parsers/XmlProjectParser';
 import { TerminalService } from '../../Terminal/TerminalService';
 
 export class SolutionExplorerReadMessageHandler {
@@ -135,7 +136,7 @@ export class SolutionExplorerReadMessageHandler {
                 else {
                     parsedRootNamespaces.push(0);
 
-                    await CSharpProjectModel.parseRootNamespace(projectModel as CSharpProjectModel,
+                    await XmlProjectParser.parseRootNamespace(projectModel as CSharpProjectModel,
                         () => parsedRootNamespaces[i] = 1);
                 }
             }
@@ -181,8 +182,8 @@ export class SolutionExplorerReadMessageHandler {
     public static async handleMessageReadProjectReferencesInProjectAsync(webviewView: vscode.WebviewView, iMessage: IMessage) {
         let message = iMessage as MessageReadProjectReferencesInProject;
 
-        return await CSharpProjectModel.parseCSharpProjectProjectReferences(message.projectProjectReferencesFile.parentCSharpProjectInitialAbsoluteFilePath,
-            message.projectProjectReferencesFile, () => {
+        return await XmlProjectParser.parseProjectProjectReferences(message.projectToProjectReferencesFile.parentProjectInitialAbsoluteFilePath,
+            message.projectToProjectReferencesFile, () => {
 
                 webviewView.webview.postMessage(message);
             });
@@ -191,8 +192,8 @@ export class SolutionExplorerReadMessageHandler {
     public static async handleMessageReadNugetPackageReferencesInProject(webviewView: vscode.WebviewView, iMessage: IMessage) {
         let message = iMessage as MessageReadNugetPackageReferencesInProject;
 
-        return await CSharpProjectModel.parseCSharpProjectNugetPackageReferences(message.cSharpProjectNugetPackageDependenciesFile.parentCSharpProjectInitialAbsoluteFilePath,
-            message.cSharpProjectNugetPackageDependenciesFile, () => {
+        return await XmlProjectParser.parseProjectNugetPackageReferences(message.projectNugetPackageDependenciesFile.parentCSharpProjectInitialAbsoluteFilePath,
+            message.projectNugetPackageDependenciesFile, () => {
 
                 webviewView.webview.postMessage(message);
             });

@@ -5,7 +5,7 @@ import { IMessageRead } from "./IMessageRead";
 import { MessageReadKind } from "./MessageReadKind";
 
 export class MessageReadNugetPackageReferencesInProject implements IMessage, IMessageRead {
-    constructor(public readonly cSharpProjectNugetPackageDependenciesFile: ProjectNugetPackageDependenciesListFile) {
+    constructor(public readonly projectNugetPackageDependenciesFile: ProjectNugetPackageDependenciesListFile) {
     }
 
     public readonly messageCategory: MessageCategory = MessageCategory.read;

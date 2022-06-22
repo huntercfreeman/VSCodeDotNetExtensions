@@ -1,6 +1,6 @@
 import { ConstantsContextualInformation } from "../Constants/ConstantsContextualInformation";
 import { AbsoluteFilePath } from "../FileSystem/AbsoluteFilePath";
-import { CSharpProjectProjectReferenceFile } from "../FileSystem/Files/CSharp/CSharpProjectProjectReferenceFile";
+import { ProjectToProjectReferenceFile } from "../FileSystem/Files/ProjectReference/ProjectToProjectReferenceFile";
 import { IdeFile } from "../FileSystem/Files/IdeFile";
 import { IProjectModel } from "./IProjectModel";
 import { ProjectKind } from "./ProjectKind";
@@ -43,7 +43,7 @@ export class SolutionFolderModel implements IProjectModel {
     public solutionFolderEntries: IProjectModel[];
     public childFiles: IdeFile[] | undefined;
     public solutionFolderParentProjectIdGuid: string | undefined;
-    public projectReferences: CSharpProjectProjectReferenceFile[] = [];
+    public projectReferences: ProjectToProjectReferenceFile[] = [];
     public readonly parentSolutionAbsoluteFilePath: AbsoluteFilePath;
     public initialIsExpandedState: boolean = false;
     public projectKind: ProjectKind = ProjectKind.solutionFolder;

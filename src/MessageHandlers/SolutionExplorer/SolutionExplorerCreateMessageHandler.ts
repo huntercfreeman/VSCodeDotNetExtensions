@@ -12,7 +12,7 @@ import { DotNetSolutionFile } from '../../FileSystem/Files/DotNetSolutionFile';
 import { IdeFileFactory } from '../../FileSystem/IdeFileFactory';
 import { IMessage } from '../../Messages/IMessage';
 import { IMessageCreate } from '../../Messages/Create/IMessageCreate';
-import { MessageCreateProjectInAny } from '../../Messages/Create/MessageCreateCSharpProjectInAny';
+import { MessageCreateProjectInAny } from '../../Messages/Create/MessageCreateProjectInAny';
 import { MessageCreateDirectoryInAny } from '../../Messages/Create/MessageCreateDirectoryInAny';
 import { MessageCreateDotNetSolutionInWorkspace } from '../../Messages/Create/MessageCreateDotNetSolutionInWorkspace';
 import { MessageCreateEmptyFileInAny } from '../../Messages/Create/MessageCreateEmptyFileInAny';
@@ -41,9 +41,6 @@ export class SolutionExplorerCreateMessageHandler {
                 break;
             case MessageCreateKind.projectInAny:
                 await this.handleMessageCreateProjectInAny(webviewView, message);
-                break;
-            case MessageCreateKind.fSharpProjectInAny:
-                await this.handleMessageCreateFSharpProjectInAny(webviewView, message);
                 break;
             case MessageCreateKind.projectInSolutionFolder:
                 break;

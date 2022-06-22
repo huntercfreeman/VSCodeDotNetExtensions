@@ -1,6 +1,6 @@
 import { ConstantsContextualInformation } from "../Constants/ConstantsContextualInformation";
 import { AbsoluteFilePath } from "../FileSystem/AbsoluteFilePath";
-import { CSharpProjectProjectReferenceFile } from "../FileSystem/Files/CSharp/CSharpProjectProjectReferenceFile";
+import { ProjectToProjectReferenceFile } from "../FileSystem/Files/ProjectReference/ProjectToProjectReferenceFile";
 import { IdeFile } from "../FileSystem/Files/IdeFile";
 import { XmlProjectParser } from "../Parsers/XmlProjectParser";
 import { IProjectModel } from "./IProjectModel";
@@ -44,7 +44,7 @@ export class VCXProjectModel implements IProjectModel {
     public readonly absoluteFilePath: AbsoluteFilePath;
     public childFiles: IdeFile[] | undefined;
     public solutionFolderParentProjectIdGuid: string | undefined;
-    public projectReferences: CSharpProjectProjectReferenceFile[] = [];
+    public projectReferences: ProjectToProjectReferenceFile[] = [];
     public rootNamespace: string;
     public targetFramework: string = "";
     public isExecutable: boolean = true;;

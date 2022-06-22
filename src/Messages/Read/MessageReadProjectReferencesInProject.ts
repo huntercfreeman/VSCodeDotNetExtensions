@@ -5,7 +5,7 @@ import { IMessageRead } from "./IMessageRead";
 import { MessageReadKind } from "./MessageReadKind";
 
 export class MessageReadProjectReferencesInProject implements IMessage, IMessageRead {
-    constructor(public readonly projectProjectReferencesFile: ProjectToProjectReferencesListFile) {
+    constructor(public readonly projectToProjectReferencesFile: ProjectToProjectReferencesListFile) {
     }
 
     public readonly messageCategory: MessageCategory = MessageCategory.read;
