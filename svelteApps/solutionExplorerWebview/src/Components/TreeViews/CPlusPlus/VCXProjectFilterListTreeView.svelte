@@ -10,6 +10,7 @@
 	
     export let vcxProjectFilterListFile: VCXProjectFilterListFile;
     export let index: number;
+    export let parent: IdeFile | undefined;
 
 	let children: IdeFile[] | undefined;
 
@@ -95,3 +96,4 @@
               hasDifferentParentContainer={hasDifferentParentContainer}
 			  bind:children={children}
 			  {index} />
+			  {parent}

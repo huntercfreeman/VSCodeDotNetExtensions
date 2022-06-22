@@ -11,6 +11,7 @@ import type { MessageReadRequestForRefresh } from "../../../../../../out/Message
 	
     export let fSharpProjectFile: FSharpProjectFile;
     export let index: number;
+    export let parent: IdeFile | undefined;
 
 	let children: IdeFile[] | undefined;
 
@@ -104,4 +105,5 @@ import type { MessageReadRequestForRefresh } from "../../../../../../out/Message
               getChildFiles={getChildFiles}
               hasDifferentParentContainer={hasDifferentParentContainer}
 			  bind:children={children}
-			  {index} />
+			  {index}
+			  {parent} />

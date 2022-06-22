@@ -4,7 +4,8 @@
 	import FileIconDisplay from "./FileIconDisplay.svelte";
 	import { contextMenuTarget } from "./menu.js";
 	import TreeViewMapper from "./TreeViewMapper.svelte";
-	import { activeIdeFileWrap } from "./activeIdeFile"
+	import { activeIdeFileWrap } from "./activeState"
+	import { activeIdeFileHandleOnKeyDownWrap } from "./activeState"
 
 	export let ideFile: IdeFile;
 	export let children: IdeFile[] | undefined;
@@ -13,6 +14,7 @@
 	export let getChildFiles: () => IdeFile[];
 	export let hasDifferentParentContainer: (childIdeFile: IdeFile) => boolean;
 	export let index: number;
+	export let parent: IdeFile;
 	
 	let activeIdeFileWrapValue;
 
@@ -46,6 +48,16 @@
 	function setActiveIdeFile() {
 
 		activeIdeFileWrap.set(ideFile);
+		setActiveIdeFileHandleOnKeyDownWrap();
+	}
+	
+	function setActiveIdeFileHandleOnKeyDownWrap() {
+
+		activeIdeFileHandleOnKeyDownWrap.set(handleOnKeyDown);
+	}
+
+	function handleOnKeyDown(e: KeyboardEvent) {
+
 	}
 </script>
 

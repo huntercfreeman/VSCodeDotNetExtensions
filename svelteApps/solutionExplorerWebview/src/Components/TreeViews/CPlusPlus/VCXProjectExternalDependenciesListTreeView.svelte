@@ -6,6 +6,7 @@
 	
     export let vcxProjectExternalDependenciesListFile: VCXProjectExternalDependenciesListFile;
     export let index: number;
+    export let parent: IdeFile | undefined;
 
 	let children: IdeFile[] | undefined;
 
@@ -35,4 +36,5 @@
               getChildFiles={getChildFiles}
               hasDifferentParentContainer={hasDifferentParentContainer}
 			  bind:children={children}
-			  {index} />
+			  {index}
+			  {parent} />
