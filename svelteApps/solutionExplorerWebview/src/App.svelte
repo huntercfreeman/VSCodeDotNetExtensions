@@ -32,7 +32,19 @@
 					switch (message.messageReadKind) {
 						case MessageReadKind.solutionsInWorkspace:
 							dotNetSolutionFiles = message.dotNetSolutionFiles;
-							selectedDotNetSolutionFile = undefined;
+
+							// Check if currently selected solution was removed in some way
+							if (selectedDotNetSolutionFile) {
+								if (!dotNetSolutionFiles
+									.find(x => 
+										x.absoluteFilePath.initialAbsoluteFilePathStringInput ===
+											selectedDotNetSolutionFile.absoluteFilePath.initialAbsoluteFilePathStringInput)) {
+
+												console.log("cleasssss");
+												// Was removed therefore set selected solution as undefined
+												selectedDotNetSolutionFile = undefined;
+								}
+							}
 							break;
 						case MessageReadKind.solutionIntoTreeView:
 							selectedDotNetSolutionFile =
@@ -53,7 +65,7 @@
 <div class="dni_app">
 	<SolutionFileControlButtons {getSolutionFilesInWorkspace} />
 
-	<SelectDotNetSolutionFileForm {dotNetSolutionFiles} />
+	<SelectDotNetSolutionFileForm {selectedDotNetSolutionFile} {dotNetSolutionFiles} />
 
 	<div style="margin-bottom: 5px;" />
 

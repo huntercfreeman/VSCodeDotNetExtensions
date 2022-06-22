@@ -2,7 +2,7 @@
     import { contextMenuTarget } from "../menu";
     import MenuOption from "../MenuOption.svelte";
     import { FileKind } from "../../../../../out/FileSystem/FileKind";
-    import { MessageReadVirtualFilesInCSharpProject } from "../../../../../out/Messages/Read/MessageReadVirtualFilesInCSharpProject";
+    import { MessageReadVirtualFilesInProject } from "../../../../../out/Messages/Read/MessageReadVirtualFilesInProject";
     import { MessageReadFilesInDirectory } from "../../../../../out/Messages/Read/MessageReadFilesInDirectory";
     import { MessageReadVirtualFilesInSolution } from "../../../../../out/Messages/Read/MessageReadVirtualFilesInSolution";
     import { MessageReadProjectReferencesInProject } from "../../../../../out/Messages/Read/MessageReadProjectReferencesInProject";
@@ -29,18 +29,20 @@
                     value: messageReadVirtualFilesInSolution,
                 });
                 break;
+            case FileKind.fSharpProject:
             case FileKind.cSharpProject:
-                let messageReadVirtualFilesInCSharpProject =
-                    new MessageReadVirtualFilesInCSharpProject(
+                let messageReadVirtualFilesInProject =
+                    new MessageReadVirtualFilesInProject(
                         contextMenuTargetValue
                     );
 
                 tsVscode.postMessage({
                     type: undefined,
-                    value: messageReadVirtualFilesInCSharpProject,
+                    value: messageReadVirtualFilesInProject,
                 });
+
                 break;
-            case FileKind.cSharpProjectReferencesList:
+            case FileKind.projectReferencesList:
                 let messageReadProjectReferencesInProject =
                     new MessageReadProjectReferencesInProject(
                         contextMenuTargetValue
@@ -51,7 +53,7 @@
                     value: messageReadProjectReferencesInProject,
                 });
                 break;
-            case FileKind.cSharpNugetPackageDependenciesList:
+            case FileKind.nugetPackageDependenciesList:
                 let messageReadNugetPackageReferencesInProject =
                     new MessageReadNugetPackageReferencesInProject(
                         contextMenuTargetValue

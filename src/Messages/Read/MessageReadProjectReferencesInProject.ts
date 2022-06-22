@@ -1,11 +1,11 @@
-import { CSharpProjectProjectReferencesListFile } from "../../FileSystem/Files/CSharp/CSharpProjectProjectReferencesListFile";
+import { ProjectToProjectReferencesListFile } from "../../FileSystem/Files/ProjectReference/ProjectToProjectReferencesListFile";
 import { IMessage } from "../IMessage";
 import { MessageCategory } from "../MessageCategory";
 import { IMessageRead } from "./IMessageRead";
 import { MessageReadKind } from "./MessageReadKind";
 
 export class MessageReadProjectReferencesInProject implements IMessage, IMessageRead {
-    constructor(public readonly cSharpProjectProjectReferencesFile: CSharpProjectProjectReferencesListFile) {
+    constructor(public readonly projectToProjectReferencesFile: ProjectToProjectReferencesListFile) {
     }
 
     public readonly messageCategory: MessageCategory = MessageCategory.read;

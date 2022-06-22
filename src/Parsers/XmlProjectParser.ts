@@ -1,18 +1,18 @@
-import { ConstantsCSharpProjectFile } from "../Constants/ConstantsCSharpProjectFile";
+import { ConstantsProjectFile } from "../Constants/ConstantsProjectFile";
 import { IProjectModel } from "../DotNet/IProjectModel";
 import { AbsoluteFilePath } from "../FileSystem/AbsoluteFilePath";
-import { CSharpProjectNugetPackageDependenciesListFile } from "../FileSystem/Files/CSharp/CSharpProjectNugetPackageDependenciesListFile";
-import { CSharpProjectNugetPackageDependencyFile } from "../FileSystem/Files/CSharp/CSharpProjectNugetPackageDependencyFile";
-import { CSharpProjectProjectReferenceFile } from "../FileSystem/Files/CSharp/CSharpProjectProjectReferenceFile";
-import { CSharpProjectProjectReferencesListFile } from "../FileSystem/Files/CSharp/CSharpProjectProjectReferencesListFile";
+import { ProjectNugetPackageDependenciesListFile } from "../FileSystem/Files/Nuget/ProjectNugetPackageDependenciesListFile";
+import { ProjectNugetPackageDependencyFile } from "../FileSystem/Files/Nuget/ProjectNugetPackageDependencyFile";
+import { ProjectToProjectReferenceFile } from "../FileSystem/Files/ProjectReference/ProjectToProjectReferenceFile";
+import { ProjectToProjectReferencesListFile } from "../FileSystem/Files/ProjectReference/ProjectToProjectReferencesListFile";
 import { XmlParser, XmlTagModel } from "./XmlParseStateMachines";
 
 const fs = require('fs');
 
 export class XmlProjectParser {
   constructor(public readonly xmlProjectAbsoluteFilePath: AbsoluteFilePath | undefined,
-    public readonly xmlProjectProjectReferencesFile: CSharpProjectProjectReferencesListFile | undefined,
-    public readonly xmlProjectNugetPackageDependenciesFile: CSharpProjectNugetPackageDependenciesListFile | undefined,
+    public readonly xmlProjectToProjectReferencesFile: ProjectToProjectReferencesListFile | undefined,
+    public readonly xmlProjectNugetPackageDependenciesFile: ProjectNugetPackageDependenciesListFile | undefined,
     public readonly xmlProjectModel: IProjectModel | undefined) {
   }
 
@@ -39,7 +39,7 @@ export class XmlProjectParser {
 
       if (this.xmlProjectModel) {
 
-        // The UI does not have access to the cSharpProjectModel
+        // The UI does not have access to the projectModel
         // however, they do have access to the absolutepath of it
         // and therefore can parse the C# project.
         // however this conditional branch does not apply for the
@@ -49,7 +49,7 @@ export class XmlProjectParser {
         let targetFramework: XmlTagModel[] = [];
 
         xmlFileModel.selectRecursively(
-          (x) => x.tagName === ConstantsCSharpProjectFile.TARGET_FRAMEWORK_TAG_NAME,
+          (x) => x.tagName === ConstantsProjectFile.TARGET_FRAMEWORK_TAG_NAME,
           targetFramework);
 
         if (targetFramework.length !== 0) {
@@ -76,7 +76,7 @@ export class XmlProjectParser {
         let rootNamespaces: XmlTagModel[] = [];
 
         xmlFileModel.selectRecursively(
-          (x) => x.tagName === ConstantsCSharpProjectFile.ROOT_NAMESPACE_TAG_NAME,
+          (x) => x.tagName === ConstantsProjectFile.ROOT_NAMESPACE_TAG_NAME,
           rootNamespaces);
 
         if (rootNamespaces.length !== 0) {
@@ -101,31 +101,31 @@ export class XmlProjectParser {
       }
       else {
         if (this.xmlProjectAbsoluteFilePath) {
-          // Only either cSharpProjectProjectReferencesFile can be calculated or 
-          // cSharpProjectProjectReferencesFile can be returned at a given time as
+          // Only either projectToProjectReferencesFile can be calculated or 
+          // projectToProjectReferencesFile can be returned at a given time as
           // the user interface that calls this method does not have a reference to both arrays.
 
-          if (this.xmlProjectProjectReferencesFile) {
+          if (this.xmlProjectToProjectReferencesFile) {
             let projectReferences: XmlTagModel[] = [];
 
             xmlFileModel.selectRecursively(
-              (x) => x.tagName === ConstantsCSharpProjectFile.PROJECT_REFERENCE_TAG_NAME,
+              (x) => x.tagName === ConstantsProjectFile.PROJECT_REFERENCE_TAG_NAME,
               projectReferences);
 
             for (let i = 0; i < projectReferences.length; i++) {
               let reference = projectReferences[i];
 
               let includeAttribute = reference.xmlAttributeModels.find(attribute =>
-                attribute.attributeName === ConstantsCSharpProjectFile.XML_INCLUDE_ATTRIBUTE_NAME);
+                attribute.attributeName === ConstantsProjectFile.XML_INCLUDE_ATTRIBUTE_NAME);
 
               if (includeAttribute) {
-                if (!this.xmlProjectProjectReferencesFile.virtualChildFiles) {
-                  this.xmlProjectProjectReferencesFile.virtualChildFiles = [];
+                if (!this.xmlProjectToProjectReferencesFile.virtualChildFiles) {
+                  this.xmlProjectToProjectReferencesFile.virtualChildFiles = [];
                 }
 
-                this.xmlProjectProjectReferencesFile.virtualChildFiles.push(
-                  new CSharpProjectProjectReferenceFile(this.xmlProjectAbsoluteFilePath,
-                    this.xmlProjectProjectReferencesFile.absoluteFilePath, includeAttribute.attributeValue));
+                this.xmlProjectToProjectReferencesFile.virtualChildFiles.push(
+                  new ProjectToProjectReferenceFile(this.xmlProjectAbsoluteFilePath,
+                    this.xmlProjectToProjectReferencesFile.absoluteFilePath, includeAttribute.attributeValue));
               }
             }
           }
@@ -134,17 +134,17 @@ export class XmlProjectParser {
             let nugetPackageReferences: XmlTagModel[] = [];
 
             xmlFileModel.selectRecursively(
-              (x) => x.tagName === ConstantsCSharpProjectFile.NUGET_PACKAGE_TAG_NAME,
+              (x) => x.tagName === ConstantsProjectFile.NUGET_PACKAGE_TAG_NAME,
               nugetPackageReferences);
 
             for (let i = 0; i < nugetPackageReferences.length; i++) {
               let reference = nugetPackageReferences[i];
 
               let includeAttribute = reference.xmlAttributeModels.find(attribute =>
-                attribute.attributeName === ConstantsCSharpProjectFile.XML_INCLUDE_ATTRIBUTE_NAME);
+                attribute.attributeName === ConstantsProjectFile.XML_INCLUDE_ATTRIBUTE_NAME);
 
               let versionAttribute = reference.xmlAttributeModels.find(attribute =>
-                attribute.attributeName === ConstantsCSharpProjectFile.XML_VERSION_ATTRIBUTE_NAME);
+                attribute.attributeName === ConstantsProjectFile.XML_VERSION_ATTRIBUTE_NAME);
 
               if (includeAttribute && versionAttribute) {
                 if (!this.xmlProjectNugetPackageDependenciesFile.virtualChildFiles) {
@@ -152,7 +152,7 @@ export class XmlProjectParser {
                 }
 
                 this.xmlProjectNugetPackageDependenciesFile.virtualChildFiles.push(
-                  new CSharpProjectNugetPackageDependencyFile(this.xmlProjectAbsoluteFilePath,
+                  new ProjectNugetPackageDependencyFile(this.xmlProjectAbsoluteFilePath,
                     this.xmlProjectNugetPackageDependenciesFile.absoluteFilePath,
                     includeAttribute.attributeValue,
                     versionAttribute.attributeValue));
@@ -167,6 +167,47 @@ export class XmlProjectParser {
       }
     });
   }
+
+  public static async parseRootNamespace(projectModel: IProjectModel,
+    callback: any): Promise<void> {
+
+    projectModel.rootNamespace = projectModel.displayName;
+
+    let projectParser = new XmlProjectParser(undefined,
+        undefined,
+        undefined,
+        projectModel);
+
+    projectParser.parse(callback);
+}
+
+public static async parseProjectToProjectReferences(projectAbsoluteFilePath: AbsoluteFilePath,
+    projectToProjectReferencesFile: ProjectToProjectReferencesListFile,
+    callback: any): Promise<void> {
+
+    projectToProjectReferencesFile.virtualChildFiles = [];
+
+    let projectParser = new XmlProjectParser(projectAbsoluteFilePath,
+        projectToProjectReferencesFile,
+        undefined,
+        undefined);
+
+    projectParser.parse(callback);
+}
+
+public static async parseProjectNugetPackageReferences(projectAbsoluteFilePath: AbsoluteFilePath,
+    projectNugetPackageDependenciesFile: ProjectNugetPackageDependenciesListFile,
+    callback: any): Promise<void> {
+
+    projectNugetPackageDependenciesFile.virtualChildFiles = [];
+
+    let projectParser = new XmlProjectParser(projectAbsoluteFilePath,
+        undefined,
+        projectNugetPackageDependenciesFile,
+        undefined);
+
+    projectParser.parse(callback);
+}
 }
 
 

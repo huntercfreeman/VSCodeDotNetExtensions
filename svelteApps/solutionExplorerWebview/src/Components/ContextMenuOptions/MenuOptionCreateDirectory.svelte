@@ -21,22 +21,19 @@
 
     function createDirectoryOnClick() {
         if (createDirectoryFilename) {
-            switch (contextMenuTargetValue.fileKind) {
-                case FileKind.directory:
-                case FileKind.cSharpProject:
-                let messageCreateDirectoryInAny =
-                    new MessageCreateDirectoryInAny(
-                        createDirectoryFilename,
-                        contextMenuTargetValue
-                    );
+            if (contextMenuTargetValue.fileKind === FileKind.directory || 
+                contextMenuTargetValue.projectModel) {
+                    let messageCreateDirectoryInAny =
+                        new MessageCreateDirectoryInAny(
+                            createDirectoryFilename,
+                            contextMenuTargetValue
+                        );
 
                     tsVscode.postMessage({
                         type: undefined,
                         value: messageCreateDirectoryInAny,
                     });
-
-                    break;
-            }
+                }
 
             closeMenu();
         }

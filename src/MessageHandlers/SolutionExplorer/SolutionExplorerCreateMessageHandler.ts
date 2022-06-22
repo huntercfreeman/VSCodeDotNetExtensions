@@ -5,14 +5,13 @@ import { ConstantsFileTemplates } from '../../Constants/ConstantsFileTemplates';
 import { ConstantsTerminal } from '../../Constants/ConstantsTerminal';
 import { AbsoluteFilePath } from '../../FileSystem/AbsoluteFilePath';
 import { FileKind } from '../../FileSystem/FileKind';
-import { CSharpProjectFile } from '../../FileSystem/Files/CSharp/CSharpProjectFile';
 import { DefaultFile } from '../../FileSystem/Files/DefaultFile';
 import { DirectoryFile } from '../../FileSystem/Files/DirectoryFile';
 import { DotNetSolutionFile } from '../../FileSystem/Files/DotNetSolutionFile';
 import { IdeFileFactory } from '../../FileSystem/IdeFileFactory';
 import { IMessage } from '../../Messages/IMessage';
 import { IMessageCreate } from '../../Messages/Create/IMessageCreate';
-import { MessageCreateCSharpProjectInAny } from '../../Messages/Create/MessageCreateCSharpProjectInAny';
+import { MessageCreateProjectInAny } from '../../Messages/Create/MessageCreateProjectInAny';
 import { MessageCreateDirectoryInAny } from '../../Messages/Create/MessageCreateDirectoryInAny';
 import { MessageCreateDotNetSolutionInWorkspace } from '../../Messages/Create/MessageCreateDotNetSolutionInWorkspace';
 import { MessageCreateEmptyFileInAny } from '../../Messages/Create/MessageCreateEmptyFileInAny';
@@ -21,7 +20,7 @@ import { MessageCreateTemplatedFileInAny } from '../../Messages/Create/MessageCr
 import { TerminalService } from '../../Terminal/TerminalService';
 import { SolutionExplorerMessageTransporter } from './SolutionExplorerMessageTransporter';
 import { MessageReadFilesInDirectory } from '../../Messages/Read/MessageReadFilesInDirectory';
-import { MessageReadVirtualFilesInCSharpProject } from '../../Messages/Read/MessageReadVirtualFilesInCSharpProject';
+import { MessageReadVirtualFilesInProject } from '../../Messages/Read/MessageReadVirtualFilesInProject';
 
 const fs = require('fs');
 
@@ -36,10 +35,8 @@ export class SolutionExplorerCreateMessageHandler {
             case MessageCreateKind.emptyFileInDirectory:
                 this.handleMessageCreateEmptyFileInAny(webviewView, message);
                 break;
-            case MessageCreateKind.cSharpProjectInAny:
-                await this.handleMessageCreateCSharpProjectInAny(webviewView, message);
-                break;
-            case MessageCreateKind.projectInSolutionFolder:
+            case MessageCreateKind.projectInAny:
+                await this.handleMessageCreateProjectInAny(webviewView, message);
                 break;
             case MessageCreateKind.directoryInAny:
                 await this.handleMessageCreateDirectoryInAny(webviewView, message);
@@ -56,7 +53,7 @@ export class SolutionExplorerCreateMessageHandler {
         let generalUseTerminal = TerminalService.getGeneralUseTerminal();
 
         generalUseTerminal.sendText(ConstantsDotNetCli
-            .formatDotNetNewSolution(message.solutionNameWithoutExtension));
+            .formatNewSolution(message.solutionNameWithoutExtension));
 
         generalUseTerminal.show();
     }
@@ -66,21 +63,17 @@ export class SolutionExplorerCreateMessageHandler {
 
         let writePath: string = "";
 
-        switch (message.ideFile.fileKind) {
-            case FileKind.cSharpProject:
-                writePath =
+        if (message.ideFile.fileKind === FileKind.directory) {
+            writePath = message
+                .ideFile.absoluteFilePath.initialAbsoluteFilePathStringInput;
+        }
+        else if ((message.ideFile as any).projectModel) {
+            writePath =
+                message.ideFile.absoluteFilePath
+                    .parentDirectories[
                     message.ideFile.absoluteFilePath
-                        .parentDirectories[
-                            message.ideFile.absoluteFilePath
-                            .parentDirectories.length - 1
-                    ].initialAbsoluteFilePathStringInput;
-
-                break;
-            case FileKind.directory:
-                writePath = message
-                    .ideFile.absoluteFilePath.initialAbsoluteFilePathStringInput;
-                
-                break;
+                        .parentDirectories.length - 1
+                ].initialAbsoluteFilePathStringInput;
         }
 
         if (!writePath.endsWith(ConstantsFilePath.STANDARDIZED_FILE_DELIMITER)) {
@@ -99,37 +92,30 @@ export class SolutionExplorerCreateMessageHandler {
             (err: any) => {
                 if (!err) {
 
-                    switch (message.ideFile.fileKind) {
-                        case FileKind.cSharpProject:
-                            if(!message.ideFile.virtualChildFiles) {
-                                message.ideFile.virtualChildFiles = [];
-                            }
-                            
-                            message.ideFile.virtualChildFiles.push(templatedIdeFile);
+                    if (message.ideFile.fileKind === FileKind.directory) {
+                        if (!message.ideFile.childFiles) {
+                            message.ideFile.childFiles = [];
+                        }
 
-                            SolutionExplorerMessageTransporter
-                                .transportMessage(
-                                    webviewView,
-                                    new MessageReadVirtualFilesInCSharpProject(
-                                        message.ideFile as CSharpProjectFile
-                                    ));
+                        message.ideFile.childFiles.push(templatedIdeFile);
 
-                            break;
-                        case FileKind.directory:
-                            if (!message.ideFile.childFiles) {
-                                message.ideFile.childFiles = [];
-                            }
+                        SolutionExplorerMessageTransporter
+                            .transportMessage(
+                                webviewView,
+                                new MessageReadFilesInDirectory(
+                                    message.ideFile as DirectoryFile
+                                ));
+                    }
+                    else if ((message.ideFile as any).projectModel) {
+                        if (!message.ideFile.virtualChildFiles) {
+                            message.ideFile.virtualChildFiles = [];
+                        }
 
-                            message.ideFile.childFiles.push(templatedIdeFile);
+                        message.ideFile.virtualChildFiles.push(templatedIdeFile);
 
-                            SolutionExplorerMessageTransporter
-                                .transportMessage(
-                                    webviewView,
-                                    new MessageReadFilesInDirectory(
-                                        message.ideFile as DirectoryFile
-                                    ));
-                            
-                            break;
+                        SolutionExplorerMessageTransporter
+                                .transportMessage(webviewView, 
+                                    new MessageReadVirtualFilesInProject(message.ideFile as any));
                     }
 
                     const openPath = vscode.Uri.file(absoluteFilePath.initialAbsoluteFilePathStringInput);
@@ -146,27 +132,23 @@ export class SolutionExplorerCreateMessageHandler {
                 }
             });
     }
-    
+
     public static async handleMessageCreateEmptyFileInAny(webviewView: vscode.WebviewView, iMessage: IMessage) {
         let message = iMessage as MessageCreateEmptyFileInAny;
 
         let writePath: string = "";
 
-        switch (message.ideFile.fileKind) {
-            case FileKind.cSharpProject:
-                writePath =
+        if (message.ideFile.fileKind === FileKind.directory) {
+            writePath = message
+                .ideFile.absoluteFilePath.initialAbsoluteFilePathStringInput;
+        }
+        else if ((message.ideFile as any).projectModel) {
+            writePath =
+                message.ideFile.absoluteFilePath
+                    .parentDirectories[
                     message.ideFile.absoluteFilePath
-                        .parentDirectories[
-                            message.ideFile.absoluteFilePath
-                            .parentDirectories.length - 1
-                    ].initialAbsoluteFilePathStringInput;
-
-                break;
-            case FileKind.directory:
-                writePath = message
-                    .ideFile.absoluteFilePath.initialAbsoluteFilePathStringInput;
-                
-                break;
+                        .parentDirectories.length - 1
+                ].initialAbsoluteFilePathStringInput;
         }
 
         if (!writePath.endsWith(ConstantsFilePath.STANDARDIZED_FILE_DELIMITER)) {
@@ -185,37 +167,31 @@ export class SolutionExplorerCreateMessageHandler {
             (err: any) => {
                 if (!err) {
 
-                    switch (message.ideFile.fileKind) {
-                        case FileKind.cSharpProject:
-                            if(!message.ideFile.virtualChildFiles) {
-                                message.ideFile.virtualChildFiles = [];
-                            }
-                            
-                            message.ideFile.virtualChildFiles.push(defaultFile);
 
-                            SolutionExplorerMessageTransporter
-                                .transportMessage(
-                                    webviewView,
-                                    new MessageReadVirtualFilesInCSharpProject(
-                                        message.ideFile as CSharpProjectFile
-                                    ));
+                    if (message.ideFile.fileKind === FileKind.directory) {
+                        if (!message.ideFile.childFiles) {
+                            message.ideFile.childFiles = [];
+                        }
 
-                            break;
-                        case FileKind.directory:
-                            if (!message.ideFile.childFiles) {
-                                message.ideFile.childFiles = [];
-                            }
+                        message.ideFile.childFiles.push(defaultFile);
 
-                            message.ideFile.childFiles.push(defaultFile);
+                        SolutionExplorerMessageTransporter
+                            .transportMessage(
+                                webviewView,
+                                new MessageReadFilesInDirectory(
+                                    message.ideFile as DirectoryFile
+                                ));
+                    }
+                    else if ((message.ideFile as any).projectModel) {
+                        if (!message.ideFile.virtualChildFiles) {
+                            message.ideFile.virtualChildFiles = [];
+                        }
 
-                            SolutionExplorerMessageTransporter
-                                .transportMessage(
-                                    webviewView,
-                                    new MessageReadFilesInDirectory(
-                                        message.ideFile as DirectoryFile
-                                    ));
-                            
-                            break;
+                        message.ideFile.virtualChildFiles.push(defaultFile);
+
+                        SolutionExplorerMessageTransporter
+                                .transportMessage(webviewView, 
+                                    new MessageReadVirtualFilesInProject(message.ideFile as any));
                     }
 
                     const openPath = vscode.Uri.file(absoluteFilePath.initialAbsoluteFilePathStringInput);
@@ -238,21 +214,17 @@ export class SolutionExplorerCreateMessageHandler {
 
         let writePath: string = "";
 
-        switch (message.ideFile.fileKind) {
-            case FileKind.cSharpProject:
-                writePath =
+        if (message.ideFile.fileKind === FileKind.directory) {
+            writePath = message
+                .ideFile.absoluteFilePath.initialAbsoluteFilePathStringInput;
+        }
+        else if ((message.ideFile as any).projectModel) {
+            writePath =
+                message.ideFile.absoluteFilePath
+                    .parentDirectories[
                     message.ideFile.absoluteFilePath
-                        .parentDirectories[
-                            message.ideFile.absoluteFilePath
-                            .parentDirectories.length - 1
-                    ].initialAbsoluteFilePathStringInput;
-
-                break;
-            case FileKind.directory:
-                writePath = message
-                    .ideFile.absoluteFilePath.initialAbsoluteFilePathStringInput;
-                
-                break;
+                        .parentDirectories.length - 1
+                ].initialAbsoluteFilePathStringInput;
         }
 
         if (!writePath.endsWith(ConstantsFilePath.STANDARDIZED_FILE_DELIMITER)) {
@@ -268,66 +240,48 @@ export class SolutionExplorerCreateMessageHandler {
         fs.mkdir(templatedIdeFile.absoluteFilePath.initialAbsoluteFilePathStringInput, { recursive: true }, (err: any) => {
             if (!err) {
 
-                switch (message.ideFile.fileKind) {
-                    case FileKind.cSharpProject:
-                        if(!message.ideFile.virtualChildFiles) {
-                            message.ideFile.virtualChildFiles = [];
-                        }
-                        
-                        message.ideFile.virtualChildFiles.push(templatedIdeFile);
 
-                        SolutionExplorerMessageTransporter
-                            .transportMessage(
-                                webviewView,
-                                new MessageReadVirtualFilesInCSharpProject(
-                                    message.ideFile as CSharpProjectFile
-                                ));
 
-                        break;
-                    case FileKind.directory:
-                        if (!message.ideFile.childFiles) {
-                            message.ideFile.childFiles = [];
-                        }
+                if (message.ideFile.fileKind === FileKind.directory) {
+                    if (!message.ideFile.childFiles) {
+                        message.ideFile.childFiles = [];
+                    }
 
-                        message.ideFile.childFiles.push(templatedIdeFile);
+                    message.ideFile.childFiles.push(templatedIdeFile);
 
-                        SolutionExplorerMessageTransporter
-                            .transportMessage(
-                                webviewView,
-                                new MessageReadFilesInDirectory(
-                                    message.ideFile as DirectoryFile
-                                ));
-                        
-                        break;
+                    SolutionExplorerMessageTransporter
+                        .transportMessage(
+                            webviewView,
+                            new MessageReadFilesInDirectory(
+                                message.ideFile as DirectoryFile
+                            ));
+                }
+                else if ((message.ideFile as any).projectModel) {
+                    if (!message.ideFile.virtualChildFiles) {
+                        message.ideFile.virtualChildFiles = [];
+                    }
+
+                    message.ideFile.virtualChildFiles.push(templatedIdeFile);
+
+                    SolutionExplorerMessageTransporter
+                            .transportMessage(webviewView, 
+                                new MessageReadVirtualFilesInProject(message.ideFile as any));
                 }
             }
         });
     }
 
-    public static async handleMessageCreateCSharpProjectInAny(webviewView: vscode.WebviewView, iMessage: IMessage) {
-        let message = iMessage as MessageCreateCSharpProjectInAny;
-
-        let dotNetSolutionFileAbsoluteFilePath: AbsoluteFilePath | undefined;
-
-        let solutionFolder: CSharpProjectFile | undefined;
-
-        if (message.ideFile.fileKind === FileKind.solution) {
-            let dotNetSolutionFile = message.ideFile as DotNetSolutionFile;
-
-            dotNetSolutionFileAbsoluteFilePath = dotNetSolutionFile.absoluteFilePath;
-        }
-        else if (message.ideFile.fileKind === FileKind.solutionFolder) {
-            solutionFolder = message.ideFile as CSharpProjectFile;
-
-            dotNetSolutionFileAbsoluteFilePath = solutionFolder.cSharpProjectModel.parentSolutionAbsoluteFilePath;
-        }
+    public static async handleMessageCreateProjectInAny(webviewView: vscode.WebviewView, iMessage: IMessage) {
+        let message = iMessage as MessageCreateProjectInAny;
 
         let generalUseTerminal = TerminalService.getGeneralUseTerminal();
 
         generalUseTerminal.sendText(
-            ConstantsDotNetCli.formatDotNetNewCSharpProject(message.cSharpProjectNameNoExtension, message.templateName) +
+            ConstantsDotNetCli.formatNewProject(message.projectNameNoExtension, message.templateName, message.lang) +
             ` ${ConstantsTerminal.TERMINAL_RUN_IF_PREVIOUS_COMMAND_SUCCESSFUL_OPERATOR} ` +
-            ConstantsDotNetCli.formatDotNetAddCSharpProjectToSolutionUsingProjectName(message.cSharpProjectNameNoExtension, dotNetSolutionFileAbsoluteFilePath!));
+            ConstantsDotNetCli.formatAddProjectToSolutionUsingProjectName(message.projectNameNoExtension, 
+                message.projectFileExtensionNoPeriod, 
+                message.dotNetSolutionFile.absoluteFilePath!));
 
         generalUseTerminal.show();
     }

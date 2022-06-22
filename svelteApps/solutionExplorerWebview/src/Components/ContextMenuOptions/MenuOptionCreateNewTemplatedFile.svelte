@@ -25,14 +25,15 @@
 
     function addFileWithTemplateToFolderOnClick() {
         if (addFileWithTemplateFilename) {
-            switch (contextMenuTargetValue.fileKind) {
-                case FileKind.cSharpProject:
-                case FileKind.directory:
+
+            if (contextMenuTargetValue.fileKind === FileKind.directory || 
+                contextMenuTargetValue.projectModel) {
+
                     let messageCreateTemplatedFileInAny =
-                    new MessageCreateTemplatedFileInAny(
-                        addFileWithTemplateFilename,
-                        contextMenuTargetValue
-                    );
+                        new MessageCreateTemplatedFileInAny(
+                            addFileWithTemplateFilename,
+                            contextMenuTargetValue
+                        );
 
                     tsVscode.postMessage({
                         type: undefined,

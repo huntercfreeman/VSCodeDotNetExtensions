@@ -1,30 +1,28 @@
 <script lang="ts">
 	import type { IdeFile } from "../../../../../../out/FileSystem/Files/IdeFile";
 	import TreeViewBase from "../../TreeViewBase.svelte";
-	import type { CSharpProjectNugetPackageDependenciesListFile } from "../../../../../../out/FileSystem/Files/CSharp/CSharpProjectNugetPackageDependenciesListFile";
+	import type { ProjectNugetPackageDependenciesListFile } from "../../../../../../out/FileSystem/Files/Nuget/ProjectNugetPackageDependenciesListFile";
 	import { MessageReadNugetPackageReferencesInProject } from "../../../../../../out/Messages/Read/MessageReadNugetPackageReferencesInProject";
 import { MessageCategory } from "../../../../../../out/Messages/MessageCategory";
 import { MessageReadKind } from "../../../../../../out/Messages/Read/MessageReadKind";
 import { onMount } from "svelte";
 import { FileKind } from "../../../../../../out/FileSystem/FileKind";
 	
-    export let cSharpProjectNugetPackageDependenciesListFile: CSharpProjectNugetPackageDependenciesListFile;
+    export let projectNugetPackageDependenciesListFile: ProjectNugetPackageDependenciesListFile;
 
 	let children: IdeFile[] | undefined;
 
-    function getTitleText() {
-        return cSharpProjectNugetPackageDependenciesListFile.absoluteFilePath.filenameWithExtension;
-    }
+	$: titleText = projectNugetPackageDependenciesListFile.absoluteFilePath.filenameWithExtension;
 
 	function titleOnClick() {
     }
 
 	function getChildFiles(): IdeFile[] {
-		children = cSharpProjectNugetPackageDependenciesListFile.virtualChildFiles;
+		children = projectNugetPackageDependenciesListFile.virtualChildFiles;
 
 		if (!children) {
 			let messageReadNugetPackageReferencesInProject =
-				new MessageReadNugetPackageReferencesInProject(cSharpProjectNugetPackageDependenciesListFile);
+				new MessageReadNugetPackageReferencesInProject(projectNugetPackageDependenciesListFile);
 			
 			tsVscode.postMessage({
 				type: undefined,
@@ -38,7 +36,7 @@ import { FileKind } from "../../../../../../out/FileSystem/FileKind";
 
 	function hasDifferentParentContainer(childIdeFile: IdeFile): boolean {
 		if (childIdeFile.virtualParentNonce) {
-			if (childIdeFile.virtualParentNonce !== cSharpProjectNugetPackageDependenciesListFile.nonce) {
+			if (childIdeFile.virtualParentNonce !== projectNugetPackageDependenciesListFile.nonce) {
 				return true;
 			}
 		}
@@ -55,13 +53,13 @@ import { FileKind } from "../../../../../../out/FileSystem/FileKind";
 						case MessageReadKind.nugetPackageReferencesInProject:
 							let messageReadNugetPackageReferencesInProject =
 								message as MessageReadNugetPackageReferencesInProject;
-							if (cSharpProjectNugetPackageDependenciesListFile.nonce === 
-								messageReadNugetPackageReferencesInProject.cSharpProjectNugetPackageDependenciesFile.nonce) {
+							if (projectNugetPackageDependenciesListFile.nonce === 
+								messageReadNugetPackageReferencesInProject.projectNugetPackageDependenciesFile.nonce) {
 								
-								cSharpProjectNugetPackageDependenciesListFile =
-									messageReadNugetPackageReferencesInProject.cSharpProjectNugetPackageDependenciesFile;
+								projectNugetPackageDependenciesListFile =
+									messageReadNugetPackageReferencesInProject.projectNugetPackageDependenciesFile;
 									
-								children = cSharpProjectNugetPackageDependenciesListFile.virtualChildFiles;
+								children = projectNugetPackageDependenciesListFile.virtualChildFiles;
 							}
 							break;
 					}
@@ -70,8 +68,8 @@ import { FileKind } from "../../../../../../out/FileSystem/FileKind";
 	});
 </script>
 
-<TreeViewBase ideFile="{cSharpProjectNugetPackageDependenciesListFile}" 
-              getTitleText={getTitleText}
+<TreeViewBase ideFile="{projectNugetPackageDependenciesListFile}" 
+              titleText={titleText}
               titleOnClick={titleOnClick}
               getChildFiles={getChildFiles}
               hasDifferentParentContainer={hasDifferentParentContainer}

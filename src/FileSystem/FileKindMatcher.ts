@@ -6,12 +6,16 @@ export class FileKindMatcher {
         switch (fileExtensionNoPeriod) {
             case ConstantsFileExtensionsNoPeriod.C_SHARP_PROJECT_FILE_EXTENSION:
                 return FileKind.cSharpProject;
+            case ConstantsFileExtensionsNoPeriod.F_SHARP_PROJECT_FILE_EXTENSION:
+                return FileKind.fSharpProject;
             case ConstantsFileExtensionsNoPeriod.VCX_PROJECT_FILE_EXTENSION:
                 return FileKind.vcxProject;
             case ConstantsFileExtensionsNoPeriod.SOLUTION_FILE_EXTENSION:
                 return FileKind.solution;
             case ConstantsFileExtensionsNoPeriod.C_SHARP_FILE_EXTENSION:
                 return FileKind.cSharp;
+            case ConstantsFileExtensionsNoPeriod.F_SHARP_FILE_EXTENSION:
+                return FileKind.fSharp;
             case ConstantsFileExtensionsNoPeriod.CSHMTL_FILE_EXTENSION:
                 return FileKind.cshtml;
             case ConstantsFileExtensionsNoPeriod.CSS_FILE_EXTENSION:

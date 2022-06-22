@@ -1,10 +1,13 @@
 <script lang="ts">
 	import type { DotNetSolutionFile } from "../../../../out/FileSystem/Files/DotNetSolutionFile";
 	import { MessageReadSolutionIntoTreeView } from "../../../../out/Messages/Read/MessageReadSolutionIntoTreeView";
+	import { onMount } from "svelte";
+	import { MessageCategory } from "../../../../out/Messages/MessageCategory";
+	import { MessageReadKind } from "../../../../out/Messages/Read/MessageReadKind";
 
-	export let dotNetSolutionFiles: DotNetSolutionFile[] = [];
+	export let dotNetSolutionFiles: DotNetSolutionFile[];
 
-	let selectedDotNetSolutionFile: DotNetSolutionFile;
+	export let selectedDotNetSolutionFile: DotNetSolutionFile;
 
 	function handleSelectOnChange() {
 		if (selectedDotNetSolutionFile) {
@@ -17,6 +20,26 @@
 			});
 		}
 	}
+
+	onMount(async () => {
+		window.addEventListener("message", async (event) => {
+			const message = event.data;
+
+			switch (message.messageCategory) {
+				case MessageCategory.read:
+					switch (message.messageReadKind) {
+						case MessageReadKind.solutionIntoTreeView:
+							selectedDotNetSolutionFile =
+								message.dotNetSolutionFile;
+							break;
+						case MessageReadKind.messageReadUndefinedSolution:
+							selectedDotNetSolutionFile =
+								undefined;
+							break;
+					}
+			}
+		});
+	});
 </script>
 
 <div>

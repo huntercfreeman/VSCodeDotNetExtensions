@@ -1,8 +1,6 @@
-import { ConstantsContextualInformation } from "../Constants/ConstantsContextualInformation";
 import { AbsoluteFilePath } from "../FileSystem/AbsoluteFilePath";
-import { CSharpProjectProjectReferenceFile } from "../FileSystem/Files/CSharp/CSharpProjectProjectReferenceFile";
+import { ProjectToProjectReferenceFile } from "../FileSystem/Files/ProjectReference/ProjectToProjectReferenceFile";
 import { IdeFile } from "../FileSystem/Files/IdeFile";
-import { XmlProjectParser } from "../Parsers/XmlProjectParser";
 import { IProjectModel } from "./IProjectModel";
 import { ProjectKind } from "./ProjectKind";
 import { SolutionModel } from "./SolutionModel";
@@ -41,29 +39,14 @@ export class VCXProjectModel implements IProjectModel {
         });
     }
 
-    public static async parseRootNamespace(vCXProjectModel: VCXProjectModel,
-        callback: any): Promise<void> {
-
-        vCXProjectModel.rootNamespace = vCXProjectModel.displayName;
-
-        let xmlProjectParser = new XmlProjectParser(undefined,
-            undefined,
-            undefined,
-            vCXProjectModel);
-
-        xmlProjectParser.parse(callback);
-    }
-
     public readonly absoluteFilePath: AbsoluteFilePath;
     public childFiles: IdeFile[] | undefined;
     public solutionFolderParentProjectIdGuid: string | undefined;
-    public projectReferences: CSharpProjectProjectReferenceFile[] = [];
+    public projectReferences: ProjectToProjectReferenceFile[] = [];
     public rootNamespace: string;
     public targetFramework: string = "";
     public isExecutable: boolean = true;;
     public readonly parentSolutionAbsoluteFilePath: AbsoluteFilePath;
     public initialIsExpandedState: boolean = false;
     public projectKind: ProjectKind = ProjectKind.vcxProject;
-
-    public contextualInformation: string = ConstantsContextualInformation.TREE_VIEW_VCX_PROJECT_CONTEXT;
 }

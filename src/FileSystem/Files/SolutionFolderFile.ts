@@ -9,6 +9,8 @@ import { VCXProjectFile } from "./CPlusPlus/VCXProjectFile";
 import { VCXProjectModel } from "../../DotNet/VCXProjectModel";
 import { IProjectFile } from "./IProjectFile";
 import { IProjectModel } from "../../DotNet/IProjectModel";
+import { FSharpProjectModel } from "../../DotNet/FSharpProjectModel";
+import { FSharpProjectFile } from "./FSharp/FSharpProjectFile";
 
 export class SolutionFolderFile extends IdeFile implements IProjectFile {
 
@@ -24,6 +26,8 @@ export class SolutionFolderFile extends IdeFile implements IProjectFile {
                         return new SolutionFolderFile(x as SolutionFolderModel);
                     case ProjectKind.cSharpProject:
                         return new CSharpProjectFile(x as CSharpProjectModel);
+                    case ProjectKind.fSharpProject:
+                        return new FSharpProjectFile(x as FSharpProjectModel);
                     case ProjectKind.vcxProject:
                         return new VCXProjectFile(x as VCXProjectModel);
                     default:

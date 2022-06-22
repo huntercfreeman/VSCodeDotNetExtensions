@@ -4,15 +4,12 @@
 	import { FileKind } from "../../../../../out/FileSystem/FileKind";
 	import type { SolutionFolderFile } from "../../../../../out/FileSystem/Files/SolutionFolderFile";
 	import TreeViewBase from "../TreeViewBase.svelte";
-	import type { CSharpProjectFile } from "../../../../../out/FileSystem/Files/CSharp/CSharpProjectFile";
-	
+		
     export let solutionFolderFile: SolutionFolderFile;
 
 	let children: IdeFile[] | undefined;
 
-    function getTitleText() {
-        return solutionFolderFile.absoluteFilePath.filenameWithExtension;
-    }
+	$: titleText = solutionFolderFile.absoluteFilePath.filenameWithExtension;
 
 	function titleOnClick() {
     }
@@ -48,7 +45,7 @@
 </script>
 
 <TreeViewBase ideFile="{solutionFolderFile}" 
-              getTitleText={getTitleText}
+              titleText={titleText}
               titleOnClick={titleOnClick}
               getChildFiles={getChildFiles}
               hasDifferentParentContainer={hasDifferentParentContainer}

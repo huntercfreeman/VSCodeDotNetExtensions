@@ -9,12 +9,15 @@ import { DirectoryFile } from "./Files/DirectoryFile";
 import { RazorFile } from "./Files/CSharp/RazorFile";
 import { CshtmlFile } from "./Files/CSharp/CshtmlFile";
 import { JsonFile } from "./Files/Miscellaneous/JsonFile";
+import { FSharpFile } from "./Files/FSharp/FSharpFile";
 
 export class IdeFileFactory {
     public static constructIdeFile(absoluteFilePath: AbsoluteFilePath, currentNamespaceString: string): IdeFile {
         switch (FileKindMatcher.getFileKind(absoluteFilePath.extensionNoPeriod)) {
             case FileKind.cSharp:
                 return new CSharpFile(absoluteFilePath, currentNamespaceString);
+            case FileKind.fSharp:
+                return new FSharpFile(absoluteFilePath, currentNamespaceString);
             case FileKind.cshtml:
                 return new CshtmlFile(absoluteFilePath);
             case FileKind.css:

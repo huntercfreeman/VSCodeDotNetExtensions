@@ -3,18 +3,17 @@
 	import type { IdeFile } from "../../../../../../out/FileSystem/Files/IdeFile";
 	import type { CSharpProjectFile } from "../../../../../../out/FileSystem/Files/CSharp/CSharpProjectFile";
 	import { MessageReadFileIntoEditor } from "../../../../../../out/Messages/Read/MessageReadFileIntoEditor";
-	import { MessageReadVirtualFilesInCSharpProject } from "../../../../../../out/Messages/Read/MessageReadVirtualFilesInCSharpProject";
+	import { MessageReadVirtualFilesInProject } from "../../../../../../out/Messages/Read/MessageReadVirtualFilesInProject";
 	import { MessageCategory } from "../../../../../../out/Messages/MessageCategory";
 	import { MessageReadKind } from "../../../../../../out/Messages/Read/MessageReadKind";
 	import TreeViewBase from "../../TreeViewBase.svelte";
+import type { MessageReadRequestForRefresh } from "../../../../../../out/Messages/Read/MessageReadRequestForRefresh";
 	
     export let cSharpProjectFile: CSharpProjectFile;
 
 	let children: IdeFile[] | undefined;
 
-    function getTitleText() {
-        return cSharpProjectFile.absoluteFilePath.filenameWithExtension;
-    }
+	$: titleText = cSharpProjectFile.absoluteFilePath.filenameWithExtension;
 
 	function titleOnClick() {
 		let messageReadFileIntoEditor = new MessageReadFileIntoEditor(cSharpProjectFile);
@@ -29,12 +28,12 @@
 		children = cSharpProjectFile.virtualChildFiles;
 
 		if (!children) {
-			let messageReadVirtualFilesInCSharpProject =
-				new MessageReadVirtualFilesInCSharpProject(cSharpProjectFile);
+			let messageReadVirtualFilesInProject =
+				new MessageReadVirtualFilesInProject(cSharpProjectFile);
 			
 			tsVscode.postMessage({
 				type: undefined,
-				value: messageReadVirtualFilesInCSharpProject,
+				value: messageReadVirtualFilesInProject,
 			});
 
 			return [];
@@ -59,18 +58,36 @@
 			switch (message.messageCategory) {
 				case MessageCategory.read:
 					switch (message.messageReadKind) {
-						case MessageReadKind.virtualFilesInCSharpProject:
-							let messageReadVirtualFilesInCSharpProject =
-								message as MessageReadVirtualFilesInCSharpProject;
+						case MessageReadKind.virtualFilesInProject:
+							let messageReadVirtualFilesInProject =
+								message as MessageReadVirtualFilesInProject;
 							if (cSharpProjectFile.nonce ===
-									messageReadVirtualFilesInCSharpProject.cSharpProjectFile.nonce) {
+									messageReadVirtualFilesInProject.projectFile.nonce) {
 								
 								cSharpProjectFile =
-									messageReadVirtualFilesInCSharpProject.cSharpProjectFile;
+									messageReadVirtualFilesInProject.projectFile;
 
 								children = cSharpProjectFile.constantChildFiles;
 								
 								children = children.concat(cSharpProjectFile.virtualChildFiles);
+							}
+							break;
+						case MessageReadKind.requestForRefresh:
+							let messageReadRequestForRefresh =
+								message as MessageReadRequestForRefresh;
+								
+							if (cSharpProjectFile.nonce ===
+								messageReadRequestForRefresh.ideFileNonce) {
+								
+									let messageReadVirtualFilesInProject =
+										new MessageReadVirtualFilesInProject(
+											cSharpProjectFile
+										);
+
+									tsVscode.postMessage({
+										type: undefined,
+										value: messageReadVirtualFilesInProject,
+									});
 							}
 							break;
 					}
@@ -80,7 +97,7 @@
 </script>
 
 <TreeViewBase ideFile="{cSharpProjectFile}" 
-              getTitleText={getTitleText}
+              titleText={titleText}
               titleOnClick={titleOnClick}
               getChildFiles={getChildFiles}
               hasDifferentParentContainer={hasDifferentParentContainer}

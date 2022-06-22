@@ -24,13 +24,17 @@ export class ContextualInformationDatum {
         new ContextualInformationDatum(ContextualInformationDatumKind.create,
             "createNewCSharpProject");
 
-    public static readonly removeCSharpProject: ContextualInformationDatum =
+    public static readonly removeProject: ContextualInformationDatum =
         new ContextualInformationDatum(ContextualInformationDatumKind.create,
-            "removeCSharpProject");
+            "removeProject");
 
-    public static readonly addExistingCSharpProject: ContextualInformationDatum =
+    public static readonly addExistingProject: ContextualInformationDatum =
         new ContextualInformationDatum(ContextualInformationDatumKind.create,
-            "addExistingCSharpProject");
+            "addExistingProject");
+
+    public static readonly createNewFSharpProject: ContextualInformationDatum =
+        new ContextualInformationDatum(ContextualInformationDatumKind.create,
+            "createNewFSharpProject");
 
     public static readonly refreshChildFiles: ContextualInformationDatum =
         new ContextualInformationDatum(ContextualInformationDatumKind.read,
@@ -60,27 +64,25 @@ export class ContextualInformationDatum {
         new ContextualInformationDatum(ContextualInformationDatumKind.update,
             "putProjectInSolutionFolder");
 
-    // TODO: Do not add rename, delete, copy, cut, paste instead add context menu option on files to set focus in folder view of Visual Studio Code and let folder view handle this.
+    public static readonly rename: ContextualInformationDatum =
+        new ContextualInformationDatum(ContextualInformationDatumKind.delete,
+            "rename");
 
-    // public static readonly rename: ContextualInformationDatum = 
-    //     new ContextualInformationDatum(ContextualInformationDatumKind.update,
-    //         "rename");
+    public static readonly deleteFile: ContextualInformationDatum =
+        new ContextualInformationDatum(ContextualInformationDatumKind.delete,
+            "deleteFile");
 
-    // public static readonly deleteFile: ContextualInformationDatum = 
-    //     new ContextualInformationDatum(ContextualInformationDatumKind.delete,
-    //         "deleteFile");
+    public static readonly copyFile: ContextualInformationDatum =
+        new ContextualInformationDatum(ContextualInformationDatumKind.control,
+            "copyFile");
 
-    // public static readonly copyFile: ContextualInformationDatum = 
-    //     new ContextualInformationDatum(ContextualInformationDatumKind.control,
-    //         "copyFile");
+    public static readonly cutFile: ContextualInformationDatum =
+        new ContextualInformationDatum(ContextualInformationDatumKind.control,
+            "cutFile");
 
-    // public static readonly cutFile: ContextualInformationDatum = 
-    //     new ContextualInformationDatum(ContextualInformationDatumKind.control,
-    //         "cutFile");
-
-    // public static readonly paste: ContextualInformationDatum = 
-    //         new ContextualInformationDatum(ContextualInformationDatumKind.control,
-    //             "paste");
+    public static readonly paste: ContextualInformationDatum =
+        new ContextualInformationDatum(ContextualInformationDatumKind.control,
+            "paste");
 
     public static checkDatumEquality(datumOne: ContextualInformationDatum, datumTwo: ContextualInformationDatum) {
         return (datumOne.contextualInformationDatumKind === datumTwo.contextualInformationDatumKind) &&

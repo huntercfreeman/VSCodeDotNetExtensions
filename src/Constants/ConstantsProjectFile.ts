@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/naming-convention */
-export class ConstantsCSharpProjectFile {
+export class ConstantsProjectFile {
     public static readonly XML_INCLUDE_ATTRIBUTE_NAME: string = "Include";
     public static readonly XML_VERSION_ATTRIBUTE_NAME: string = "Version";
 

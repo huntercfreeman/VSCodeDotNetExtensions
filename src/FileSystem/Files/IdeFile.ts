@@ -12,6 +12,7 @@ export abstract class IdeFile {
 
     public nonce: string = getNonce();
     public virtualParentNonce: string | undefined = undefined;
+    public refreshParentNonce: string | undefined = undefined;
     public fileKind: FileKind;
     public childFiles: IdeFile[] | undefined = undefined;
     public constantChildFiles: any[] | undefined = undefined;

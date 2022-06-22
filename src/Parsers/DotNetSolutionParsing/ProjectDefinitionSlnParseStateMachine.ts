@@ -1,24 +1,23 @@
 import { ConstantsSolutionFile } from "../../Constants/ConstantsSolutionFile";
-import { ConstantsWhitespace } from "../../Constants/ConstantsWhitespace";
-import { TemporaryProjectModel } from "../../DotNet/TemporaryCSharpProjectModel";
+import { TemporaryProjectModel } from "../../DotNet/TemporaryProjectModel";
 import { endOfFile } from "../CommonParserUtility";
 import { StringReader } from "../StringReader";
 import { SlnParseStateMachineBase } from "./SlnParseStateMachineBase";
 
 export class ProjectDefinitionSlnParseStateMachine extends SlnParseStateMachineBase {
     constructor(stringReader: StringReader,
-        private readonly temporaryCSharpProjectModel: TemporaryProjectModel) {
+        private readonly temporaryProjectModel: TemporaryProjectModel) {
         super(stringReader);
     }
 
     public override parse() {
-        this.getGuid((character) => this.temporaryCSharpProjectModel.projectTypeGuid += character);
+        this.getGuid((character) => this.temporaryProjectModel.projectTypeGuid += character);
 
-        this.getString((character) => this.temporaryCSharpProjectModel.displayName += character);
+        this.getString((character) => this.temporaryProjectModel.displayName += character);
 
-        this.getString((character) => this.temporaryCSharpProjectModel.projectRelativePathFromSolution += character);
+        this.getString((character) => this.temporaryProjectModel.projectRelativePathFromSolution += character);
 
-        this.getGuid((character) => this.temporaryCSharpProjectModel.projectIdGuid += character);
+        this.getGuid((character) => this.temporaryProjectModel.projectIdGuid += character);
     }
 
     /**

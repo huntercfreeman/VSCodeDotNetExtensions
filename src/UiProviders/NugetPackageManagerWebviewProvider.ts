@@ -63,6 +63,12 @@ export class NugetPackageManagerWebviewProvider implements vscode.WebviewViewPro
     this._view = panel;
   }
 
+  public sendMessage(message: IMessage) {
+    if (this._view) {
+      NugetPackageManagerMessageTransporter.transportMessage(this._view, message);
+    }
+  }
+
   private getWebviewContent(webview: vscode.Webview) {
     const nugetPackageManagerWebviewScriptUri = webview.asWebviewUri(vscode.Uri.joinPath(
       this.context.extensionUri, 'out/nugetPackageManagerWebview', 'nugetPackageManagerWebview.js'));

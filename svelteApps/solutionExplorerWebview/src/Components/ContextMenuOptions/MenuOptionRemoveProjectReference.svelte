@@ -1,7 +1,7 @@
 <script lang="ts">
     import { contextMenuTarget } from "../menu";
     import MenuOption from "../MenuOption.svelte";
-    import { MessageUpdateRemoveProject } from "../../../../../out/Messages/Update/MessageUpdateRemoveProject";
+    import { MessageUpdateRemoveProjectReference } from "../../../../../out/Messages/Update/MessageUpdateRemoveProjectReference";
 
     export let closeMenu;
 
@@ -12,14 +12,13 @@
         contextMenuTargetValue = value;
     });
 
-    function removeProject() {
-        let messageUpdateRemoveProject = new MessageUpdateRemoveProject(
-            contextMenuTargetValue
-        );
+    function removeProjectReference() {
+        let messageUpdateRemoveProjectReference =
+            new MessageUpdateRemoveProjectReference(contextMenuTargetValue);
 
         tsVscode.postMessage({
             type: undefined,
-            value: messageUpdateRemoveProject,
+            value: messageUpdateRemoveProjectReference,
         });
 
         performCloseMenu();
@@ -39,30 +38,32 @@
     <MenuOption
         onClickStopPropagation={true}
         onClick={showConfirmQuestion}
-        text="Remove Project (no files are deleted)."
+        text="Remove Project Reference."
     />
 
     {#if showPrompt}
         <div>
-            <em>Remove</em> Project:
+            <em>Remove</em> Reference:
 
             <div style="margin-left: 12px;">
                 <em
-                    >{contextMenuTargetValue.cSharpProjectModel.absoluteFilePath
+                    >{contextMenuTargetValue
+                        .referenceProjectAbsoluteFilePath
                         .filenameWithExtension}</em
                 >
             </div>
         </div>
         <div>
-            From Solution:
+            From Project:
 
             <div style="margin-left: 12px;">
-                {contextMenuTargetValue.cSharpProjectModel
-                    .parentSolutionAbsoluteFilePath.filenameWithExtension}
+                {contextMenuTargetValue
+                    .receivingProjectInitialAbsoluteFilePath
+                    .filenameWithExtension}
             </div>
         </div>
 
-        <button on:click={removeProject}>Accept</button>
+        <button on:click={removeProjectReference}>Accept</button>
         <button on:click={performCloseMenu}>Decline</button>
     {/if}
 {/if}

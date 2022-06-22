@@ -14,9 +14,7 @@
 
 	let children: IdeFile[] | undefined;
 
-    function getTitleText() {
-        return dotNetSolutionFile.absoluteFilePath.filenameWithExtension;
-    }
+    $: titleText = dotNetSolutionFile.absoluteFilePath.filenameWithExtension;
 
 	function titleOnClick() {
 		let messageReadFileIntoEditor = new MessageReadFileIntoEditor(dotNetSolutionFile);
@@ -75,8 +73,8 @@
 	});
 </script>
 
-<TreeViewBase ideFile="{dotNetSolutionFile}" 
-              getTitleText={getTitleText}
+<TreeViewBase bind:ideFile="{dotNetSolutionFile}" 
+              bind:titleText={titleText}
               titleOnClick={titleOnClick}
               getChildFiles={getChildFiles}
               hasDifferentParentContainer={hasDifferentParentContainer}

@@ -3,8 +3,8 @@ import { ContextualInformationDatum } from "../../../ContextMenus/ContextualInfo
 import { AbsoluteFilePath } from "../../AbsoluteFilePath";
 import { FileKind } from "../../FileKind";
 import { IdeFile } from "../IdeFile";
-import { CSharpProjectNugetPackageDependenciesListFile } from "./CSharpProjectNugetPackageDependenciesListFile";
-import { CSharpProjectProjectReferencesListFile } from "./CSharpProjectProjectReferencesListFile";
+import { ProjectNugetPackageDependenciesListFile } from "../Nuget/ProjectNugetPackageDependenciesListFile";
+import { ProjectToProjectReferencesListFile } from "../ProjectReference/ProjectToProjectReferencesListFile";
 
 export class CSharpProjectDependenciesListFile extends IdeFile {
     constructor(cSharpProjectParentAbsoluteFilePath: AbsoluteFilePath) {
@@ -15,8 +15,8 @@ export class CSharpProjectDependenciesListFile extends IdeFile {
         super(myAbsoluteFilePath, "");
 
         this.constantChildFiles = [
-            new CSharpProjectNugetPackageDependenciesListFile(cSharpProjectParentAbsoluteFilePath, myAbsoluteFilePath),
-            new CSharpProjectProjectReferencesListFile(cSharpProjectParentAbsoluteFilePath, myAbsoluteFilePath),
+            new ProjectNugetPackageDependenciesListFile(cSharpProjectParentAbsoluteFilePath, myAbsoluteFilePath),
+            new ProjectToProjectReferencesListFile(cSharpProjectParentAbsoluteFilePath, myAbsoluteFilePath),
         ];
 
         this.fileKind = FileKind.cSharpProjectDependencies;
