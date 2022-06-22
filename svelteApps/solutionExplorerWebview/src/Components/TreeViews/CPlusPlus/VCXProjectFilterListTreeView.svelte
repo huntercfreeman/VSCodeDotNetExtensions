@@ -2,13 +2,13 @@
 	import type { IdeFile } from "../../../../../../out/FileSystem/Files/IdeFile";
 	import { MessageReadFileIntoEditor } from "../../../../../../out/Messages/Read/MessageReadFileIntoEditor";
 	import TreeViewBase from "../../TreeViewBase.svelte";
-	import type { VCXProjectResourceFilesListFile } from "../../../../../../out/FileSystem/Files/CPlusPlus/VCXProjectResourceFilesListFile";
+	import type { VCXProjectFilterListFile } from "../../../../../../out/FileSystem/Files/CPlusPlus/VCXProjectFilterListFile";
 	
-    export let vcxProjectResourceFilesListFile: VCXProjectResourceFilesListFile;
+    export let vcxProjectFilterListFile: VCXProjectFilterListFile;
 
 	let children: IdeFile[] | undefined;
 
-	$: titleText = vcxProjectResourceFilesListFile.absoluteFilePath.filenameWithExtension;
+	$: titleText = vcxProjectFilterListFile.absoluteFilePath.filenameWithExtension;
 
 	function titleOnClick() {
     }
@@ -19,7 +19,7 @@
 
 	function hasDifferentParentContainer(childIdeFile: IdeFile): boolean {
 		if (childIdeFile.virtualParentNonce) {
-			if (childIdeFile.virtualParentNonce !== vcxProjectResourceFilesListFile.nonce) {
+			if (childIdeFile.virtualParentNonce !== vcxProjectFilterListFile.nonce) {
 				return true;
 			}
 		}
@@ -28,7 +28,7 @@
 	}
 </script>
 
-<TreeViewBase ideFile="{vcxProjectResourceFilesListFile}" 
+<TreeViewBase ideFile="{vcxProjectFilterListFile}" 
               titleText={titleText}
               titleOnClick={titleOnClick}
               getChildFiles={getChildFiles}

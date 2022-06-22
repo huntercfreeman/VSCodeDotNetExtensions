@@ -10,5 +10,6 @@ export enum MessageReadKind {
     activeDotNetSolutionFile,
     nugetPackageReferencesInProject,
     undefinedSolution,
-    requestForRefresh
+    requestForRefresh,
+    filtersInVCXProject
 }

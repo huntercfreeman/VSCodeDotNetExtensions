@@ -194,7 +194,11 @@ export class SolutionExplorerUpdateMessageHandler {
 
         vscode.workspace.applyEdit(renameWorkspaceEdit).then((value: boolean) => {
             // onfulfilled
-            
+
+            // Refresh parent container in TreeView of the renamed file
+            if (message.ideFile.refreshParentNonce) {
+                webviewView.webview.postMessage(new MessageReadRequestForRefresh(message.ideFile.refreshParentNonce));
+            }
         }, 
         (reason: any) => {
             // onrejected

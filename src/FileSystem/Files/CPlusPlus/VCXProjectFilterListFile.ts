@@ -1,23 +1,16 @@
-import { ConstantsFileExtensionsNoPeriod } from "../../../Constants/ConstantsFileExtensionsNoPeriod";
 import { ContextualInformationDatum } from "../../../ContextMenus/ContextualInformationDatum";
 import { AbsoluteFilePath } from "../../AbsoluteFilePath";
 import { FileKind } from "../../FileKind";
 import { IdeFile } from "../IdeFile";
 
 export class VCXProjectFilterListFile extends IdeFile {
-    constructor(vcxProjectParentAbsoluteFilePath: AbsoluteFilePath) {
-        let myAbsoluteFilePath = new AbsoluteFilePath(ConstantsFileExtensionsNoPeriod.VCX_PROJECT_FILTER_FILE_EXTENSION,
-            false,
-            vcxProjectParentAbsoluteFilePath.parentDirectories);
-
+    constructor(myAbsoluteFilePath: AbsoluteFilePath) {
         super(myAbsoluteFilePath, "");
 
         this.constantChildFiles = [
         ];
 
-        this.fileKind = FileKind.vcxProjectSourceFilesListFile;
-
-        this.parentVCXProjectInitialAbsoluteFilePath = vcxProjectParentAbsoluteFilePath;
+        this.fileKind = FileKind.vcxProjectFilterListFile;
     }
 
     public setVirtualChildFiles(siblingFiles: IdeFile[]): void {
@@ -25,8 +18,6 @@ export class VCXProjectFilterListFile extends IdeFile {
     }
 
     public childFiles: any[] | undefined;
-
-    public parentVCXProjectInitialAbsoluteFilePath: AbsoluteFilePath;
 
     public hideExpansionChevronWhenNoChildFiles: boolean = false;
 

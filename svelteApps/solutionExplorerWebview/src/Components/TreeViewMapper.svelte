@@ -2,9 +2,7 @@
     import { FileKind } from "../../../../out/FileSystem/FileKind";
     import type { VCXProjectExternalDependenciesListFile } from "../../../../out/FileSystem/Files/CPlusPlus/VCXProjectExternalDependenciesListFile";
     import type { VCXProjectFile } from "../../../../out/FileSystem/Files/CPlusPlus/VCXProjectFile";
-    import type { VCXProjectHeaderFilesListFile } from "../../../../out/FileSystem/Files/CPlusPlus/VCXProjectHeaderFilesListFile";
     import type { VCXProjectReferencesListFile } from "../../../../out/FileSystem/Files/CPlusPlus/VCXProjectReferencesListFile";
-    import type { VCXProjectResourceFilesListFile } from "../../../../out/FileSystem/Files/CPlusPlus/VCXProjectResourceFilesListFile";
     import type { CSharpProjectDependenciesListFile } from "../../../../out/FileSystem/Files/CSharp/CSharpProjectDependenciesListFile";
     import type { CSharpProjectFile } from "../../../../out/FileSystem/Files/CSharp/CSharpProjectFile";
     import type { FSharpProjectDependenciesListFile } from "../../../../out/FileSystem/Files/FSharp/FSharpProjectDependenciesListFile";
@@ -13,7 +11,8 @@
 	import type { IdeFile } from "../../../../out/FileSystem/Files/IdeFile";
     import type { SolutionFolderFile } from "../../../../out/FileSystem/Files/SolutionFolderFile";
     import VcxProjectExternalDependenciesListTreeView from "./TreeViews/CPlusPlus/VCXProjectExternalDependenciesListTreeView.svelte";
-    import VcxProjectHeaderFilesListTreeView from "./TreeViews/CPlusPlus/VCXProjectHeaderFilesListTreeView.svelte";
+    import VCXProjectFilterListTreeView from "./TreeViews/CPlusPlus/VCXProjectFilterListTreeView.svelte";
+    import VCXProjectFilterTreeView from "./TreeViews/CPlusPlus/VCXProjectFilterTreeView.svelte";
     import VcxProjectReferencesListTreeView from "./TreeViews/CPlusPlus/VCXProjectReferencesListTreeView.svelte";
     import VcxProjectResourceFilesListTreeView from "./TreeViews/CPlusPlus/VCXProjectResourceFilesListTreeView.svelte";
     import VcxProjectTreeView from "./TreeViews/CPlusPlus/VCXProjectTreeView.svelte";
@@ -34,6 +33,8 @@
     import type { ProjectNugetPackageDependencyFile } from "../../../../out/FileSystem/Files/Nuget/ProjectNugetPackageDependencyFile";
     import type { ProjectToProjectReferencesListFile } from "../../../../out/FileSystem/Files/ProjectReference/ProjectToProjectReferencesListFile";
     import type { ProjectToProjectReferenceFile } from "../../../../out/FileSystem/Files/ProjectReference/ProjectToProjectReferenceFile";
+    import type { VCXProjectFilterListFile } from "../../../../out/FileSystem/Files/CPlusPlus/VCXProjectFilterListFile";
+    import type { VCXProjectFilterFile } from "../../../../out/FileSystem/Files/CPlusPlus/VCXProjectFilterFile";
 
     export let ideFile: IdeFile;
 
@@ -49,9 +50,9 @@
     $: projectToProjectReferencesListFile = ideFile as ProjectToProjectReferencesListFile;
     $: projectToProjectReferenceFile = ideFile as ProjectToProjectReferenceFile;
     $: vcxProjectExternalDependenciesListFile = ideFile as VCXProjectExternalDependenciesListFile;
-    $: vcxProjectHeaderFilesListFile = ideFile as VCXProjectHeaderFilesListFile;
+    $: vcxProjectFilterListFile = ideFile as VCXProjectFilterListFile;
+    $: vcxProjectFilterFile = ideFile as VCXProjectFilterFile;
     $: vcxProjectReferencesListFile = ideFile as VCXProjectReferencesListFile;
-    $: vcxProjectResourceFilesListFile = ideFile as VCXProjectResourceFilesListFile;
     $: fSharpProjectFile = ideFile as FSharpProjectFile;
 </script>
 
@@ -91,22 +92,17 @@
 {:else if ideFile.fileKind === FileKind.projectReference}
     <ProjectToProjectReferenceTreeView projectToProjectReferenceFile={projectToProjectReferenceFile} />
 
-    <!-- START OF C++ ------------------------------------------------------------------------------------------------------------------------->
-
-{:else if ideFile.fileKind === FileKind.vcxProjectExternalDependenciesListFile}
-    <VcxProjectExternalDependenciesListTreeView vcxProjectExternalDependenciesListFile={vcxProjectExternalDependenciesListFile} />
-
-{:else if ideFile.fileKind === FileKind.vcxProjectHeaderFilesListFile}
-    <VcxProjectHeaderFilesListTreeView vcxProjectHeaderFilesListFile={vcxProjectHeaderFilesListFile} />
-
 {:else if ideFile.fileKind === FileKind.vcxProjectReferencesListFile}
     <VcxProjectReferencesListTreeView vcxProjectReferencesListFile={vcxProjectReferencesListFile} />
 
-{:else if ideFile.fileKind === FileKind.vcxProjectResourceFilesListFile}
-    <VcxProjectResourceFilesListTreeView vcxProjectResourceFilesListFile={vcxProjectResourceFilesListFile} />
+{:else if ideFile.fileKind === FileKind.vcxProjectExternalDependenciesListFile}
+    <VcxProjectExternalDependenciesListTreeView vcxProjectExternalDependenciesListFile={vcxProjectExternalDependenciesListFile} />
+    
+{:else if ideFile.fileKind === FileKind.vcxProjectFilterListFile}
+    <VCXProjectFilterListTreeView vcxProjectFilterListFile={vcxProjectFilterListFile} />
 
-{:else if ideFile.fileKind === FileKind.vcxProjectSourceFilesListFile}
-    <ProjectToProjectReferenceTreeView projectToProjectReferenceFile={projectToProjectReferenceFile} />
+<!-- {:else if ideFile.fileKind === FileKind.vcxProjectResourceFilesListFile}
+    <VCXProjectFilterTreeView vcxProjectFilterFile={vcxProjectFilterFile} /> -->
 
 {:else}
     <DefaultFileTreeView ideFile={ideFile} />
