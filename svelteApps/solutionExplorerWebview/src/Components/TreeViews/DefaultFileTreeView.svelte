@@ -4,6 +4,7 @@
     import { MessageReadFileIntoEditor } from "../../../../../out/Messages/Read/MessageReadFileIntoEditor";
 	
     export let ideFile: IdeFile;
+    export let index: number;
 
 	let children: IdeFile[] | undefined;
 
@@ -40,4 +41,5 @@
               titleOnClick={titleOnClick}
               getChildFiles={getChildFiles}
               hasDifferentParentContainer={hasDifferentParentContainer}
-			  bind:children={children} />
+			  bind:children={children}
+			  {index} />

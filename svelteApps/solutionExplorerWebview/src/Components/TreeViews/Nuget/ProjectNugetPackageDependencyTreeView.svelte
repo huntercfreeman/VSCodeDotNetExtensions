@@ -4,6 +4,7 @@
 	import type { ProjectNugetPackageDependencyFile } from "../../../../../../out/FileSystem/Files/Nuget/ProjectNugetPackageDependencyFile";
 	
     export let projectNugetPackageDependencyFile: ProjectNugetPackageDependencyFile;
+    export let index: number;
 
 	let children: IdeFile[] | undefined;
 
@@ -34,4 +35,5 @@
               titleOnClick={titleOnClick}
               getChildFiles={getChildFiles}
               hasDifferentParentContainer={hasDifferentParentContainer}
-			  bind:children={children} />
+			  bind:children={children}
+			  {index} />

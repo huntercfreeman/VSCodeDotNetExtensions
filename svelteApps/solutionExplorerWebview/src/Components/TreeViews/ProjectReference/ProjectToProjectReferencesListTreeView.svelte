@@ -7,6 +7,7 @@
 	import { MessageReadProjectReferencesInProject } from "../../../../../../out/Messages/Read/MessageReadProjectReferencesInProject";
 	
     export let projectToProjectReferencesListFile: ProjectToProjectReferencesListFile;
+    export let index: number;
 
 	let children: IdeFile[] | undefined;
 
@@ -70,4 +71,5 @@
               titleOnClick={titleOnClick}
               getChildFiles={getChildFiles}
               hasDifferentParentContainer={hasDifferentParentContainer}
-			  bind:children={children} />
+			  bind:children={children}
+			  {index} />

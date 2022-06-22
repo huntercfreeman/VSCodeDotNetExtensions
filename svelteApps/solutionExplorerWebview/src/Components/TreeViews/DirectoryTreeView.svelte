@@ -10,6 +10,7 @@
 	import { MessageReadVirtualFilesInProject } from "../../../../../out/Messages/Read/MessageReadVirtualFilesInProject";
 	
     export let directoryFile: DirectoryFile;
+    export let index: number;
 
 	let children: IdeFile[] | undefined;
 
@@ -92,4 +93,5 @@
               titleOnClick={titleOnClick}
               getChildFiles={getChildFiles}
               hasDifferentParentContainer={hasDifferentParentContainer}
-			  bind:children={children} />
+			  bind:children={children}
+			  {index} />

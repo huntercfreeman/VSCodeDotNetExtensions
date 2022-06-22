@@ -3,12 +3,13 @@
 	import TreeViewBase from "../../TreeViewBase.svelte";
 	import type { ProjectNugetPackageDependenciesListFile } from "../../../../../../out/FileSystem/Files/Nuget/ProjectNugetPackageDependenciesListFile";
 	import { MessageReadNugetPackageReferencesInProject } from "../../../../../../out/Messages/Read/MessageReadNugetPackageReferencesInProject";
-import { MessageCategory } from "../../../../../../out/Messages/MessageCategory";
-import { MessageReadKind } from "../../../../../../out/Messages/Read/MessageReadKind";
-import { onMount } from "svelte";
-import { FileKind } from "../../../../../../out/FileSystem/FileKind";
+	import { MessageCategory } from "../../../../../../out/Messages/MessageCategory";
+	import { MessageReadKind } from "../../../../../../out/Messages/Read/MessageReadKind";
+	import { onMount } from "svelte";
+	import { FileKind } from "../../../../../../out/FileSystem/FileKind";
 	
     export let projectNugetPackageDependenciesListFile: ProjectNugetPackageDependenciesListFile;
+    export let index: number;
 
 	let children: IdeFile[] | undefined;
 
@@ -73,4 +74,5 @@ import { FileKind } from "../../../../../../out/FileSystem/FileKind";
               titleOnClick={titleOnClick}
               getChildFiles={getChildFiles}
               hasDifferentParentContainer={hasDifferentParentContainer}
-			  bind:children={children} />
+			  bind:children={children}
+			  {index} />

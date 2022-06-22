@@ -4,6 +4,7 @@
 	import type { ProjectToProjectReferenceFile } from "../../../../../../out/FileSystem/Files/ProjectReference/ProjectToProjectReferenceFile";
 	
     export let projectToProjectReferenceFile: ProjectToProjectReferenceFile;
+    export let index: number;
 
 	let children: IdeFile[] | undefined;
 
@@ -34,4 +35,5 @@
               titleOnClick={titleOnClick}
               getChildFiles={getChildFiles}
               hasDifferentParentContainer={hasDifferentParentContainer}
-			  bind:children={children} />
+			  bind:children={children}
+			  {index} />

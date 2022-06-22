@@ -4,6 +4,7 @@
 	import type { CSharpProjectDependenciesListFile } from "../../../../../../out/FileSystem/Files/CSharp/CSharpProjectDependenciesListFile";
 	
     export let cSharpProjectDependenciesListFile: CSharpProjectDependenciesListFile;
+    export let index: number;
 
 	let children: IdeFile[] | undefined;
 
@@ -33,4 +34,5 @@
               titleOnClick={titleOnClick}
               getChildFiles={getChildFiles}
               hasDifferentParentContainer={hasDifferentParentContainer}
-			  bind:children={children} />
+			  bind:children={children}
+			  {index} />

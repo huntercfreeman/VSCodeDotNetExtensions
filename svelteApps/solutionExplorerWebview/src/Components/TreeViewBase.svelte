@@ -12,6 +12,7 @@
 	export let titleOnClick: (e: MouseEvent) => void;
 	export let getChildFiles: () => IdeFile[];
 	export let hasDifferentParentContainer: (childIdeFile: IdeFile) => boolean;
+	export let index: number;
 	
 	let activeIdeFileWrapValue;
 
@@ -75,15 +76,15 @@
 		<span class="dni_tree-view-title-text">
 			<FileIconDisplay ideFile={ideFile} />
 
-			{titleText}
+			{index + "_" + titleText}
 		</span>
 	</div>
 
 	<div class="dni_tree-view-children">
 		{#if ideFile.isExpanded}
-			{#each children ?? getChildFiles() as child (child.nonce)}
+			{#each children ?? getChildFiles() as child, i (child.nonce)}
 				{#if !hasDifferentParentContainer(child)}
-					<TreeViewMapper ideFile={child} />
+					<TreeViewMapper ideFile={child} index={i} />
 				{/if}
 			{/each}
 		{/if}

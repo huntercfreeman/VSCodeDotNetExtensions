@@ -9,6 +9,7 @@
 	import { onMount } from "svelte";
 	
     export let vcxProjectFilterListFile: VCXProjectFilterListFile;
+    export let index: number;
 
 	let children: IdeFile[] | undefined;
 
@@ -92,4 +93,5 @@
               titleOnClick={titleOnClick}
               getChildFiles={getChildFiles}
               hasDifferentParentContainer={hasDifferentParentContainer}
-			  bind:children={children} />
+			  bind:children={children}
+			  {index} />
