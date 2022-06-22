@@ -21,9 +21,9 @@ export class ProjectToProjectReferenceFile extends IdeFile {
 
         this.fileKind = FileKind.projectReference;
 
-        this.parentProjectInitialAbsoluteFilePath = projectParentAbsoluteFilePath;
+        this.receivingProjectInitialAbsoluteFilePath = projectParentAbsoluteFilePath;
 
-        this.projectReferenceAbsoluteFilePath = temporaryProjectReferenceAbsoluteFilePath;
+        this.referenceProjectAbsoluteFilePath = temporaryProjectReferenceAbsoluteFilePath;
     }
 
     public setVirtualChildFiles(siblingFiles: IdeFile[]): void {
@@ -32,9 +32,9 @@ export class ProjectToProjectReferenceFile extends IdeFile {
 
     public childFiles: any[] | undefined;
 
-    public parentProjectInitialAbsoluteFilePath: AbsoluteFilePath;
+    public receivingProjectInitialAbsoluteFilePath: AbsoluteFilePath;
 
-    public readonly projectReferenceAbsoluteFilePath: AbsoluteFilePath;
+    public readonly referenceProjectAbsoluteFilePath: AbsoluteFilePath;
 
     public hideExpansionChevronWhenNoChildFiles: boolean = true;
 

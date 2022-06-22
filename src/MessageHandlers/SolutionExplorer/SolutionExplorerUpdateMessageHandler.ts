@@ -146,8 +146,8 @@ export class SolutionExplorerUpdateMessageHandler {
         let generalUseTerminal = TerminalService.getGeneralUseTerminal();
 
         generalUseTerminal.sendText(
-            ConstantsDotNetCli.formatRemoveProjectReferenceFromProject(message.projectToProjectReferenceFile.parentProjectInitialAbsoluteFilePath,
-                message.projectToProjectReferenceFile.projectReferenceAbsoluteFilePath));
+            ConstantsDotNetCli.formatRemoveProjectReferenceFromProject(message.projectToProjectReferenceFile.receivingProjectInitialAbsoluteFilePath,
+                message.projectToProjectReferenceFile.referenceProjectAbsoluteFilePath));
 
         generalUseTerminal.show();
     }

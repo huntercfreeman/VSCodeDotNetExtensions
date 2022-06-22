@@ -71,17 +71,11 @@ export class ConstantsDotNetCli {;
                ` reference \"${referenceProjectAbsoluteFilePathString}\"`;
     }
 
-    /**
-     * 
-     * I'm working on something else right now but are 
-     * these variable names correct? They seem nonsensically named.
-     * 
-     */
-    public static formatRemoveProjectReferenceFromProject(parentProjectInitialAbsoluteFilePath: AbsoluteFilePath, 
-        projectReferenceAbsoluteFilePath: AbsoluteFilePath): string {
+    public static formatRemoveProjectReferenceFromProject(receivingProjectAbsoluteFilePath: AbsoluteFilePath, 
+        referenceProjectAbsoluteFilePath: AbsoluteFilePath): string {
 
-        return `${this.DOTNET_CLI} remove \"${parentProjectInitialAbsoluteFilePath.initialAbsoluteFilePathStringInput}\"` + 
-               ` reference \"${projectReferenceAbsoluteFilePath.initialAbsoluteFilePathStringInput}\"`;
+        return `${this.DOTNET_CLI} remove \"${receivingProjectAbsoluteFilePath.initialAbsoluteFilePathStringInput}\"` + 
+               ` reference \"${referenceProjectAbsoluteFilePath.initialAbsoluteFilePathStringInput}\"`;
     }
     
     public static formatPutProjectInSolutionFolder(projectAbsoluteFilePath: AbsoluteFilePath, 
