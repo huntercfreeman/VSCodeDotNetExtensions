@@ -24,7 +24,6 @@ import { MessageReadFilesInDirectory } from '../../Messages/Read/MessageReadFile
 import { MessageReadVirtualFilesInCSharpProject } from '../../Messages/Read/MessageReadVirtualFilesInCSharpProject';
 import { FSharpProjectFile } from '../../FileSystem/Files/FSharp/FSharpProjectFile';
 import { MessageReadVirtualFilesInFSharpProject } from '../../Messages/Read/MessageReadVirtualFilesInFSharpProject';
-import { MessageCreateFSharpProjectInAny } from '../../Messages/Create/MessageCreateFSharpProjectInAny';
 
 const fs = require('fs');
 
@@ -41,8 +40,6 @@ export class SolutionExplorerCreateMessageHandler {
                 break;
             case MessageCreateKind.projectInAny:
                 await this.handleMessageCreateProjectInAny(webviewView, message);
-                break;
-            case MessageCreateKind.projectInSolutionFolder:
                 break;
             case MessageCreateKind.directoryInAny:
                 await this.handleMessageCreateDirectoryInAny(webviewView, message);
