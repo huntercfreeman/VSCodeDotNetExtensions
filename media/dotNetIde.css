@@ -46,6 +46,16 @@
     user-select: none;
 }
 
+.dni_visually-hidden {
+    clip: rect(0 0 0 0);
+    clip-path: inset(50%);
+    height: 1px;
+    overflow: hidden;
+    position: absolute;
+    white-space: nowrap;
+    width: 1px;
+}
+
 .dni_tree-view-title-expansion-chevron:hover {
     color: var(--vscode-button-foreground);
     background-color: var(--vscode-button-hoverBackground);
