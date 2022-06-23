@@ -112,7 +112,7 @@
 				activeIdeFileWrap.set(new ActiveIdeFileWrapTuple(parent, [
 					/*
 						In short, key down in some cases needs to set active
-						a sibling of the parent. The callbacks allows for that.
+						a sibling of the parent. The callbacks allow for that.
 
 						upperIdeFile THIS ideFile's parent
 						upperIndex THIS ideFile's parent's index
@@ -128,6 +128,7 @@
 			}
 		}
 		else if (e.key === ConstantsKeyboard.KEY_ARROW_UP) {
+					console.log("ConstantsKeyboard.KEY_ARROW_UP");
 			if (parent && parentChildren && (index > 0)) {
 
 				let currentIdeFile = parentChildren[index - 1];
@@ -144,12 +145,12 @@
 						break;
 					}
 
-					let indexToGetChild = currentIdeFileChildren.currentIdeFileChildren.length - 1;
+					let indexToGetChild = currentIdeFileChildren.length - 1;
 					
-					currentIdeFile = currentIdeFile[indexToGetChild--];
+					currentIdeFile = currentIdeFileChildren[indexToGetChild--];
 
 					while (currentIdeFile.hasUnexpectedParent && (indexToGetChild !== -1)) {
-						currentIdeFile = currentIdeFile[indexToGetChild--];
+						currentIdeFile = currentIdeFileChildren[indexToGetChild--];
 					}
 
 					console.log("while (currentIdeFile.hasUnexpectedParent && (indexToGetChild !== -1)) {")
