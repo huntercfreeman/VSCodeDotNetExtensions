@@ -140,18 +140,23 @@
 									)
 								);
 							}
+							else {
+								activeIdeFileWrap.set(
+									new ActiveIdeFileWrapTuple(
+										ideFile,
+										undefined
+									)
+								);
+							}
 						},
 					])
 				);
 			}
 		} else if (e.key === ConstantsKeyboard.KEY_ARROW_UP) {
-			console.log("a");
 			if (parent && parentChildren && index > 0) {
-				console.log("b");
 				let siblingFile = parentChildren[index - 1];
 
 				if (siblingFile.isExpanded) {
-					console.log("c");
 
 					function recursivelyGetActiveIdeFile(
 						childIdeFile: IdeFile,
@@ -160,13 +165,11 @@
 						childFileParent: IdeFile | undefined,
 						childFileParentChildren: IdeFile[] | undefined
 					): void {
-						console.log("d");
 						if (
 							childIdeFile.isExpanded &&
 							childFileChildren &&
 							childFileChildren.length > 0
 						) {
-						console.log("e");
 							let lastChild =
 								childFileChildren[childFileChildren.length - 1];
 
@@ -177,14 +180,12 @@
 							);
 						}
 						else {
-						console.log("f");
 							activeIdeFileWrap.set(
 								new ActiveIdeFileWrapTuple(childIdeFile, undefined)
 							);
 						}
 					}
 
-						console.log("g");
 					activeIdeFileWrap.set(
 						new ActiveIdeFileWrapTuple(siblingFile, [recursivelyGetActiveIdeFile])
 					);
@@ -196,7 +197,6 @@
 				}
 			}
 			else {
-						console.log("k");
 					if (parent) {
 						setActiveIdeFileAsParent();
 					}
