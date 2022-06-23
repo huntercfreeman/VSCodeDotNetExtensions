@@ -89,6 +89,38 @@
 				activeIdeFileWrap.set(parentChildren[index + 1]);
 			}
 		}
+		else if (e.key === ConstantsKeyboard.KEY_ARROW_UP) {
+			if (parentChildren && (index > 0)) {
+
+				let currentIdeFile = parentChildren[index - 1];
+
+				while (currentIdeFile.isExpanded) {
+
+					let currentIdeFileChildren = (currentIdeFile.constantChildFiles ?? [])
+						.concat((currentIdeFile.childFiles ?? []))
+						.concat((currentIdeFile.virtualChildFiles ?? []));
+
+					let indexToGetChild = currentIdeFileChildren.currentIdeFileChildren.length - 1;
+					
+					if (currentIdeFileChildren.length > 0) {
+						currentIdeFile = currentIdeFile[indexToGetChild--];
+
+						while (currentIdeFile.hasUnexpectedParent && (indexToGetChild !== -1)) {
+							currentIdeFile = currentIdeFile[indexToGetChild--];
+						}
+
+						if (indexToGetChild === -1) {
+							break;
+						}
+					}
+					else {
+						break;
+					}
+				}
+
+				activeIdeFileWrap.set(currentIdeFile);
+			}
+		}
 	}
 </script>
 
