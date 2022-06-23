@@ -22,7 +22,8 @@
     }
 
 	function getChildFiles(): IdeFile[] {
-		children = directoryFile.childFiles;
+		children = directoryFile.childFiles
+			?.filter(x => !hasDifferentParentContainer(x));
 		
 		if (!children) {
 			let messageReadFilesInDirectory =
@@ -63,7 +64,8 @@
 							) {
 								directoryFile =
 									messageReadFilesInDirectory.directoryFile;
-								children = directoryFile.childFiles;
+								children = directoryFile.childFiles
+									?.filter(x => !hasDifferentParentContainer(x));
 							}
 							break;
 					}

@@ -29,7 +29,8 @@
     }
 
 	function getChildFiles(): IdeFile[] {
-        children = dotNetSolutionFile.virtualChildFiles;
+        children = dotNetSolutionFile.virtualChildFiles
+			?.filter(x => !hasDifferentParentContainer(x));
 
 		return children;
     }
@@ -67,7 +68,8 @@
 							dotNetSolutionFile =
 								messageReadVirtualFilesInSolution.dotNetSolutionFile;
 							
-							children = dotNetSolutionFile.virtualChildFiles;
+							children = dotNetSolutionFile.virtualChildFiles
+								?.filter(x => !hasDifferentParentContainer(x));
 
 							break;
 					}

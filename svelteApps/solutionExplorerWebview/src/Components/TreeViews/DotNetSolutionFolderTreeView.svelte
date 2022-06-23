@@ -18,7 +18,8 @@
     }
 
 	function getChildFiles(): IdeFile[] {
-		children = solutionFolderFile.virtualChildFiles;
+		children = solutionFolderFile.virtualChildFiles
+			?.filter(x => !hasDifferentParentContainer(x));
 		
 		return children;
 	}

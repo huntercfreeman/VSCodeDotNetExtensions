@@ -22,7 +22,8 @@
     }
 
 	function getChildFiles(): IdeFile[] {
-        children = ideFile.virtualChildFiles;
+        children = ideFile.virtualChildFiles
+			?.filter(x => !hasDifferentParentContainer(x));
 
 		return children ?? [];
 	}

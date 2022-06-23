@@ -19,7 +19,8 @@
     }
 
 	function getChildFiles(): IdeFile[] {
-		children = projectToProjectReferencesListFile.virtualChildFiles;
+		children = projectToProjectReferencesListFile.virtualChildFiles
+			?.filter(x => !hasDifferentParentContainer(x));
 
 		if (!children) {
 			let messageReadProjectReferencesInProject =
@@ -59,7 +60,8 @@
 								projectToProjectReferencesListFile =
 									messageReadProjectReferencesInProject.projectToProjectReferencesFile;
 									
-								children = projectToProjectReferencesListFile.virtualChildFiles;
+								children = projectToProjectReferencesListFile.virtualChildFiles
+									?.filter(x => !hasDifferentParentContainer(x));
 							}
 							break;
 					}

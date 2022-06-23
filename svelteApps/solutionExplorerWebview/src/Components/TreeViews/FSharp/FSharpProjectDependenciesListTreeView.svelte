@@ -16,7 +16,8 @@
     }
 
 	function getChildFiles(): IdeFile[] {
-		children = fSharpProjectDependenciesListFile.constantChildFiles;
+		children = fSharpProjectDependenciesListFile.constantChildFiles
+			?.filter(x => !hasDifferentParentContainer(x));
 		
 		return children;
 	}

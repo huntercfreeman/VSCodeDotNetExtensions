@@ -16,7 +16,8 @@
     }
 
 	function getChildFiles(): IdeFile[] {
-        children = projectNugetPackageDependencyFile.virtualChildFiles;
+        children = projectNugetPackageDependencyFile.virtualChildFiles
+			?.filter(x => !hasDifferentParentContainer(x));
 
 		return children;
 	}

@@ -16,7 +16,8 @@
     }
 
 	function getChildFiles(): IdeFile[] {
-        children = projectToProjectReferenceFile.virtualChildFiles;
+        children = projectToProjectReferenceFile.virtualChildFiles
+			?.filter(x => !hasDifferentParentContainer(x));
 
 		return children;
 	}

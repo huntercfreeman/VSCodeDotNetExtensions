@@ -21,7 +21,8 @@
     }
 
 	function getChildFiles(): IdeFile[] {
-		children = vcxProjectFilterListFile.virtualChildFiles;
+		children = vcxProjectFilterListFile.virtualChildFiles
+			?.filter(x => !hasDifferentParentContainer(x));
 		
 		if (!children) {
 			let messageReadVCXFilterMatches =
@@ -63,7 +64,8 @@
 								vcxProjectFilterListFile =
 									messageReadVCXFilterMatches.vcxProjectFilterListFile;
 
-								children = vcxProjectFilterListFile.virtualChildFiles;
+								children = vcxProjectFilterListFile.virtualChildFiles
+									?.filter(x => !hasDifferentParentContainer(x));
 							}
 							break;
 					}

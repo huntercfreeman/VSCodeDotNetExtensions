@@ -21,7 +21,8 @@
     }
 
 	function getChildFiles(): IdeFile[] {
-		children = projectNugetPackageDependenciesListFile.virtualChildFiles;
+		children = projectNugetPackageDependenciesListFile.virtualChildFiles
+			?.filter(x => !hasDifferentParentContainer(x));
 
 		if (!children) {
 			let messageReadNugetPackageReferencesInProject =
@@ -62,7 +63,8 @@
 								projectNugetPackageDependenciesListFile =
 									messageReadNugetPackageReferencesInProject.projectNugetPackageDependenciesFile;
 									
-								children = projectNugetPackageDependenciesListFile.virtualChildFiles;
+								children = projectNugetPackageDependenciesListFile.virtualChildFiles
+									?.filter(x => !hasDifferentParentContainer(x));
 							}
 							break;
 					}

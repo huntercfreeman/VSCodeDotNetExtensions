@@ -28,7 +28,8 @@ import type { MessageReadRequestForRefresh } from "../../../../../../out/Message
     }
 
 	function getChildFiles(): IdeFile[] {
-		children = fSharpProjectFile.virtualChildFiles;
+		children = fSharpProjectFile.virtualChildFiles
+			?.filter(x => !hasDifferentParentContainer(x));
 
 		if (!children) {
 			let messageReadVirtualFilesInProject =
@@ -71,9 +72,10 @@ import type { MessageReadRequestForRefresh } from "../../../../../../out/Message
 								fSharpProjectFile =
 									messageReadVirtualFilesInProject.projectFile;
 							
-								children = fSharpProjectFile.constantChildFiles;
+								let temporary = fSharpProjectFile.constantChildFiles;
 								
-								children = children.concat(fSharpProjectFile.virtualChildFiles);
+								children = temporary.concat(fSharpProjectFile.virtualChildFiles)
+									?.filter(x => !hasDifferentParentContainer(x));
 							}
 							break;
 						case MessageReadKind.requestForRefresh:

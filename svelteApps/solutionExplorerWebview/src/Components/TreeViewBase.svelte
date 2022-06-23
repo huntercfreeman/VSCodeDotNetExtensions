@@ -17,7 +17,6 @@
 	export let index: number;
 	export let parent: IdeFile;
 	export let parentChildren: IdeFile[];
-	export let renderedChildren: IdeFile[];
 
 	let activeIdeFileWrapValue;
 
@@ -84,22 +83,6 @@
 
 		titleOnClick(e);
 	}
-
-	function fireHasDifferentParentContainer(child: IdeFile): boolean {
-		let differentParent = hasDifferentParentContainer(child);
-
-		if (!differentParent) {
-			renderedChildren.push(child);
-		}
-
-		return differentParent;
-	}
-	
-	$: getChildren = (() => {
-		renderedChildren = [];
-
-		return children ?? getChildFiles();
-	})();
 
 	function setActiveIdeFileAsSelf() {
 		activeIdeFileWrap.set(new ActiveIdeFileWrapTuple(ideFile, undefined));
@@ -275,13 +258,13 @@
 
 	<div class="dni_tree-view-children">
 		{#if ideFile.isExpanded}
-			{#each getChildren ?? [] as child, i (child.nonce)}
-				{#if !fireHasDifferentParentContainer(child)}
+			{#each children ?? getChildFiles() ?? [] as child, i (child.nonce)}
+				{#if true} <!--altering this code !hasDifferentParentContainer(child)}-->
 					<TreeViewMapper
 						ideFile={child}
 						index={i}
 						parent={ideFile}
-						parentChildren={renderedChildren}
+						parentChildren={children}
 					/>
 				{/if}
 			{/each}
