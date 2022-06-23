@@ -80,45 +80,50 @@
 			}
 		}
 		else if (e.key === ConstantsKeyboard.KEY_ARROW_DOWN) {
-			if (ideFile.isExpanded) {
-				if ((children?.length ?? 0) > 0) {
-					activeIdeFileWrap.set(children[0]);
-				}
+			if (ideFile.isExpanded && ((children?.length ?? 0) > 0)) {
+				activeIdeFileWrap.set(children[0]);
 			}
 			else if (parentChildren && (parentChildren.length > (index + 1))) {
 				activeIdeFileWrap.set(parentChildren[index + 1]);
 			}
 		}
 		else if (e.key === ConstantsKeyboard.KEY_ARROW_UP) {
-			if (parentChildren && (index > 0)) {
+			if (parent && parentChildren && (index > 0)) {
 
 				let currentIdeFile = parentChildren[index - 1];
 
 				while (currentIdeFile.isExpanded) {
 
+					console.log("while (currentIdeFile.isExpanded) {")
+
 					let currentIdeFileChildren = (currentIdeFile.constantChildFiles ?? [])
 						.concat((currentIdeFile.childFiles ?? []))
 						.concat((currentIdeFile.virtualChildFiles ?? []));
 
+					if ((currentIdeFileChildren?.length ?? 0) <= 0) {
+						break;
+					}
+
 					let indexToGetChild = currentIdeFileChildren.currentIdeFileChildren.length - 1;
 					
-					if (currentIdeFileChildren.length > 0) {
+					currentIdeFile = currentIdeFile[indexToGetChild--];
+
+					while (currentIdeFile.hasUnexpectedParent && (indexToGetChild !== -1)) {
 						currentIdeFile = currentIdeFile[indexToGetChild--];
-
-						while (currentIdeFile.hasUnexpectedParent && (indexToGetChild !== -1)) {
-							currentIdeFile = currentIdeFile[indexToGetChild--];
-						}
-
-						if (indexToGetChild === -1) {
-							break;
-						}
 					}
-					else {
+
+					console.log("while (currentIdeFile.hasUnexpectedParent && (indexToGetChild !== -1)) {")
+					if (indexToGetChild === -1) {
 						break;
 					}
 				}
 
 				activeIdeFileWrap.set(currentIdeFile);
+			}
+			else {
+				if (parent) {
+					setActiveIdeFileAsParent();
+				}
 			}
 		}
 	}
