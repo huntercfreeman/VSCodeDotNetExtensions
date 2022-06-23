@@ -69,6 +69,14 @@
 				setActiveIdeFileAsParent();
 			}
 		}
+		else if (e.key === "ArrowRight") {
+			if (!ideFile.isExpanded) {
+				ideFile.isExpanded = true;
+			}
+			else if ((children?.length ?? 0) > 0) {
+				activeIdeFileWrap.set(children[0]);
+			}
+		}
 	}
 </script>
 
@@ -105,7 +113,7 @@
 
 	<div class="dni_tree-view-children">
 		{#if ideFile.isExpanded}
-			{#each children ?? getChildFiles() as child, i (child.nonce)}
+			{#each children ?? getChildFiles() ?? [] as child, i (child.nonce)}
 				{#if !hasDifferentParentContainer(child)}
 					<TreeViewMapper ideFile={child} index={i} parent={ideFile} />
 				{/if}
