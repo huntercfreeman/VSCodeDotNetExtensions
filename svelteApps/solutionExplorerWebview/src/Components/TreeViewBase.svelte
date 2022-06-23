@@ -120,36 +120,44 @@
 					)
 				);
 			} else if (parent) {
+				function recursivelyGetActiveIdeFile(
+						upperIdeFile: IdeFile,
+						upperIndex: number,
+						upperChildren: IdeFile[] | undefined,
+						upperParent: IdeFile | undefined,
+						upperParentChildren: IdeFile[] | undefined		
+					): void {
+						if (
+							upperParentChildren &&
+							upperParentChildren.length > upperIndex + 1
+						) {
+							activeIdeFileWrap.set(
+								new ActiveIdeFileWrapTuple(
+									upperParentChildren[upperIndex + 1],
+									undefined
+								)
+							);
+						}
+						else if (upperParent) {
+							activeIdeFileWrap.set(
+								new ActiveIdeFileWrapTuple(
+									upperParent,
+									[ recursivelyGetActiveIdeFile ]
+								)
+							);
+						}
+						else {
+							activeIdeFileWrap.set(
+								new ActiveIdeFileWrapTuple(
+									ideFile,
+									undefined
+								)
+							);
+						}
+					}
+
 				activeIdeFileWrap.set(
-					new ActiveIdeFileWrapTuple(parent, [
-						(
-							upperIdeFile,
-							upperIndex,
-							upperChildren,
-							upperParent,
-							upperParentChildren
-						) => {
-							if (
-								upperParentChildren &&
-								upperParentChildren.length > upperIndex + 1
-							) {
-								activeIdeFileWrap.set(
-									new ActiveIdeFileWrapTuple(
-										upperParentChildren[upperIndex + 1],
-										undefined
-									)
-								);
-							}
-							else {
-								activeIdeFileWrap.set(
-									new ActiveIdeFileWrapTuple(
-										ideFile,
-										undefined
-									)
-								);
-							}
-						},
-					])
+					new ActiveIdeFileWrapTuple(parent, [recursivelyGetActiveIdeFile])
 				);
 			}
 		} else if (e.key === ConstantsKeyboard.KEY_ARROW_UP) {
