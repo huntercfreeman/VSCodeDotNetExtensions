@@ -31,7 +31,9 @@
 	
 	function handleOnKeyDown(e: KeyboardEvent) {
 		
-		activeIdeFileHandleOnKeyDownValue(e);
+		if (activeIdeFileHandleOnKeyDownValue) {
+			activeIdeFileHandleOnKeyDownValue(e);
+		}
 	}
 
 	onMount(async () => {
@@ -82,7 +84,8 @@
 	{#if selectedDotNetSolutionFile}
 		<TreeViewMapper ideFile={selectedDotNetSolutionFile}
 			index={0}
-			parent={undefined} />
+			parent={undefined}
+			parentChildren={undefined} />
 	{/if}
 
 	<ContextMenu />

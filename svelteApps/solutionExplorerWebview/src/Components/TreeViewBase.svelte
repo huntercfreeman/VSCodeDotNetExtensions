@@ -5,7 +5,7 @@
 	import FileIconDisplay from "./FileIconDisplay.svelte";
 	import { contextMenuTarget } from "./menu.js";
 	import TreeViewMapper from "./TreeViewMapper.svelte";
-	import { activeIdeFileWrap } from "./activeState"
+	import { activeIdeFileWrap, ActiveIdeFileWrapTuple } from "./activeState"
 	import { activeIdeFileHandleOnKeyDownWrap } from "./activeState"
 
 	export let ideFile: IdeFile;
@@ -21,9 +21,29 @@
 	let activeIdeFileWrapValue;
 
 	activeIdeFileWrap.subscribe((value) => {
-		activeIdeFileWrapValue = value;
 
-		if (value && ((value as IdeFile).nonce === ideFile.nonce)) {
+		if (!value) {
+			return;
+		}
+
+		let activeIdeFileWrapTuple = value as ActiveIdeFileWrapTuple;
+
+		activeIdeFileWrapValue = activeIdeFileWrapTuple.ideFile;
+
+		// If this IdeFile is the activeIdeFile it will handle key down events.
+		if (activeIdeFileWrapTuple.ideFile && ((activeIdeFileWrapTuple.ideFile).nonce === ideFile.nonce)) {
+
+			// Ignore key down events until completely finished handling previous key down event
+			activeIdeFileHandleOnKeyDownWrap.set(undefined);
+
+			// Finish handling previous key down event that requires more than 1 movement operation
+			if (activeIdeFileWrapTuple.callbacks?.length > 0) {
+				for (let i = 0; i < activeIdeFileWrapTuple.callbacks.length; i++) {
+					activeIdeFileWrapTuple.callbacks[i](ideFile, parent, parentChildren);
+				}
+			}
+
+			// Listen to key down events again
 			activeIdeFileHandleOnKeyDownWrap.set(handleOnKeyDown);
 		}
 	});
@@ -53,13 +73,12 @@
 	
 	function setActiveIdeFileAsSelf() {
 
-		activeIdeFileWrap.set(ideFile);
-		activeIdeFileHandleOnKeyDownWrap.set(handleOnKeyDown);
+		activeIdeFileWrap.set(new ActiveIdeFileWrapTuple(ideFile, undefined));
 	}
 	
 	function setActiveIdeFileAsParent() {
 
-		activeIdeFileWrap.set(parent);
+		activeIdeFileWrap.set(new ActiveIdeFileWrapTuple(parent, undefined));
 	}
 
 	function handleOnKeyDown(e: KeyboardEvent) {
@@ -76,15 +95,18 @@
 				ideFile.isExpanded = true;
 			}
 			else if ((children?.length ?? 0) > 0) {
-				activeIdeFileWrap.set(children[0]);
+				activeIdeFileWrap.set(new ActiveIdeFileWrapTuple(children[0], undefined));
 			}
 		}
 		else if (e.key === ConstantsKeyboard.KEY_ARROW_DOWN) {
 			if (ideFile.isExpanded && ((children?.length ?? 0) > 0)) {
-				activeIdeFileWrap.set(children[0]);
+				activeIdeFileWrap.set(new ActiveIdeFileWrapTuple(children[0], undefined));
 			}
 			else if (parentChildren && (parentChildren.length > (index + 1))) {
-				activeIdeFileWrap.set(parentChildren[index + 1]);
+				activeIdeFileWrap.set(new ActiveIdeFileWrapTuple(parentChildren[index + 1], undefined));
+			}
+			else if (parent) {
+				setActiveIdeFileAsParent();
 			}
 		}
 		else if (e.key === ConstantsKeyboard.KEY_ARROW_UP) {
@@ -118,7 +140,7 @@
 					}
 				}
 
-				activeIdeFileWrap.set(currentIdeFile);
+				activeIdeFileWrap.set(new ActiveIdeFileWrapTuple(currentIdeFile, undefined));
 			}
 			else {
 				if (parent) {
