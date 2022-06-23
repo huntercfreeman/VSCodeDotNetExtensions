@@ -252,21 +252,19 @@
 		<span class="dni_tree-view-title-text">
 			<FileIconDisplay {ideFile} />
 
-			{index + "_" + titleText}
+			{titleText}
 		</span>
 	</div>
 
 	<div class="dni_tree-view-children">
 		{#if ideFile.isExpanded}
 			{#each children ?? getChildFiles() ?? [] as child, i (child.nonce)}
-				{#if true} <!--altering this code !hasDifferentParentContainer(child)}-->
-					<TreeViewMapper
-						ideFile={child}
-						index={i}
-						parent={ideFile}
-						parentChildren={children}
-					/>
-				{/if}
+				<TreeViewMapper
+					ideFile={child}
+					index={i}
+					parent={ideFile}
+					parentChildren={children}
+				/>
 			{/each}
 		{/if}
 	</div>
