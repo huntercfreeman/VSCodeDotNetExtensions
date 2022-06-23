@@ -1,5 +1,6 @@
 <script lang="ts">
 	import type { IdeFile } from "../../../../out/FileSystem/Files/IdeFile";
+	import { ConstantsKeyboard } from "../../../../out/Constants/ConstantsKeyboard";
 	import ExpansionChevron from "./ExpansionChevron.svelte";
 	import FileIconDisplay from "./FileIconDisplay.svelte";
 	import { contextMenuTarget } from "./menu.js";
@@ -15,6 +16,7 @@
 	export let hasDifferentParentContainer: (childIdeFile: IdeFile) => boolean;
 	export let index: number;
 	export let parent: IdeFile;
+	export let parentChildren: IdeFile[];
 	
 	let activeIdeFileWrapValue;
 
@@ -61,7 +63,7 @@
 	}
 
 	function handleOnKeyDown(e: KeyboardEvent) {
-		if (e.key === "ArrowLeft") {
+		if (e.key === ConstantsKeyboard.KEY_ARROW_LEFT) {
 			if (ideFile.isExpanded) {
 				ideFile.isExpanded = false;
 			}
@@ -69,12 +71,22 @@
 				setActiveIdeFileAsParent();
 			}
 		}
-		else if (e.key === "ArrowRight") {
+		else if (e.key === ConstantsKeyboard.KEY_ARROW_RIGHT) {
 			if (!ideFile.isExpanded) {
 				ideFile.isExpanded = true;
 			}
 			else if ((children?.length ?? 0) > 0) {
 				activeIdeFileWrap.set(children[0]);
+			}
+		}
+		else if (e.key === ConstantsKeyboard.KEY_ARROW_DOWN) {
+			if (ideFile.isExpanded) {
+				if ((children?.length ?? 0) > 0) {
+					activeIdeFileWrap.set(children[0]);
+				}
+			}
+			else if (parentChildren && (parentChildren.length > (index + 1))) {
+				activeIdeFileWrap.set(parentChildren[index + 1]);
 			}
 		}
 	}
@@ -115,7 +127,7 @@
 		{#if ideFile.isExpanded}
 			{#each children ?? getChildFiles() ?? [] as child, i (child.nonce)}
 				{#if !hasDifferentParentContainer(child)}
-					<TreeViewMapper ideFile={child} index={i} parent={ideFile} />
+					<TreeViewMapper ideFile={child} index={i} parent={ideFile} parentChildren={children} />
 				{/if}
 			{/each}
 		{/if}

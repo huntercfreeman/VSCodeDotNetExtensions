@@ -37,6 +37,7 @@
     export let ideFile: IdeFile;
     export let index: number;
     export let parent: IdeFile | undefined;
+	export let parentChildren: IdeFile[];
 
     $: dotNetSolutionFile = ideFile as DotNetSolutionFile;
     $: solutionFolderFile = ideFile as SolutionFolderFile;
@@ -63,63 +64,63 @@
 </script>
 
 {#if ideFile.fileKind === FileKind.solution}
-    <DotNetSolutionTreeView {dotNetSolutionFile} {index} {parent} />
+    <DotNetSolutionTreeView {dotNetSolutionFile} {index} {parent} {parentChildren} />
 
 {:else if ideFile.fileKind === FileKind.solutionFolder}
-    <DotNetSolutionFolderTreeView {solutionFolderFile} {index} {parent} />
+    <DotNetSolutionFolderTreeView {solutionFolderFile} {index} {parent} {parentChildren} />
 
 {:else if ideFile.fileKind === FileKind.cSharpProject}
-    <CSharpProjectTreeView {cSharpProjectFile} {index} {parent} />
+    <CSharpProjectTreeView {cSharpProjectFile} {index} {parent} {parentChildren} />
 
 {:else if ideFile.fileKind === FileKind.fSharpProject}
-    <FSharpProjectTreeView {fSharpProjectFile} {index} {parent} />
+    <FSharpProjectTreeView {fSharpProjectFile} {index} {parent} {parentChildren} />
 
 {:else if ideFile.fileKind === FileKind.vcxProject}
-    <VcxProjectTreeView {vcxProjectFile} {index} {parent} />
+    <VcxProjectTreeView {vcxProjectFile} {index} {parent} {parentChildren} />
 
 {:else if ideFile.fileKind === FileKind.directory}
-    <DirectoryTreeView {directoryFile} {index} {parent} />
+    <DirectoryTreeView {directoryFile} {index} {parent} {parentChildren} />
 
 {:else if ideFile.fileKind === FileKind.cSharpProjectDependencies}
     <CSharpProjectDependenciesListTreeView
         {cSharpProjectDependenciesListFile}
-        {index} {parent}
+        {index} {parent} {parentChildren}
     />
 {:else if ideFile.fileKind === FileKind.fSharpProjectDependencies}
     <FSharpProjectDependenciesListTreeView
         {fSharpProjectDependenciesListFile}
-        {index} {parent}
+        {index} {parent} {parentChildren}
     />
 {:else if ideFile.fileKind === FileKind.nugetPackageDependenciesList}
     <ProjectNugetPackageDependenciesListTreeView
         {projectNugetPackageDependenciesListFile}
-        {index} {parent}
+        {index} {parent} {parentChildren}
     />
 {:else if ideFile.fileKind === FileKind.nugetPackageDependency}
     <ProjectNugetPackageDependencyTreeView
         {projectNugetPackageDependencyFile}
-        {index} {parent}
+        {index} {parent} {parentChildren}
     />
 {:else if ideFile.fileKind === FileKind.projectReferencesList}
     <ProjectToProjectReferencesListTreeView
         {projectToProjectReferencesListFile}
-        {index} {parent}
+        {index} {parent} {parentChildren}
     />
 {:else if ideFile.fileKind === FileKind.projectReference}
     <ProjectToProjectReferenceTreeView
         {projectToProjectReferenceFile}
-        {index} {parent}
+        {index} {parent} {parentChildren}
     />
 {:else if ideFile.fileKind === FileKind.vcxProjectReferencesListFile}
-    <VcxProjectReferencesListTreeView {vcxProjectReferencesListFile} {index} {parent} />
+    <VcxProjectReferencesListTreeView {vcxProjectReferencesListFile} {index} {parent} {parentChildren} />
 {:else if ideFile.fileKind === FileKind.vcxProjectExternalDependenciesListFile}
     <VcxProjectExternalDependenciesListTreeView
         {vcxProjectExternalDependenciesListFile}
-        {index} {parent}
+        {index} {parent} {parentChildren}
     />
 {:else if ideFile.fileKind === FileKind.vcxProjectFilterListFile}
-    <VCXProjectFilterListTreeView {vcxProjectFilterListFile} {index} {parent} />
+    <VCXProjectFilterListTreeView {vcxProjectFilterListFile} {index} {parent} {parentChildren} />
 
 {:else}
-    <DefaultFileTreeView {ideFile} {index} {parent} />
+    <DefaultFileTreeView {ideFile} {index} {parent} {parentChildren} />
 {/if}

@@ -13,6 +13,7 @@
     export let dotNetSolutionFile: DotNetSolutionFile;
     export let index: number;
     export let parent: IdeFile | undefined;
+	export let parentChildren: IdeFile[];
 
 	let children: IdeFile[] | undefined;
 
@@ -41,17 +42,17 @@
                         .projectModel;
 
 			if(projectModel.solutionFolderParentProjectIdGuid) {
-				return true;
+				return (childIdeFile.hasUnexpectedParent = true);
 			}
 		}
 		
 		if (childIdeFile.virtualParentNonce) {
 			if (childIdeFile.virtualParentNonce !== dotNetSolutionFile.nonce) {
-				return true;
+				return (childIdeFile.hasUnexpectedParent = true);
 			}
 		}
 
-		return false;
+		return (childIdeFile.hasUnexpectedParent = false);
 	}
 
 	onMount(async () => {
@@ -82,4 +83,5 @@
               hasDifferentParentContainer={hasDifferentParentContainer}
 			  bind:children={children}
 			  {index}
-			  {parent} />
+			  {parent}
+			  {parentChildren} />
