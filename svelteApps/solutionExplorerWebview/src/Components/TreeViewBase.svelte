@@ -39,8 +39,11 @@
 			// Finish handling previous key down event that requires more than 1 movement operation
 			if (activeIdeFileWrapTuple.callbacks?.length > 0) {
 				for (let i = 0; i < activeIdeFileWrapTuple.callbacks.length; i++) {
-					activeIdeFileWrapTuple.callbacks[i](ideFile, parent, parentChildren);
+					activeIdeFileWrapTuple.callbacks[i](ideFile, index, parent, parentChildren);
 				}
+
+				// More than 1 movement operation likely means this cannot accurrately be assummed as the active ide file
+				return;
 			}
 
 			// Listen to key down events again
@@ -106,7 +109,22 @@
 				activeIdeFileWrap.set(new ActiveIdeFileWrapTuple(parentChildren[index + 1], undefined));
 			}
 			else if (parent) {
-				setActiveIdeFileAsParent();
+				activeIdeFileWrap.set(new ActiveIdeFileWrapTuple(parent, [
+					/*
+						In short, key down in some cases needs to set active
+						a sibling of the parent. The callbacks allows for that.
+
+						upperIdeFile THIS ideFile's parent
+						upperIndex THIS ideFile's parent's index
+						upperParent THIS ideFile's parent's parent
+						upperParentChildren THIS ideFile's parent's parent's children
+					 */
+					(upperIdeFile, upperIndex, upperParent, upperParentChildren) => {
+						if (upperParentChildren && (upperParentChildren.length > (upperIndex + 1))) {
+							activeIdeFileWrap.set(new ActiveIdeFileWrapTuple(upperParentChildren[upperIndex + 1], undefined));
+						}
+					}
+				]));
 			}
 		}
 		else if (e.key === ConstantsKeyboard.KEY_ARROW_UP) {
