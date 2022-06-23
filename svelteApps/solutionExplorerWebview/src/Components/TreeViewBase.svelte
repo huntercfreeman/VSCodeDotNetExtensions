@@ -93,122 +93,129 @@
 	}
 
 	function handleOnKeyDown(e: KeyboardEvent) {
-		if (e.key === ConstantsKeyboard.KEY_ARROW_LEFT) {
-			if (ideFile.isExpanded) {
-				ideFile.isExpanded = false;
-			} else if (parent) {
+		if (ConstantsKeyboard.ALL_ARROW_LEFT_KEYS.indexOf(e.key) !== -1) {
+			performArrowLeft(e);
+		} else if (ConstantsKeyboard.ALL_ARROW_DOWN_KEYS.indexOf(e.key) !== -1) {
+			performArrowDown(e);
+		} else if (ConstantsKeyboard.ALL_ARROW_UP_KEYS.indexOf(e.key) !== -1) {
+			performArrowUp(e);
+		} else if (ConstantsKeyboard.ALL_ARROW_RIGHT_KEYS.indexOf(e.key) !== -1) {
+			performArrowRight(e);
+		}
+	}
+
+	function performArrowLeft(e: KeyboardEvent) {
+		if (ideFile.isExpanded) {
+			ideFile.isExpanded = false;
+		} else if (parent) {
+			setActiveIdeFileAsParent();
+		}
+	}
+
+	function performArrowDown(e: KeyboardEvent) {
+		if (ideFile.isExpanded && (children?.length ?? 0) > 0) {
+			activeIdeFileWrap.set(
+				new ActiveIdeFileWrapTuple(children[0], undefined)
+			);
+		} else if (parentChildren && parentChildren.length > index + 1) {
+			activeIdeFileWrap.set(
+				new ActiveIdeFileWrapTuple(parentChildren[index + 1], undefined)
+			);
+		} else if (parent) {
+			function recursivelyGetActiveIdeFile(
+				upperIdeFile: IdeFile,
+				upperIndex: number,
+				upperChildren: IdeFile[] | undefined,
+				upperParent: IdeFile | undefined,
+				upperParentChildren: IdeFile[] | undefined
+			): void {
+				if (
+					upperParentChildren &&
+					upperParentChildren.length > upperIndex + 1
+				) {
+					activeIdeFileWrap.set(
+						new ActiveIdeFileWrapTuple(
+							upperParentChildren[upperIndex + 1],
+							undefined
+						)
+					);
+				} else if (upperParent) {
+					activeIdeFileWrap.set(
+						new ActiveIdeFileWrapTuple(upperParent, [
+							recursivelyGetActiveIdeFile,
+						])
+					);
+				} else {
+					activeIdeFileWrap.set(
+						new ActiveIdeFileWrapTuple(ideFile, undefined)
+					);
+				}
+			}
+
+			activeIdeFileWrap.set(
+				new ActiveIdeFileWrapTuple(parent, [
+					recursivelyGetActiveIdeFile,
+				])
+			);
+		}
+	}
+
+	function performArrowUp(e: KeyboardEvent) {
+		if (parent && parentChildren && index > 0) {
+			let siblingFile = parentChildren[index - 1];
+
+			if (siblingFile.isExpanded) {
+				function recursivelyGetActiveIdeFile(
+					childIdeFile: IdeFile,
+					childFileIndex: number,
+					childFileChildren: IdeFile[] | undefined,
+					childFileParent: IdeFile | undefined,
+					childFileParentChildren: IdeFile[] | undefined
+				): void {
+					if (
+						childIdeFile.isExpanded &&
+						childFileChildren &&
+						childFileChildren.length > 0
+					) {
+						let lastChild =
+							childFileChildren[childFileChildren.length - 1];
+
+						activeIdeFileWrap.set(
+							new ActiveIdeFileWrapTuple(lastChild, [
+								recursivelyGetActiveIdeFile,
+							])
+						);
+					} else {
+						activeIdeFileWrap.set(
+							new ActiveIdeFileWrapTuple(childIdeFile, undefined)
+						);
+					}
+				}
+
+				activeIdeFileWrap.set(
+					new ActiveIdeFileWrapTuple(siblingFile, [
+						recursivelyGetActiveIdeFile,
+					])
+				);
+			} else {
+				activeIdeFileWrap.set(
+					new ActiveIdeFileWrapTuple(siblingFile, undefined)
+				);
+			}
+		} else {
+			if (parent) {
 				setActiveIdeFileAsParent();
 			}
-		} else if (e.key === ConstantsKeyboard.KEY_ARROW_RIGHT) {
-			if (!ideFile.isExpanded) {
-				ideFile.isExpanded = true;
-			} else if ((children?.length ?? 0) > 0) {
-				activeIdeFileWrap.set(
-					new ActiveIdeFileWrapTuple(children[0], undefined)
-				);
-			}
-		} else if (e.key === ConstantsKeyboard.KEY_ARROW_DOWN) {
-			if (ideFile.isExpanded && (children?.length ?? 0) > 0) {
-				activeIdeFileWrap.set(
-					new ActiveIdeFileWrapTuple(children[0], undefined)
-				);
-			} else if (parentChildren && parentChildren.length > index + 1) {
-				activeIdeFileWrap.set(
-					new ActiveIdeFileWrapTuple(
-						parentChildren[index + 1],
-						undefined
-					)
-				);
-			} else if (parent) {
-				function recursivelyGetActiveIdeFile(
-						upperIdeFile: IdeFile,
-						upperIndex: number,
-						upperChildren: IdeFile[] | undefined,
-						upperParent: IdeFile | undefined,
-						upperParentChildren: IdeFile[] | undefined		
-					): void {
-						if (
-							upperParentChildren &&
-							upperParentChildren.length > upperIndex + 1
-						) {
-							activeIdeFileWrap.set(
-								new ActiveIdeFileWrapTuple(
-									upperParentChildren[upperIndex + 1],
-									undefined
-								)
-							);
-						}
-						else if (upperParent) {
-							activeIdeFileWrap.set(
-								new ActiveIdeFileWrapTuple(
-									upperParent,
-									[ recursivelyGetActiveIdeFile ]
-								)
-							);
-						}
-						else {
-							activeIdeFileWrap.set(
-								new ActiveIdeFileWrapTuple(
-									ideFile,
-									undefined
-								)
-							);
-						}
-					}
+		}
+	}
 
-				activeIdeFileWrap.set(
-					new ActiveIdeFileWrapTuple(parent, [recursivelyGetActiveIdeFile])
-				);
-			}
-		} else if (e.key === ConstantsKeyboard.KEY_ARROW_UP) {
-			if (parent && parentChildren && index > 0) {
-				let siblingFile = parentChildren[index - 1];
-
-				if (siblingFile.isExpanded) {
-
-					function recursivelyGetActiveIdeFile(
-						childIdeFile: IdeFile,
-						childFileIndex: number,
-						childFileChildren: IdeFile[] | undefined,
-						childFileParent: IdeFile | undefined,
-						childFileParentChildren: IdeFile[] | undefined
-					): void {
-						if (
-							childIdeFile.isExpanded &&
-							childFileChildren &&
-							childFileChildren.length > 0
-						) {
-							let lastChild =
-								childFileChildren[childFileChildren.length - 1];
-
-							activeIdeFileWrap.set(
-								new ActiveIdeFileWrapTuple(lastChild, [
-									recursivelyGetActiveIdeFile,
-								])
-							);
-						}
-						else {
-							activeIdeFileWrap.set(
-								new ActiveIdeFileWrapTuple(childIdeFile, undefined)
-							);
-						}
-					}
-
-					activeIdeFileWrap.set(
-						new ActiveIdeFileWrapTuple(siblingFile, [recursivelyGetActiveIdeFile])
-					);
-				} 
-				else {
-					activeIdeFileWrap.set(
-						new ActiveIdeFileWrapTuple(siblingFile, undefined)
-					);
-				}
-			}
-			else {
-					if (parent) {
-						setActiveIdeFileAsParent();
-					}
-				}
+	function performArrowRight(e: KeyboardEvent) {
+		if (!ideFile.isExpanded) {
+			ideFile.isExpanded = true;
+		} else if ((children?.length ?? 0) > 0) {
+			activeIdeFileWrap.set(
+				new ActiveIdeFileWrapTuple(children[0], undefined)
+			);
 		}
 	}
 </script>
