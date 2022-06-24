@@ -9,7 +9,7 @@
 	import SolutionFileControlButtons from "./Components/SolutionFileControlButtons.svelte";
 	import TreeViewMapper from "./Components/TreeViewMapper.svelte";
 	import { activeIdeFileHandleOnKeyDownWrap } from "./Components/activeState"
-import { ConstantsKeyboard } from "../../../out/Constants/ConstantsKeyboard";
+	import { ConstantsKeyboard } from "../../../out/Constants/ConstantsKeyboard";
 
 	let dotNetSolutionFiles: DotNetSolutionFile[] = [];
 	let selectedDotNetSolutionFile: DotNetSolutionFile | undefined;
@@ -86,7 +86,7 @@ import { ConstantsKeyboard } from "../../../out/Constants/ConstantsKeyboard";
 	});
 </script>
 
-<div class="dni_app">
+<div id="dni_solution-explorer" class="dni_app">
 	<SolutionFileControlButtons {getSolutionFilesInWorkspace} />
 
 	<SelectDotNetSolutionFileForm {selectedDotNetSolutionFile} {dotNetSolutionFiles} />

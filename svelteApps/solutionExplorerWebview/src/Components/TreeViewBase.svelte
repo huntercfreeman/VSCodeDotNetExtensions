@@ -1,11 +1,16 @@
 <script lang="ts">
+	import Visibility from "./Visibility.svelte";
 	import type { IdeFile } from "../../../../out/FileSystem/Files/IdeFile";
 	import { ConstantsKeyboard } from "../../../../out/Constants/ConstantsKeyboard";
 	import ExpansionChevron from "./ExpansionChevron.svelte";
 	import FileIconDisplay from "./FileIconDisplay.svelte";
 	import { contextMenuTarget } from "./menu.js";
 	import TreeViewMapper from "./TreeViewMapper.svelte";
-	import { activeIdeFileWrap, ActiveIdeFileWrapTuple } from "./activeState";
+	import {
+		activeIdeFileWrap,
+		ActiveIdeFileWrapTuple,
+		solutionExplorerScrollObserver,
+	} from "./activeState";
 	import { activeIdeFileHandleOnKeyDownWrap } from "./activeState";
 
 	export let ideFile: IdeFile;
@@ -13,7 +18,6 @@
 	export let titleText: string;
 	export let titleOnClick: (e: MouseEvent) => void;
 	export let getChildFiles: () => IdeFile[];
-	export let hasDifferentParentContainer: (childIdeFile: IdeFile) => boolean;
 	export let index: number;
 	export let parent: IdeFile;
 	export let parentChildren: IdeFile[];
@@ -95,11 +99,15 @@
 	function handleOnKeyDown(e: KeyboardEvent) {
 		if (ConstantsKeyboard.ALL_ARROW_LEFT_KEYS.indexOf(e.code) !== -1) {
 			performArrowLeft(e);
-		} else if (ConstantsKeyboard.ALL_ARROW_DOWN_KEYS.indexOf(e.code) !== -1) {
+		} else if (
+			ConstantsKeyboard.ALL_ARROW_DOWN_KEYS.indexOf(e.code) !== -1
+		) {
 			performArrowDown(e);
 		} else if (ConstantsKeyboard.ALL_ARROW_UP_KEYS.indexOf(e.code) !== -1) {
 			performArrowUp(e);
-		} else if (ConstantsKeyboard.ALL_ARROW_RIGHT_KEYS.indexOf(e.code) !== -1) {
+		} else if (
+			ConstantsKeyboard.ALL_ARROW_RIGHT_KEYS.indexOf(e.code) !== -1
+		) {
 			performArrowRight(e);
 		} else if (ConstantsKeyboard.KEY_ENTER.indexOf(e.code) !== -1) {
 			performEnter(e);
@@ -222,11 +230,11 @@
 			);
 		}
 	}
-	
+
 	function performEnter(e: KeyboardEvent) {
 		titleOnClick(undefined);
 	}
-	
+
 	function performSpace(e: KeyboardEvent) {
 		// TODO: this method should PREVIEW the file and not lose focus of the solution explorer
 		titleOnClick(undefined);
@@ -234,39 +242,51 @@
 </script>
 
 <div class="dni_tree-view">
-	<div
-		class="dni_tree-view-title dni_unselectable {isActiveCssClass} {isActiveContextMenuTarget}"
-		title={titleText}
-		on:dblclick={(e) => fireTitleOnDoubleClick(e)}
-		on:click={(e) => setActiveIdeFileAsSelf()}
-		on:contextmenu={(e) => contextMenuTarget.set(ideFile)}
+	<Visibility
+		steps={100}
+		let:percent
+		let:unobserve
+		let:intersectionObserverSupport
 	>
-		{#if ideFile.hideExpansionChevronWhenNoChildFiles && ((children ?? getChildFiles())?.length ?? 0) === 0}
-			<span
-				style="visibility: hidden;"
-				tabindex="-1"
-				class="dni_do-not-show-chevron"
-			>
-				<ExpansionChevron
-					isExpanded={false}
-					onClickAction={setActiveIdeFileAsSelf}
-				/>
-			</span>
-		{:else}
-			<span class="dni_tree-view-title-expansion-chevron">
-				<ExpansionChevron
-					bind:isExpanded={ideFile.isExpanded}
-					onClickAction={setActiveIdeFileAsSelf}
-				/>
-			</span>
+		{#if !intersectionObserverSupport}
+			<h2>No IntersectionObserver support? 😢</h2>
 		{/if}
 
-		<span class="dni_tree-view-title-text">
-			<FileIconDisplay {ideFile} />
+		<div
+			id={`dni_tree-view-title-${ideFile.nonce}`}
+			class="dni_tree-view-title dni_unselectable {isActiveCssClass} {isActiveContextMenuTarget}"
+			title={titleText}
+			on:dblclick={(e) => fireTitleOnDoubleClick(e)}
+			on:click={(e) => setActiveIdeFileAsSelf()}
+			on:contextmenu={(e) => contextMenuTarget.set(ideFile)}
+		>
+			{#if ideFile.hideExpansionChevronWhenNoChildFiles && ((children ?? getChildFiles())?.length ?? 0) === 0}
+				<span
+					style="visibility: hidden;"
+					tabindex="-1"
+					class="dni_do-not-show-chevron"
+				>
+					<ExpansionChevron
+						isExpanded={false}
+						onClickAction={setActiveIdeFileAsSelf}
+					/>
+				</span>
+			{:else}
+				<span class="dni_tree-view-title-expansion-chevron">
+					<ExpansionChevron
+						bind:isExpanded={ideFile.isExpanded}
+						onClickAction={setActiveIdeFileAsSelf}
+					/>
+				</span>
+			{/if}
 
-			{titleText}
-		</span>
-	</div>
+			<span class="dni_tree-view-title-text">
+				<FileIconDisplay {ideFile} />
+
+				{percent}% {titleText}
+			</span>
+		</div>
+	</Visibility>
 
 	<div class="dni_tree-view-children">
 		{#if ideFile.isExpanded}
