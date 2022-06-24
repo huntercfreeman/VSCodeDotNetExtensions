@@ -101,6 +101,10 @@
 			performArrowUp(e);
 		} else if (ConstantsKeyboard.ALL_ARROW_RIGHT_KEYS.indexOf(e.key) !== -1) {
 			performArrowRight(e);
+		} else if (ConstantsKeyboard.KEY_ENTER.indexOf(e.key) !== -1) {
+			performEnter(e);
+		} else if (ConstantsKeyboard.KEY_SPACE.indexOf(e.key) !== -1) {
+			performSpace(e);
 		}
 	}
 
@@ -113,7 +117,6 @@
 	}
 
 	function performArrowDown(e: KeyboardEvent) {
-		console.log(e.key);
 		if (ideFile.isExpanded && (children?.length ?? 0) > 0) {
 			activeIdeFileWrap.set(
 				new ActiveIdeFileWrapTuple(children[0], undefined)
@@ -218,6 +221,15 @@
 				new ActiveIdeFileWrapTuple(children[0], undefined)
 			);
 		}
+	}
+	
+	function performEnter(e: KeyboardEvent) {
+		titleOnClick(undefined);
+	}
+	
+	function performSpace(e: KeyboardEvent) {
+		// TODO: this method should PREVIEW the file and not lose focus of the solution explorer
+		titleOnClick(undefined);
 	}
 </script>
 
