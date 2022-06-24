@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { onDestroy } from 'svelte';
 	import Visibility from "./Visibility.svelte";
 	import type { IdeFile } from "../../../../out/FileSystem/Files/IdeFile";
 	import { ConstantsKeyboard } from "../../../../out/Constants/ConstantsKeyboard";
@@ -9,7 +10,6 @@
 	import {
 		activeIdeFileWrap,
 		ActiveIdeFileWrapTuple,
-		solutionExplorerScrollObserver,
 	} from "./activeState";
 	import { activeIdeFileHandleOnKeyDownWrap } from "./activeState";
 
@@ -21,6 +21,8 @@
 	export let index: number;
 	export let parent: IdeFile;
 	export let parentChildren: IdeFile[];
+	
+	let percentageInView;
 
 	let activeIdeFileWrapValue;
 
@@ -63,6 +65,12 @@
 
 			// Listen to key down events again
 			activeIdeFileHandleOnKeyDownWrap.set(handleOnKeyDown);
+
+			if (percentageInView < 25) {
+				let element = document.getElementById(getId());
+
+				element.scrollIntoView();
+			}
 		}
 	});
 
@@ -239,6 +247,19 @@
 		// TODO: this method should PREVIEW the file and not lose focus of the solution explorer
 		titleOnClick(undefined);
 	}
+
+	function getId () {
+		return `dni_tree-view-title-${ideFile.nonce}`;
+	}
+
+	function rememberPercent (x: number) {
+		percentageInView = x;
+
+		return percentageInView;
+	}
+
+	// TODO: Does this need to call unobserve on the Visibility svelte component?
+	// onDestroy(() => clearInterval(interval));
 </script>
 
 <div class="dni_tree-view">
@@ -253,7 +274,7 @@
 		{/if}
 
 		<div
-			id={`dni_tree-view-title-${ideFile.nonce}`}
+			id={getId()}
 			class="dni_tree-view-title dni_unselectable {isActiveCssClass} {isActiveContextMenuTarget}"
 			title={titleText}
 			on:dblclick={(e) => fireTitleOnDoubleClick(e)}
@@ -283,7 +304,7 @@
 			<span class="dni_tree-view-title-text">
 				<FileIconDisplay {ideFile} />
 
-				{percent}% {titleText}
+				{rememberPercent(percent)}% {titleText}
 			</span>
 		</div>
 	</Visibility>

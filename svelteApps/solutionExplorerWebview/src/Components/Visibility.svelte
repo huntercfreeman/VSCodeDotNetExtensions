@@ -50,5 +50,5 @@
 </script>
 
 <div bind:this={element}>
-    <slot {percent} {unobserve} {intersectionObserverSupport}/>
+    <slot {percent} {unobserve} {intersectionObserverSupport} />
 </div>
