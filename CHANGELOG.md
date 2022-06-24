@@ -129,14 +129,19 @@ All notable changes to the "dot-net-ide" extension will be documented in this fi
 - .vcxproj files have their the filters parsed and the solution explorer shows files matched by the extensions specified.
 - Renaming a file will invoke a refresh on its parent container showing the new name for the file instead of requiring manual refresh.
 
-## [1.3.0] - 2022-06-23
+## [1.3.0] - 2022-06-24
+
 ### Added
 - Support for the typical arrow key movement expected in a TreeView.
     - 'h', 'j', 'k', 'l' were also mapped to the corresponding arrow keys in regards to Vim
-- 'Enter' and 'Space' keys will open the file that is currently selected in the TreeView
+- 'Enter' key opens the selected file in the TreeView
+- 'Space' previews the selected file in the TreeView
 - Right clicking a file in the tree view will give it a border to more obviously indicate it is the one that was right clicked.
 - Single clicking a file in the tree view will set that file as the 'active' file in regards to keyboard responses.
+- Single clicking a file in the tree view will preview the file in vscode.
+- Double clicking a file in the tree view will set that file as the 'active' file in regards to keyboard responses
 - Double clicking a file in the tree view will open the file in vscode
+- When the selected file in the TreeView changes, if that selected file is not within the viewport the solution explorer will scroll accordingly so it is visible.
     
 ---
 
