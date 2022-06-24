@@ -38,7 +38,7 @@
 			.concat(ConstantsKeyboard.ALL_ARROW_RIGHT_KEYS)
 			.concat(ConstantsKeyboard.KEY_ENTER)
 			.concat(ConstantsKeyboard.KEY_SPACE)
-				.indexOf(e.code) !== -1) {
+				.indexOf(e.key) !== -1) {
 
 					e.preventDefault();
 		}

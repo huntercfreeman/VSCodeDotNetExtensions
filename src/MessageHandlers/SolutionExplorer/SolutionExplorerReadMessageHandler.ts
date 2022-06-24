@@ -492,8 +492,8 @@ export class SolutionExplorerReadMessageHandler {
             default:
                 vscode.workspace.openTextDocument(openPath).then(doc => {
                     let textDocumentShowOptions: vscode.TextDocumentShowOptions = {
-                        "preserveFocus": false,
-                        "preview": false,
+                        "preserveFocus": message.preview,
+                        "preview": message.preview,
                         "viewColumn": vscode.ViewColumn.One
                     };
 

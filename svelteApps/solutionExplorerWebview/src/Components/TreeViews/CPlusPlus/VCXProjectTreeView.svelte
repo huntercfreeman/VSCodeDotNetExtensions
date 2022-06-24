@@ -18,8 +18,17 @@
 
 	$: titleText = vcxProjectFile.absoluteFilePath.filenameWithExtension;
 
-	function titleOnClick() {
-		let messageReadFileIntoEditor = new MessageReadFileIntoEditor(vcxProjectFile);
+	function titleOnSingleClick() {
+		let messageReadFileIntoEditor = new MessageReadFileIntoEditor(vcxProjectFile, true);
+		
+		tsVscode.postMessage({
+			type: undefined,
+			value: messageReadFileIntoEditor,
+		});
+    }
+
+	function titleOnDoubleClick() {
+		let messageReadFileIntoEditor = new MessageReadFileIntoEditor(vcxProjectFile, false);
 		
 		tsVscode.postMessage({
 			type: undefined,
@@ -101,7 +110,8 @@
 
 <TreeViewBase ideFile="{vcxProjectFile}" 
               titleText={titleText}
-              titleOnClick={titleOnClick}
+              {titleOnSingleClick}
+              {titleOnDoubleClick}
               getChildFiles={getChildFiles}
 			  bind:children={children}
 			  {index}

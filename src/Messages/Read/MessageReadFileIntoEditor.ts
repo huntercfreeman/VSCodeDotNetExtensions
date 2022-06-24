@@ -8,7 +8,8 @@ import { MessageReadKind } from "./MessageReadKind";
  * The message is used to open a file in Visual Studio Code text editors.
  */
 export class MessageReadFileIntoEditor implements IMessage, IMessageRead {
-    constructor(public readonly ideFile: IdeFile) {
+    constructor(public readonly ideFile: IdeFile,
+        public readonly preview: boolean) {
     }
 
     public readonly messageCategory: MessageCategory = MessageCategory.read;

@@ -19,8 +19,17 @@
 
     $: titleText = dotNetSolutionFile.absoluteFilePath.filenameWithExtension;
 
-	function titleOnClick() {
-		let messageReadFileIntoEditor = new MessageReadFileIntoEditor(dotNetSolutionFile);
+	function titleOnSingleClick() {
+		let messageReadFileIntoEditor = new MessageReadFileIntoEditor(dotNetSolutionFile, true);
+		
+		tsVscode.postMessage({
+			type: undefined,
+			value: messageReadFileIntoEditor,
+		});
+    }
+
+	function titleOnDoubleClick() {
+		let messageReadFileIntoEditor = new MessageReadFileIntoEditor(dotNetSolutionFile, false);
 		
 		tsVscode.postMessage({
 			type: undefined,
@@ -80,7 +89,8 @@
 
 <TreeViewBase bind:ideFile="{dotNetSolutionFile}" 
               bind:titleText={titleText}
-              titleOnClick={titleOnClick}
+              {titleOnSingleClick}
+              {titleOnDoubleClick}
               getChildFiles={getChildFiles}
 			  bind:children={children}
 			  {index}

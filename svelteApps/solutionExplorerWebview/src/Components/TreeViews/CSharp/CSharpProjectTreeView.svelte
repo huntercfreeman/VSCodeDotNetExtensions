@@ -7,7 +7,7 @@
 	import { MessageCategory } from "../../../../../../out/Messages/MessageCategory";
 	import { MessageReadKind } from "../../../../../../out/Messages/Read/MessageReadKind";
 	import TreeViewBase from "../../TreeViewBase.svelte";
-import type { MessageReadRequestForRefresh } from "../../../../../../out/Messages/Read/MessageReadRequestForRefresh";
+	import type { MessageReadRequestForRefresh } from "../../../../../../out/Messages/Read/MessageReadRequestForRefresh";
 	
     export let cSharpProjectFile: CSharpProjectFile;
     export let index: number;
@@ -18,8 +18,17 @@ import type { MessageReadRequestForRefresh } from "../../../../../../out/Message
 
 	$: titleText = cSharpProjectFile.absoluteFilePath.filenameWithExtension;
 
-	function titleOnClick() {
-		let messageReadFileIntoEditor = new MessageReadFileIntoEditor(cSharpProjectFile);
+	function titleOnSingleClick() {
+		let messageReadFileIntoEditor = new MessageReadFileIntoEditor(cSharpProjectFile, true);
+		
+		tsVscode.postMessage({
+			type: undefined,
+			value: messageReadFileIntoEditor,
+		});
+    }
+
+	function titleOnDoubleClick() {
+		let messageReadFileIntoEditor = new MessageReadFileIntoEditor(cSharpProjectFile, false);
 		
 		tsVscode.postMessage({
 			type: undefined,
@@ -103,7 +112,8 @@ import type { MessageReadRequestForRefresh } from "../../../../../../out/Message
 
 <TreeViewBase ideFile="{cSharpProjectFile}" 
               titleText={titleText}
-              titleOnClick={titleOnClick}
+              {titleOnSingleClick}
+              {titleOnDoubleClick}
               getChildFiles={getChildFiles}
 			  bind:children={children}
 			  {index}

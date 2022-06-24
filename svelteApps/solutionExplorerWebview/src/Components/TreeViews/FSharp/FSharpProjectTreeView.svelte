@@ -18,8 +18,17 @@ import type { MessageReadRequestForRefresh } from "../../../../../../out/Message
 
 	$: titleText = fSharpProjectFile.absoluteFilePath.filenameWithExtension;
 
-	function titleOnClick() {
-		let messageReadFileIntoEditor = new MessageReadFileIntoEditor(fSharpProjectFile);
+	function titleOnSingleClick() {
+		let messageReadFileIntoEditor = new MessageReadFileIntoEditor(fSharpProjectFile, true);
+		
+		tsVscode.postMessage({
+			type: undefined,
+			value: messageReadFileIntoEditor,
+		});
+    }
+
+	function titleOnDoubleClick() {
+		let messageReadFileIntoEditor = new MessageReadFileIntoEditor(fSharpProjectFile, false);
 		
 		tsVscode.postMessage({
 			type: undefined,
@@ -104,7 +113,8 @@ import type { MessageReadRequestForRefresh } from "../../../../../../out/Message
 
 <TreeViewBase ideFile="{fSharpProjectFile}" 
               titleText={titleText}
-              titleOnClick={titleOnClick}
+              {titleOnSingleClick}
+			  {titleOnDoubleClick}
               getChildFiles={getChildFiles}
 			  bind:children={children}
 			  {index}

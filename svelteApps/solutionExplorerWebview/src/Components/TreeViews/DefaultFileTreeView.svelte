@@ -12,10 +12,19 @@
 
 	$: titleText = ideFile.absoluteFilePath.filenameWithExtension;
 
-	function titleOnClick() {
-		let messageReadFileIntoEditor = new MessageReadFileIntoEditor(ideFile);
+	function titleOnSingleClick() {
+		let messageReadFileIntoEditor = new MessageReadFileIntoEditor(ideFile, true);
 		
-        tsVscode.postMessage({
+		tsVscode.postMessage({
+			type: undefined,
+			value: messageReadFileIntoEditor,
+		});
+    }
+
+	function titleOnDoubleClick() {
+		let messageReadFileIntoEditor = new MessageReadFileIntoEditor(ideFile, false);
+		
+		tsVscode.postMessage({
 			type: undefined,
 			value: messageReadFileIntoEditor,
 		});
@@ -41,7 +50,8 @@
 
 <TreeViewBase ideFile="{ideFile}" 
               titleText={titleText}
-              titleOnClick={titleOnClick}
+              {titleOnSingleClick}
+              {titleOnDoubleClick}
               getChildFiles={getChildFiles}
 			  bind:children={children}
 			  {index}

@@ -16,7 +16,8 @@
 	export let ideFile: IdeFile;
 	export let children: IdeFile[] | undefined;
 	export let titleText: string;
-	export let titleOnClick: (e: MouseEvent) => void;
+	export let titleOnSingleClick: (e: MouseEvent) => void;
+	export let titleOnDoubleClick: (e: MouseEvent) => void;
 	export let getChildFiles: () => IdeFile[];
 	export let index: number;
 	export let parent: IdeFile;
@@ -93,7 +94,13 @@
 	function fireTitleOnDoubleClick(e: MouseEvent) {
 		setActiveIdeFileAsSelf();
 
-		titleOnClick(e);
+		titleOnDoubleClick(e);
+	}
+	
+	function fireTitleOnSingleClick(e: MouseEvent) {
+		setActiveIdeFileAsSelf();
+
+		titleOnSingleClick(e);
 	}
 
 	function setActiveIdeFileAsSelf() {
@@ -105,21 +112,21 @@
 	}
 
 	function handleOnKeyDown(e: KeyboardEvent) {
-		if (ConstantsKeyboard.ALL_ARROW_LEFT_KEYS.indexOf(e.code) !== -1) {
+		if (ConstantsKeyboard.ALL_ARROW_LEFT_KEYS.indexOf(e.key) !== -1) {
 			performArrowLeft(e);
 		} else if (
-			ConstantsKeyboard.ALL_ARROW_DOWN_KEYS.indexOf(e.code) !== -1
+			ConstantsKeyboard.ALL_ARROW_DOWN_KEYS.indexOf(e.key) !== -1
 		) {
 			performArrowDown(e);
-		} else if (ConstantsKeyboard.ALL_ARROW_UP_KEYS.indexOf(e.code) !== -1) {
+		} else if (ConstantsKeyboard.ALL_ARROW_UP_KEYS.indexOf(e.key) !== -1) {
 			performArrowUp(e);
 		} else if (
-			ConstantsKeyboard.ALL_ARROW_RIGHT_KEYS.indexOf(e.code) !== -1
+			ConstantsKeyboard.ALL_ARROW_RIGHT_KEYS.indexOf(e.key) !== -1
 		) {
 			performArrowRight(e);
-		} else if (ConstantsKeyboard.KEY_ENTER.indexOf(e.code) !== -1) {
+		} else if (ConstantsKeyboard.KEY_ENTER.indexOf(e.key) !== -1) {
 			performEnter(e);
-		} else if (ConstantsKeyboard.KEY_SPACE.indexOf(e.code) !== -1) {
+		} else if (ConstantsKeyboard.KEY_SPACE.indexOf(e.key) !== -1) {
 			performSpace(e);
 		}
 	}
@@ -240,12 +247,11 @@
 	}
 
 	function performEnter(e: KeyboardEvent) {
-		titleOnClick(undefined);
+		titleOnDoubleClick(undefined);
 	}
 
 	function performSpace(e: KeyboardEvent) {
-		// TODO: this method should PREVIEW the file and not lose focus of the solution explorer
-		titleOnClick(undefined);
+		titleOnSingleClick(undefined);
 	}
 
 	function getId () {
@@ -269,16 +275,12 @@
 		let:unobserve
 		let:intersectionObserverSupport
 	>
-		{#if !intersectionObserverSupport}
-			<h2>No IntersectionObserver support? 😢</h2>
-		{/if}
-
 		<div
 			id={getId()}
 			class="dni_tree-view-title dni_unselectable {isActiveCssClass} {isActiveContextMenuTarget}"
 			title={titleText}
 			on:dblclick={(e) => fireTitleOnDoubleClick(e)}
-			on:click={(e) => setActiveIdeFileAsSelf()}
+			on:click={(e) => fireTitleOnSingleClick(e)}
 			on:contextmenu={(e) => contextMenuTarget.set(ideFile)}
 		>
 			{#if ideFile.hideExpansionChevronWhenNoChildFiles && ((children ?? getChildFiles())?.length ?? 0) === 0}
