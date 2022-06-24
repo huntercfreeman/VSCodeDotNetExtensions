@@ -255,7 +255,7 @@
 	function rememberPercent (x: number) {
 		percentageInView = x;
 
-		return percentageInView;
+		return "";
 	}
 
 	// TODO: Does this need to call unobserve on the Visibility svelte component?
@@ -304,7 +304,7 @@
 			<span class="dni_tree-view-title-text">
 				<FileIconDisplay {ideFile} />
 
-				{rememberPercent(percent)}% {titleText}
+				{rememberPercent(percent)}{titleText}
 			</span>
 		</div>
 	</Visibility>
