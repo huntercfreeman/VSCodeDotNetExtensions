@@ -74,7 +74,6 @@
               titleText={titleText}
               titleOnClick={titleOnClick}
               getChildFiles={getChildFiles}
-              hasDifferentParentContainer={hasDifferentParentContainer}
 			  bind:children={children}
 			  {index}
 			  {parent}
