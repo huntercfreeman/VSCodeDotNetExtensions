@@ -54,6 +54,7 @@
         <input
             placeholder="Solution Folder Name"
             bind:value={solutionFolderName}
+            on:keydown|stopPropagation
         />
 
         <div>
@@ -65,8 +66,8 @@
             </div>
         </div>
 
-        <button on:click={putInSolutionFolder}>Accept</button>
-        <button on:click={closeMenu}>Decline</button>
+        <button on:keydown|stopPropagation on:click={putInSolutionFolder}>Accept</button>
+        <button on:keydown|stopPropagation on:click={closeMenu}>Decline</button>
     {/if}
 {/if}
 

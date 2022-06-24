@@ -63,6 +63,7 @@
         <input
             placeholder="F# Project name no extension"
             bind:value={addFSharpProjectFilename}
+            on:keydown|stopPropagation
         />
 
         <div>'dotnet new --list'</div>
@@ -70,6 +71,7 @@
         <input
             placeholder="Template Short Name"
             bind:value={addFSharpProjectTemplate}
+            on:keydown|stopPropagation
         />
 
         <div>
@@ -88,8 +90,8 @@
             </div>
         </div>
 
-        <button on:click={createNewFSharpProject}>Accept</button>
-        <button on:click={closeMenu}>Decline</button>
+        <button on:keydown|stopPropagation on:click={createNewFSharpProject}>Accept</button>
+        <button on:keydown|stopPropagation on:click={closeMenu}>Decline</button>
     {/if}
 {/if}
 

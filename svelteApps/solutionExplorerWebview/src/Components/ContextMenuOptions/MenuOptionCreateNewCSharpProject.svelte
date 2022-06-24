@@ -62,6 +62,7 @@
         <input
             placeholder="C# Project name no extension"
             bind:value={addCSharpProjectFilename}
+            on:keydown|stopPropagation
         />
 
         <div>'dotnet new --list'</div>
@@ -69,6 +70,7 @@
         <input
             placeholder="Template Short Name"
             bind:value={addCSharpProjectTemplate}
+            on:keydown|stopPropagation
         />
 
         <div>
@@ -87,8 +89,8 @@
             </div>
         </div>
 
-        <button on:click={createNewCSharpProject}>Accept</button>
-        <button on:click={closeMenu}>Decline</button>
+        <button on:keydown|stopPropagation on:click={createNewCSharpProject}>Accept</button>
+        <button on:keydown|stopPropagation on:click={closeMenu}>Decline</button>
     {/if}
 {/if}
 

@@ -28,16 +28,16 @@
 
 <div style="margin-bottom: 5px;">
     <span>Toggle control buttons:</span>
-    <input type="checkbox" bind:checked={isExpanded} />
+    <input type="checkbox" bind:checked={isExpanded} on:keydown|stopPropagation />
 
     {#if isExpanded}
         <div>
-            <button on:click={startNewSlnForm} style="margin-bottom: 5px;">
+            <button on:keydown|stopPropagation on:click={startNewSlnForm} style="margin-bottom: 5px;">
                 New Sln
             </button>
 
             {#if addSolutionWithSpecifiedName !== undefined}
-                <button on:click={createNewSln}>
+                <button on:keydown|stopPropagation on:click={createNewSln}>
                     Opt for Default Solution Name
                 </button>
                 <TextInputForm
@@ -49,6 +49,7 @@
         </div>
 
         <button
+            on:keydown|stopPropagation    
             on:click={getSolutionFilesInWorkspace}
             style="margin-bottom: 5px;"
         >

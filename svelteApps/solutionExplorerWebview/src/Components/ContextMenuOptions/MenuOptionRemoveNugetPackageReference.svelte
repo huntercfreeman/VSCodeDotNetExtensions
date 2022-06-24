@@ -64,8 +64,8 @@
             </div>
         </div>
 
-        <button on:click={removeNugetPackageReference}>Accept</button>
-        <button on:click={performCloseMenu}>Decline</button>
+        <button on:keydown|stopPropagation on:click={removeNugetPackageReference}>Accept</button>
+        <button on:keydown|stopPropagation on:click={performCloseMenu}>Decline</button>
     {/if}
 {/if}
 

@@ -54,8 +54,8 @@
             </div>
         </div>
 
-        <button on:click={deleteFile}>Accept</button>
-        <button on:click={performCloseMenu}>Decline</button>
+        <button on:keydown|stopPropagation on:click={deleteFile}>Accept</button>
+        <button on:keydown|stopPropagation on:click={performCloseMenu}>Decline</button>
     {/if}
 {/if}
 

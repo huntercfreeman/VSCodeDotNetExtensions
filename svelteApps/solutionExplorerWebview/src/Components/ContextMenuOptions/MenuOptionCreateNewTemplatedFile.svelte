@@ -72,6 +72,7 @@
             style="display: inline;"
             type="checkbox"
             bind:checked={shouldAddCodeBehind}
+            on:keydown|stopPropagation
         />
     {/if}
     <TextInputForm

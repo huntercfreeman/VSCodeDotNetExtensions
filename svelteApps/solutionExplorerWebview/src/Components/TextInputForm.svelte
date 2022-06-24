@@ -29,6 +29,6 @@
         bind:value
         on:keydown|stopPropagation={(e) => extendOnKeyDown(e)}
     />
-    <button on:click={validate}>Confirm</button>
-    <button on:click={onCancel}>Cancel</button>
+    <button on:keydown|stopPropagation on:click={validate}>Confirm</button>
+    <button on:keydown|stopPropagation on:click={onCancel}>Cancel</button>
 {/if}

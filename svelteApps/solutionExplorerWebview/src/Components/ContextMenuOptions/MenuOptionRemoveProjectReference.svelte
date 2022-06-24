@@ -63,8 +63,8 @@
             </div>
         </div>
 
-        <button on:click={removeProjectReference}>Accept</button>
-        <button on:click={performCloseMenu}>Decline</button>
+        <button on:keydown|stopPropagation on:click={removeProjectReference}>Accept</button>
+        <button on:keydown|stopPropagation on:click={performCloseMenu}>Decline</button>
     {/if}
 {/if}
 

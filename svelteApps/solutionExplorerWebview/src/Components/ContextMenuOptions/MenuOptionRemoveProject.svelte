@@ -62,8 +62,8 @@
             </div>
         </div>
 
-        <button on:click={removeProject}>Accept</button>
-        <button on:click={performCloseMenu}>Decline</button>
+        <button on:keydown|stopPropagation on:click={removeProject}>Accept</button>
+        <button on:keydown|stopPropagation on:click={performCloseMenu}>Decline</button>
     {/if}
 {/if}
 
