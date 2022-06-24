@@ -10,6 +10,9 @@
 import type { MessageReadRequestForRefresh } from "../../../../../../out/Messages/Read/MessageReadRequestForRefresh";
 	
     export let fSharpProjectFile: FSharpProjectFile;
+    export let index: number;
+    export let parent: IdeFile | undefined;
+	export let parentChildren: IdeFile[];
 
 	let children: IdeFile[] | undefined;
 
@@ -25,7 +28,8 @@ import type { MessageReadRequestForRefresh } from "../../../../../../out/Message
     }
 
 	function getChildFiles(): IdeFile[] {
-		children = fSharpProjectFile.virtualChildFiles;
+		children = fSharpProjectFile.virtualChildFiles
+			?.filter(x => !hasDifferentParentContainer(x));
 
 		if (!children) {
 			let messageReadVirtualFilesInProject =
@@ -68,9 +72,10 @@ import type { MessageReadRequestForRefresh } from "../../../../../../out/Message
 								fSharpProjectFile =
 									messageReadVirtualFilesInProject.projectFile;
 							
-								children = fSharpProjectFile.constantChildFiles;
+								let temporary = fSharpProjectFile.constantChildFiles;
 								
-								children = children.concat(fSharpProjectFile.virtualChildFiles);
+								children = temporary.concat(fSharpProjectFile.virtualChildFiles)
+									?.filter(x => !hasDifferentParentContainer(x));
 							}
 							break;
 						case MessageReadKind.requestForRefresh:
@@ -102,4 +107,7 @@ import type { MessageReadRequestForRefresh } from "../../../../../../out/Message
               titleOnClick={titleOnClick}
               getChildFiles={getChildFiles}
               hasDifferentParentContainer={hasDifferentParentContainer}
-			  bind:children={children} />
+			  bind:children={children}
+			  {index}
+			  {parent}
+			  {parentChildren} />

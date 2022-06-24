@@ -11,6 +11,9 @@
 	import TreeViewBase from "../TreeViewBase.svelte";
 	
     export let dotNetSolutionFile: DotNetSolutionFile;
+    export let index: number;
+    export let parent: IdeFile | undefined;
+	export let parentChildren: IdeFile[];
 
 	let children: IdeFile[] | undefined;
 
@@ -26,7 +29,8 @@
     }
 
 	function getChildFiles(): IdeFile[] {
-        children = dotNetSolutionFile.virtualChildFiles;
+        children = dotNetSolutionFile.virtualChildFiles
+			?.filter(x => !hasDifferentParentContainer(x));
 
 		return children;
     }
@@ -39,17 +43,17 @@
                         .projectModel;
 
 			if(projectModel.solutionFolderParentProjectIdGuid) {
-				return true;
+				return (childIdeFile.hasUnexpectedParent = true);
 			}
 		}
 		
 		if (childIdeFile.virtualParentNonce) {
 			if (childIdeFile.virtualParentNonce !== dotNetSolutionFile.nonce) {
-				return true;
+				return (childIdeFile.hasUnexpectedParent = true);
 			}
 		}
 
-		return false;
+		return (childIdeFile.hasUnexpectedParent = false);
 	}
 
 	onMount(async () => {
@@ -64,7 +68,8 @@
 							dotNetSolutionFile =
 								messageReadVirtualFilesInSolution.dotNetSolutionFile;
 							
-							children = dotNetSolutionFile.virtualChildFiles;
+							children = dotNetSolutionFile.virtualChildFiles
+								?.filter(x => !hasDifferentParentContainer(x));
 
 							break;
 					}
@@ -78,4 +83,7 @@
               titleOnClick={titleOnClick}
               getChildFiles={getChildFiles}
               hasDifferentParentContainer={hasDifferentParentContainer}
-			  bind:children={children} />
+			  bind:children={children}
+			  {index}
+			  {parent}
+			  {parentChildren} />

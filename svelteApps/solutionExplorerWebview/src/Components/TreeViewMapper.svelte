@@ -8,7 +8,7 @@
     import type { FSharpProjectDependenciesListFile } from "../../../../out/FileSystem/Files/FSharp/FSharpProjectDependenciesListFile";
     import type { DirectoryFile } from "../../../../out/FileSystem/Files/DirectoryFile";
     import type { DotNetSolutionFile } from "../../../../out/FileSystem/Files/DotNetSolutionFile";
-	import type { IdeFile } from "../../../../out/FileSystem/Files/IdeFile";
+    import type { IdeFile } from "../../../../out/FileSystem/Files/IdeFile";
     import type { SolutionFolderFile } from "../../../../out/FileSystem/Files/SolutionFolderFile";
     import VcxProjectExternalDependenciesListTreeView from "./TreeViews/CPlusPlus/VCXProjectExternalDependenciesListTreeView.svelte";
     import VCXProjectFilterListTreeView from "./TreeViews/CPlusPlus/VCXProjectFilterListTreeView.svelte";
@@ -35,19 +35,28 @@
     import type { VCXProjectFilterFile } from "../../../../out/FileSystem/Files/CPlusPlus/VCXProjectFilterFile";
 
     export let ideFile: IdeFile;
+    export let index: number;
+    export let parent: IdeFile | undefined;
+	export let parentChildren: IdeFile[];
 
     $: dotNetSolutionFile = ideFile as DotNetSolutionFile;
     $: solutionFolderFile = ideFile as SolutionFolderFile;
     $: cSharpProjectFile = ideFile as CSharpProjectFile;
     $: vcxProjectFile = ideFile as VCXProjectFile;
     $: directoryFile = ideFile as DirectoryFile;
-    $: cSharpProjectDependenciesListFile = ideFile as CSharpProjectDependenciesListFile;
-    $: fSharpProjectDependenciesListFile = ideFile as FSharpProjectDependenciesListFile;
-    $: projectNugetPackageDependenciesListFile = ideFile as ProjectNugetPackageDependenciesListFile;
-    $: projectNugetPackageDependencyFile = ideFile as ProjectNugetPackageDependencyFile;
-    $: projectToProjectReferencesListFile = ideFile as ProjectToProjectReferencesListFile;
+    $: cSharpProjectDependenciesListFile =
+        ideFile as CSharpProjectDependenciesListFile;
+    $: fSharpProjectDependenciesListFile =
+        ideFile as FSharpProjectDependenciesListFile;
+    $: projectNugetPackageDependenciesListFile =
+        ideFile as ProjectNugetPackageDependenciesListFile;
+    $: projectNugetPackageDependencyFile =
+        ideFile as ProjectNugetPackageDependencyFile;
+    $: projectToProjectReferencesListFile =
+        ideFile as ProjectToProjectReferencesListFile;
     $: projectToProjectReferenceFile = ideFile as ProjectToProjectReferenceFile;
-    $: vcxProjectExternalDependenciesListFile = ideFile as VCXProjectExternalDependenciesListFile;
+    $: vcxProjectExternalDependenciesListFile =
+        ideFile as VCXProjectExternalDependenciesListFile;
     $: vcxProjectFilterListFile = ideFile as VCXProjectFilterListFile;
     $: vcxProjectFilterFile = ideFile as VCXProjectFilterFile;
     $: vcxProjectReferencesListFile = ideFile as VCXProjectReferencesListFile;
@@ -55,53 +64,63 @@
 </script>
 
 {#if ideFile.fileKind === FileKind.solution}
-    <DotNetSolutionTreeView dotNetSolutionFile={dotNetSolutionFile} />
+    <DotNetSolutionTreeView {dotNetSolutionFile} {index} {parent} {parentChildren} />
 
 {:else if ideFile.fileKind === FileKind.solutionFolder}
-    <DotNetSolutionFolderTreeView solutionFolderFile={solutionFolderFile} />
+    <DotNetSolutionFolderTreeView {solutionFolderFile} {index} {parent} {parentChildren} />
 
 {:else if ideFile.fileKind === FileKind.cSharpProject}
-    <CSharpProjectTreeView cSharpProjectFile={cSharpProjectFile} />
+    <CSharpProjectTreeView {cSharpProjectFile} {index} {parent} {parentChildren} />
 
 {:else if ideFile.fileKind === FileKind.fSharpProject}
-    <FSharpProjectTreeView fSharpProjectFile={fSharpProjectFile} />
+    <FSharpProjectTreeView {fSharpProjectFile} {index} {parent} {parentChildren} />
 
 {:else if ideFile.fileKind === FileKind.vcxProject}
-    <VcxProjectTreeView vcxProjectFile={vcxProjectFile} />
+    <VcxProjectTreeView {vcxProjectFile} {index} {parent} {parentChildren} />
 
 {:else if ideFile.fileKind === FileKind.directory}
-    <DirectoryTreeView directoryFile={directoryFile} />
+    <DirectoryTreeView {directoryFile} {index} {parent} {parentChildren} />
 
 {:else if ideFile.fileKind === FileKind.cSharpProjectDependencies}
-    <CSharpProjectDependenciesListTreeView cSharpProjectDependenciesListFile={cSharpProjectDependenciesListFile} />
-
+    <CSharpProjectDependenciesListTreeView
+        {cSharpProjectDependenciesListFile}
+        {index} {parent} {parentChildren}
+    />
 {:else if ideFile.fileKind === FileKind.fSharpProjectDependencies}
-    <FSharpProjectDependenciesListTreeView fSharpProjectDependenciesListFile={fSharpProjectDependenciesListFile} />
-
+    <FSharpProjectDependenciesListTreeView
+        {fSharpProjectDependenciesListFile}
+        {index} {parent} {parentChildren}
+    />
 {:else if ideFile.fileKind === FileKind.nugetPackageDependenciesList}
-    <ProjectNugetPackageDependenciesListTreeView projectNugetPackageDependenciesListFile={projectNugetPackageDependenciesListFile} />
-
+    <ProjectNugetPackageDependenciesListTreeView
+        {projectNugetPackageDependenciesListFile}
+        {index} {parent} {parentChildren}
+    />
 {:else if ideFile.fileKind === FileKind.nugetPackageDependency}
-    <ProjectNugetPackageDependencyTreeView projectNugetPackageDependencyFile={projectNugetPackageDependencyFile} />
-
+    <ProjectNugetPackageDependencyTreeView
+        {projectNugetPackageDependencyFile}
+        {index} {parent} {parentChildren}
+    />
 {:else if ideFile.fileKind === FileKind.projectReferencesList}
-    <ProjectToProjectReferencesListTreeView projectToProjectReferencesListFile={projectToProjectReferencesListFile} />
-
+    <ProjectToProjectReferencesListTreeView
+        {projectToProjectReferencesListFile}
+        {index} {parent} {parentChildren}
+    />
 {:else if ideFile.fileKind === FileKind.projectReference}
-    <ProjectToProjectReferenceTreeView projectToProjectReferenceFile={projectToProjectReferenceFile} />
-
+    <ProjectToProjectReferenceTreeView
+        {projectToProjectReferenceFile}
+        {index} {parent} {parentChildren}
+    />
 {:else if ideFile.fileKind === FileKind.vcxProjectReferencesListFile}
-    <VcxProjectReferencesListTreeView vcxProjectReferencesListFile={vcxProjectReferencesListFile} />
-
+    <VcxProjectReferencesListTreeView {vcxProjectReferencesListFile} {index} {parent} {parentChildren} />
 {:else if ideFile.fileKind === FileKind.vcxProjectExternalDependenciesListFile}
-    <VcxProjectExternalDependenciesListTreeView vcxProjectExternalDependenciesListFile={vcxProjectExternalDependenciesListFile} />
-    
+    <VcxProjectExternalDependenciesListTreeView
+        {vcxProjectExternalDependenciesListFile}
+        {index} {parent} {parentChildren}
+    />
 {:else if ideFile.fileKind === FileKind.vcxProjectFilterListFile}
-    <VCXProjectFilterListTreeView vcxProjectFilterListFile={vcxProjectFilterListFile} />
-
-<!-- {:else if ideFile.fileKind === FileKind.vcxProjectResourceFilesListFile}
-    <VCXProjectFilterTreeView vcxProjectFilterFile={vcxProjectFilterFile} /> -->
+    <VCXProjectFilterListTreeView {vcxProjectFilterListFile} {index} {parent} {parentChildren} />
 
 {:else}
-    <DefaultFileTreeView ideFile={ideFile} />
+    <DefaultFileTreeView {ideFile} {index} {parent} {parentChildren} />
 {/if}

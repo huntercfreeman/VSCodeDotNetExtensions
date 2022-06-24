@@ -5,17 +5,20 @@
 	import { MessageReadKind } from "../../../out/Messages/Read/MessageReadKind";
 	import { MessageReadSolutionsInWorkspace } from "../../../out/Messages/Read/MessageReadSolutionsInWorkspace";
 	import SelectDotNetSolutionFileForm from "./Components/SelectDotNetSolutionFileForm.svelte";
-	import TreeViewDisplay from "./Components/TreeViewBase.svelte";
 	import ContextMenu from "./Components/ContextMenu.svelte";
 	import SolutionFileControlButtons from "./Components/SolutionFileControlButtons.svelte";
 	import TreeViewMapper from "./Components/TreeViewMapper.svelte";
-	import type { IdeFile } from "../../../out/FileSystem/Files/IdeFile";
+	import { activeIdeFileHandleOnKeyDownWrap } from "./Components/activeState"
 
 	let dotNetSolutionFiles: DotNetSolutionFile[] = [];
 	let selectedDotNetSolutionFile: DotNetSolutionFile | undefined;
 
-	let activeIdeFile: IdeFile | undefined;
+	let activeIdeFileHandleOnKeyDownValue: (e: KeyboardEvent) => void;
 
+	activeIdeFileHandleOnKeyDownWrap.subscribe((value) => {
+		activeIdeFileHandleOnKeyDownValue = value;
+	});
+	
 	function getSolutionFilesInWorkspace() {
 		let messageReadSolutionsInWorkspace =
 			new MessageReadSolutionsInWorkspace();
@@ -24,6 +27,13 @@
 			type: undefined,
 			value: messageReadSolutionsInWorkspace,
 		});
+	}
+	
+	function handleOnKeyDown(e: KeyboardEvent) {
+		
+		if (activeIdeFileHandleOnKeyDownValue) {
+			activeIdeFileHandleOnKeyDownValue(e);
+		}
 	}
 
 	onMount(async () => {
@@ -72,11 +82,16 @@
 	<div style="margin-bottom: 5px;" />
 
 	{#if selectedDotNetSolutionFile}
-		<TreeViewMapper ideFile={selectedDotNetSolutionFile} />
+		<TreeViewMapper ideFile={selectedDotNetSolutionFile}
+			index={0}
+			parent={undefined}
+			parentChildren={undefined} />
 	{/if}
 
 	<ContextMenu />
 </div>
+
+<svelte:body on:keydown={(e) => handleOnKeyDown(e)} />
 
 <style>
 	.dni_app {

@@ -9,6 +9,9 @@
 	import { onMount } from "svelte";
 	
     export let vcxProjectFilterListFile: VCXProjectFilterListFile;
+    export let index: number;
+    export let parent: IdeFile | undefined;
+	export let parentChildren: IdeFile[];
 
 	let children: IdeFile[] | undefined;
 
@@ -18,7 +21,8 @@
     }
 
 	function getChildFiles(): IdeFile[] {
-		children = vcxProjectFilterListFile.virtualChildFiles;
+		children = vcxProjectFilterListFile.virtualChildFiles
+			?.filter(x => !hasDifferentParentContainer(x));
 		
 		if (!children) {
 			let messageReadVCXFilterMatches =
@@ -60,7 +64,8 @@
 								vcxProjectFilterListFile =
 									messageReadVCXFilterMatches.vcxProjectFilterListFile;
 
-								children = vcxProjectFilterListFile.virtualChildFiles;
+								children = vcxProjectFilterListFile.virtualChildFiles
+									?.filter(x => !hasDifferentParentContainer(x));
 							}
 							break;
 					}
@@ -92,4 +97,7 @@
               titleOnClick={titleOnClick}
               getChildFiles={getChildFiles}
               hasDifferentParentContainer={hasDifferentParentContainer}
-			  bind:children={children} />
+			  bind:children={children}
+			  {index}
+			  {parent}
+			  {parentChildren} />

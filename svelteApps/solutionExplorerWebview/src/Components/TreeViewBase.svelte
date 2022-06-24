@@ -1,10 +1,12 @@
 <script lang="ts">
 	import type { IdeFile } from "../../../../out/FileSystem/Files/IdeFile";
+	import { ConstantsKeyboard } from "../../../../out/Constants/ConstantsKeyboard";
 	import ExpansionChevron from "./ExpansionChevron.svelte";
 	import FileIconDisplay from "./FileIconDisplay.svelte";
 	import { contextMenuTarget } from "./menu.js";
 	import TreeViewMapper from "./TreeViewMapper.svelte";
-	import { activeIdeFileWrap } from "./activeIdeFile"
+	import { activeIdeFileWrap, ActiveIdeFileWrapTuple } from "./activeState";
+	import { activeIdeFileHandleOnKeyDownWrap } from "./activeState";
 
 	export let ideFile: IdeFile;
 	export let children: IdeFile[] | undefined;
@@ -12,18 +14,58 @@
 	export let titleOnClick: (e: MouseEvent) => void;
 	export let getChildFiles: () => IdeFile[];
 	export let hasDifferentParentContainer: (childIdeFile: IdeFile) => boolean;
-	
+	export let index: number;
+	export let parent: IdeFile;
+	export let parentChildren: IdeFile[];
+
 	let activeIdeFileWrapValue;
 
 	activeIdeFileWrap.subscribe((value) => {
-		activeIdeFileWrapValue = value;
+		if (!value) {
+			return;
+		}
+
+		let activeIdeFileWrapTuple = value as ActiveIdeFileWrapTuple;
+
+		activeIdeFileWrapValue = activeIdeFileWrapTuple.ideFile;
+
+		// If this IdeFile is the activeIdeFile it will handle key down events.
+		if (
+			activeIdeFileWrapTuple.ideFile &&
+			activeIdeFileWrapTuple.ideFile.nonce === ideFile.nonce
+		) {
+			// Ignore key down events until completely finished handling previous key down event
+			activeIdeFileHandleOnKeyDownWrap.set(undefined);
+
+			// Finish handling previous key down event that requires more than 1 movement operation
+			if (activeIdeFileWrapTuple.callbacks?.length > 0) {
+				for (
+					let i = 0;
+					i < activeIdeFileWrapTuple.callbacks.length;
+					i++
+				) {
+					activeIdeFileWrapTuple.callbacks[i](
+						ideFile,
+						index,
+						children,
+						parent,
+						parentChildren
+					);
+				}
+
+				// More than 1 movement operation likely means this cannot accurrately be assummed as the active ide file
+				return;
+			}
+
+			// Listen to key down events again
+			activeIdeFileHandleOnKeyDownWrap.set(handleOnKeyDown);
+		}
 	});
-	
+
 	$: activeIdeFile = activeIdeFileWrapValue as IdeFile;
 
-	$: isActiveCssClass = (activeIdeFile?.nonce ?? "") === ideFile.nonce
-		? "dni_active"
-		: "";
+	$: isActiveCssClass =
+		(activeIdeFile?.nonce ?? "") === ideFile.nonce ? "dni_active" : "";
 
 	let contextMenuTargetValue;
 
@@ -31,20 +73,163 @@
 		contextMenuTargetValue = value;
 	});
 
-	$: isActiveContextMenuTarget = ((contextMenuTargetValue as IdeFile)?.nonce ?? "") === ideFile.nonce
-		? "dni_active-context-menu-target"
-		: "";
+	$: isActiveContextMenuTarget =
+		((contextMenuTargetValue as IdeFile)?.nonce ?? "") === ideFile.nonce
+			? "dni_active-context-menu-target"
+			: "";
 
 	function fireTitleOnDoubleClick(e: MouseEvent) {
-
-		setActiveIdeFile();
+		setActiveIdeFileAsSelf();
 
 		titleOnClick(e);
 	}
-	
-	function setActiveIdeFile() {
 
-		activeIdeFileWrap.set(ideFile);
+	function setActiveIdeFileAsSelf() {
+		activeIdeFileWrap.set(new ActiveIdeFileWrapTuple(ideFile, undefined));
+	}
+
+	function setActiveIdeFileAsParent() {
+		activeIdeFileWrap.set(new ActiveIdeFileWrapTuple(parent, undefined));
+	}
+
+	function handleOnKeyDown(e: KeyboardEvent) {
+		if (ConstantsKeyboard.ALL_ARROW_LEFT_KEYS.indexOf(e.key) !== -1) {
+			performArrowLeft(e);
+		} else if (ConstantsKeyboard.ALL_ARROW_DOWN_KEYS.indexOf(e.key) !== -1) {
+			performArrowDown(e);
+		} else if (ConstantsKeyboard.ALL_ARROW_UP_KEYS.indexOf(e.key) !== -1) {
+			performArrowUp(e);
+		} else if (ConstantsKeyboard.ALL_ARROW_RIGHT_KEYS.indexOf(e.key) !== -1) {
+			performArrowRight(e);
+		} else if (ConstantsKeyboard.KEY_ENTER.indexOf(e.key) !== -1) {
+			performEnter(e);
+		} else if (ConstantsKeyboard.KEY_SPACE.indexOf(e.key) !== -1) {
+			performSpace(e);
+		}
+	}
+
+	function performArrowLeft(e: KeyboardEvent) {
+		if (ideFile.isExpanded) {
+			ideFile.isExpanded = false;
+		} else if (parent) {
+			setActiveIdeFileAsParent();
+		}
+	}
+
+	function performArrowDown(e: KeyboardEvent) {
+		if (ideFile.isExpanded && (children?.length ?? 0) > 0) {
+			activeIdeFileWrap.set(
+				new ActiveIdeFileWrapTuple(children[0], undefined)
+			);
+		} else if (parentChildren && parentChildren.length > index + 1) {
+			activeIdeFileWrap.set(
+				new ActiveIdeFileWrapTuple(parentChildren[index + 1], undefined)
+			);
+		} else if (parent) {
+			function recursivelyGetActiveIdeFile(
+				upperIdeFile: IdeFile,
+				upperIndex: number,
+				upperChildren: IdeFile[] | undefined,
+				upperParent: IdeFile | undefined,
+				upperParentChildren: IdeFile[] | undefined
+			): void {
+				if (
+					upperParentChildren &&
+					upperParentChildren.length > upperIndex + 1
+				) {
+					activeIdeFileWrap.set(
+						new ActiveIdeFileWrapTuple(
+							upperParentChildren[upperIndex + 1],
+							undefined
+						)
+					);
+				} else if (upperParent) {
+					activeIdeFileWrap.set(
+						new ActiveIdeFileWrapTuple(upperParent, [
+							recursivelyGetActiveIdeFile,
+						])
+					);
+				} else {
+					activeIdeFileWrap.set(
+						new ActiveIdeFileWrapTuple(ideFile, undefined)
+					);
+				}
+			}
+
+			activeIdeFileWrap.set(
+				new ActiveIdeFileWrapTuple(parent, [
+					recursivelyGetActiveIdeFile,
+				])
+			);
+		}
+	}
+
+	function performArrowUp(e: KeyboardEvent) {
+		if (parent && parentChildren && index > 0) {
+			let siblingFile = parentChildren[index - 1];
+
+			if (siblingFile.isExpanded) {
+				function recursivelyGetActiveIdeFile(
+					childIdeFile: IdeFile,
+					childFileIndex: number,
+					childFileChildren: IdeFile[] | undefined,
+					childFileParent: IdeFile | undefined,
+					childFileParentChildren: IdeFile[] | undefined
+				): void {
+					if (
+						childIdeFile.isExpanded &&
+						childFileChildren &&
+						childFileChildren.length > 0
+					) {
+						let lastChild =
+							childFileChildren[childFileChildren.length - 1];
+
+						activeIdeFileWrap.set(
+							new ActiveIdeFileWrapTuple(lastChild, [
+								recursivelyGetActiveIdeFile,
+							])
+						);
+					} else {
+						activeIdeFileWrap.set(
+							new ActiveIdeFileWrapTuple(childIdeFile, undefined)
+						);
+					}
+				}
+
+				activeIdeFileWrap.set(
+					new ActiveIdeFileWrapTuple(siblingFile, [
+						recursivelyGetActiveIdeFile,
+					])
+				);
+			} else {
+				activeIdeFileWrap.set(
+					new ActiveIdeFileWrapTuple(siblingFile, undefined)
+				);
+			}
+		} else {
+			if (parent) {
+				setActiveIdeFileAsParent();
+			}
+		}
+	}
+
+	function performArrowRight(e: KeyboardEvent) {
+		if (!ideFile.isExpanded) {
+			ideFile.isExpanded = true;
+		} else if ((children?.length ?? 0) > 0) {
+			activeIdeFileWrap.set(
+				new ActiveIdeFileWrapTuple(children[0], undefined)
+			);
+		}
+	}
+	
+	function performEnter(e: KeyboardEvent) {
+		titleOnClick(undefined);
+	}
+	
+	function performSpace(e: KeyboardEvent) {
+		// TODO: this method should PREVIEW the file and not lose focus of the solution explorer
+		titleOnClick(undefined);
 	}
 </script>
 
@@ -53,7 +238,7 @@
 		class="dni_tree-view-title dni_unselectable {isActiveCssClass} {isActiveContextMenuTarget}"
 		title={titleText}
 		on:dblclick={(e) => fireTitleOnDoubleClick(e)}
-		on:click={(e) => setActiveIdeFile()}
+		on:click={(e) => setActiveIdeFileAsSelf()}
 		on:contextmenu={(e) => contextMenuTarget.set(ideFile)}
 	>
 		{#if ideFile.hideExpansionChevronWhenNoChildFiles && ((children ?? getChildFiles())?.length ?? 0) === 0}
@@ -62,18 +247,22 @@
 				tabindex="-1"
 				class="dni_do-not-show-chevron"
 			>
-				<ExpansionChevron isExpanded={false}
-				                  onClickAction={setActiveIdeFile} />
+				<ExpansionChevron
+					isExpanded={false}
+					onClickAction={setActiveIdeFileAsSelf}
+				/>
 			</span>
 		{:else}
 			<span class="dni_tree-view-title-expansion-chevron">
-				<ExpansionChevron bind:isExpanded={ideFile.isExpanded}
-				                  onClickAction={setActiveIdeFile} />
+				<ExpansionChevron
+					bind:isExpanded={ideFile.isExpanded}
+					onClickAction={setActiveIdeFileAsSelf}
+				/>
 			</span>
 		{/if}
 
 		<span class="dni_tree-view-title-text">
-			<FileIconDisplay ideFile={ideFile} />
+			<FileIconDisplay {ideFile} />
 
 			{titleText}
 		</span>
@@ -81,10 +270,13 @@
 
 	<div class="dni_tree-view-children">
 		{#if ideFile.isExpanded}
-			{#each children ?? getChildFiles() as child (child.nonce)}
-				{#if !hasDifferentParentContainer(child)}
-					<TreeViewMapper ideFile={child} />
-				{/if}
+			{#each children ?? getChildFiles() ?? [] as child, i (child.nonce)}
+				<TreeViewMapper
+					ideFile={child}
+					index={i}
+					parent={ideFile}
+					parentChildren={children}
+				/>
 			{/each}
 		{/if}
 	</div>
@@ -124,7 +316,7 @@
 	.dni_tree-view-title.dni_active-context-menu-target {
 		border: 1px solid var(--vscode-focusBorder);
 	}
-	
+
 	/* ....when extensionactive.... .dni_tree-view-title.dni_active {
 		background-color: var(--vscode-list-inactiveSelectionBackground);
 	} */

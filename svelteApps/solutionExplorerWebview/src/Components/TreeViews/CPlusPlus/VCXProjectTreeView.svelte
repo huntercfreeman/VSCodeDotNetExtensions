@@ -10,6 +10,9 @@
 	import { MessageReadKind } from "../../../../../../out/Messages/Read/MessageReadKind";
 	
     export let vcxProjectFile: VCXProjectFile;
+    export let index: number;
+    export let parent: IdeFile | undefined;
+	export let parentChildren: IdeFile[];
 
 	let children: IdeFile[] | undefined;
 
@@ -25,7 +28,8 @@
     }
 
 	function getChildFiles(): IdeFile[] {
-		children = vcxProjectFile.virtualChildFiles;
+		children = vcxProjectFile.virtualChildFiles
+			?.filter(x => !hasDifferentParentContainer(x));
 		
 		if (!children) {
 			let messageReadFiltersInVCXProject =
@@ -67,7 +71,8 @@
 								vcxProjectFile =
 									messageReadFiltersInVCXProject.vcxProjectFile;
 
-								children = vcxProjectFile.virtualChildFiles;
+								children = vcxProjectFile.virtualChildFiles
+									?.filter(x => !hasDifferentParentContainer(x));
 							}
 							break;
 					}
@@ -99,4 +104,7 @@
               titleOnClick={titleOnClick}
               getChildFiles={getChildFiles}
               hasDifferentParentContainer={hasDifferentParentContainer}
-			  bind:children={children} />
+			  bind:children={children}
+			  {index}
+			  {parent}
+			  {parentChildren} />

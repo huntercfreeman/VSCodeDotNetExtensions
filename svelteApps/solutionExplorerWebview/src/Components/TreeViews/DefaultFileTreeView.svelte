@@ -4,6 +4,9 @@
     import { MessageReadFileIntoEditor } from "../../../../../out/Messages/Read/MessageReadFileIntoEditor";
 	
     export let ideFile: IdeFile;
+    export let index: number;
+    export let parent: IdeFile | undefined;
+	export let parentChildren: IdeFile[];
 
 	let children: IdeFile[] | undefined;
 
@@ -19,7 +22,8 @@
     }
 
 	function getChildFiles(): IdeFile[] {
-        children = ideFile.virtualChildFiles;
+        children = ideFile.virtualChildFiles
+			?.filter(x => !hasDifferentParentContainer(x));
 
 		return children ?? [];
 	}
@@ -40,4 +44,7 @@
               titleOnClick={titleOnClick}
               getChildFiles={getChildFiles}
               hasDifferentParentContainer={hasDifferentParentContainer}
-			  bind:children={children} />
+			  bind:children={children}
+			  {index}
+			  {parent}
+			  {parentChildren} />

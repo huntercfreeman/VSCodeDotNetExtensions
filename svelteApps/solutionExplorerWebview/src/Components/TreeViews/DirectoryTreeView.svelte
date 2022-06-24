@@ -10,6 +10,9 @@
 	import { MessageReadVirtualFilesInProject } from "../../../../../out/Messages/Read/MessageReadVirtualFilesInProject";
 	
     export let directoryFile: DirectoryFile;
+    export let index: number;
+    export let parent: IdeFile | undefined;
+	export let parentChildren: IdeFile[];
 
 	let children: IdeFile[] | undefined;
 
@@ -19,7 +22,8 @@
     }
 
 	function getChildFiles(): IdeFile[] {
-		children = directoryFile.childFiles;
+		children = directoryFile.childFiles
+			?.filter(x => !hasDifferentParentContainer(x));
 		
 		if (!children) {
 			let messageReadFilesInDirectory =
@@ -60,7 +64,8 @@
 							) {
 								directoryFile =
 									messageReadFilesInDirectory.directoryFile;
-								children = directoryFile.childFiles;
+								children = directoryFile.childFiles
+									?.filter(x => !hasDifferentParentContainer(x));
 							}
 							break;
 					}
@@ -92,4 +97,7 @@
               titleOnClick={titleOnClick}
               getChildFiles={getChildFiles}
               hasDifferentParentContainer={hasDifferentParentContainer}
-			  bind:children={children} />
+			  bind:children={children}
+			  {index}
+			  {parent}
+			  {parentChildren} />
