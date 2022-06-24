@@ -93,17 +93,17 @@
 	}
 
 	function handleOnKeyDown(e: KeyboardEvent) {
-		if (ConstantsKeyboard.ALL_ARROW_LEFT_KEYS.indexOf(e.key) !== -1) {
+		if (ConstantsKeyboard.ALL_ARROW_LEFT_KEYS.indexOf(e.code) !== -1) {
 			performArrowLeft(e);
-		} else if (ConstantsKeyboard.ALL_ARROW_DOWN_KEYS.indexOf(e.key) !== -1) {
+		} else if (ConstantsKeyboard.ALL_ARROW_DOWN_KEYS.indexOf(e.code) !== -1) {
 			performArrowDown(e);
-		} else if (ConstantsKeyboard.ALL_ARROW_UP_KEYS.indexOf(e.key) !== -1) {
+		} else if (ConstantsKeyboard.ALL_ARROW_UP_KEYS.indexOf(e.code) !== -1) {
 			performArrowUp(e);
-		} else if (ConstantsKeyboard.ALL_ARROW_RIGHT_KEYS.indexOf(e.key) !== -1) {
+		} else if (ConstantsKeyboard.ALL_ARROW_RIGHT_KEYS.indexOf(e.code) !== -1) {
 			performArrowRight(e);
-		} else if (ConstantsKeyboard.KEY_ENTER.indexOf(e.key) !== -1) {
+		} else if (ConstantsKeyboard.KEY_ENTER.indexOf(e.code) !== -1) {
 			performEnter(e);
-		} else if (ConstantsKeyboard.KEY_SPACE.indexOf(e.key) !== -1) {
+		} else if (ConstantsKeyboard.KEY_SPACE.indexOf(e.code) !== -1) {
 			performSpace(e);
 		}
 	}

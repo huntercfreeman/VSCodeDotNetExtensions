@@ -9,6 +9,7 @@
 	import SolutionFileControlButtons from "./Components/SolutionFileControlButtons.svelte";
 	import TreeViewMapper from "./Components/TreeViewMapper.svelte";
 	import { activeIdeFileHandleOnKeyDownWrap } from "./Components/activeState"
+import { ConstantsKeyboard } from "../../../out/Constants/ConstantsKeyboard";
 
 	let dotNetSolutionFiles: DotNetSolutionFile[] = [];
 	let selectedDotNetSolutionFile: DotNetSolutionFile | undefined;
@@ -30,6 +31,17 @@
 	}
 	
 	function handleOnKeyDown(e: KeyboardEvent) {
+		
+		if (ConstantsKeyboard.ALL_ARROW_LEFT_KEYS
+			.concat(ConstantsKeyboard.ALL_ARROW_DOWN_KEYS)
+			.concat(ConstantsKeyboard.ALL_ARROW_UP_KEYS)
+			.concat(ConstantsKeyboard.ALL_ARROW_RIGHT_KEYS)
+			.concat(ConstantsKeyboard.KEY_ENTER)
+			.concat(ConstantsKeyboard.KEY_SPACE)
+				.indexOf(e.code) !== -1) {
+
+					e.preventDefault();
+		}
 		
 		if (activeIdeFileHandleOnKeyDownValue) {
 			activeIdeFileHandleOnKeyDownValue(e);
