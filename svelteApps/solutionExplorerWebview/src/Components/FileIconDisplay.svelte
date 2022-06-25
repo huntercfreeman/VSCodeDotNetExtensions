@@ -23,6 +23,8 @@
     import VcxProjectIcon from "./Icons/VCXProjectIcon.svelte";
     import FSharpProjectIcon from "./Icons/FSharpProjectIcon.svelte";
     import FSXIcon from "./Icons/FSXIcon.svelte";
+    import CIcon from "./Icons/CIcon.svelte";
+    import CPlusPlusIcon from "./Icons/CPlusPlusIcon.svelte";
 
     export let ideFile: IdeFile;
 
@@ -55,6 +57,10 @@
     <FSharpIcon />
 {:else if fileKind === FileKind.fSX}
     <FSXIcon />
+{:else if fileKind === FileKind.cPlusPlus}
+    <CPlusPlusIcon />
+{:else if fileKind === FileKind.c}
+    <CIcon />
 {:else if fileKind === FileKind.cshtml}
     <CshtmlIcon />
 {:else if fileKind === FileKind.razor}
