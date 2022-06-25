@@ -13,6 +13,8 @@ export class ConstantsFileExtensionsNoPeriod {
     public static readonly FSX_FILE_EXTENSION: string = "fsx";
     public static readonly C_FILE_EXTENSION: string = "c";
     public static readonly C_PLUS_PLUS_FILE_EXTENSION: string = "cpp";
+    public static readonly JAVA_SCRIPT_FILE_EXTENSION: string = "js";
+    public static readonly TYPE_SCRIPT_FILE_EXTENSION: string = "ts";
     public static readonly CSHMTL_FILE_EXTENSION: string = "cshtml";
     public static readonly CSS_FILE_EXTENSION: string = "css";
     // TODO: Ensure Directories always end in a '/' except when accessing filenameWithoutExtension

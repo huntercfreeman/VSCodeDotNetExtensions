@@ -25,6 +25,8 @@
     import FSXIcon from "./Icons/FSXIcon.svelte";
     import CIcon from "./Icons/CIcon.svelte";
     import CPlusPlusIcon from "./Icons/CPlusPlusIcon.svelte";
+import JavaScriptIcon from "./Icons/JavaScriptIcon.svelte";
+import TypeScriptIcon from "./Icons/TypeScriptIcon.svelte";
 
     export let ideFile: IdeFile;
 
@@ -61,6 +63,10 @@
     <CPlusPlusIcon />
 {:else if fileKind === FileKind.c}
     <CIcon />
+{:else if fileKind === FileKind.js}
+    <JavaScriptIcon />
+{:else if fileKind === FileKind.typeScript}
+    <TypeScriptIcon />
 {:else if fileKind === FileKind.cshtml}
     <CshtmlIcon />
 {:else if fileKind === FileKind.razor}

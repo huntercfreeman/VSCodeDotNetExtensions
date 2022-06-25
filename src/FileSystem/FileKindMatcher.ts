@@ -22,6 +22,10 @@ export class FileKindMatcher {
                 return FileKind.c;
             case ConstantsFileExtensionsNoPeriod.C_PLUS_PLUS_FILE_EXTENSION:
                 return FileKind.cPlusPlus;
+            case ConstantsFileExtensionsNoPeriod.JAVA_SCRIPT_FILE_EXTENSION:
+                return FileKind.js;
+            case ConstantsFileExtensionsNoPeriod.TYPE_SCRIPT_FILE_EXTENSION:
+                return FileKind.typeScript;
             case ConstantsFileExtensionsNoPeriod.CSHMTL_FILE_EXTENSION:
                 return FileKind.cshtml;
             case ConstantsFileExtensionsNoPeriod.CSS_FILE_EXTENSION:
