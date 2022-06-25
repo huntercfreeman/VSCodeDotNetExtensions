@@ -15,9 +15,6 @@
 
 	$: titleText = projectToProjectReferencesListFile.absoluteFilePath.filenameWithExtension;
 
-	function titleOnClick() {
-    }
-
 	function getChildFiles(): IdeFile[] {
 		children = projectToProjectReferencesListFile.virtualChildFiles
 			?.filter(x => !hasDifferentParentContainer(x));
@@ -72,7 +69,6 @@
 
 <TreeViewBase ideFile="{projectToProjectReferencesListFile}" 
               titleText={titleText}
-              titleOnClick={titleOnClick}
               getChildFiles={getChildFiles}
 			  bind:children={children}
 			  {index}

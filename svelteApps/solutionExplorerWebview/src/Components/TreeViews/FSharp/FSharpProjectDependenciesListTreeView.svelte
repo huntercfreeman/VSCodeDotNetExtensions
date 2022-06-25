@@ -12,9 +12,6 @@
 
 	$: titleText = fSharpProjectDependenciesListFile.absoluteFilePath.filenameWithExtension;
 
-	function titleOnClick() {
-    }
-
 	function getChildFiles(): IdeFile[] {
 		children = fSharpProjectDependenciesListFile.constantChildFiles
 			?.filter(x => !hasDifferentParentContainer(x));
@@ -34,7 +31,6 @@
 
 <TreeViewBase ideFile="{fSharpProjectDependenciesListFile}" 
               titleText={titleText}
-              titleOnClick={titleOnClick}
               getChildFiles={getChildFiles}
 			  bind:children={children}
 			  {index}

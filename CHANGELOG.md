@@ -142,6 +142,13 @@ All notable changes to the "dot-net-ide" extension will be documented in this fi
 - Double clicking a file in the tree view will set that file as the 'active' file in regards to keyboard responses
 - Double clicking a file in the tree view will open the file in vscode
 - When the selected file in the TreeView changes, if that selected file is not within the viewport the solution explorer will scroll accordingly so it is visible.
+
+## [1.3.1] - 2022-06-25
+
+### Added
+- Bug Fixes
+    - scrollIntoView on an undefined html element
+    - calls to old methods that no longer exist causing an exception
     
 ---
 

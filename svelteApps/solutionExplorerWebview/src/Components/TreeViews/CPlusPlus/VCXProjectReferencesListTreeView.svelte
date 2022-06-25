@@ -13,9 +13,6 @@
 
 	$: titleText = vcxProjectReferencesListFile.absoluteFilePath.filenameWithExtension;
 
-	function titleOnClick() {
-    }
-
 	function getChildFiles(): IdeFile[] {
 		return [];
 	}
@@ -33,7 +30,6 @@
 
 <TreeViewBase ideFile="{vcxProjectReferencesListFile}" 
               titleText={titleText}
-              titleOnClick={titleOnClick}
               getChildFiles={getChildFiles}
 			  bind:children={children}
 			  {index}

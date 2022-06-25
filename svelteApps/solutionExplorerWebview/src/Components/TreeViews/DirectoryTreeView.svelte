@@ -18,9 +18,6 @@
 
 	$: titleText = directoryFile.absoluteFilePath.filenameWithExtension;
 
-	function titleOnClick() {
-    }
-
 	function getChildFiles(): IdeFile[] {
 		children = directoryFile.childFiles
 			?.filter(x => !hasDifferentParentContainer(x));
@@ -94,7 +91,6 @@
 
 <TreeViewBase ideFile="{directoryFile}" 
               titleText={titleText}
-              titleOnClick={titleOnClick}
               getChildFiles={getChildFiles}
 			  bind:children={children}
 			  {index}

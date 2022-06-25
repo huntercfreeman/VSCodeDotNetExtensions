@@ -14,9 +14,6 @@
 
 	$: titleText = solutionFolderFile.absoluteFilePath.filenameWithExtension;
 
-	function titleOnClick() {
-    }
-
 	function getChildFiles(): IdeFile[] {
 		children = solutionFolderFile.virtualChildFiles
 			?.filter(x => !hasDifferentParentContainer(x));
@@ -48,7 +45,6 @@
 
 <TreeViewBase ideFile="{solutionFolderFile}" 
               titleText={titleText}
-              titleOnClick={titleOnClick}
               getChildFiles={getChildFiles}
 			  bind:children={children}
 			  {index}

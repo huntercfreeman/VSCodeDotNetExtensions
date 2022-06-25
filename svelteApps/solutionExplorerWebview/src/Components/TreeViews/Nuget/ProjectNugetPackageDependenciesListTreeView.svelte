@@ -17,9 +17,6 @@
 
 	$: titleText = projectNugetPackageDependenciesListFile.absoluteFilePath.filenameWithExtension;
 
-	function titleOnClick() {
-    }
-
 	function getChildFiles(): IdeFile[] {
 		children = projectNugetPackageDependenciesListFile.virtualChildFiles
 			?.filter(x => !hasDifferentParentContainer(x));
@@ -75,7 +72,6 @@
 
 <TreeViewBase ideFile="{projectNugetPackageDependenciesListFile}" 
               titleText={titleText}
-              titleOnClick={titleOnClick}
               getChildFiles={getChildFiles}
 			  bind:children={children}
 			  {index}

@@ -17,9 +17,6 @@
 
 	$: titleText = vcxProjectFilterListFile.absoluteFilePath.filenameWithExtension;
 
-	function titleOnClick() {
-    }
-
 	function getChildFiles(): IdeFile[] {
 		children = vcxProjectFilterListFile.virtualChildFiles
 			?.filter(x => !hasDifferentParentContainer(x));
@@ -94,7 +91,6 @@
 
 <TreeViewBase ideFile="{vcxProjectFilterListFile}" 
               titleText={titleText}
-              titleOnClick={titleOnClick}
               getChildFiles={getChildFiles}
 			  bind:children={children}
 			  {index}

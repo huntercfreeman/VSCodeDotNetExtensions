@@ -16,8 +16,8 @@
 	export let ideFile: IdeFile;
 	export let children: IdeFile[] | undefined;
 	export let titleText: string;
-	export let titleOnSingleClick: (e: MouseEvent) => void;
-	export let titleOnDoubleClick: (e: MouseEvent) => void;
+	export let titleOnSingleClick: (e: MouseEvent) => void | undefined = undefined;
+	export let titleOnDoubleClick: (e: MouseEvent) => void | undefined = undefined;
 	export let getChildFiles: () => IdeFile[];
 	export let index: number;
 	export let parent: IdeFile;
@@ -70,7 +70,9 @@
 			if (percentageInView < 25) {
 				let element = document.getElementById(getId());
 
-				element.scrollIntoView();
+				if (element) {
+					element.scrollIntoView();
+				}
 			}
 		}
 	});
@@ -94,13 +96,17 @@
 	function fireTitleOnDoubleClick(e: MouseEvent) {
 		setActiveIdeFileAsSelf();
 
-		titleOnDoubleClick(e);
+		if (titleOnDoubleClick) {
+			titleOnDoubleClick(e);
+		}
 	}
 	
 	function fireTitleOnSingleClick(e: MouseEvent) {
 		setActiveIdeFileAsSelf();
 
-		titleOnSingleClick(e);
+		if (titleOnSingleClick) {
+			titleOnSingleClick(e);
+		}
 	}
 
 	function setActiveIdeFileAsSelf() {
@@ -247,11 +253,15 @@
 	}
 
 	function performEnter(e: KeyboardEvent) {
-		titleOnDoubleClick(undefined);
+		if (titleOnDoubleClick) {
+			titleOnDoubleClick(undefined);
+		}
 	}
 
 	function performSpace(e: KeyboardEvent) {
-		titleOnSingleClick(undefined);
+		if (titleOnSingleClick) {
+			titleOnSingleClick(undefined);
+		}
 	}
 
 	function getId () {

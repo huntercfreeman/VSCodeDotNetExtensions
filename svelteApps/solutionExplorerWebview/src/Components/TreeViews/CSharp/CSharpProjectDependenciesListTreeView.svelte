@@ -12,9 +12,6 @@
 
 	$: titleText = cSharpProjectDependenciesListFile.absoluteFilePath.filenameWithExtension;
 
-	function titleOnClick() {
-    }
-
 	function getChildFiles(): IdeFile[] {
 		children = cSharpProjectDependenciesListFile.constantChildFiles
 			?.filter(x => !hasDifferentParentContainer(x));
@@ -34,7 +31,6 @@
 
 <TreeViewBase ideFile="{cSharpProjectDependenciesListFile}" 
               titleText={titleText}
-              titleOnClick={titleOnClick}
               getChildFiles={getChildFiles}
 			  bind:children={children}
 			  {index}
