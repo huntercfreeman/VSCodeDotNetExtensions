@@ -40,6 +40,7 @@
 
 .vscode-light .dni_tree-view-title.dni_active .dni_file-icon-display {
     background-color: var(--vscode-list-activeSelectionIconForeground);
+    display: inline-block;
 }
 
 .dni_tree-view-title.dni_active .dni_expansion-chevron {
