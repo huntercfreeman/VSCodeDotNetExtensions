@@ -38,6 +38,10 @@
     --dni_file-readme-icon-background: #373737;
 }
 
+.vscode-light .dni_tree-view-title.dni_active .dni_file-icon-display {
+    background-color: var(--vscode-list-activeSelectionIconForeground);
+}
+
 .dni_unselectable {
     -webkit-touch-callout: none;
     -webkit-user-select: none;
