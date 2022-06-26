@@ -42,6 +42,10 @@
     background-color: var(--vscode-list-activeSelectionIconForeground);
 }
 
+.dni_tree-view-title.dni_active .dni_expansion-chevron {
+    background-color: var(--vscode-list-activeSelectionIconForeground);
+}
+
 .dni_unselectable {
     -webkit-touch-callout: none;
     -webkit-user-select: none;
