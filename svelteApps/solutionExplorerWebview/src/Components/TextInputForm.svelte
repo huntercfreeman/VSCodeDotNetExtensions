@@ -1,5 +1,6 @@
 <script lang="ts">
 import DotNetIdeButton from "./MaterialDesign/DotNetIdeButton.svelte";
+import DotNetIdeInputText from "./MaterialDesign/DotNetIdeInputText.svelte";
 
 
     export let value: string;
@@ -27,11 +28,9 @@ import DotNetIdeButton from "./MaterialDesign/DotNetIdeButton.svelte";
 </script>
 
 {#if value !== undefined}
-    <input
-        {placeholder}
-        bind:value
-        on:keydown|stopPropagation={(e) => extendOnKeyDown(e)}
-    />
+
+    <DotNetIdeInputText bind:value={value}
+        placeholder={placeholder} />
 
     <DotNetIdeButton onClickCallback={validate}>
         Accept

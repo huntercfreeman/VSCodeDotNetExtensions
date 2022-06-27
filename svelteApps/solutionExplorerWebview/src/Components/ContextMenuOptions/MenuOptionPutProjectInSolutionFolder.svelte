@@ -4,6 +4,7 @@
     import DotNetIdeButton from "../MaterialDesign/DotNetIdeButton.svelte";
     import { FileKind } from "../../../../../out/FileSystem/FileKind";
     import { MessageUpdatePutProjectInSolutionFolder } from "../../../../../out/Messages/Update/MessageUpdatePutProjectInSolutionFolder";
+import DotNetIdeInputText from "../MaterialDesign/DotNetIdeInputText.svelte";
     
     export let closeMenu;
 
@@ -49,11 +50,8 @@
     />
 
     {#if solutionFolderName !== undefined}
-        <input
-            placeholder="Solution Folder Name"
-            bind:value={solutionFolderName}
-            on:keydown|stopPropagation
-        />
+        <DotNetIdeInputText bind:value={solutionFolderName}
+                            placeholder="Solution Folder Name" />
 
         <div>
             <div>

@@ -3,7 +3,7 @@
     export let styleCss: string | undefined = undefined;
 </script>
 
-<button on:keydown|stopPropagation 
+<button on:keydown|stopPropagation  
         on:click={onClickCallback} 
         style='{styleCss ?? ""}'
         class="dni_button">
@@ -12,6 +12,7 @@
 
 <style>
     .dni_button {
-        margin-bottom: 5px;
+        margin-top: 2px;
+        margin-bottom: 2px;
     }
 </style>

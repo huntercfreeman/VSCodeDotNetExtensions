@@ -6,6 +6,7 @@
     import { MessageReadNewProjectTemplatesOnComputer } from "../../../../../out/Messages/Read/MessageReadNewProjectTemplatesOnComputer";
     import { MessageCreateProjectInAny } from "../../../../../out/Messages/Create/MessageCreateProjectInAny";
     import { ConstantsFileExtensionsNoPeriod } from "../../../../../out/Constants/ConstantsFileExtensionsNoPeriod";
+import DotNetIdeInputText from "../MaterialDesign/DotNetIdeInputText.svelte";
 
     export let closeMenu;
 
@@ -57,19 +58,15 @@
     />
 
     {#if addCSharpProjectFilename !== undefined && addCSharpProjectTemplate !== undefined}
-        <input
-            placeholder="C# Project name no extension"
-            bind:value={addCSharpProjectFilename}
-            on:keydown|stopPropagation
-        />
+
+        <DotNetIdeInputText bind:value={addCSharpProjectFilename}
+            placeholder="C# Project name no extension" />
 
         <div>'dotnet new --list'</div>
         <div>was ran for you in terminal</div>
-        <input
-            placeholder="Template Short Name"
-            bind:value={addCSharpProjectTemplate}
-            on:keydown|stopPropagation
-        />
+
+        <DotNetIdeInputText bind:value={addCSharpProjectTemplate}
+                            placeholder="Template Short Name" />
 
         <div>
             <div>
