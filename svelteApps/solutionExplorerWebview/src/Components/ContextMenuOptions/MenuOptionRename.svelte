@@ -10,6 +10,12 @@
 
     $: contextMenuTargetValue = $contextMenuTarget;
 
+	$: isFocusedCssClass = isFocused
+		? "dni_focused"
+		: "";
+		
+    let isFocused = false;
+
 	let toBeFilenameWithExtension: string | undefined;
 
     function beginFormRenameOnClick() {
@@ -39,16 +45,19 @@
 </script>
 
 {#if contextMenuTargetValue}
-    <MenuOption
-        onClickStopPropagation={true}
-        onClick={beginFormRenameOnClick}
-        text="Rename."
-		{idNamespace}
-		{index}
-    />
-    <TextInputForm
-		bind:value={toBeFilenameWithExtension}
-		onValidSubmit={performRenameOnClick}
-		placeholder="Rename {contextMenuTargetValue.absoluteFilePath.filenameWithExtension}"
-	/>
+	<div class="dni_menu-option {isFocusedCssClass}">
+		<MenuOption
+			onClickStopPropagation={true}
+			onClick={beginFormRenameOnClick}
+			text="Rename."
+			{idNamespace}
+			{index}
+			bind:isFocused={isFocused}
+		/>
+		<TextInputForm
+			bind:value={toBeFilenameWithExtension}
+			onValidSubmit={performRenameOnClick}
+			placeholder="Rename {contextMenuTargetValue.absoluteFilePath.filenameWithExtension}"
+		/>
+	</div>
 {/if}

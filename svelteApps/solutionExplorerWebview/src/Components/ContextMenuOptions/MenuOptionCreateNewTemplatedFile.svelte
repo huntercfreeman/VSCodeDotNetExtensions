@@ -16,6 +16,12 @@ import DotNetIdeInputCheckbox from "../MaterialDesign/DotNetIdeInputCheckbox.sve
 
 	$: contextMenuTargetValue = $contextMenuTarget;
 
+    $: isFocusedCssClass = isFocused
+        ? "dni_focused"
+        : "";
+    
+    let isFocused = false;
+
     function beginFormAddFileWithTemplateNameOnClick() {
         addFileWithTemplateFilename = "";
     }
@@ -69,6 +75,7 @@ import DotNetIdeInputCheckbox from "../MaterialDesign/DotNetIdeInputCheckbox.sve
         text="Create templated file."
         {idNamespace}
         {index}
+        bind:isFocused={isFocused}
     />
     {#if hasRazorExtension}
         Add a code behind?

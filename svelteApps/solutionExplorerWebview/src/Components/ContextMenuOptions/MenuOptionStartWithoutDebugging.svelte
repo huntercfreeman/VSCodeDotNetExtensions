@@ -10,6 +10,12 @@
 
     $: contextMenuTargetValue = $contextMenuTarget;
 
+    $: isFocusedCssClass = isFocused
+        ? "dni_focused"
+        : "";
+        
+    let isFocused = false;
+
     function startWithoutDebugging() {
         if ((contextMenuTargetValue as any).projectModel) {
 
@@ -45,5 +51,6 @@
         text="Start without debugging."
         {idNamespace}
         {index}
+        bind:isFocused={isFocused}
     />
 {/if}

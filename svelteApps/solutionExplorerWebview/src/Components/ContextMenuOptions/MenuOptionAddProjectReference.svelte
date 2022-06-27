@@ -11,6 +11,12 @@
 
 	$: contextMenuTargetValue = $contextMenuTarget;
 
+    $: isFocusedCssClass = isFocused
+        ? "dni_focused"
+        : "";
+
+    let isFocused = false;
+    
     function addProjectReference() {
         let messageUpdateAddProjectReference =
             new MessageUpdateAddProjectReference(contextMenuTargetValue);
@@ -34,5 +40,6 @@
         text="Add Project Reference."
         {idNamespace}
         {index}
+        bind:isFocused={isFocused}
     />
 {/if}

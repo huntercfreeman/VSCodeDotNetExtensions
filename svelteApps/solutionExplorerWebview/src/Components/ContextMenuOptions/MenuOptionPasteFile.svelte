@@ -9,6 +9,12 @@
 
     $: contextMenuTargetValue = $contextMenuTarget;
 
+    $: isFocusedCssClass = isFocused
+        ? "dni_focused"
+        : "";
+    
+    let isFocused = false;
+
     function pasteOnClick() {
 
         let messageUpdatePasteIntoAny =
@@ -35,5 +41,6 @@
         text="Paste."
         {idNamespace}
         {index}
+        bind:isFocused={isFocused}
     />
 {/if}

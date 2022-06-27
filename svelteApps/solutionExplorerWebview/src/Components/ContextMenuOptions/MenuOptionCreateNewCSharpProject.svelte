@@ -14,6 +14,12 @@ import DotNetIdeInputText from "../MaterialDesign/DotNetIdeInputText.svelte";
 
 	$: contextMenuTargetValue = $contextMenuTarget;
 
+    $: isFocusedCssClass = isFocused
+        ? "dni_focused"
+        : "";
+        
+    let isFocused = false;
+
     let addCSharpProjectFilename: string | undefined;
     let addCSharpProjectTemplate: string | undefined;
 
@@ -62,6 +68,7 @@ import DotNetIdeInputText from "../MaterialDesign/DotNetIdeInputText.svelte";
         text="New C# Project."
         {idNamespace}
         {index}
+        bind:isFocused={isFocused}
     />
 
     {#if addCSharpProjectFilename !== undefined && addCSharpProjectTemplate !== undefined}

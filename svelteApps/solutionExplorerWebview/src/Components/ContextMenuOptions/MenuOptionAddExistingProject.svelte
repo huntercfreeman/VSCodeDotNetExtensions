@@ -10,6 +10,12 @@
     
 	$: contextMenuTargetValue = $contextMenuTarget;
 
+    $: isFocusedCssClass = isFocused
+        ? "dni_focused"
+        : "";
+
+    let isFocused = false;
+
     function addExistingProject() {
         switch (contextMenuTargetValue.fileKind) {
             case FileKind.solution:
@@ -38,5 +44,6 @@
         text="Add Existing Project."
         {idNamespace}
         {index}
+        bind:isFocused={isFocused}
     />
 {/if}

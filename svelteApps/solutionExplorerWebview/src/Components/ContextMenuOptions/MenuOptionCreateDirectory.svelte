@@ -14,6 +14,12 @@
 
 	$: contextMenuTargetValue = $contextMenuTarget;
 
+    $: isFocusedCssClass = isFocused
+        ? "dni_focused"
+        : "";
+    
+    let isFocused = false;
+
     function beginFormCreateDirectoryOnClick() {
         createDirectoryFilename = "";
     }
@@ -49,6 +55,7 @@
         text="Create Directory."
         {idNamespace}
         {index}
+        bind:isFocused={isFocused}
     />
     <TextInputForm
         bind:value={createDirectoryFilename}

@@ -10,6 +10,12 @@
 
     $: contextMenuTargetValue = $contextMenuTarget;
 
+    $: isFocusedCssClass = isFocused
+        ? "dni_focused"
+        : "";
+    
+    let isFocused = false;
+
     let showPrompt: boolean = false;
 
     function removeProject() {
@@ -45,6 +51,7 @@
         text="Remove Project (no files are deleted)."
         {idNamespace}
         {index}
+        bind:isFocused={isFocused}
     />
 
     {#if showPrompt}

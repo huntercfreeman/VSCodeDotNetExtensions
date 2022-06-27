@@ -77,6 +77,10 @@
     width: 1px;
 }
 
+.dni_menu-option.dni_focused {
+    border: 5px solid white;
+}
+
 .dni_tree-view-title-expansion-chevron:hover {
     color: var(--vscode-button-foreground);
     background-color: var(--vscode-button-hoverBackground);

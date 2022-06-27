@@ -12,6 +12,12 @@ import DotNetIdeInputText from "../MaterialDesign/DotNetIdeInputText.svelte";
 
     $: contextMenuTargetValue = $contextMenuTarget;
 
+    $: isFocusedCssClass = isFocused
+        ? "dni_focused"
+        : "";
+    
+    let isFocused = false;
+
     let solutionFolderName: string | undefined;
 
     function putInSolutionFolder() {
@@ -54,6 +60,7 @@ import DotNetIdeInputText from "../MaterialDesign/DotNetIdeInputText.svelte";
         text="Put in Solution Folder"
         {idNamespace}
         {index}
+        bind:isFocused={isFocused}
     />
 
     {#if solutionFolderName !== undefined}

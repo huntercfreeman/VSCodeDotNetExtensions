@@ -15,6 +15,7 @@
     export let index: number;
 	export let onClickStopPropagation = false;
 	export let onClick = undefined;
+	export let isFocused;
 
 	import { createEventDispatcher } from "svelte";
 import { ConstantsKeyboard } from "../../../../out/Constants/ConstantsKeyboard.js";
@@ -38,7 +39,8 @@ import { ConstantsKeyboard } from "../../../../out/Constants/ConstantsKeyboard.j
 <div class:disabled={isDisabled} on:click={handleClick}>
 	<DotNetIdeFocusTrap onKeyDown={onKeyDown}
 		                {idNamespace}
-						{index} />
+						{index}
+						bind:isFocused={isFocused} />
 
 	{#if text}
 		{text}

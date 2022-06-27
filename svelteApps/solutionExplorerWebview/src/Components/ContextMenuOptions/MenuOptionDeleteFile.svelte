@@ -10,6 +10,12 @@
 
     $: contextMenuTargetValue = $contextMenuTarget;
 
+    $: isFocusedCssClass = isFocused
+        ? "dni_focused"
+        : "";
+        
+    let isFocused = false;
+
     let showPrompt: boolean = false;
 
     function deleteFile() {
@@ -44,6 +50,7 @@
         text="Delete."
         {idNamespace}
         {index}
+        bind:isFocused={isFocused}
     />
 
     {#if showPrompt}

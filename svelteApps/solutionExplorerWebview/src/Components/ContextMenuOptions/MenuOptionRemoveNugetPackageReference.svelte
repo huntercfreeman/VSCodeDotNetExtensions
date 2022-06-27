@@ -10,6 +10,12 @@
 
     $: contextMenuTargetValue = $contextMenuTarget;
 
+    $: isFocusedCssClass = isFocused
+        ? "dni_focused"
+        : "";
+    
+    let isFocused = false;
+
     let showPrompt: boolean = false;
 
     function removeNugetPackageReference() {
@@ -46,6 +52,7 @@
         text="Remove Nuget Package Reference."
         {idNamespace}
         {index}
+        bind:isFocused={isFocused}
     />
 
     {#if showPrompt}

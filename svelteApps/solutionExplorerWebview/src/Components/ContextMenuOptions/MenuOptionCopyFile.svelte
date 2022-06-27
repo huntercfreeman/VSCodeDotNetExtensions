@@ -9,6 +9,12 @@
 
 	$: contextMenuTargetValue = $contextMenuTarget;
 
+    $: isFocusedCssClass = isFocused
+        ? "dni_focused"
+        : "";
+    
+    let isFocused = false;
+    
     function copyOnClick() {
         let messageUpdateCopyAny =
             new MessageUpdateCopyAny(contextMenuTargetValue);
@@ -32,5 +38,6 @@
         text="Copy."
         {idNamespace}
         {index}
+        bind:isFocused={isFocused}
     />
 {/if}

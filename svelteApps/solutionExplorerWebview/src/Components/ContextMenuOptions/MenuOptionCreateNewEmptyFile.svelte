@@ -10,6 +10,12 @@
 	
 	$: contextMenuTargetValue = $contextMenuTarget;
 
+	$: isFocusedCssClass = isFocused
+		? "dni_focused"
+		: "";
+		
+    let isFocused = false;
+
 	let addEmptyFileFilename: string | undefined;
 
 	function beginFormAddEmptyFileOnClick() {
@@ -45,6 +51,7 @@
 		text="Create empty file."
         {idNamespace}
         {index}
+		bind:isFocused={isFocused}
 	/>
 	<TextInputForm
 		bind:value={addEmptyFileFilename}

@@ -14,6 +14,12 @@
 
     $: contextMenuTargetValue = $contextMenuTarget;
 
+    $: isFocusedCssClass = isFocused
+        ? "dni_focused"
+        : "";
+    
+    let isFocused = false;
+
     function refreshOnClick() {
         switch (contextMenuTargetValue.fileKind) {
             case FileKind.solution:
@@ -87,5 +93,6 @@
         text="Refresh Child Files."
         {idNamespace}
         {index}
+        bind:isFocused={isFocused}
     />
 {/if}

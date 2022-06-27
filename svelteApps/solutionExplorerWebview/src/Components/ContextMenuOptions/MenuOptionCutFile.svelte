@@ -10,6 +10,12 @@
 
 	$: contextMenuTargetValue = $contextMenuTarget;
 
+    $: isFocusedCssClass = isFocused
+        ? "dni_focused"
+        : "";
+    
+    let isFocused = false;
+
     function cutOnClick() {
         let messageUpdateCutAny =
             new MessageUpdateCutAny(contextMenuTargetValue);
@@ -33,5 +39,6 @@
         text="Cut."
         {idNamespace}
         {index}
+        bind:isFocused={isFocused}
     />
 {/if}

@@ -4,6 +4,7 @@ import { onMount } from "svelte";
     export let onKeyDown: (e: KeyboardEvent) => void;
     export let idNamespace: string;
     export let index: number;
+    export let isFocused;
 
     let inputHtmlElement;
 
@@ -15,6 +16,9 @@ import { onMount } from "svelte";
 
 </script>
 
-<input bind:this={inputHtmlElement} on:keydown|stopPropagation={onKeyDown}
+<input on:focus={() => isFocused = true}
+       on:blur={() => isFocused = false}
+       bind:this={inputHtmlElement} 
+       on:keydown|stopPropagation={onKeyDown}
        id="dni_focus-trap_{idNamespace}-{index}"
        class="dni_focus-trap dni_unselectable dni_visually-hidden"/>
