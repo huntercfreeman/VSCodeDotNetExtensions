@@ -17,13 +17,20 @@
 	export let onClick = undefined;
 	export let isFocused;
 
+	let focusTrapHtmlElement;
+	
 	import { createEventDispatcher } from "svelte";
-import { ConstantsKeyboard } from "../../../../out/Constants/ConstantsKeyboard.js";
+	import { ConstantsKeyboard } from "../../../../out/Constants/ConstantsKeyboard.js";
 	const dispatch = createEventDispatcher();
 
 	const { dispatchClick } = getContext(key);
 
 	const handleClick = (e) => {
+
+		if(focusTrapHtmlElement) {
+			focusTrapHtmlElement.focus();
+		}
+		
 		if (onClick) {
 			onClick();
 		}
@@ -40,7 +47,8 @@ import { ConstantsKeyboard } from "../../../../out/Constants/ConstantsKeyboard.j
 	<DotNetIdeFocusTrap onKeyDown={onKeyDown}
 		                {idNamespace}
 						{index}
-						bind:isFocused={isFocused} />
+						bind:isFocused={isFocused}
+						bind:inputHtmlElement={focusTrapHtmlElement} />
 
 	{#if text}
 		{text}

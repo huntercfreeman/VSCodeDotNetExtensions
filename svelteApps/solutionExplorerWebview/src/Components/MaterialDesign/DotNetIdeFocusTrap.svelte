@@ -5,8 +5,7 @@ import { onMount } from "svelte";
     export let idNamespace: string;
     export let index: number;
     export let isFocused;
-
-    let inputHtmlElement;
+    export let inputHtmlElement;
 
     onMount(async () => {
         if (inputHtmlElement) {

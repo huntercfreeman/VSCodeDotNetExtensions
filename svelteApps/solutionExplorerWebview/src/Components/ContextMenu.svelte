@@ -81,7 +81,8 @@
 		{#if (contextMenuTargetValue.contextualInformation?.length ?? 0) === 0}
 			<MenuOption text="No Context Menu Options for this item."
 			            idNamespace="context-menu"
-						index={0} />
+						index={0}
+						isFocused={false} />
 		{:else}
 			{#each (contextMenuCategories = getContextMenuCategories()) as category, i}
 				<MenuOptionMapper

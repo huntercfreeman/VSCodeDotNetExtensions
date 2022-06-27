@@ -77,8 +77,12 @@
     width: 1px;
 }
 
+.dni_menu-option {
+    border: 2px solid transparent;
+}
+
 .dni_menu-option.dni_focused {
-    border: 5px solid white;
+    border: 2px solid var(--vscode-focusBorder);
 }
 
 .dni_tree-view-title-expansion-chevron:hover {
