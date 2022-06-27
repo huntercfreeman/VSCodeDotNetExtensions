@@ -17,6 +17,10 @@
 
 	$: activeIdeFileHandleOnKeyDownValue = $activeIdeFileHandleOnKeyDownWrap;
 	$: activeFocusTargetValue = $activeFocusTarget;
+
+	$: solutionExplorerHasFocus = activeFocusTargetValue
+		? "dni_focused"
+		: "";
 	
 	function getSolutionFilesInWorkspace() {
 		let messageReadSolutionsInWorkspace =
@@ -84,7 +88,7 @@
 	});
 </script>
 
-<div id="dni_solution-explorer" class="dni_app">
+<div id="dni_solution-explorer" class="dni_app {solutionExplorerHasFocus}">
 	<SolutionFileControlButtons {getSolutionFilesInWorkspace} />
 
 	<SelectDotNetSolutionFileForm {selectedDotNetSolutionFile} {dotNetSolutionFiles} />

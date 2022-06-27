@@ -357,17 +357,7 @@
 		border: 1px solid transparent;
 	}
 
-	.dni_tree-view-title.dni_active {
-		background-color: var(--vscode-list-activeSelectionBackground);
-		border: 1px solid var(--vscode-focusBorder);
-		color: var(--vscode-list-activeSelectionIconForeground);
-	}
-
 	.dni_tree-view-title.dni_active-context-menu-target {
 		border: 1px solid var(--vscode-focusBorder);
 	}
-
-	/* ....when extensionactive.... .dni_tree-view-title.dni_active {
-		background-color: var(--vscode-list-inactiveSelectionBackground);
-	} */
 </style>

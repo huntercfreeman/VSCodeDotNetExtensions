@@ -47,6 +47,16 @@
     background-color: var(--vscode-list-activeSelectionIconForeground);
 }
 
+.dni_tree-view-title.dni_active {
+    background-color: var(--vscode-list-inactiveSelectionBackground);
+    border: 1px solid var(--vscode-focusBorder);
+    color: var(--vscode-list-activeSelectionIconForeground);
+}
+
+.dni_focused .dni_tree-view-title.dni_active {
+    background-color: var(--vscode-list-activeSelectionBackground);
+}
+
 .dni_unselectable {
     -webkit-touch-callout: none;
     -webkit-user-select: none;
