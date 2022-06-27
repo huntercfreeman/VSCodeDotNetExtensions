@@ -1,5 +1,6 @@
 <script lang="ts">
     import { MessageCreateDotNetSolutionInWorkspace } from "../../../../out/Messages/Create/MessageCreateDotNetSolutionInWorkspace";
+import DotNetIdeButton from "./MaterialDesign/DotNetIdeButton.svelte";
     import TextInputForm from "./TextInputForm.svelte";
 
     export let getSolutionFilesInWorkspace;
@@ -32,14 +33,15 @@
 
     {#if isExpanded}
         <div>
-            <button on:keydown|stopPropagation on:click={startNewSlnForm} style="margin-bottom: 5px;">
+            <DotNetIdeButton onClickCallback={startNewSlnForm}>
                 New Sln
-            </button>
+            </DotNetIdeButton>
 
             {#if addSolutionWithSpecifiedName !== undefined}
-                <button on:keydown|stopPropagation on:click={createNewSln}>
+                <DotNetIdeButton onClickCallback={createNewSln}>
                     Opt for Default Solution Name
-                </button>
+                </DotNetIdeButton>
+
                 <TextInputForm
                     bind:value={addSolutionWithSpecifiedName}
                     onValidSubmit={createNewSln}
@@ -48,12 +50,8 @@
             {/if}
         </div>
 
-        <button
-            on:keydown|stopPropagation    
-            on:click={getSolutionFilesInWorkspace}
-            style="margin-bottom: 5px;"
-        >
+        <DotNetIdeButton onClickCallback={getSolutionFilesInWorkspace}>
             Reload Solutions In Workspace
-        </button>
+        </DotNetIdeButton>
     {/if}
 </div>

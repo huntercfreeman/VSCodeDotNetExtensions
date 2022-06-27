@@ -1,6 +1,7 @@
 <script lang="ts">
     import { contextMenuTarget } from "../menu";
     import MenuOption from "../MenuOption.svelte";
+    import DotNetIdeButton from "../MaterialDesign/DotNetIdeButton.svelte";
     import { MessageUpdateRemoveProject } from "../../../../../out/Messages/Update/MessageUpdateRemoveProject";
 
     export let closeMenu;
@@ -59,8 +60,13 @@
             </div>
         </div>
 
-        <button on:keydown|stopPropagation on:click={removeProject}>Accept</button>
-        <button on:keydown|stopPropagation on:click={performCloseMenu}>Decline</button>
+        <DotNetIdeButton onClickCallback={removeProject}>
+            Accept
+        </DotNetIdeButton>
+
+        <DotNetIdeButton onClickCallback={performCloseMenu}>
+            Decline
+        </DotNetIdeButton>
     {/if}
 {/if}
 

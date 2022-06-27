@@ -1,6 +1,7 @@
 <script lang="ts">
     import { contextMenuTarget } from "../menu";
     import MenuOption from "../MenuOption.svelte";
+    import DotNetIdeButton from "../MaterialDesign/DotNetIdeButton.svelte";
     import { FileKind } from "../../../../../out/FileSystem/FileKind";
     import { MessageReadNewProjectTemplatesOnComputer } from "../../../../../out/Messages/Read/MessageReadNewProjectTemplatesOnComputer";
     import { MessageCreateProjectInAny } from "../../../../../out/Messages/Create/MessageCreateProjectInAny";
@@ -87,8 +88,13 @@
             </div>
         </div>
 
-        <button on:keydown|stopPropagation on:click={createNewFSharpProject}>Accept</button>
-        <button on:keydown|stopPropagation on:click={closeMenu}>Decline</button>
+        <DotNetIdeButton onClickCallback={createNewFSharpProject}>
+            Accept
+        </DotNetIdeButton>
+
+        <DotNetIdeButton onClickCallback={closeMenu}>
+            Decline
+        </DotNetIdeButton>
     {/if}
 {/if}
 

@@ -1,4 +1,7 @@
 <script lang="ts">
+import DotNetIdeButton from "./MaterialDesign/DotNetIdeButton.svelte";
+
+
     export let value: string;
     export let onCancel: any = () => (value = undefined);
     export let onValidSubmit: any;
@@ -29,6 +32,12 @@
         bind:value
         on:keydown|stopPropagation={(e) => extendOnKeyDown(e)}
     />
-    <button on:keydown|stopPropagation on:click={validate}>Confirm</button>
-    <button on:keydown|stopPropagation on:click={onCancel}>Cancel</button>
+
+    <DotNetIdeButton onClickCallback={validate}>
+        Accept
+    </DotNetIdeButton>
+
+    <DotNetIdeButton onClickCallback={onCancel}>
+        Decline
+    </DotNetIdeButton>
 {/if}

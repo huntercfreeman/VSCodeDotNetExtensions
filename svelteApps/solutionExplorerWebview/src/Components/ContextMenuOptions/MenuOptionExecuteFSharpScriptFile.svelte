@@ -1,5 +1,6 @@
 <script lang="ts">
     import { contextMenuTarget } from "../menu";
+    import DotNetIdeButton from "../MaterialDesign/DotNetIdeButton.svelte";
     import MenuOption from "../MenuOption.svelte";
     import { MessageExecuteFSharpScript } from "../../../../../out/Messages/Execute/MessageExecuteFSharpScript";
 
@@ -51,8 +52,13 @@
             </div>
         </div>
 
-        <button on:keydown|stopPropagation on:click={executeFSharpScript}>Accept</button>
-        <button on:keydown|stopPropagation on:click={performCloseMenu}>Decline</button>
+        <DotNetIdeButton onClickCallback={executeFSharpScript}>
+            Accept
+        </DotNetIdeButton>
+
+        <DotNetIdeButton onClickCallback={performCloseMenu}>
+            Decline
+        </DotNetIdeButton>
     {/if}
 {/if}
 

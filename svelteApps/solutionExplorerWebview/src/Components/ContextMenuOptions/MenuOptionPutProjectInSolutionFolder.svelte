@@ -1,6 +1,7 @@
 <script lang="ts">
     import { contextMenuTarget } from "../menu";
     import MenuOption from "../MenuOption.svelte";
+    import DotNetIdeButton from "../MaterialDesign/DotNetIdeButton.svelte";
     import { FileKind } from "../../../../../out/FileSystem/FileKind";
     import { MessageUpdatePutProjectInSolutionFolder } from "../../../../../out/Messages/Update/MessageUpdatePutProjectInSolutionFolder";
     
@@ -63,8 +64,13 @@
             </div>
         </div>
 
-        <button on:keydown|stopPropagation on:click={putInSolutionFolder}>Accept</button>
-        <button on:keydown|stopPropagation on:click={closeMenu}>Decline</button>
+        <DotNetIdeButton onClickCallback={putInSolutionFolder}>
+            Accept
+        </DotNetIdeButton>
+
+        <DotNetIdeButton onClickCallback={closeMenu}>
+            Decline
+        </DotNetIdeButton>
     {/if}
 {/if}
 
