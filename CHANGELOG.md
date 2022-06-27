@@ -149,7 +149,20 @@ All notable changes to the "dot-net-ide" extension will be documented in this fi
 - Bug Fixes
     - scrollIntoView on an undefined html element
     - calls to old methods that no longer exist causing an exception
-    
+
+## [1.3.2] - 2022-06-26
+
+### Added
+- Bug Fixes
+    - Memory leak when subscribing to Svelte Store
+- File Extension Support
+    - JavaScript (.js)
+    - TypeScript (.ts)
+    - C (.c)
+    - C++ (.cpp)
+- Light Theme
+    - Fix coloring issues that made certain UI elements hard to see
+
 ---
 
 ## Keep this keepachangelog link
