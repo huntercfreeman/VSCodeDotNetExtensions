@@ -27,7 +27,7 @@
 
 	let activeIdeFileWrapValue;
 
-	activeIdeFileWrap.subscribe((value) => {
+	const unsubscribeActiveIdeFileWrap = activeIdeFileWrap.subscribe((value) => {
 		if (!value) {
 			return;
 		}
@@ -84,7 +84,7 @@
 
 	let contextMenuTargetValue;
 
-	contextMenuTarget.subscribe((value) => {
+	const unsubscribeContextMenuTarget = contextMenuTarget.subscribe((value) => {
 		contextMenuTargetValue = value;
 	});
 
@@ -274,6 +274,10 @@
 		return "";
 	}
 
+	onDestroy(() => {
+		unsubscribeActiveIdeFileWrap();
+		unsubscribeContextMenuTarget();
+	});
 	// TODO: Does this need to call unobserve on the Visibility svelte component?
 	// onDestroy(() => clearInterval(interval));
 </script>

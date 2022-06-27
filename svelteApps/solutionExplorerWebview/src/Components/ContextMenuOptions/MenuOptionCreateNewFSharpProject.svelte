@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { onDestroy } from 'svelte';
     import { contextMenuTarget } from "../menu";
     import MenuOption from "../MenuOption.svelte";
     import { FileKind } from "../../../../../out/FileSystem/FileKind";
@@ -13,7 +14,7 @@
     let addFSharpProjectFilename: string | undefined;
     let addFSharpProjectTemplate: string | undefined;
 
-    contextMenuTarget.subscribe((value) => {
+    const unsubscribe = contextMenuTarget.subscribe((value) => {
         contextMenuTargetValue = value;
     });
 
@@ -50,6 +51,8 @@
         addFSharpProjectFilename = "";
         addFSharpProjectTemplate = "";
     }
+
+    onDestroy(unsubscribe);
 </script>
 
 {#if contextMenuTargetValue}

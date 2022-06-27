@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { onDestroy } from 'svelte';
     import { contextMenuTarget } from "../menu";
     import MenuOption from "../MenuOption.svelte";
     import { MessageUpdateRemoveNugetPackageReference } from "../../../../../out/Messages/Update/MessageUpdateRemoveNugetPackageReference";
@@ -8,7 +9,7 @@
     let contextMenuTargetValue;
     let showPrompt: boolean = false;
 
-    contextMenuTarget.subscribe((value) => {
+    const unsubscribe = contextMenuTarget.subscribe((value) => {
         contextMenuTargetValue = value;
     });
 
@@ -34,6 +35,8 @@
         showPrompt = false;
         closeMenu();
     }
+
+    onDestroy(unsubscribe);
 </script>
 
 {#if contextMenuTargetValue}

@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { onDestroy } from 'svelte';
     import { contextMenuTarget } from "../menu";
     import MenuOption from "../MenuOption.svelte";
     import { FileKind } from "../../../../../out/FileSystem/FileKind";
@@ -8,7 +9,7 @@
 
     let contextMenuTargetValue;
 
-    contextMenuTarget.subscribe((value) => {
+    const unsubscribe = contextMenuTarget.subscribe((value) => {
         contextMenuTargetValue = value;
     });
 
@@ -28,6 +29,8 @@
 
         closeMenu();
     }
+
+    onDestroy(unsubscribe);
 </script>
 
 {#if contextMenuTargetValue}

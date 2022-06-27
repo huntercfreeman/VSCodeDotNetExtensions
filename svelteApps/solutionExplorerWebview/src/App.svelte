@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { onMount } from "svelte";
+	import { onDestroy } from 'svelte';
 	import type { DotNetSolutionFile } from "../../../out/FileSystem/Files/DotNetSolutionFile";
 	import { MessageCategory } from "../../../out/Messages/MessageCategory";
 	import { MessageReadKind } from "../../../out/Messages/Read/MessageReadKind";
@@ -16,7 +17,7 @@
 
 	let activeIdeFileHandleOnKeyDownValue: (e: KeyboardEvent) => void;
 
-	activeIdeFileHandleOnKeyDownWrap.subscribe((value) => {
+	const unsubscribe = activeIdeFileHandleOnKeyDownWrap.subscribe((value) => {
 		activeIdeFileHandleOnKeyDownValue = value;
 	});
 	
@@ -84,6 +85,8 @@
 
 		getSolutionFilesInWorkspace();
 	});
+	
+	onDestroy(unsubscribe);
 </script>
 
 <div id="dni_solution-explorer" class="dni_app">
