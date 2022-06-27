@@ -5,6 +5,8 @@
     import { MessageUpdateRemoveNugetPackageReference } from "../../../../../out/Messages/Update/MessageUpdateRemoveNugetPackageReference";
 
     export let closeMenu;
+    export let idNamespace: string;
+    export let index: number;
 
     $: contextMenuTargetValue = $contextMenuTarget;
 
@@ -42,6 +44,8 @@
         onClickStopPropagation={true}
         onClick={showConfirmQuestion}
         text="Remove Nuget Package Reference."
+        {idNamespace}
+        {index}
     />
 
     {#if showPrompt}

@@ -5,6 +5,8 @@
     import { MessageCreateEmptyFileInAny } from "../../../../../out/Messages/Create/MessageCreateEmptyFileInAny";
 
 	export let closeMenu;
+    export let idNamespace: string;
+    export let index: number;
 	
 	$: contextMenuTargetValue = $contextMenuTarget;
 
@@ -41,6 +43,8 @@
 		onClickStopPropagation={true}
 		onClick={beginFormAddEmptyFileOnClick}
 		text="Create empty file."
+        {idNamespace}
+        {index}
 	/>
 	<TextInputForm
 		bind:value={addEmptyFileFilename}

@@ -9,6 +9,8 @@
 import DotNetIdeInputText from "../MaterialDesign/DotNetIdeInputText.svelte";
 
     export let closeMenu;
+    export let idNamespace: string;
+    export let index: number;
 
 	$: contextMenuTargetValue = $contextMenuTarget;
 
@@ -58,6 +60,8 @@ import DotNetIdeInputText from "../MaterialDesign/DotNetIdeInputText.svelte";
         onClickStopPropagation={true}
         onClick={startFormNewCSharpProject}
         text="New C# Project."
+        {idNamespace}
+        {index}
     />
 
     {#if addCSharpProjectFilename !== undefined && addCSharpProjectTemplate !== undefined}

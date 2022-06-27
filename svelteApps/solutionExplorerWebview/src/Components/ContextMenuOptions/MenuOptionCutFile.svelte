@@ -5,6 +5,8 @@
     import { MessageUpdateCutAny } from "../../../../../out/Messages/Update/MessageUpdateCutAny";
 
     export let closeMenu;
+    export let idNamespace: string;
+    export let index: number;
 
 	$: contextMenuTargetValue = $contextMenuTarget;
 
@@ -29,5 +31,7 @@
         onClickStopPropagation={true}
         onClick={cutOnClick}
         text="Cut."
+        {idNamespace}
+        {index}
     />
 {/if}

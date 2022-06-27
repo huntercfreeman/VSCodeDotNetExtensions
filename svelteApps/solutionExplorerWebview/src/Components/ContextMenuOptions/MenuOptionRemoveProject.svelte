@@ -5,6 +5,8 @@
     import { MessageUpdateRemoveProject } from "../../../../../out/Messages/Update/MessageUpdateRemoveProject";
 
     export let closeMenu;
+    export let idNamespace: string;
+    export let index: number;
 
     $: contextMenuTargetValue = $contextMenuTarget;
 
@@ -41,6 +43,8 @@
         onClickStopPropagation={true}
         onClick={showConfirmQuestion}
         text="Remove Project (no files are deleted)."
+        {idNamespace}
+        {index}
     />
 
     {#if showPrompt}

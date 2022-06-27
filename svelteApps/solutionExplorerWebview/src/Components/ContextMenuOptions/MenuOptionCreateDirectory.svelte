@@ -7,6 +7,8 @@
     import { FileKind } from "../../../../../out/FileSystem/FileKind";
 
     export let closeMenu;
+    export let idNamespace: string;
+    export let index: number;
     
     let createDirectoryFilename: string | undefined;
 
@@ -45,6 +47,8 @@
         onClickStopPropagation={true}
         onClick={beginFormCreateDirectoryOnClick}
         text="Create Directory."
+        {idNamespace}
+        {index}
     />
     <TextInputForm
         bind:value={createDirectoryFilename}

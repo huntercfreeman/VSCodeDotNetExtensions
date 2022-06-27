@@ -5,7 +5,9 @@
     import { MessageUpdateExistingProjectIntoSolution } from "../../../../../out/Messages/Update/MessageUpdateExistingProjectIntoSolution";
 
     export let closeMenu;
-
+    export let idNamespace: string;
+    export let index: number;
+    
 	$: contextMenuTargetValue = $contextMenuTarget;
 
     function addExistingProject() {
@@ -34,5 +36,7 @@
         onClickStopPropagation={true}
         onClick={addExistingProject}
         text="Add Existing Project."
+        {idNamespace}
+        {index}
     />
 {/if}

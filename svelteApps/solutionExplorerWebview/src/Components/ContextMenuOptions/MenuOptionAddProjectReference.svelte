@@ -4,6 +4,8 @@
     import { MessageUpdateAddProjectReference } from "../../../../../out/Messages/Update/MessageUpdateAddProjectReference";
 
     export let closeMenu;
+    export let idNamespace: string;
+    export let index: number;
 
     let contextMenuTargetValue;
 
@@ -30,5 +32,7 @@
         onClickStopPropagation={true}
         onClick={addProjectReference}
         text="Add Project Reference."
+        {idNamespace}
+        {index}
     />
 {/if}

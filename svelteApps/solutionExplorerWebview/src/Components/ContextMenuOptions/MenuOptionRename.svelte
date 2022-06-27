@@ -5,6 +5,8 @@
     import { MessageUpdateRenameAny } from "../../../../../out/Messages/Update/MessageUpdateRenameAny";
 
     export let closeMenu;
+    export let idNamespace: string;
+    export let index: number;
 
     $: contextMenuTargetValue = $contextMenuTarget;
 
@@ -41,6 +43,8 @@
         onClickStopPropagation={true}
         onClick={beginFormRenameOnClick}
         text="Rename."
+		{idNamespace}
+		{index}
     />
     <TextInputForm
 		bind:value={toBeFilenameWithExtension}

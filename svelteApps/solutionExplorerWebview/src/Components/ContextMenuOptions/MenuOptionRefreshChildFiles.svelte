@@ -9,6 +9,8 @@
     import { MessageReadNugetPackageReferencesInProject } from "../../../../../out/Messages/Read/MessageReadNugetPackageReferencesInProject";
 
     export let closeMenu;
+    export let idNamespace: string;
+    export let index: number;
 
     $: contextMenuTargetValue = $contextMenuTarget;
 
@@ -83,5 +85,7 @@
         onClickStopPropagation={true}
         onClick={refreshOnClick}
         text="Refresh Child Files."
+        {idNamespace}
+        {index}
     />
 {/if}

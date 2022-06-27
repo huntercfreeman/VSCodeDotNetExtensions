@@ -5,6 +5,8 @@
     import { MessageDeleteAny } from "../../../../../out/Messages/Delete/MessageDeleteAny";
 
     export let closeMenu;
+    export let idNamespace: string;
+    export let index: number;
 
     $: contextMenuTargetValue = $contextMenuTarget;
 
@@ -40,6 +42,8 @@
         onClickStopPropagation={true}
         onClick={showConfirmQuestion}
         text="Delete."
+        {idNamespace}
+        {index}
     />
 
     {#if showPrompt}

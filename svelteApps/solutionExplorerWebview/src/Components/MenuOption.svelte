@@ -11,6 +11,8 @@
 				handleClick(undefined);
 		}
 	};
+	export let idNamespace: string;
+    export let index: number;
 	export let onClickStopPropagation = false;
 	export let onClick = undefined;
 
@@ -34,7 +36,9 @@ import { ConstantsKeyboard } from "../../../../out/Constants/ConstantsKeyboard.j
 </script>
 
 <div class:disabled={isDisabled} on:click={handleClick}>
-	<DotNetIdeFocusTrap onKeyDown={onKeyDown} />
+	<DotNetIdeFocusTrap onKeyDown={onKeyDown}
+		                {idNamespace}
+						{index} />
 
 	{#if text}
 		{text}

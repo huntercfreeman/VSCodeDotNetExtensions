@@ -5,6 +5,8 @@
     import { MessageExecuteProjectDebugging } from "../../../../../out/Messages/Execute/MessageExecuteProjectDebugging";
 
     export let closeMenu;
+    export let idNamespace: string;
+    export let index: number;
 
     $: contextMenuTargetValue = $contextMenuTarget;
 
@@ -41,5 +43,7 @@
         onClickStopPropagation={true}
         onClick={startWithoutDebugging}
         text="Start debugging."
+        {idNamespace}
+        {index}
     />
 {/if}

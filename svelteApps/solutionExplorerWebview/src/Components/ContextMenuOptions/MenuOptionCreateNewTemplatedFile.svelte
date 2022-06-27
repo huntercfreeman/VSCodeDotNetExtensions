@@ -8,6 +8,8 @@
 import DotNetIdeInputCheckbox from "../MaterialDesign/DotNetIdeInputCheckbox.svelte";
 
     export let closeMenu;
+    export let idNamespace: string;
+    export let index: number;
 
     let addFileWithTemplateFilename: string | undefined;
     let shouldAddCodeBehind: boolean = false;
@@ -65,6 +67,8 @@ import DotNetIdeInputCheckbox from "../MaterialDesign/DotNetIdeInputCheckbox.sve
         onClickStopPropagation={true}
         onClick={beginFormAddFileWithTemplateNameOnClick}
         text="Create templated file."
+        {idNamespace}
+        {index}
     />
     {#if hasRazorExtension}
         Add a code behind?

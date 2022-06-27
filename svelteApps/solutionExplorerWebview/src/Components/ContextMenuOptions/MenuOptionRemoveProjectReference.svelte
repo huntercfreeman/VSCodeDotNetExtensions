@@ -5,6 +5,8 @@
     import { MessageUpdateRemoveProjectReference } from "../../../../../out/Messages/Update/MessageUpdateRemoveProjectReference";
 
     export let closeMenu;
+    export let idNamespace: string;
+    export let index: number;
 
     $: contextMenuTargetValue = $contextMenuTarget;
 
@@ -40,6 +42,8 @@
         onClickStopPropagation={true}
         onClick={showConfirmQuestion}
         text="Remove Project Reference."
+        {idNamespace}
+        {index}
     />
 
     {#if showPrompt}

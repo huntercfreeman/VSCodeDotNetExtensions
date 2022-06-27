@@ -23,67 +23,69 @@
 
     export let contextualInformation: ContextualInformationDatum[];
     export let closeMenu;
+    export let idNamespace: string;
+    export let index: number;
 </script>
 
 {#each contextualInformation as contextualInformationDatum}
     {#if ContextualInformationDatum.checkDatumEquality(ContextualInformationDatum.createNewTemplatedFile, contextualInformationDatum)}
-        <MenuOptionCreateNewTemplatedFile {closeMenu} />
+        <MenuOptionCreateNewTemplatedFile {closeMenu} {idNamespace} {index} />
 
     {:else if ContextualInformationDatum.checkDatumEquality(ContextualInformationDatum.createNewEmptyFile, contextualInformationDatum)}
-        <MenuOptionCreateNewEmptyFile {closeMenu} />
+        <MenuOptionCreateNewEmptyFile {closeMenu} {idNamespace} {index}  />
 
     {:else if ContextualInformationDatum.checkDatumEquality(ContextualInformationDatum.refreshChildFiles, contextualInformationDatum)}
-        <MenuOptionRefreshChildFiles {closeMenu} />
+        <MenuOptionRefreshChildFiles {closeMenu} {idNamespace} {index}  />
 
     {:else if ContextualInformationDatum.checkDatumEquality(ContextualInformationDatum.createDirectory, contextualInformationDatum)}
-        <MenuOptionCreateDirectory {closeMenu} />
+        <MenuOptionCreateDirectory {closeMenu} {idNamespace} {index}  />
 
     {:else if ContextualInformationDatum.checkDatumEquality(ContextualInformationDatum.startWithoutDebugging, contextualInformationDatum)}
-        <MenuOptionStartWithoutDebugging {closeMenu} />
+        <MenuOptionStartWithoutDebugging {closeMenu} {idNamespace} {index}  />
 
     {:else if ContextualInformationDatum.checkDatumEquality(ContextualInformationDatum.startDebugging, contextualInformationDatum)}
-        <MenuOptionStartDebugging {closeMenu} />
+        <MenuOptionStartDebugging {closeMenu} {idNamespace} {index}  />
 
     {:else if ContextualInformationDatum.checkDatumEquality(ContextualInformationDatum.createNewCSharpProject, contextualInformationDatum)}
-        <MenuOptionCreateNewCSharpProject {closeMenu} />
+        <MenuOptionCreateNewCSharpProject {closeMenu} {idNamespace} {index}  />
 
     {:else if ContextualInformationDatum.checkDatumEquality(ContextualInformationDatum.createNewFSharpProject, contextualInformationDatum)}
-        <MenuOptionCreateNewFSharpProject {closeMenu} />
+        <MenuOptionCreateNewFSharpProject {closeMenu} {idNamespace} {index}  />
 
     {:else if ContextualInformationDatum.checkDatumEquality(ContextualInformationDatum.executeFSharpScriptFile, contextualInformationDatum)}
-        <MenuOptionExecuteFSharpScriptFile {closeMenu} />
+        <MenuOptionExecuteFSharpScriptFile {closeMenu} {idNamespace} {index}  />
 
     {:else if ContextualInformationDatum.checkDatumEquality(ContextualInformationDatum.addExistingProject, contextualInformationDatum)}
-        <MenuOptionAddExistingProject {closeMenu} />
+        <MenuOptionAddExistingProject {closeMenu} {idNamespace} {index}  />
 
     {:else if ContextualInformationDatum.checkDatumEquality(ContextualInformationDatum.addProjectReference, contextualInformationDatum)}
-        <MenuOptionAddProjectReference {closeMenu} />
+        <MenuOptionAddProjectReference {closeMenu} {idNamespace} {index}  />
 
     {:else if ContextualInformationDatum.checkDatumEquality(ContextualInformationDatum.removeProjectReference, contextualInformationDatum)}
-        <MenuOptionRemoveProjectReference {closeMenu} />
+        <MenuOptionRemoveProjectReference {closeMenu} {idNamespace} {index}  />
 
     {:else if ContextualInformationDatum.checkDatumEquality(ContextualInformationDatum.removeNugetPackageReference, contextualInformationDatum)}
-        <MenuOptionRemoveNugetPackageReference {closeMenu} />
+        <MenuOptionRemoveNugetPackageReference {closeMenu} {idNamespace} {index}  />
 
     {:else if ContextualInformationDatum.checkDatumEquality(ContextualInformationDatum.putProjectInSolutionFolder, contextualInformationDatum)}
-        <MenuOptionPutProjectInSolutionFolder {closeMenu} />
+        <MenuOptionPutProjectInSolutionFolder {closeMenu} {idNamespace} {index}  />
 
     {:else if ContextualInformationDatum.checkDatumEquality(ContextualInformationDatum.removeProject, contextualInformationDatum)}
-        <MenuOptionRemoveProject {closeMenu} />
+        <MenuOptionRemoveProject {closeMenu} {idNamespace} {index}  />
 
     {:else if ContextualInformationDatum.checkDatumEquality(ContextualInformationDatum.copyFile, contextualInformationDatum)}
-        <MenuOptionCopyFile {closeMenu} />
+        <MenuOptionCopyFile {closeMenu} {idNamespace} {index}  />
 
     {:else if ContextualInformationDatum.checkDatumEquality(ContextualInformationDatum.cutFile, contextualInformationDatum)}
-        <MenuOptionCutFile {closeMenu} />
+        <MenuOptionCutFile {closeMenu} {idNamespace} {index}  />
 
     {:else if ContextualInformationDatum.checkDatumEquality(ContextualInformationDatum.deleteFile, contextualInformationDatum)}
-        <MenuOptionDeleteFile {closeMenu} />
+        <MenuOptionDeleteFile {closeMenu} {idNamespace} {index}  />
 
     {:else if ContextualInformationDatum.checkDatumEquality(ContextualInformationDatum.paste, contextualInformationDatum)}
-        <MenuOptionPasteFile {closeMenu} />
+        <MenuOptionPasteFile {closeMenu} {idNamespace} {index}  />
 
     {:else if ContextualInformationDatum.checkDatumEquality(ContextualInformationDatum.rename, contextualInformationDatum)}
-        <MenuOptionRename {closeMenu} />
+        <MenuOptionRename {closeMenu} {idNamespace} {index}  />
     {/if}
 {/each}

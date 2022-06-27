@@ -5,6 +5,8 @@
     import { FileKind } from "../../../../../out/FileSystem/FileKind";
 
     export let closeMenu;
+    export let idNamespace: string;
+    export let index: number;
 
     $: contextMenuTargetValue = $contextMenuTarget;
 
@@ -41,5 +43,7 @@
         onClickStopPropagation={true}
         onClick={startWithoutDebugging}
         text="Start without debugging."
+        {idNamespace}
+        {index}
     />
 {/if}

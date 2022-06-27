@@ -4,6 +4,8 @@
     import { MessageUpdateCopyAny } from "../../../../../out/Messages/Update/MessageUpdateCopyAny";
 
     export let closeMenu;
+    export let idNamespace: string;
+    export let index: number;
 
 	$: contextMenuTargetValue = $contextMenuTarget;
 
@@ -28,5 +30,7 @@
         onClickStopPropagation={true}
         onClick={copyOnClick}
         text="Copy."
+        {idNamespace}
+        {index}
     />
 {/if}

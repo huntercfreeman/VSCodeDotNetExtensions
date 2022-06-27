@@ -5,6 +5,8 @@
     import { MessageExecuteFSharpScript } from "../../../../../out/Messages/Execute/MessageExecuteFSharpScript";
 
     export let closeMenu;
+    export let idNamespace: string;
+    export let index: number;
 
     $: contextMenuTargetValue = $contextMenuTarget;
 
@@ -40,6 +42,8 @@
         onClickStopPropagation={true}
         onClick={showConfirmQuestion}
         text="Execute Script."
+        {idNamespace}
+        {index}
     />
 
     {#if showPrompt}

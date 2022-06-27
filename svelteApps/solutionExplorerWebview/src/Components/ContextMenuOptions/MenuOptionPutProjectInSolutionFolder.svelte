@@ -7,6 +7,8 @@
 import DotNetIdeInputText from "../MaterialDesign/DotNetIdeInputText.svelte";
     
     export let closeMenu;
+    export let idNamespace: string;
+    export let index: number;
 
     $: contextMenuTargetValue = $contextMenuTarget;
 
@@ -50,6 +52,8 @@ import DotNetIdeInputText from "../MaterialDesign/DotNetIdeInputText.svelte";
         onClickStopPropagation={true}
         onClick={startFormPutInSolutionFolder}
         text="Put in Solution Folder"
+        {idNamespace}
+        {index}
     />
 
     {#if solutionFolderName !== undefined}

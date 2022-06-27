@@ -4,6 +4,8 @@
     import { MessageUpdatePasteIntoAny } from "../../../../../out/Messages/Update/MessageUpdatePasteIntoAny";
 
     export let closeMenu;
+    export let idNamespace: string;
+    export let index: number;
 
     $: contextMenuTargetValue = $contextMenuTarget;
 
@@ -31,5 +33,7 @@
         onClickStopPropagation={true}
         onClick={pasteOnClick}
         text="Paste."
+        {idNamespace}
+        {index}
     />
 {/if}

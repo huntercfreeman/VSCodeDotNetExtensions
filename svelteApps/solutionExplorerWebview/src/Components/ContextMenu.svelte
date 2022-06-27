@@ -79,7 +79,9 @@
 {#if showMenu && contextMenuTargetValue}
 	<Menu {...pos} on:click={closeMenu} on:clickoutside={closeMenu}>
 		{#if (contextMenuTargetValue.contextualInformation?.length ?? 0) === 0}
-			<MenuOption text="No Context Menu Options for this item." />
+			<MenuOption text="No Context Menu Options for this item."
+			            idNamespace="context-menu"
+						index={0} />
 		{:else}
 			{#each (contextMenuCategories = getContextMenuCategories()) as category, i}
 				<MenuOptionMapper
@@ -88,6 +90,8 @@
 						category
 					)}
 					{closeMenu}
+					idNamespace="context-menu"
+					index={i}
 				/>
 
 				{#if i !== contextMenuCategories.length - 1 && getCategoryContextualInformationDatums(contextMenuTargetValue.contextualInformation, contextMenuCategories[i + 1]).length > 0}
