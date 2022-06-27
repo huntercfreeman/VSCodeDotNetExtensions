@@ -6,6 +6,7 @@
     export let closeMenu;
     export let idNamespace: string;
     export let index: number;
+	export let category;
 
 	$: contextMenuTargetValue = $contextMenuTarget;
 
@@ -36,9 +37,11 @@
         <MenuOption
             onClickStopPropagation={true}
             onClick={copyOnClick}
+			{closeMenu}
             text="Copy."
             {idNamespace}
             {index}
+            {category}
             bind:isFocused={isFocused}
         />
     </div>

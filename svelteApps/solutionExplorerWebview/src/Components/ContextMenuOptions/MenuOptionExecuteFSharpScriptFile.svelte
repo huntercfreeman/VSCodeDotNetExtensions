@@ -7,6 +7,7 @@
     export let closeMenu;
     export let idNamespace: string;
     export let index: number;
+	export let category;
 
     $: contextMenuTargetValue = $contextMenuTarget;
 
@@ -48,9 +49,11 @@
         <MenuOption
             onClickStopPropagation={true}
             onClick={showConfirmQuestion}
+			{closeMenu}
             text="Execute Script."
             {idNamespace}
             {index}
+            {category}
             bind:isFocused={isFocused}
         />
 

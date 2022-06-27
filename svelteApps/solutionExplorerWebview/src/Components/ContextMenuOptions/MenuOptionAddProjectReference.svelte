@@ -6,6 +6,7 @@
     export let closeMenu;
     export let idNamespace: string;
     export let index: number;
+	export let category;
 
     let contextMenuTargetValue;
 
@@ -38,9 +39,11 @@
         <MenuOption
             onClickStopPropagation={true}
             onClick={addProjectReference}
+			{closeMenu}
             text="Add Project Reference."
             {idNamespace}
             {index}
+            {category}
             bind:isFocused={isFocused}
         />
     </div>

@@ -4,11 +4,34 @@
 	import DotNetIdeFocusTrap from "./MaterialDesign/DotNetIdeFocusTrap.svelte";
 
 	export let isDisabled = false;
+    export let closeMenu;
 	export let text = "";
     export let onKeyDown: (e: KeyboardEvent) => void = (e) => {
 		if (e.key === ConstantsKeyboard.KEY_ENTER &&
 			onClick) {
 				handleClick(undefined);
+		}
+		else if (ConstantsKeyboard.ALL_ARROW_UP_KEYS.indexOf(e.key) !== -1 &&
+			index > 0) {
+			
+			let previousFocusTrap = document.getElementById(`dni_focus-trap_${idNamespace}-${category}-${index}`);
+
+			if (previousFocusTrap) {
+				previousFocusTrap.focus();
+			}
+		}
+		else if (ConstantsKeyboard.ALL_ARROW_DOWN_KEYS.indexOf(e.key) !== -1) {
+			// index out of bounds will not occur from not checking index < list.length - 1
+			// the variable will just be set to undefined and nothing will get ran
+
+			let nextFocusTrap = document.getElementById(`dni_focus-trap_${idNamespace}-${category}-${index}`);
+
+			if (nextFocusTrap) {
+				nextFocusTrap.focus();
+			}
+		}
+		else if (ConstantsKeyboard.KEY_ESCAPE === e.key) {
+			closeMenu();
 		}
 	};
 	export let idNamespace: string;
@@ -16,6 +39,7 @@
 	export let onClickStopPropagation = false;
 	export let onClick = undefined;
 	export let isFocused;
+	export let category;
 
 	let focusTrapHtmlElement;
 	
@@ -47,6 +71,7 @@
 	<DotNetIdeFocusTrap onKeyDown={onKeyDown}
 		                {idNamespace}
 						{index}
+						{category}
 						bind:isFocused={isFocused}
 						bind:inputHtmlElement={focusTrapHtmlElement} />
 

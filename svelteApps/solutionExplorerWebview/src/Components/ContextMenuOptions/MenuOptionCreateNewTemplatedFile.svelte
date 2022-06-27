@@ -10,6 +10,7 @@ import DotNetIdeInputCheckbox from "../MaterialDesign/DotNetIdeInputCheckbox.sve
     export let closeMenu;
     export let idNamespace: string;
     export let index: number;
+	export let category;
 
     let addFileWithTemplateFilename: string | undefined;
     let shouldAddCodeBehind: boolean = false;
@@ -73,9 +74,11 @@ import DotNetIdeInputCheckbox from "../MaterialDesign/DotNetIdeInputCheckbox.sve
         <MenuOption
             onClickStopPropagation={true}
             onClick={beginFormAddFileWithTemplateNameOnClick}
+			{closeMenu}
             text="Create templated file."
             {idNamespace}
             {index}
+            {category}
             bind:isFocused={isFocused}
         />
         {#if hasRazorExtension}

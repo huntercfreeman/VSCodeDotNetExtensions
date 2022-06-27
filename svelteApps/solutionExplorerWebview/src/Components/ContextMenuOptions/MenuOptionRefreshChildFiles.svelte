@@ -11,6 +11,7 @@
     export let closeMenu;
     export let idNamespace: string;
     export let index: number;
+	export let category;
 
     $: contextMenuTargetValue = $contextMenuTarget;
 
@@ -91,9 +92,11 @@
         <MenuOption
             onClickStopPropagation={true}
             onClick={refreshOnClick}
+			{closeMenu}
             text="Refresh Child Files."
             {idNamespace}
             {index}
+            {category}
             bind:isFocused={isFocused}
         />
     </div>

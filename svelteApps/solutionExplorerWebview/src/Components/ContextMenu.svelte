@@ -7,7 +7,7 @@
 	import { activeIdeFileWrap } from "./activeState.js";
 	import { ContextualInformationDatumKind } from "../../../../out/ContextMenus/ContextualInformationDatumKind";
 	import type { ContextualInformationDatum } from "../../../../out/ContextMenus/ContextualInformationDatum";
-
+	
 	$: activeIdeFileWrapValue = $activeIdeFileWrap?.ideFile;
 
 	window.addEventListener('contextmenu', e => {
@@ -81,7 +81,9 @@
 		{#if (contextMenuTargetValue.contextualInformation?.length ?? 0) === 0}
 			<MenuOption text="No Context Menu Options for this item."
 			            idNamespace="context-menu"
-						index={0}
+						category={-1}
+						index={-1}
+						{closeMenu}
 						isFocused={false} />
 		{:else}
 			{#each (contextMenuCategories = getContextMenuCategories()) as category, i}
@@ -92,7 +94,7 @@
 					)}
 					{closeMenu}
 					idNamespace="context-menu"
-					index={i}
+					{category}
 				/>
 
 				{#if i !== contextMenuCategories.length - 1 && getCategoryContextualInformationDatums(contextMenuTargetValue.contextualInformation, contextMenuCategories[i + 1]).length > 0}

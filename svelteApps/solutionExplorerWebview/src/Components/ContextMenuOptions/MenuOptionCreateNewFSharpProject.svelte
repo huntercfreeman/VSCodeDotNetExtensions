@@ -12,6 +12,7 @@ import DotNetIdeInputText from "../MaterialDesign/DotNetIdeInputText.svelte";
     export let closeMenu;
     export let idNamespace: string;
     export let index: number;
+	export let category;
 
     $: contextMenuTargetValue = $contextMenuTarget;
 
@@ -67,9 +68,11 @@ import DotNetIdeInputText from "../MaterialDesign/DotNetIdeInputText.svelte";
         <MenuOption
             onClickStopPropagation={true}
             onClick={startFormNewFSharpProject}
+			{closeMenu}
             text="New F# Project."
             {idNamespace}
             {index}
+            {category}
             bind:isFocused={isFocused}
         />
 

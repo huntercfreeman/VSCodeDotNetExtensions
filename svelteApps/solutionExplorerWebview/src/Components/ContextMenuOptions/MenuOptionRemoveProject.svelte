@@ -7,6 +7,7 @@
     export let closeMenu;
     export let idNamespace: string;
     export let index: number;
+	export let category;
 
     $: contextMenuTargetValue = $contextMenuTarget;
 
@@ -49,9 +50,11 @@
         <MenuOption
             onClickStopPropagation={true}
             onClick={showConfirmQuestion}
+			{closeMenu}
             text="Remove Project (no files are deleted)."
             {idNamespace}
             {index}
+            {category}
             bind:isFocused={isFocused}
         />
 

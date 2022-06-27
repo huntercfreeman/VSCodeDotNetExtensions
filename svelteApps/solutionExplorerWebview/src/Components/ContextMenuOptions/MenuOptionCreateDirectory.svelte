@@ -9,6 +9,7 @@
     export let closeMenu;
     export let idNamespace: string;
     export let index: number;
+	export let category;
     
     let createDirectoryFilename: string | undefined;
 
@@ -53,9 +54,11 @@
         <MenuOption
             onClickStopPropagation={true}
             onClick={beginFormCreateDirectoryOnClick}
+			{closeMenu}
             text="Create Directory."
             {idNamespace}
             {index}
+            {category}
             bind:isFocused={isFocused}
         />
         <TextInputForm
