@@ -24,5 +24,9 @@ export enum FileKind {
     vcxProjectResourceFilesListFile,
     vcxProjectFilterFile,
     fSharpProjectDependencies,
-    vcxProjectFilterListFile
+    vcxProjectFilterListFile,
+    c,
+    cPlusPlus,
+    js,
+    typeScript
 }

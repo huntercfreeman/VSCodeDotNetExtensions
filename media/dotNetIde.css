@@ -1,8 +1,9 @@
 .vscode-dark  {
     --dni_file-solution-icon-background: #a074c4;
     --dni_file-cshtml-icon-background: #c586c0;
-    --dni_file-sharp-code-icon-background: #519aba;
-    --dni_file-f-sharp-icon-background: #519aba;
+    --dni_file-code-icon-background: #519aba;
+    --dni_file-type-script-icon-background: #37b38b;
+    --dni_file-c-plus-plus-icon-background: #37b38b;
     --dni_file-css-icon-background: #e36a6e;
     --dni_file-directory-icon-background: #d7ab69;
     --dni_file-json-icon-background: #cbc638;
@@ -20,8 +21,9 @@
 .vscode-light {
     --dni_file-solution-icon-background: #cf5bca;
     --dni_file-cshtml-icon-background: #45a156;
-    --dni_file-sharp-code-icon-background: #1569d0;
-    --dni_file-f-sharp-icon-background: #1569d0;
+    --dni_file-code-icon-background: #1569d0;
+    --dni_file-type-script-icon-background: #37b38b;
+    --dni_file-c-plus-plus-icon-background: #37b38b;
     --dni_file-css-icon-background: #e6575b;
     --dni_file-directory-icon-background: #ab811f;
     --dni_file-json-icon-background: #ff8800;
@@ -34,6 +36,15 @@
     --dni_file-wwwroot-icon-background: #858585;
     --dni_file-markdown-icon-background: #373737;
     --dni_file-readme-icon-background: #373737;
+}
+
+.vscode-light .dni_tree-view-title.dni_active .dni_file-icon-display {
+    background-color: var(--vscode-list-activeSelectionIconForeground);
+    display: inline-block;
+}
+
+.vscode-light .dni_tree-view-title.dni_active .dni_expansion-chevron {
+    background-color: var(--vscode-list-activeSelectionIconForeground);
 }
 
 .dni_unselectable {

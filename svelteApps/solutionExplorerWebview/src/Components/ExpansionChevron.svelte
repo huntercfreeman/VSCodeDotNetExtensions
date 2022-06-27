@@ -14,7 +14,7 @@
     }
 </script>
 
-<span on:click|stopPropagation={toggleIsExpanded}>
+<span class="dni_expansion-chevron" on:click|stopPropagation={toggleIsExpanded}>
     {#if !isExpanded}
         <ChevronRight />
     {:else}

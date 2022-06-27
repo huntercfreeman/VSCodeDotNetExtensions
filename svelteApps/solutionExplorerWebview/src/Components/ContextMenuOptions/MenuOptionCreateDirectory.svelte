@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { onDestroy } from 'svelte';
     import { contextMenuTarget } from "../menu";
     import MenuOption from "../MenuOption.svelte";
     import TextInputForm from "../TextInputForm.svelte";
@@ -11,7 +12,7 @@
     let contextMenuTargetValue;
     let createDirectoryFilename: string | undefined;
 
-    contextMenuTarget.subscribe((value) => {
+    const unsubscribe = contextMenuTarget.subscribe((value) => {
         contextMenuTargetValue = value;
     });
 
@@ -38,6 +39,8 @@
             closeMenu();
         }
     }
+
+    onDestroy(unsubscribe);
 </script>
 
 {#if contextMenuTargetValue}

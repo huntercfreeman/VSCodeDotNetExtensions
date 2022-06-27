@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { onDestroy } from 'svelte';
     import { ConstantsFileExtensionsNoPeriod } from "../../../../../out/Constants/ConstantsFileExtensionsNoPeriod";
     import { contextMenuTarget } from "../menu";
     import MenuOption from "../MenuOption.svelte";
@@ -12,7 +13,7 @@
     let addFileWithTemplateFilename: string | undefined;
     let shouldAddCodeBehind: boolean = false;
 
-    contextMenuTarget.subscribe((value) => {
+    const unsubscribe = contextMenuTarget.subscribe((value) => {
         contextMenuTargetValue = value;
     });
 
@@ -57,6 +58,8 @@
             closeMenu();
         }
     }
+
+    onDestroy(unsubscribe);
 </script>
 
 {#if contextMenuTargetValue}

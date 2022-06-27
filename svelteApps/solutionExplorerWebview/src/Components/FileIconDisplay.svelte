@@ -23,56 +23,70 @@
     import VcxProjectIcon from "./Icons/VCXProjectIcon.svelte";
     import FSharpProjectIcon from "./Icons/FSharpProjectIcon.svelte";
     import FSXIcon from "./Icons/FSXIcon.svelte";
+    import CIcon from "./Icons/CIcon.svelte";
+    import CPlusPlusIcon from "./Icons/CPlusPlusIcon.svelte";
+    import JavaScriptIcon from "./Icons/JavaScriptIcon.svelte";
+    import TypeScriptIcon from "./Icons/TypeScriptIcon.svelte";
 
     export let ideFile: IdeFile;
 
     $: fileKind = ideFile.fileKind;
 </script>
 
-{#if fileKind === FileKind.solution}
-    <SolutionIcon />
-{:else if fileKind === FileKind.solutionFolder}
-    <SolutionFolderIcon />
-{:else if fileKind === FileKind.cSharpProject}
-    <CSharpProjectIcon />
-{:else if fileKind === FileKind.fSharpProject}
-    <FSharpProjectIcon />
-{:else if fileKind === FileKind.vcxProject}
-    <VcxProjectIcon />
-{:else if fileKind === FileKind.default}
-    <TxtIcon />
-{:else if fileKind === FileKind.directory}
-    {#if ideFile.absoluteFilePath.filenameNoExtension === ConstantsUniqueFiles.WWW_ROOT_FILENAME_NO_EXTENSION}
-        <WwwRootIcon />
-    {:else if ideFile.absoluteFilePath.filenameNoExtension === ConstantsUniqueFiles.PROPERTIES_FILENAME_NO_EXTENSION}
-        <PropertiesIcon />
-    {:else}
-        <DirectoryIcon />
+<span class="dni_file-icon-display">
+    {#if fileKind === FileKind.solution}
+        <SolutionIcon />
+    {:else if fileKind === FileKind.solutionFolder}
+        <SolutionFolderIcon />
+    {:else if fileKind === FileKind.cSharpProject}
+        <CSharpProjectIcon />
+    {:else if fileKind === FileKind.fSharpProject}
+        <FSharpProjectIcon />
+    {:else if fileKind === FileKind.vcxProject}
+        <VcxProjectIcon />
+    {:else if fileKind === FileKind.default}
+        <TxtIcon />
+    {:else if fileKind === FileKind.directory}
+        {#if ideFile.absoluteFilePath.filenameNoExtension === ConstantsUniqueFiles.WWW_ROOT_FILENAME_NO_EXTENSION}
+            <WwwRootIcon />
+        {:else if ideFile.absoluteFilePath.filenameNoExtension === ConstantsUniqueFiles.PROPERTIES_FILENAME_NO_EXTENSION}
+            <PropertiesIcon />
+        {:else}
+            <DirectoryIcon />
+        {/if}
+    {:else if fileKind === FileKind.cSharp}
+        <CSharpIcon />
+    {:else if fileKind === FileKind.fSharp}
+        <FSharpIcon />
+    {:else if fileKind === FileKind.fSX}
+        <FSXIcon />
+    {:else if fileKind === FileKind.cPlusPlus}
+        <CPlusPlusIcon />
+    {:else if fileKind === FileKind.c}
+        <CIcon />
+    {:else if fileKind === FileKind.js}
+        <JavaScriptIcon />
+    {:else if fileKind === FileKind.typeScript}
+        <TypeScriptIcon />
+    {:else if fileKind === FileKind.cshtml}
+        <CshtmlIcon />
+    {:else if fileKind === FileKind.razor}
+        <RazorIcon />
+    {:else if fileKind === FileKind.css}
+        <CssIcon />
+    {:else if fileKind === FileKind.json}
+        <JsonIcon />
+    {:else if fileKind === FileKind.cSharpProjectDependencies}
+        <ProjectDependenciesIcon />
+    {:else if fileKind === FileKind.fSharpProjectDependencies}
+        <ProjectDependenciesIcon />
+    {:else if fileKind === FileKind.nugetPackageDependenciesList}
+        <NugetPackageDependenciesIcon />
+    {:else if fileKind === FileKind.nugetPackageDependency}
+        <NugetPackageDependencyIcon />
+    {:else if fileKind === FileKind.projectReferencesList}
+        <ProjectReferencesIcon />
+    {:else if fileKind === FileKind.projectReference}
+        <ProjectReferenceIcon />
     {/if}
-{:else if fileKind === FileKind.cSharp}
-    <CSharpIcon />
-{:else if fileKind === FileKind.fSharp}
-    <FSharpIcon />
-{:else if fileKind === FileKind.fSX}
-    <FSXIcon />
-{:else if fileKind === FileKind.cshtml}
-    <CshtmlIcon />
-{:else if fileKind === FileKind.razor}
-    <RazorIcon />
-{:else if fileKind === FileKind.css}
-    <CssIcon />
-{:else if fileKind === FileKind.json}
-    <JsonIcon />
-{:else if fileKind === FileKind.cSharpProjectDependencies}
-    <ProjectDependenciesIcon />
-{:else if fileKind === FileKind.fSharpProjectDependencies}
-    <ProjectDependenciesIcon />
-{:else if fileKind === FileKind.nugetPackageDependenciesList}
-    <NugetPackageDependenciesIcon />
-{:else if fileKind === FileKind.nugetPackageDependency}
-    <NugetPackageDependencyIcon />
-{:else if fileKind === FileKind.projectReferencesList}
-    <ProjectReferencesIcon />
-{:else if fileKind === FileKind.projectReference}
-    <ProjectReferenceIcon />
-{/if}
+</span>

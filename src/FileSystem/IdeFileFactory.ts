@@ -11,6 +11,10 @@ import { CshtmlFile } from "./Files/CSharp/CshtmlFile";
 import { JsonFile } from "./Files/Miscellaneous/JsonFile";
 import { FSharpFile } from "./Files/FSharp/FSharpFile";
 import { FSXFile } from "./Files/FSharp/FSXFile";
+import { CFile } from "./Files/C/CFile";
+import { CPlusPlusFile } from "./Files/CPlusPlus/CPlusPlusFile";
+import { JavaScriptFile } from "./Files/JavaScript/JavaScriptFile";
+import { TypeScriptFile } from "./Files/TypeScript/TypeScriptFile";
 
 export class IdeFileFactory {
     public static constructIdeFile(absoluteFilePath: AbsoluteFilePath, currentNamespaceString: string): IdeFile {
@@ -21,6 +25,14 @@ export class IdeFileFactory {
                 return new FSharpFile(absoluteFilePath, currentNamespaceString);
             case FileKind.fSX:
                 return new FSXFile(absoluteFilePath, currentNamespaceString);
+            case FileKind.c:
+                return new CFile(absoluteFilePath, currentNamespaceString);
+            case FileKind.cPlusPlus:
+                return new CPlusPlusFile(absoluteFilePath, currentNamespaceString);
+            case FileKind.js:
+                return new JavaScriptFile(absoluteFilePath, currentNamespaceString);
+            case FileKind.typeScript:
+                return new TypeScriptFile(absoluteFilePath, currentNamespaceString);
             case FileKind.cshtml:
                 return new CshtmlFile(absoluteFilePath);
             case FileKind.css:
