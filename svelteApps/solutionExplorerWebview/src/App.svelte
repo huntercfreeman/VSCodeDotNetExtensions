@@ -8,7 +8,7 @@
 	import ContextMenu from "./Components/ContextMenu.svelte";
 	import SolutionFileControlButtons from "./Components/SolutionFileControlButtons.svelte";
 	import TreeViewMapper from "./Components/TreeViewMapper.svelte";
-	import { activeIdeFileHandleOnKeyDownWrap } from "./Components/activeState"
+	import { activeIdeFileHandleOnKeyDownWrap, activeIdeFileWrap, ActiveIdeFileWrapTuple } from "./Components/activeState"
 	import { ConstantsKeyboard } from "../../../out/Constants/ConstantsKeyboard";
     import { activeFocusTarget } from "./Components/activeFocus";
 
@@ -50,6 +50,9 @@
 		
 		if (activeIdeFileHandleOnKeyDownValue) {
 			activeIdeFileHandleOnKeyDownValue(e);
+		}
+		else {
+			activeIdeFileWrap.set(new ActiveIdeFileWrapTuple(selectedDotNetSolutionFile, undefined));
 		}
 	}
 
