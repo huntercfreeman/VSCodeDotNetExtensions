@@ -21,6 +21,9 @@
 	$: solutionExplorerHasFocus = activeFocusTargetValue
 		? "dni_focused"
 		: "";
+
+	window.onfocus = () => activeFocusTarget.set(true);
+	window.onblur = () => activeFocusTarget.set(undefined);
 	
 	function getSolutionFilesInWorkspace() {
 		let messageReadSolutionsInWorkspace =
@@ -94,10 +97,6 @@
 	<SelectDotNetSolutionFileForm {selectedDotNetSolutionFile} {dotNetSolutionFiles} />
 
 	<div style="margin-bottom: 5px;" />
-
-	{#if activeFocusTargetValue}
-		<div>activeFocusTargetValue: {activeFocusTargetValue}</div>
-	{/if}
 
 	{#if selectedDotNetSolutionFile}
 		<TreeViewMapper ideFile={selectedDotNetSolutionFile}
