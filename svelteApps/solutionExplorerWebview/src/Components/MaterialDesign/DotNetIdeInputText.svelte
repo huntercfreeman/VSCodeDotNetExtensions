@@ -9,11 +9,11 @@
     bind:value
     on:keydown|stopPropagation
     style={styleCss ?? ""}
-    class="dni_input"
+    class="dni_input-text"
 />
 
 <style>
-    .dni_input {
+    .dni_input-text {
         margin-top: 2px;
         margin-bottom: 2px;
     }

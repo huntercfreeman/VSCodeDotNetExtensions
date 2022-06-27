@@ -1,6 +1,7 @@
 <script lang="ts">
     import { MessageCreateDotNetSolutionInWorkspace } from "../../../../out/Messages/Create/MessageCreateDotNetSolutionInWorkspace";
 import DotNetIdeButton from "./MaterialDesign/DotNetIdeButton.svelte";
+import DotNetIdeInputCheckbox from "./MaterialDesign/DotNetIdeInputCheckbox.svelte";
     import TextInputForm from "./TextInputForm.svelte";
 
     export let getSolutionFilesInWorkspace;
@@ -29,7 +30,9 @@ import DotNetIdeButton from "./MaterialDesign/DotNetIdeButton.svelte";
 
 <div style="margin-bottom: 5px;">
     <span>Toggle control buttons:</span>
-    <input type="checkbox" bind:checked={isExpanded} on:keydown|stopPropagation />
+
+    <DotNetIdeInputCheckbox styleCss="display: inline;"
+                            bind:isExpanded={isExpanded}/>
 
     {#if isExpanded}
         <div>

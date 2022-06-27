@@ -5,6 +5,7 @@
     import TextInputForm from "../TextInputForm.svelte";
     import { MessageCreateTemplatedFileInAny } from "../../../../../out/Messages/Create/MessageCreateTemplatedFileInAny";
     import { FileKind } from "../../../../../out/FileSystem/FileKind";
+import DotNetIdeInputCheckbox from "../MaterialDesign/DotNetIdeInputCheckbox.svelte";
 
     export let closeMenu;
 
@@ -65,12 +66,8 @@
     {#if hasRazorExtension}
         Add a code behind?
 
-        <input
-            style="display: inline;"
-            type="checkbox"
-            bind:checked={shouldAddCodeBehind}
-            on:keydown|stopPropagation
-        />
+        <DotNetIdeInputCheckbox styleCss="display: inline;"
+                                bind:isExpanded={shouldAddCodeBehind}/>
     {/if}
     <TextInputForm
         bind:value={addFileWithTemplateFilename}
