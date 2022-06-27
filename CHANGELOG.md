@@ -163,7 +163,7 @@ All notable changes to the "dot-net-ide" extension will be documented in this fi
 - Light Theme
     - Fix coloring issues that made certain UI elements hard to see
 
-## [1.4.0] - 2022-06-26
+## [1.4.0] - 2022-06-27
 
 ### Added
 - Context Menu keyboard presses work
