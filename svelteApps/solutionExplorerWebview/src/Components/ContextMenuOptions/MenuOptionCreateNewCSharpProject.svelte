@@ -62,50 +62,52 @@ import DotNetIdeInputText from "../MaterialDesign/DotNetIdeInputText.svelte";
 </script>
 
 {#if contextMenuTargetValue}
-    <MenuOption
-        onClickStopPropagation={true}
-        onClick={startFormNewCSharpProject}
-        text="New C# Project."
-        {idNamespace}
-        {index}
-        bind:isFocused={isFocused}
-    />
+    <div class="dni_menu-option {isFocusedCssClass}">
+        <MenuOption
+            onClickStopPropagation={true}
+            onClick={startFormNewCSharpProject}
+            text="New C# Project."
+            {idNamespace}
+            {index}
+            bind:isFocused={isFocused}
+        />
 
-    {#if addCSharpProjectFilename !== undefined && addCSharpProjectTemplate !== undefined}
+        {#if addCSharpProjectFilename !== undefined && addCSharpProjectTemplate !== undefined}
 
-        <DotNetIdeInputText bind:value={addCSharpProjectFilename}
-            placeholder="C# Project name no extension" />
+            <DotNetIdeInputText bind:value={addCSharpProjectFilename}
+                placeholder="C# Project name no extension" />
 
-        <div>'dotnet new --list'</div>
-        <div>was ran for you in terminal</div>
+            <div>'dotnet new --list'</div>
+            <div>was ran for you in terminal</div>
 
-        <DotNetIdeInputText bind:value={addCSharpProjectTemplate}
-                            placeholder="Template Short Name" />
+            <DotNetIdeInputText bind:value={addCSharpProjectTemplate}
+                                placeholder="Template Short Name" />
 
-        <div>
             <div>
-                <div>Create C# Project:</div>
-                <div style="margin-left: 12px;">
-                    <em>{addCSharpProjectFilename}</em>.csproj
+                <div>
+                    <div>Create C# Project:</div>
+                    <div style="margin-left: 12px;">
+                        <em>{addCSharpProjectFilename}</em>.csproj
+                    </div>
+                </div>
+
+                <div>
+                    <div>Use Template:</div>
+                    <div style="margin-left: 12px;">
+                        <em>{addCSharpProjectTemplate}</em>
+                    </div>
                 </div>
             </div>
 
-            <div>
-                <div>Use Template:</div>
-                <div style="margin-left: 12px;">
-                    <em>{addCSharpProjectTemplate}</em>
-                </div>
-            </div>
-        </div>
+            <DotNetIdeButton onClickCallback={createNewCSharpProject}>
+                Accept
+            </DotNetIdeButton>
 
-        <DotNetIdeButton onClickCallback={createNewCSharpProject}>
-            Accept
-        </DotNetIdeButton>
-
-        <DotNetIdeButton onClickCallback={closeMenu}>
-            Decline
-        </DotNetIdeButton>
-    {/if}
+            <DotNetIdeButton onClickCallback={closeMenu}>
+                Decline
+            </DotNetIdeButton>
+        {/if}
+    </div>
 {/if}
 
 <style>

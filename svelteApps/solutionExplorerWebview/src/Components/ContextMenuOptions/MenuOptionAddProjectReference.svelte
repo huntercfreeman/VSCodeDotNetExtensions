@@ -34,12 +34,14 @@
 </script>
 
 {#if contextMenuTargetValue}
-    <MenuOption
-        onClickStopPropagation={true}
-        onClick={addProjectReference}
-        text="Add Project Reference."
-        {idNamespace}
-        {index}
-        bind:isFocused={isFocused}
-    />
+    <div class="dni_menu-option {isFocusedCssClass}">
+        <MenuOption
+            onClickStopPropagation={true}
+            onClick={addProjectReference}
+            text="Add Project Reference."
+            {idNamespace}
+            {index}
+            bind:isFocused={isFocused}
+        />
+    </div>
 {/if}

@@ -38,12 +38,14 @@
 </script>
 
 {#if contextMenuTargetValue}
-    <MenuOption
-        onClickStopPropagation={true}
-        onClick={addExistingProject}
-        text="Add Existing Project."
-        {idNamespace}
-        {index}
-        bind:isFocused={isFocused}
-    />
+    <div class="dni_menu-option {isFocusedCssClass}">
+        <MenuOption
+            onClickStopPropagation={true}
+            onClick={addExistingProject}
+            text="Add Existing Project."
+            {idNamespace}
+            {index}
+            bind:isFocused={isFocused}
+        />
+    </div>
 {/if}

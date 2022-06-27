@@ -32,12 +32,14 @@
 </script>
 
 {#if contextMenuTargetValue}
-    <MenuOption
-        onClickStopPropagation={true}
-        onClick={copyOnClick}
-        text="Copy."
-        {idNamespace}
-        {index}
-        bind:isFocused={isFocused}
-    />
+    <div class="dni_menu-option {isFocusedCssClass}">
+        <MenuOption
+            onClickStopPropagation={true}
+            onClick={copyOnClick}
+            text="Copy."
+            {idNamespace}
+            {index}
+            bind:isFocused={isFocused}
+        />
+    </div>
 {/if}

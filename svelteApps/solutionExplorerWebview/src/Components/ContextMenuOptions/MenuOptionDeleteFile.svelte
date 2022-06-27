@@ -44,36 +44,38 @@
 </script>
 
 {#if contextMenuTargetValue}
-    <MenuOption
-        onClickStopPropagation={true}
-        onClick={showConfirmQuestion}
-        text="Delete."
-        {idNamespace}
-        {index}
-        bind:isFocused={isFocused}
-    />
+    <div class="dni_menu-option {isFocusedCssClass}">
+        <MenuOption
+            onClickStopPropagation={true}
+            onClick={showConfirmQuestion}
+            text="Delete."
+            {idNamespace}
+            {index}
+            bind:isFocused={isFocused}
+        />
 
-    {#if showPrompt}
-        <div>
-            <em>Delete</em> file:
+        {#if showPrompt}
+            <div>
+                <em>Delete</em> file:
 
-            <div style="margin-left: 12px;">
-                <em
-                    >{contextMenuTargetValue
-                        .absoluteFilePath
-                        .filenameWithExtension}</em
-                >
+                <div style="margin-left: 12px;">
+                    <em
+                        >{contextMenuTargetValue
+                            .absoluteFilePath
+                            .filenameWithExtension}</em
+                    >
+                </div>
             </div>
-        </div>
 
-        <DotNetIdeButton onClickCallback={deleteFile}>
-            Accept
-        </DotNetIdeButton>
+            <DotNetIdeButton onClickCallback={deleteFile}>
+                Accept
+            </DotNetIdeButton>
 
-        <DotNetIdeButton onClickCallback={performCloseMenu}>
-            Decline
-        </DotNetIdeButton>
-    {/if}
+            <DotNetIdeButton onClickCallback={performCloseMenu}>
+                Decline
+            </DotNetIdeButton>
+        {/if}
+    </div>
 {/if}
 
 <style>

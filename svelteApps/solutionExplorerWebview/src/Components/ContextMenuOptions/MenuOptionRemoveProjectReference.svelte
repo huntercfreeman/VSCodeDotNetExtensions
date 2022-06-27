@@ -44,45 +44,47 @@
 </script>
 
 {#if contextMenuTargetValue}
-    <MenuOption
-        onClickStopPropagation={true}
-        onClick={showConfirmQuestion}
-        text="Remove Project Reference."
-        {idNamespace}
-        {index}
-        bind:isFocused={isFocused}
-    />
+    <div class="dni_menu-option {isFocusedCssClass}">
+        <MenuOption
+            onClickStopPropagation={true}
+            onClick={showConfirmQuestion}
+            text="Remove Project Reference."
+            {idNamespace}
+            {index}
+            bind:isFocused={isFocused}
+        />
 
-    {#if showPrompt}
-        <div>
-            <em>Remove</em> Reference:
+        {#if showPrompt}
+            <div>
+                <em>Remove</em> Reference:
 
-            <div style="margin-left: 12px;">
-                <em
-                    >{contextMenuTargetValue
-                        .referenceProjectAbsoluteFilePath
-                        .filenameWithExtension}</em
-                >
+                <div style="margin-left: 12px;">
+                    <em
+                        >{contextMenuTargetValue
+                            .referenceProjectAbsoluteFilePath
+                            .filenameWithExtension}</em
+                    >
+                </div>
             </div>
-        </div>
-        <div>
-            From Project:
+            <div>
+                From Project:
 
-            <div style="margin-left: 12px;">
-                {contextMenuTargetValue
-                    .receivingProjectInitialAbsoluteFilePath
-                    .filenameWithExtension}
+                <div style="margin-left: 12px;">
+                    {contextMenuTargetValue
+                        .receivingProjectInitialAbsoluteFilePath
+                        .filenameWithExtension}
+                </div>
             </div>
-        </div>
 
-        <DotNetIdeButton onClickCallback={removeProjectReference}>
-            Accept
-        </DotNetIdeButton>
+            <DotNetIdeButton onClickCallback={removeProjectReference}>
+                Accept
+            </DotNetIdeButton>
 
-        <DotNetIdeButton onClickCallback={performCloseMenu}>
-            Decline
-        </DotNetIdeButton>
-    {/if}
+            <DotNetIdeButton onClickCallback={performCloseMenu}>
+                Decline
+            </DotNetIdeButton>
+        {/if}
+    </div>
 {/if}
 
 <style>

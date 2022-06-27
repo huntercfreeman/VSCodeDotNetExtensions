@@ -44,36 +44,38 @@
 </script>
 
 {#if contextMenuTargetValue}
-    <MenuOption
-        onClickStopPropagation={true}
-        onClick={showConfirmQuestion}
-        text="Execute Script."
-        {idNamespace}
-        {index}
-        bind:isFocused={isFocused}
-    />
+    <div class="dni_menu-option {isFocusedCssClass}">
+        <MenuOption
+            onClickStopPropagation={true}
+            onClick={showConfirmQuestion}
+            text="Execute Script."
+            {idNamespace}
+            {index}
+            bind:isFocused={isFocused}
+        />
 
-    {#if showPrompt}
-        <div>
-            <em>Execute F#</em> script:
+        {#if showPrompt}
+            <div>
+                <em>Execute F#</em> script:
 
-            <div style="margin-left: 12px;">
-                <em
-                    >{contextMenuTargetValue
-                        .absoluteFilePath
-                        .filenameWithExtension}</em
-                >
+                <div style="margin-left: 12px;">
+                    <em
+                        >{contextMenuTargetValue
+                            .absoluteFilePath
+                            .filenameWithExtension}</em
+                    >
+                </div>
             </div>
-        </div>
 
-        <DotNetIdeButton onClickCallback={executeFSharpScript}>
-            Accept
-        </DotNetIdeButton>
+            <DotNetIdeButton onClickCallback={executeFSharpScript}>
+                Accept
+            </DotNetIdeButton>
 
-        <DotNetIdeButton onClickCallback={performCloseMenu}>
-            Decline
-        </DotNetIdeButton>
-    {/if}
+            <DotNetIdeButton onClickCallback={performCloseMenu}>
+                Decline
+            </DotNetIdeButton>
+        {/if}
+    </div>
 {/if}
 
 <style>

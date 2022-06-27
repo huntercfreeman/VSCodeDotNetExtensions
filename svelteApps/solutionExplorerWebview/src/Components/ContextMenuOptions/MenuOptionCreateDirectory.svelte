@@ -49,17 +49,19 @@
 </script>
 
 {#if contextMenuTargetValue}
-    <MenuOption
-        onClickStopPropagation={true}
-        onClick={beginFormCreateDirectoryOnClick}
-        text="Create Directory."
-        {idNamespace}
-        {index}
-        bind:isFocused={isFocused}
-    />
-    <TextInputForm
-        bind:value={createDirectoryFilename}
-        onValidSubmit={createDirectoryOnClick}
-        placeholder="Directory name"
-    />
+    <div class="dni_menu-option {isFocusedCssClass}">
+        <MenuOption
+            onClickStopPropagation={true}
+            onClick={beginFormCreateDirectoryOnClick}
+            text="Create Directory."
+            {idNamespace}
+            {index}
+            bind:isFocused={isFocused}
+        />
+        <TextInputForm
+            bind:value={createDirectoryFilename}
+            onValidSubmit={createDirectoryOnClick}
+            placeholder="Directory name"
+        />
+    </div>
 {/if}

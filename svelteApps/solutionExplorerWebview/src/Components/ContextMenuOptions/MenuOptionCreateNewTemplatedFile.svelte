@@ -69,23 +69,25 @@ import DotNetIdeInputCheckbox from "../MaterialDesign/DotNetIdeInputCheckbox.sve
 </script>
 
 {#if contextMenuTargetValue}
-    <MenuOption
-        onClickStopPropagation={true}
-        onClick={beginFormAddFileWithTemplateNameOnClick}
-        text="Create templated file."
-        {idNamespace}
-        {index}
-        bind:isFocused={isFocused}
-    />
-    {#if hasRazorExtension}
-        Add a code behind?
+    <div class="dni_menu-option {isFocusedCssClass}">
+        <MenuOption
+            onClickStopPropagation={true}
+            onClick={beginFormAddFileWithTemplateNameOnClick}
+            text="Create templated file."
+            {idNamespace}
+            {index}
+            bind:isFocused={isFocused}
+        />
+        {#if hasRazorExtension}
+            Add a code behind?
 
-        <DotNetIdeInputCheckbox styleCss="display: inline;"
-                                bind:isExpanded={shouldAddCodeBehind}/>
-    {/if}
-    <TextInputForm
-        bind:value={addFileWithTemplateFilename}
-        onValidSubmit={addFileWithTemplateToFolderOnClick}
-        placeholder="Filename with extension"
-    />
+            <DotNetIdeInputCheckbox styleCss="display: inline;"
+                                    bind:isExpanded={shouldAddCodeBehind}/>
+        {/if}
+        <TextInputForm
+            bind:value={addFileWithTemplateFilename}
+            onValidSubmit={addFileWithTemplateToFolderOnClick}
+            placeholder="Filename with extension"
+        />
+    </div>
 {/if}

@@ -45,43 +45,45 @@
 </script>
 
 {#if contextMenuTargetValue}
-    <MenuOption
-        onClickStopPropagation={true}
-        onClick={showConfirmQuestion}
-        text="Remove Project (no files are deleted)."
-        {idNamespace}
-        {index}
-        bind:isFocused={isFocused}
-    />
+    <div class="dni_menu-option {isFocusedCssClass}">
+        <MenuOption
+            onClickStopPropagation={true}
+            onClick={showConfirmQuestion}
+            text="Remove Project (no files are deleted)."
+            {idNamespace}
+            {index}
+            bind:isFocused={isFocused}
+        />
 
-    {#if showPrompt}
-        <div>
-            <em>Remove</em> Project:
+        {#if showPrompt}
+            <div>
+                <em>Remove</em> Project:
 
-            <div style="margin-left: 12px;">
-                <em
-                    >{contextMenuTargetValue.projectModel.absoluteFilePath
-                        .filenameWithExtension}</em
-                >
+                <div style="margin-left: 12px;">
+                    <em
+                        >{contextMenuTargetValue.projectModel.absoluteFilePath
+                            .filenameWithExtension}</em
+                    >
+                </div>
             </div>
-        </div>
-        <div>
-            From Solution:
+            <div>
+                From Solution:
 
-            <div style="margin-left: 12px;">
-                {contextMenuTargetValue.projectModel
-                    .parentSolutionAbsoluteFilePath.filenameWithExtension}
+                <div style="margin-left: 12px;">
+                    {contextMenuTargetValue.projectModel
+                        .parentSolutionAbsoluteFilePath.filenameWithExtension}
+                </div>
             </div>
-        </div>
 
-        <DotNetIdeButton onClickCallback={removeProject}>
-            Accept
-        </DotNetIdeButton>
+            <DotNetIdeButton onClickCallback={removeProject}>
+                Accept
+            </DotNetIdeButton>
 
-        <DotNetIdeButton onClickCallback={performCloseMenu}>
-            Decline
-        </DotNetIdeButton>
-    {/if}
+            <DotNetIdeButton onClickCallback={performCloseMenu}>
+                Decline
+            </DotNetIdeButton>
+        {/if}
+    </div>
 {/if}
 
 <style>

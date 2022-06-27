@@ -54,36 +54,38 @@ import DotNetIdeInputText from "../MaterialDesign/DotNetIdeInputText.svelte";
 </script>
 
 {#if contextMenuTargetValue}
-    <MenuOption
-        onClickStopPropagation={true}
-        onClick={startFormPutInSolutionFolder}
-        text="Put in Solution Folder"
-        {idNamespace}
-        {index}
-        bind:isFocused={isFocused}
-    />
+    <div class="dni_menu-option {isFocusedCssClass}">
+        <MenuOption
+            onClickStopPropagation={true}
+            onClick={startFormPutInSolutionFolder}
+            text="Put in Solution Folder"
+            {idNamespace}
+            {index}
+            bind:isFocused={isFocused}
+        />
 
-    {#if solutionFolderName !== undefined}
-        <DotNetIdeInputText bind:value={solutionFolderName}
-                            placeholder="Solution Folder Name" />
+        {#if solutionFolderName !== undefined}
+            <DotNetIdeInputText bind:value={solutionFolderName}
+                                placeholder="Solution Folder Name" />
 
-        <div>
             <div>
-                <div>Create Solution Folder:</div>
-                <div style="margin-left: 12px;">
-                    <em>{solutionFolderName}</em>
+                <div>
+                    <div>Create Solution Folder:</div>
+                    <div style="margin-left: 12px;">
+                        <em>{solutionFolderName}</em>
+                    </div>
                 </div>
             </div>
-        </div>
 
-        <DotNetIdeButton onClickCallback={putInSolutionFolder}>
-            Accept
-        </DotNetIdeButton>
+            <DotNetIdeButton onClickCallback={putInSolutionFolder}>
+                Accept
+            </DotNetIdeButton>
 
-        <DotNetIdeButton onClickCallback={closeMenu}>
-            Decline
-        </DotNetIdeButton>
-    {/if}
+            <DotNetIdeButton onClickCallback={closeMenu}>
+                Decline
+            </DotNetIdeButton>
+        {/if}
+    </div>
 {/if}
 
 <style>

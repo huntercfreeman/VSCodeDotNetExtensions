@@ -45,17 +45,19 @@
 </script>
 
 {#if contextMenuTargetValue}
-	<MenuOption
-		onClickStopPropagation={true}
-		onClick={beginFormAddEmptyFileOnClick}
-		text="Create empty file."
-        {idNamespace}
-        {index}
-		bind:isFocused={isFocused}
-	/>
-	<TextInputForm
-		bind:value={addEmptyFileFilename}
-		onValidSubmit={addEmptyFileToFolderOnClick}
-		placeholder="Filename with extension"
-	/>
+	<div class="dni_menu-option {isFocusedCssClass}">
+		<MenuOption
+			onClickStopPropagation={true}
+			onClick={beginFormAddEmptyFileOnClick}
+			text="Create empty file."
+			{idNamespace}
+			{index}
+			bind:isFocused={isFocused}
+		/>
+		<TextInputForm
+			bind:value={addEmptyFileFilename}
+			onValidSubmit={addEmptyFileToFolderOnClick}
+			placeholder="Filename with extension"
+		/>
+	</div>
 {/if}
