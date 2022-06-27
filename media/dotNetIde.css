@@ -43,7 +43,7 @@
     display: inline-block;
 }
 
-.dni_tree-view-title.dni_active .dni_expansion-chevron {
+.vscode-light .dni_tree-view-title.dni_active .dni_expansion-chevron {
     background-color: var(--vscode-list-activeSelectionIconForeground);
 }
 
