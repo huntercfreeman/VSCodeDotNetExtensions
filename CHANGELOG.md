@@ -163,6 +163,26 @@ All notable changes to the "dot-net-ide" extension will be documented in this fi
 - Light Theme
     - Fix coloring issues that made certain UI elements hard to see
 
+## [1.4.0] - 2022-06-26
+
+### Added
+- Context Menu keyboard presses work
+    - Shift + F10
+    - Dedicated Context Menu button
+- Movement up and down the an opened context menu with arrowkeys.
+- Using arrow keys to navigate the context menu will appropriately set focus to that context menu option
+- The currently focused context menu option has a border
+- Hitting 'Enter' will execute the 'OnClick' of the currently focused context menu option
+- To move within a context menu option after it is 'Enter' keyed use 'tab' and 'shift + tab'
+- 'Escape' will close the context menu if a context menu option is focused
+- If there is no active ide file (for example immediately after selecting .sln one must click an ide file to start using keyboard movement) hitting a keyboard movement will put the .sln as active
+- It is believed one could do everything in the Solution Explorer with only their keyboard in this update.
+- The vscode command: 'View: Focus on Solution Explorer View' allows one to focus the Solution Explorer webview without using their mouse.
+    - I have this mapped to 'alt + s' where s is for solution explorer.
+    - I also mapped 'alt + a' to 'View: Focus Active Editor Group'. This will set focus the last focused editor one was using even if there is a split view the most recent of then split view will get focus. The a is for active.
+- OnClick of a context menu option will set focus to it. (Should it not be something like 'copy' where the context menu is told to close after the button is pressed.)
+- Indicate to user whether the solution explorer is in focus by making the active IdeFile have a background-color that indicates inactivity and is visually different from the background-color used when in focus.
+
 ---
 
 ## Keep this keepachangelog link
