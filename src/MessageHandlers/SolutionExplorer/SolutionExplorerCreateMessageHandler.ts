@@ -54,8 +54,6 @@ export class SolutionExplorerCreateMessageHandler {
 
         generalUseTerminal.sendText(ConstantsDotNetCli
             .formatNewSolution(message.solutionNameWithoutExtension));
-
-        generalUseTerminal.show();
     }
 
     public static async handleMessageCreateTemplatedFileInAny(webviewView: vscode.WebviewView, iMessage: IMessage) {
@@ -282,7 +280,5 @@ export class SolutionExplorerCreateMessageHandler {
             ConstantsDotNetCli.formatAddProjectToSolutionUsingProjectName(message.projectNameNoExtension, 
                 message.projectFileExtensionNoPeriod, 
                 message.dotNetSolutionFile.absoluteFilePath!));
-
-        generalUseTerminal.show();
     }
 }

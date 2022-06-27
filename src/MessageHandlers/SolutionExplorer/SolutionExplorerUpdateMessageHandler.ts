@@ -82,8 +82,6 @@ export class SolutionExplorerUpdateMessageHandler {
                 generalUseTerminal.sendText(
                     ConstantsDotNetCli.formatAddProjectToSolutionUsingProjectFsPath(fileUri[0].fsPath,
                         message.dotNetSolutionFile));
-
-                generalUseTerminal.show();
             }
         });
     }
@@ -96,8 +94,6 @@ export class SolutionExplorerUpdateMessageHandler {
         generalUseTerminal.sendText(
             ConstantsDotNetCli.formatRemoveProjectFromSolutionUsingProjectUsingAbsoluteFilePath(message.projectFile.projectModel.absoluteFilePath,
                 message.projectFile.projectModel.parentSolutionAbsoluteFilePath));
-
-        generalUseTerminal.show();
     }
     
     public static async handleMessageUpdatePutProjectInSolutionFolder(webviewView: vscode.WebviewView, iMessage: IMessage) {
@@ -114,8 +110,6 @@ export class SolutionExplorerUpdateMessageHandler {
 
         generalUseTerminal.sendText(removeProjectCommand + " && " +
                                        addBackProjectButInSolutionFolderCommand);
-
-        generalUseTerminal.show();
     }
 
     public static async handleMessageUpdateAddProjectReference(webviewView: vscode.WebviewView, iMessage: IMessage) {
@@ -135,8 +129,6 @@ export class SolutionExplorerUpdateMessageHandler {
                 generalUseTerminal.sendText(
                     ConstantsDotNetCli.formatAddProjectReferenceToProject(message.projectToProjectReferencesFile.parentProjectInitialAbsoluteFilePath,
                         fileUri[0].fsPath));
-
-                generalUseTerminal.show();
             }
         });
     }
@@ -149,8 +141,6 @@ export class SolutionExplorerUpdateMessageHandler {
         generalUseTerminal.sendText(
             ConstantsDotNetCli.formatRemoveProjectReferenceFromProject(message.projectToProjectReferenceFile.receivingProjectInitialAbsoluteFilePath,
                 message.projectToProjectReferenceFile.referenceProjectAbsoluteFilePath));
-
-        generalUseTerminal.show();
     }
 
     public static async handleMessageUpdateAddNugetPackageReference(webviewView: vscode.WebviewView, iMessage: IMessage) {
@@ -162,8 +152,6 @@ export class SolutionExplorerUpdateMessageHandler {
             ConstantsDotNetCli.formatAddNugetPackageReferenceToProject(message.projectFile.absoluteFilePath,
                 message.nugetPackageModel,
                 message.nugetPackageVersionModel));
-
-        generalUseTerminal.show();
     }
 
     public static async handleMessageUpdateRemoveNugetPackageReference(webviewView: vscode.WebviewView, iMessage: IMessage) {
@@ -174,8 +162,6 @@ export class SolutionExplorerUpdateMessageHandler {
         generalUseTerminal.sendText(
             ConstantsDotNetCli.formatRemoveNugetPackageReferenceFromProject(message.projectNugetPackageDependencyFile.parentProjectInitialAbsoluteFilePath,
                 message.projectNugetPackageDependencyFile.nugetPackageId));
-
-        generalUseTerminal.show();
     }
 
     private static handleMessageUpdateRenameAny(webviewView: vscode.WebviewView, messageUntyped: IMessage) {

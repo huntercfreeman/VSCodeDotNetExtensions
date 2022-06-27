@@ -26,7 +26,5 @@ export class NugetPackageManagerUpdateMessageHandler {
             ConstantsDotNetCli.formatAddNugetPackageReferenceToProject(message.projectFile.absoluteFilePath,
                 message.nugetPackageModel,
                 message.nugetPackageVersionModel));
-
-        generalUseTerminal.show();
     }
 }

@@ -509,8 +509,6 @@ export class SolutionExplorerReadMessageHandler {
         let generalUseTerminal = TerminalService.getGeneralUseTerminal();
 
         generalUseTerminal.sendText(ConstantsDotNetCli.DOT_NET_NEW_LIST);
-
-        generalUseTerminal.show();
     }
 
     private static async finishedParsingRootNamespacesOfProjects(finishedMarkers: number[]) {
