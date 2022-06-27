@@ -26,6 +26,7 @@
 
 	let pos = { x: 0, y: 0 };
 	let showMenu = false;
+	let index = 0;
 
 	let contextMenuCategories;
 
@@ -74,6 +75,14 @@
 			(ci) => ci.contextualInformationDatumKind === category
 		);
 	}
+
+    function getNextIndex() {
+        let nextIndex = index;
+
+        index += 1;
+
+        return nextIndex;
+    }
 </script>
 
 {#if showMenu && contextMenuTargetValue}
@@ -95,6 +104,7 @@
 					{closeMenu}
 					idNamespace="context-menu"
 					{category}
+					{getNextIndex}
 				/>
 
 				{#if i !== contextMenuCategories.length - 1 && getCategoryContextualInformationDatums(contextMenuTargetValue.contextualInformation, contextMenuCategories[i + 1]).length > 0}

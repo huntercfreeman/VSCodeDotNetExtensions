@@ -13,8 +13,20 @@
 		}
 		else if (ConstantsKeyboard.ALL_ARROW_UP_KEYS.indexOf(e.key) !== -1 &&
 			index > 0) {
-			
-			let previousFocusTrap = document.getElementById(`dni_focus-trap_${idNamespace}-${category}-${index}`);
+
+			let previousFocusTrap = undefined;
+			let currentCategory = category;
+			let currentIndex = index - 1;
+
+			while (previousFocusTrap === undefined) {
+				previousFocusTrap = document
+					.getElementById(ConstantsFocusTrap
+						.getFocusTrapId(idNamespace, currentCategory, currentIndex));
+
+				if (currentIndex < 0) {
+
+				}
+			}
 
 			if (previousFocusTrap) {
 				previousFocusTrap.focus();
@@ -24,7 +36,7 @@
 			// index out of bounds will not occur from not checking index < list.length - 1
 			// the variable will just be set to undefined and nothing will get ran
 
-			let nextFocusTrap = document.getElementById(`dni_focus-trap_${idNamespace}-${category}-${index}`);
+			let nextFocusTrap = document.getElementById(ConstantsFocusTrap.getFocusTrapId(idNamespace, category, index + 1));
 
 			if (nextFocusTrap) {
 				nextFocusTrap.focus();
@@ -45,6 +57,7 @@
 	
 	import { createEventDispatcher } from "svelte";
 	import { ConstantsKeyboard } from "../../../../out/Constants/ConstantsKeyboard.js";
+import { ConstantsFocusTrap } from "../../../../out/Constants/ConstantsFocusTrap.js";
 	const dispatch = createEventDispatcher();
 
 	const { dispatchClick } = getContext(key);

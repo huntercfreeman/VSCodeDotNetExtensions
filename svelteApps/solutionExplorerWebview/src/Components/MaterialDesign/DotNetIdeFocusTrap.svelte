@@ -1,5 +1,6 @@
 <script lang="ts">
-import { onMount } from "svelte";
+    import { onMount } from "svelte";
+	import { ConstantsFocusTrap } from "../../../../../out/Constants/ConstantsFocusTrap";
 
     export let onKeyDown: (e: KeyboardEvent) => void;
     export let idNamespace: string;
@@ -15,10 +16,10 @@ import { onMount } from "svelte";
 	});
 
 </script>
-dni_focus-trap_{idNamespace}-{category}-{index}
+
 <input on:focus={() => isFocused = true}
        on:blur={() => isFocused = false}
        bind:this={inputHtmlElement} 
        on:keydown|stopPropagation={onKeyDown}
-       id="dni_focus-trap_{idNamespace}-{category}-{index}"
+       id={ConstantsFocusTrap.getFocusTrapId(idNamespace, category, index)}
        class="dni_focus-trap dni_unselectable dni_visually-hidden"/>
