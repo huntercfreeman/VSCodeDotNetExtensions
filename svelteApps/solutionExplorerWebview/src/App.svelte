@@ -10,11 +10,13 @@
 	import TreeViewMapper from "./Components/TreeViewMapper.svelte";
 	import { activeIdeFileHandleOnKeyDownWrap } from "./Components/activeState"
 	import { ConstantsKeyboard } from "../../../out/Constants/ConstantsKeyboard";
+    import { activeFocusTarget } from "./Components/activeFocus";
 
 	let dotNetSolutionFiles: DotNetSolutionFile[] = [];
 	let selectedDotNetSolutionFile: DotNetSolutionFile | undefined;
 
 	$: activeIdeFileHandleOnKeyDownValue = $activeIdeFileHandleOnKeyDownWrap;
+	$: activeFocusTargetValue = $activeFocusTarget;
 	
 	function getSolutionFilesInWorkspace() {
 		let messageReadSolutionsInWorkspace =
@@ -88,6 +90,10 @@
 	<SelectDotNetSolutionFileForm {selectedDotNetSolutionFile} {dotNetSolutionFiles} />
 
 	<div style="margin-bottom: 5px;" />
+
+	{#if activeFocusTargetValue}
+		<div>activeFocusTargetValue: {activeFocusTargetValue}</div>
+	{/if}
 
 	{#if selectedDotNetSolutionFile}
 		<TreeViewMapper ideFile={selectedDotNetSolutionFile}
