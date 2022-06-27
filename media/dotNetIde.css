@@ -48,13 +48,13 @@
 }
 
 .dni_tree-view-title.dni_active {
-    background-color: var(--vscode-list-inactiveSelectionBackground);
+    background-color: var(--vscode-list-inactiveSelectionBackground) !important;
     border: 1px solid var(--vscode-focusBorder);
-    color: var(--vscode-list-activeSelectionIconForeground);
+    color: var(--vscode-list-activeSelectionIconForeground)  !important;
 }
 
 .dni_focused .dni_tree-view-title.dni_active {
-    background-color: var(--vscode-list-activeSelectionBackground);
+    background-color: var(--vscode-list-activeSelectionBackground) !important;
 }
 
 .dni_unselectable {
