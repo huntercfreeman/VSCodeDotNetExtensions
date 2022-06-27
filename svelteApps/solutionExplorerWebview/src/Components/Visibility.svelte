@@ -4,6 +4,7 @@
 
 <script>
     import {onMount} from 'svelte';
+	import { onDestroy } from 'svelte';
 
     export let top = 0;
     export let bottom = 0;
@@ -47,6 +48,8 @@
 
         return unobserve;
     });
+
+    onDestroy(unobserve);
 </script>
 
 <div bind:this={element}>
