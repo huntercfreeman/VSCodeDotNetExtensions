@@ -104,6 +104,15 @@
 			titleOnSingleClick(e);
 		}
 	}
+	
+	function onRightClick(e: MouseEvent) {
+		// The contextmenu event has to be e.stopImmediatePropagation() to keep
+		// from showing visual studio code's context menu
+		// therefore this component cannot listen to the oncontextmenu event
+		if (e.which === 3 || e.button === 2) {
+			contextMenuTarget.set(ideFile);
+		}
+	}
 
 	function setActiveIdeFileAsSelf() {
 		activeIdeFileWrap.set(new ActiveIdeFileWrapTuple(ideFile, undefined));
@@ -288,7 +297,7 @@
 			title={titleText}
 			on:dblclick={(e) => fireTitleOnDoubleClick(e)}
 			on:click={(e) => fireTitleOnSingleClick(e)}
-			on:contextmenu={(e) => contextMenuTarget.set(ideFile)}
+			on:mouseup={(e) => onRightClick(e)}
 		>
 			{#if ideFile.hideExpansionChevronWhenNoChildFiles && ((children ?? getChildFiles())?.length ?? 0) === 0}
 				<span

@@ -4,13 +4,28 @@
 	import MenuDivider from "./MenuDivider.svelte";
 	import MenuOptionMapper from "./MenuOptionMapper.svelte";
 	import { contextMenuTarget } from "./menu.js";
+	import { activeIdeFileWrap } from "./activeState.js";
 	import { ContextualInformationDatumKind } from "../../../../out/ContextMenus/ContextualInformationDatumKind";
 	import type { ContextualInformationDatum } from "../../../../out/ContextMenus/ContextualInformationDatum";
 
+	$: activeIdeFileWrapValue = $activeIdeFileWrap?.ideFile;
+
+	window.addEventListener('contextmenu', e => {
+
+		// e.button === 2 means was right click
+		// Mac has bug with ctrl + right click -> e.button === 1
+		if (e.button !== 2 && e.button !== 1) {
+			// This means was keyboard contextmenu button NOT from mouse
+			contextMenuTarget.set(activeIdeFileWrapValue);
+		}
+		
+		onRightClick(e);
+		e.stopImmediatePropagation()
+
+	}, true);
+
 	let pos = { x: 0, y: 0 };
 	let showMenu = false;
-
-	let contextMenuTargetValue;
 
 	let contextMenuCategories;
 
