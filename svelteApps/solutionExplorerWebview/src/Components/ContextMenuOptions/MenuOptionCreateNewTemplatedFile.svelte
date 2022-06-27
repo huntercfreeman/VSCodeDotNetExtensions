@@ -55,6 +55,9 @@ import DotNetIdeInputCheckbox from "../MaterialDesign/DotNetIdeInputCheckbox.sve
             closeMenu();
         }
     }
+
+    function onKeyDown() {
+    }
 </script>
 
 {#if contextMenuTargetValue}

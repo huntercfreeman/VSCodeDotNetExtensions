@@ -24,6 +24,9 @@
 
         closeMenu();
     }
+
+    function onKeyDown() {
+    }
 </script>
 
 {#if contextMenuTargetValue}

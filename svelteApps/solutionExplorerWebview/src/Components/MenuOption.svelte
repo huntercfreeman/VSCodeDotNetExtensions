@@ -1,13 +1,21 @@
-<script>
+<script lang="ts">
 	import { getContext } from "svelte";
 	import { key } from "./menu.js";
+	import DotNetIdeFocusTrap from "./MaterialDesign/DotNetIdeFocusTrap.svelte";
 
 	export let isDisabled = false;
 	export let text = "";
+    export let onKeyDown: (e: KeyboardEvent) => void = (e) => {
+		if (e.key === ConstantsKeyboard.KEY_ENTER &&
+			onClick) {
+				handleClick(undefined);
+		}
+	};
 	export let onClickStopPropagation = false;
 	export let onClick = undefined;
 
 	import { createEventDispatcher } from "svelte";
+import { ConstantsKeyboard } from "../../../../out/Constants/ConstantsKeyboard.js";
 	const dispatch = createEventDispatcher();
 
 	const { dispatchClick } = getContext(key);
@@ -26,6 +34,8 @@
 </script>
 
 <div class:disabled={isDisabled} on:click={handleClick}>
+	<DotNetIdeFocusTrap onKeyDown={onKeyDown} />
+
 	{#if text}
 		{text}
 	{:else}

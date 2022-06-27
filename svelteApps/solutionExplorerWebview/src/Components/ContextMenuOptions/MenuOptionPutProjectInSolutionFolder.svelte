@@ -40,6 +40,9 @@ import DotNetIdeInputText from "../MaterialDesign/DotNetIdeInputText.svelte";
     function startFormPutInSolutionFolder() {
         solutionFolderName = "";
     }
+    
+    function onKeyDown() {
+    }
 </script>
 
 {#if contextMenuTargetValue}

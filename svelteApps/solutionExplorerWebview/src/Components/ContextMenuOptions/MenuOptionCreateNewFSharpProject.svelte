@@ -49,6 +49,9 @@ import DotNetIdeInputText from "../MaterialDesign/DotNetIdeInputText.svelte";
         addFSharpProjectFilename = "";
         addFSharpProjectTemplate = "";
     }
+
+    function onKeyDown() {
+    }
 </script>
 
 {#if contextMenuTargetValue}
