@@ -12,7 +12,7 @@
 
 		const rect = menuEl.getBoundingClientRect();
 		x = Math.min(window.innerWidth - rect.width, x);
-		if (y > window.innerHeight - rect.height) y -= rect.height;
+		//if (y > window.innerHeight - rect.height) y -= rect.height;
 	})(x, y);
 
 	const dispatch = createEventDispatcher();
