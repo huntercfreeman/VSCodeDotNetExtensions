@@ -1,5 +1,4 @@
 <script lang="ts">
-	import { onDestroy } from 'svelte';
     import { contextMenuTarget } from "../menu";
     import MenuOption from "../MenuOption.svelte";
     import { FileKind } from "../../../../../out/FileSystem/FileKind";
@@ -7,12 +6,9 @@
     
     export let closeMenu;
 
-    let contextMenuTargetValue;
-    let solutionFolderName: string | undefined;
+    $: contextMenuTargetValue = $contextMenuTarget;
 
-    const unsubscribe = contextMenuTarget.subscribe((value) => {
-        contextMenuTargetValue = value;
-    });
+    let solutionFolderName: string | undefined;
 
     function putInSolutionFolder() {
         if ((contextMenuTargetValue as any).projectModel) {
@@ -42,8 +38,6 @@
     function startFormPutInSolutionFolder() {
         solutionFolderName = "";
     }
-
-    onDestroy(unsubscribe);
 </script>
 
 {#if contextMenuTargetValue}

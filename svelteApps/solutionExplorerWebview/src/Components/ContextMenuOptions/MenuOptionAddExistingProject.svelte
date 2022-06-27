@@ -1,5 +1,4 @@
 <script lang="ts">
-	import { onDestroy } from 'svelte';
     import { contextMenuTarget } from "../menu";
     import MenuOption from "../MenuOption.svelte";
     import { FileKind } from "../../../../../out/FileSystem/FileKind";
@@ -7,11 +6,7 @@
 
     export let closeMenu;
 
-    let contextMenuTargetValue;
-
-    const unsubscribe = contextMenuTarget.subscribe((value) => {
-        contextMenuTargetValue = value;
-    });
+	$: contextMenuTargetValue = $contextMenuTarget;
 
     function addExistingProject() {
         switch (contextMenuTargetValue.fileKind) {
@@ -29,8 +24,6 @@
 
         closeMenu();
     }
-
-    onDestroy(unsubscribe);
 </script>
 
 {#if contextMenuTargetValue}

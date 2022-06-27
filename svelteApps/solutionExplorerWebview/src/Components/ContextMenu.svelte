@@ -1,6 +1,5 @@
 <script lang="ts">
 	import Menu from "./Menu.svelte";
-	import { onDestroy } from 'svelte';
 	import MenuOption from "./MenuOption.svelte";
 	import MenuDivider from "./MenuDivider.svelte";
 	import MenuOptionMapper from "./MenuOptionMapper.svelte";
@@ -15,9 +14,7 @@
 
 	let contextMenuCategories;
 
-	const unsubscribe = contextMenuTarget.subscribe((value) => {
-		contextMenuTargetValue = value;
-	});
+	$: contextMenuTargetValue = $contextMenuTarget;
 
 	export async function onRightClick(e) {
 		if (showMenu) {
@@ -62,8 +59,6 @@
 			(ci) => ci.contextualInformationDatumKind === category
 		);
 	}
-
-	onDestroy(unsubscribe);
 </script>
 
 {#if showMenu && contextMenuTargetValue}

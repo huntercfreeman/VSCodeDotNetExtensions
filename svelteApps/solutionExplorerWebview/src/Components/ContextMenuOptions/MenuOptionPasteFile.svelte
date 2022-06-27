@@ -1,16 +1,11 @@
 <script lang="ts">
-	import { onDestroy } from 'svelte';
     import { contextMenuTarget } from "../menu";
     import MenuOption from "../MenuOption.svelte";
     import { MessageUpdatePasteIntoAny } from "../../../../../out/Messages/Update/MessageUpdatePasteIntoAny";
 
     export let closeMenu;
 
-    let contextMenuTargetValue;
-
-    const unsubscribe = contextMenuTarget.subscribe((value) => {
-        contextMenuTargetValue = value;
-    });
+    $: contextMenuTargetValue = $contextMenuTarget;
 
     function pasteOnClick() {
 
@@ -26,8 +21,6 @@
 
         closeMenu();
     }
-
-    onDestroy(unsubscribe);
 </script>
 
 {#if contextMenuTargetValue}

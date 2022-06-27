@@ -1,5 +1,4 @@
 <script lang="ts">
-	import { onDestroy } from 'svelte';
     import { contextMenuTarget } from "../menu";
     import MenuOption from "../MenuOption.svelte";
     import { MessageUpdateAddProjectReference } from "../../../../../out/Messages/Update/MessageUpdateAddProjectReference";
@@ -8,9 +7,7 @@
 
     let contextMenuTargetValue;
 
-    const unsubscribe = contextMenuTarget.subscribe((value) => {
-        contextMenuTargetValue = value;
-    });
+	$: contextMenuTargetValue = $contextMenuTarget;
 
     function addProjectReference() {
         let messageUpdateAddProjectReference =
@@ -23,8 +20,6 @@
 
         closeMenu();
     }
-
-    onDestroy(unsubscribe);
 </script>
 
 {#if contextMenuTargetValue}

@@ -1,5 +1,4 @@
 <script lang="ts">
-	import { onDestroy } from 'svelte';
     import { contextMenuTarget } from "../menu";
     import MenuOption from "../MenuOption.svelte";
     import TextInputForm from "../TextInputForm.svelte";
@@ -8,13 +7,10 @@
     import { FileKind } from "../../../../../out/FileSystem/FileKind";
 
     export let closeMenu;
-
-    let contextMenuTargetValue;
+    
     let createDirectoryFilename: string | undefined;
 
-    const unsubscribe = contextMenuTarget.subscribe((value) => {
-        contextMenuTargetValue = value;
-    });
+	$: contextMenuTargetValue = $contextMenuTarget;
 
     function beginFormCreateDirectoryOnClick() {
         createDirectoryFilename = "";
@@ -39,8 +35,6 @@
             closeMenu();
         }
     }
-
-    onDestroy(unsubscribe);
 </script>
 
 {#if contextMenuTargetValue}

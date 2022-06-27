@@ -82,11 +82,7 @@
 	$: isActiveCssClass =
 		(activeIdeFile?.nonce ?? "") === ideFile.nonce ? "dni_active" : "";
 
-	let contextMenuTargetValue;
-
-	const unsubscribeContextMenuTarget = contextMenuTarget.subscribe((value) => {
-		contextMenuTargetValue = value;
-	});
+	$: contextMenuTargetValue = $contextMenuTarget;
 
 	$: isActiveContextMenuTarget =
 		((contextMenuTargetValue as IdeFile)?.nonce ?? "") === ideFile.nonce
@@ -276,10 +272,7 @@
 
 	onDestroy(() => {
 		unsubscribeActiveIdeFileWrap();
-		unsubscribeContextMenuTarget();
 	});
-	// TODO: Does this need to call unobserve on the Visibility svelte component?
-	// onDestroy(() => clearInterval(interval));
 </script>
 
 <div class="dni_tree-view">

@@ -1,5 +1,4 @@
 <script lang="ts">
-	import { onDestroy } from 'svelte';
     import { contextMenuTarget } from "../menu";
     import MenuOption from "../MenuOption.svelte";
     import { FileKind } from "../../../../../out/FileSystem/FileKind";
@@ -9,13 +8,10 @@
 
     export let closeMenu;
 
-    let contextMenuTargetValue;
+	$: contextMenuTargetValue = $contextMenuTarget;
+
     let addCSharpProjectFilename: string | undefined;
     let addCSharpProjectTemplate: string | undefined;
-
-    const unsubscribe = contextMenuTarget.subscribe((value) => {
-        contextMenuTargetValue = value;
-    });
 
     function createNewCSharpProject() {
         switch (contextMenuTargetValue.fileKind) {
@@ -50,8 +46,6 @@
         addCSharpProjectFilename = "";
         addCSharpProjectTemplate = "";
     }
-
-    onDestroy(unsubscribe);
 </script>
 
 {#if contextMenuTargetValue}

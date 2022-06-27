@@ -1,17 +1,13 @@
 <script lang="ts">
-	import { onDestroy } from 'svelte';
     import { contextMenuTarget } from "../menu";
     import MenuOption from "../MenuOption.svelte";
     import { MessageExecuteFSharpScript } from "../../../../../out/Messages/Execute/MessageExecuteFSharpScript";
 
     export let closeMenu;
 
-    let contextMenuTargetValue;
-    let showPrompt: boolean = false;
+    $: contextMenuTargetValue = $contextMenuTarget;
 
-    const unsubscribe = contextMenuTarget.subscribe((value) => {
-        contextMenuTargetValue = value;
-    });
+    let showPrompt: boolean = false;
 
     function executeFSharpScript() {
         let messageExecuteFSharpScript =
@@ -33,8 +29,6 @@
         showPrompt = false;
         closeMenu();
     }
-
-    onDestroy(unsubscribe);
 </script>
 
 {#if contextMenuTargetValue}

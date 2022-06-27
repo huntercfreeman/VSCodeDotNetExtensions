@@ -1,18 +1,14 @@
 <script lang="ts">
-	import { onDestroy } from 'svelte';
     import { contextMenuTarget } from "../menu";
     import MenuOption from "../MenuOption.svelte";
     import TextInputForm from "../TextInputForm.svelte";
     import { MessageCreateEmptyFileInAny } from "../../../../../out/Messages/Create/MessageCreateEmptyFileInAny";
 
 	export let closeMenu;
+	
+	$: contextMenuTargetValue = $contextMenuTarget;
 
-	let contextMenuTargetValue;
 	let addEmptyFileFilename: string | undefined;
-
-	const unsubscribe = contextMenuTarget.subscribe((value) => {
-		contextMenuTargetValue = value;
-	});
 
 	function beginFormAddEmptyFileOnClick() {
 		addEmptyFileFilename = "";
@@ -35,8 +31,6 @@
 			closeMenu();
 		}
 	}
-	
-	onDestroy(unsubscribe);
 </script>
 
 {#if contextMenuTargetValue}

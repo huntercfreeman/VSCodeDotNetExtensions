@@ -1,17 +1,13 @@
 <script lang="ts">
-	import { onDestroy } from 'svelte';
     import { contextMenuTarget } from "../menu";
     import MenuOption from "../MenuOption.svelte";
     import { MessageDeleteAny } from "../../../../../out/Messages/Delete/MessageDeleteAny";
 
     export let closeMenu;
 
-    let contextMenuTargetValue;
-    let showPrompt: boolean = false;
+    $: contextMenuTargetValue = $contextMenuTarget;
 
-    const unsubscribe = contextMenuTarget.subscribe((value) => {
-        contextMenuTargetValue = value;
-    });
+    let showPrompt: boolean = false;
 
     function deleteFile() {
         let messageDeleteAny =
@@ -33,8 +29,6 @@
         showPrompt = false;
         closeMenu();
     }
-
-    onDestroy(unsubscribe);
 </script>
 
 {#if contextMenuTargetValue}

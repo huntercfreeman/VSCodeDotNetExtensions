@@ -1,5 +1,4 @@
 <script lang="ts">
-	import { onDestroy } from 'svelte';
     import { ConstantsFileExtensionsNoPeriod } from "../../../../../out/Constants/ConstantsFileExtensionsNoPeriod";
     import { contextMenuTarget } from "../menu";
     import MenuOption from "../MenuOption.svelte";
@@ -9,13 +8,10 @@
 
     export let closeMenu;
 
-    let contextMenuTargetValue;
     let addFileWithTemplateFilename: string | undefined;
     let shouldAddCodeBehind: boolean = false;
 
-    const unsubscribe = contextMenuTarget.subscribe((value) => {
-        contextMenuTargetValue = value;
-    });
+	$: contextMenuTargetValue = $contextMenuTarget;
 
     function beginFormAddFileWithTemplateNameOnClick() {
         addFileWithTemplateFilename = "";
@@ -58,8 +54,6 @@
             closeMenu();
         }
     }
-
-    onDestroy(unsubscribe);
 </script>
 
 {#if contextMenuTargetValue}

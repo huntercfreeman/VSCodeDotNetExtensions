@@ -6,11 +6,7 @@
 
     export let closeMenu;
 
-    let contextMenuTargetValue;
-
-    const unsubscribe = contextMenuTarget.subscribe((value) => {
-        contextMenuTargetValue = value;
-    });
+	$: contextMenuTargetValue = $contextMenuTarget;
 
     function cutOnClick() {
         let messageUpdateCutAny =
@@ -23,8 +19,6 @@
 
         closeMenu();
     }
-
-    onDestroy(unsubscribe);
 </script>
 
 {#if contextMenuTargetValue}

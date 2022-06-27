@@ -1,5 +1,4 @@
 <script lang="ts">
-	import { onDestroy } from 'svelte';
     import { contextMenuTarget } from "../menu";
     import MenuOption from "../MenuOption.svelte";
     import TextInputForm from "../TextInputForm.svelte";
@@ -7,12 +6,9 @@
 
     export let closeMenu;
 
-    let contextMenuTargetValue;
-	let toBeFilenameWithExtension: string | undefined;
+    $: contextMenuTargetValue = $contextMenuTarget;
 
-    const unsubscribe = contextMenuTarget.subscribe((value) => {
-        contextMenuTargetValue = value;
-    });
+	let toBeFilenameWithExtension: string | undefined;
 
     function beginFormRenameOnClick() {
 		toBeFilenameWithExtension = contextMenuTargetValue.absoluteFilePath.filenameWithExtension;
@@ -35,8 +31,6 @@
 			closeMenu();
 		}
 	}
-
-	onDestroy(unsubscribe);
 </script>
 
 {#if contextMenuTargetValue}
