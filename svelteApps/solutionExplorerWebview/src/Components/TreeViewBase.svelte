@@ -302,7 +302,9 @@
 	onDestroy(() => {
 		unsubscribeActiveIdeFileWrap();
 
-		setActiveIdeFileAsParent();
+		if (isActiveIdeFile) {
+			setActiveIdeFileAsParent();
+		}
 	});
 </script>
 
