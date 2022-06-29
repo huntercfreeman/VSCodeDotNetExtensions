@@ -34,27 +34,6 @@
 			value: messageReadSolutionsInWorkspace,
 		});
 	}
-	
-	function handleOnKeyDown(e: KeyboardEvent) {
-		
-		if (ConstantsKeyboard.ALL_ARROW_LEFT_KEYS
-			.concat(ConstantsKeyboard.ALL_ARROW_DOWN_KEYS)
-			.concat(ConstantsKeyboard.ALL_ARROW_UP_KEYS)
-			.concat(ConstantsKeyboard.ALL_ARROW_RIGHT_KEYS)
-			.concat(ConstantsKeyboard.KEY_ENTER)
-			.concat(ConstantsKeyboard.KEY_SPACE)
-				.indexOf(e.key) !== -1) {
-
-					e.preventDefault();
-		}
-		
-		if (activeIdeFileHandleOnKeyDownValue) {
-			activeIdeFileHandleOnKeyDownValue(e);
-		}
-		else {
-			activeIdeFileWrap.set(new ActiveIdeFileWrapTuple(selectedDotNetSolutionFile, undefined));
-		}
-	}
 
 	onMount(async () => {
 		window.addEventListener("message", async (event) => {
@@ -110,8 +89,6 @@
 
 	<ContextMenu />
 </div>
-
-<svelte:body on:keydown={(e) => handleOnKeyDown(e)} />
 
 <style>
 	.dni_app {

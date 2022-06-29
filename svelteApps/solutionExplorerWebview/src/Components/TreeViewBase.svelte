@@ -1,6 +1,5 @@
 <script lang="ts">
-	import { onDestroy } from 'svelte';
-	import Visibility from "./Visibility.svelte";
+	import { onDestroy, onMount } from 'svelte';
 	import type { IdeFile } from "../../../../out/FileSystem/Files/IdeFile";
 	import { ConstantsKeyboard } from "../../../../out/Constants/ConstantsKeyboard";
 	import ExpansionChevron from "./ExpansionChevron.svelte";
@@ -12,6 +11,7 @@
 		ActiveIdeFileWrapTuple,
 	} from "./activeState";
 	import { activeIdeFileHandleOnKeyDownWrap } from "./activeState";
+	import DotNetIdeFocusTrap from './MaterialDesign/DotNetIdeFocusTrap.svelte';
 
 	export let ideFile: IdeFile;
 	export let children: IdeFile[] | undefined;
@@ -23,7 +23,7 @@
 	export let parent: IdeFile;
 	export let parentChildren: IdeFile[];
 	
-	let percentageInView;
+	let focusTrapHtmlElement;
 
 	let activeIdeFileWrapValue;
 
@@ -66,26 +66,28 @@
 
 			// Listen to key down events again
 			activeIdeFileHandleOnKeyDownWrap.set(handleOnKeyDown);
-
-			if (percentageInView < 25) {
-				let element = document.getElementById(getId());
-
-				if (element) {
-					element.scrollIntoView();
-				}
-			}
 		}
 	});
 
+	let isFocused = false;
+
 	$: activeIdeFile = activeIdeFileWrapValue as IdeFile;
 
-	$: isActiveCssClass =
-		(activeIdeFile?.nonce ?? "") === ideFile.nonce ? "dni_active" : "";
+	$: isActiveIdeFile =
+		(activeIdeFile?.nonce ?? "") === ideFile.nonce;
+	
+	$: isActiveIdeFileCssClass =
+		isActiveIdeFile ? "dni_active" : "";
+
+	$: isFocusedCssClass =
+		isFocused ? "dni_focused" : "";
 
 	$: contextMenuTargetValue = $contextMenuTarget;
 
-	$: isActiveContextMenuTarget =
-		((contextMenuTargetValue as IdeFile)?.nonce ?? "") === ideFile.nonce
+	$: isActiveContextMenuTarget = 
+		((contextMenuTargetValue as IdeFile)?.nonce ?? "") === ideFile.nonce;
+	
+	$: isActiveContextMenuTargetCssClass = isActiveContextMenuTarget
 			? "dni_active-context-menu-target"
 			: "";
 
@@ -98,6 +100,13 @@
 	}
 	
 	function fireTitleOnSingleClick(e: MouseEvent) {
+
+		console.log("focus focus trap");
+		if (focusTrapHtmlElement) {
+			console.log("focus focus trap");
+			focusTrapHtmlElement.focus();
+		}
+
 		setActiveIdeFileAsSelf();
 
 		if (titleOnSingleClick) {
@@ -123,6 +132,17 @@
 	}
 
 	function handleOnKeyDown(e: KeyboardEvent) {
+		if (ConstantsKeyboard.ALL_ARROW_LEFT_KEYS
+			.concat(ConstantsKeyboard.ALL_ARROW_DOWN_KEYS)
+			.concat(ConstantsKeyboard.ALL_ARROW_UP_KEYS)
+			.concat(ConstantsKeyboard.ALL_ARROW_RIGHT_KEYS)
+			.concat(ConstantsKeyboard.KEY_ENTER)
+			.concat(ConstantsKeyboard.KEY_SPACE)
+				.indexOf(e.key) !== -1) {
+
+					e.preventDefault();
+		}
+		
 		if (ConstantsKeyboard.ALL_ARROW_LEFT_KEYS.indexOf(e.key) !== -1) {
 			performArrowLeft(e);
 		} else if (
@@ -273,59 +293,62 @@
 		return `dni_tree-view-title-${ideFile.nonce}`;
 	}
 
-	function rememberPercent (x: number) {
-		percentageInView = x;
-
-		return "";
-	}
+	onMount(() => {
+		if (!activeIdeFile) {
+			setActiveIdeFileAsSelf();
+		}
+	});
 
 	onDestroy(() => {
 		unsubscribeActiveIdeFileWrap();
+
+		setActiveIdeFileAsParent();
 	});
 </script>
 
 <div class="dni_tree-view">
-	<Visibility
-		steps={100}
-		let:percent
-		let:unobserve
-		let:intersectionObserverSupport
+	<div
+		id={getId()}
+		class="dni_tree-view-title dni_unselectable {isActiveIdeFileCssClass} {isFocusedCssClass} {isActiveContextMenuTargetCssClass}"
+		title={titleText}
+		on:dblclick={(e) => fireTitleOnDoubleClick(e)}
+		on:click={(e) => fireTitleOnSingleClick(e)}
+		on:mouseup={(e) => onRightClick(e)}
 	>
-		<div
-			id={getId()}
-			class="dni_tree-view-title dni_unselectable {isActiveCssClass} {isActiveContextMenuTarget}"
-			title={titleText}
-			on:dblclick={(e) => fireTitleOnDoubleClick(e)}
-			on:click={(e) => fireTitleOnSingleClick(e)}
-			on:mouseup={(e) => onRightClick(e)}
-		>
-			{#if ideFile.hideExpansionChevronWhenNoChildFiles && ((children ?? getChildFiles())?.length ?? 0) === 0}
-				<span
-					style="visibility: hidden;"
-					tabindex="-1"
-					class="dni_do-not-show-chevron"
-				>
-					<ExpansionChevron
-						isExpanded={false}
-						onClickAction={setActiveIdeFileAsSelf}
-					/>
-				</span>
-			{:else}
-				<span class="dni_tree-view-title-expansion-chevron">
-					<ExpansionChevron
-						bind:isExpanded={ideFile.isExpanded}
-						onClickAction={setActiveIdeFileAsSelf}
-					/>
-				</span>
-			{/if}
 
-			<span class="dni_tree-view-title-text">
-				<FileIconDisplay {ideFile} />
+		{#if isActiveIdeFile}
+			<DotNetIdeFocusTrap bind:isFocused={isFocused}
+				idNamespace="tree-view-base-active"
+				onKeyDown={handleOnKeyDown}
+				bind:inputHtmlElement={focusTrapHtmlElement} />
+		{/if}
 
-				{rememberPercent(percent)}{titleText}
+		{#if ideFile.hideExpansionChevronWhenNoChildFiles && ((children ?? getChildFiles())?.length ?? 0) === 0}
+			<span
+				style="visibility: hidden;"
+				tabindex="-1"
+				class="dni_do-not-show-chevron"
+			>
+				<ExpansionChevron
+					isExpanded={false}
+					onClickAction={setActiveIdeFileAsSelf}
+				/>
 			</span>
-		</div>
-	</Visibility>
+		{:else}
+			<span class="dni_tree-view-title-expansion-chevron">
+				<ExpansionChevron
+					bind:isExpanded={ideFile.isExpanded}
+					onClickAction={setActiveIdeFileAsSelf}
+				/>
+			</span>
+		{/if}
+
+		<span class="dni_tree-view-title-text">
+			<FileIconDisplay {ideFile} />
+
+			{titleText}
+		</span>
+	</div>
 
 	<div class="dni_tree-view-children">
 		{#if ideFile.isExpanded}

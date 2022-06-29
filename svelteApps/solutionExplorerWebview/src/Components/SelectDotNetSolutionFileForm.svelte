@@ -46,6 +46,7 @@
 	<select
 		bind:value={selectedDotNetSolutionFile}
 		on:change={handleSelectOnChange}
+		on:keydown|stopPropagation
 		class="dni_select"
 	>
 		{#each dotNetSolutionFiles as solutionFile}

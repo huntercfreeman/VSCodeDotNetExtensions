@@ -53,7 +53,7 @@
     color: var(--vscode-list-activeSelectionIconForeground)  !important;
 }
 
-.dni_focused .dni_tree-view-title.dni_active {
+.dni_active.dni_tree-view-title.dni_focused {
     background-color: var(--vscode-list-activeSelectionBackground) !important;
 }
 
