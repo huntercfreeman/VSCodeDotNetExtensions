@@ -7,6 +7,12 @@
     export let closeMenu;
 	export let text = "";
     export let onKeyDown: (e: KeyboardEvent) => void = (e) => {
+		if (ConstantsKeyboard.ALL_SHOULD_PREVENT_DEFAULT_KEYS
+				.indexOf(e.key) !== -1) {
+
+					e.preventDefault();
+		}
+
 		if (e.key === ConstantsKeyboard.KEY_ENTER &&
 			onClick) {
 				handleClick(undefined);

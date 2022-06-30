@@ -22,6 +22,6 @@
 <input on:focus={() => isFocused = true}
        on:blur={() => isFocused = false}
        bind:this={inputHtmlElement} 
-       on:keydown|stopPropagation={onKeyDown}
+       on:keydown={onKeyDown}
        id={ConstantsFocusTrap.getFocusTrapId(namespaceId, category, index)}
        class="dni_focus-trap dni_unselectable dni_visually-hidden"/>

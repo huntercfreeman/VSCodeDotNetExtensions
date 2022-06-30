@@ -133,12 +133,7 @@ import { ConstantsFocusTrap } from '../../../../out/Constants/ConstantsFocusTrap
 	}
 
 	function handleOnKeyDown(e: KeyboardEvent) {
-		if (ConstantsKeyboard.ALL_ARROW_LEFT_KEYS
-			.concat(ConstantsKeyboard.ALL_ARROW_DOWN_KEYS)
-			.concat(ConstantsKeyboard.ALL_ARROW_UP_KEYS)
-			.concat(ConstantsKeyboard.ALL_ARROW_RIGHT_KEYS)
-			.concat(ConstantsKeyboard.KEY_ENTER)
-			.concat(ConstantsKeyboard.KEY_SPACE)
+		if (ConstantsKeyboard.ALL_SHOULD_PREVENT_DEFAULT_KEYS
 				.indexOf(e.key) !== -1) {
 
 					e.preventDefault();

@@ -33,4 +33,17 @@ export class ConstantsKeyboard {
         this.KEY_ARROW_RIGHT,
         this.KEY_ARROW_RIGHT_ALTERNATIVE
     ];
+
+    public static readonly ALL_SHOULD_PREVENT_DEFAULT_KEYS: string[] = [
+        this.KEY_ARROW_LEFT,
+        this.KEY_ARROW_LEFT_ALTERNATIVE,
+        this.KEY_ARROW_DOWN,
+        this.KEY_ARROW_DOWN_ALTERNATIVE,
+        this.KEY_ARROW_UP,
+        this.KEY_ARROW_UP_ALTERNATIVE,
+        this.KEY_ARROW_RIGHT,
+        this.KEY_ARROW_RIGHT_ALTERNATIVE,
+        this.KEY_ENTER,
+        this.KEY_SPACE
+    ];
 }
