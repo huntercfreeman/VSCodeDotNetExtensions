@@ -12,7 +12,7 @@
 	} from "./activeState";
 	import { activeIdeFileHandleOnKeyDownWrap } from "./activeState";
 	import DotNetIdeFocusTrap from './MaterialDesign/DotNetIdeFocusTrap.svelte';
-import { ConstantsFocusTrap } from '../../../../out/Constants/ConstantsFocusTrap';
+	import { ConstantsFocusTrap } from '../../../../out/Constants/ConstantsFocusTrap';
 
 	export let ideFile: IdeFile;
 	export let children: IdeFile[] | undefined;
@@ -21,6 +21,11 @@ import { ConstantsFocusTrap } from '../../../../out/Constants/ConstantsFocusTrap
 	export let titleOnDoubleClick: (e: MouseEvent) => void | undefined = undefined;
 	export let getChildFiles: () => IdeFile[];
 	export let index: number;
+	
+	/**
+	 * depth starts at 0 and is used to calculate padding-left to indent the nested trees
+	 */
+	export let depth: number;
 	export let parent: IdeFile;
 	export let parentChildren: IdeFile[];
 	
@@ -91,6 +96,8 @@ import { ConstantsFocusTrap } from '../../../../out/Constants/ConstantsFocusTrap
 	$: isActiveContextMenuTargetCssClass = isActiveContextMenuTarget
 			? "dni_active-context-menu-target"
 			: "";
+
+	$: paddingLeftStyleStringInPixels = `padding-left: ${depth * 10}px;`;
 
 	function fireTitleOnDoubleClick(e: MouseEvent) {
 		setActiveIdeFileAsSelf();
@@ -305,22 +312,22 @@ import { ConstantsFocusTrap } from '../../../../out/Constants/ConstantsFocusTrap
 </script>
 
 <div class="dni_tree-view">
+	{#if isActiveIdeFile}
+		<DotNetIdeFocusTrap bind:isFocused={isFocused}
+			namespaceId={ConstantsFocusTrap.NAMESPACE_ID_TREE_VIEW_BASE_ACTIVE}
+			onKeyDown={handleOnKeyDown}
+			bind:inputHtmlElement={focusTrapHtmlElement} />
+	{/if}
+
 	<div
 		id={getId()}
 		class="dni_tree-view-title dni_unselectable {isActiveIdeFileCssClass} {isFocusedCssClass} {isActiveContextMenuTargetCssClass}"
+		style="{paddingLeftStyleStringInPixels}"
 		title={titleText}
 		on:dblclick={(e) => fireTitleOnDoubleClick(e)}
 		on:click={(e) => fireTitleOnSingleClick(e)}
 		on:mouseup={(e) => onRightClick(e)}
 	>
-
-		{#if isActiveIdeFile}
-			<DotNetIdeFocusTrap bind:isFocused={isFocused}
-				namespaceId={ConstantsFocusTrap.NAMESPACE_ID_TREE_VIEW_BASE_ACTIVE}
-				onKeyDown={handleOnKeyDown}
-				bind:inputHtmlElement={focusTrapHtmlElement} />
-		{/if}
-
 		{#if ideFile.hideExpansionChevronWhenNoChildFiles && ((children ?? getChildFiles())?.length ?? 0) === 0}
 			<span
 				style="visibility: hidden;"
@@ -356,6 +363,7 @@ import { ConstantsFocusTrap } from '../../../../out/Constants/ConstantsFocusTrap
 					index={i}
 					parent={ideFile}
 					parentChildren={children}
+					depth={depth + 1}
 				/>
 			{/each}
 		{/if}
@@ -364,8 +372,6 @@ import { ConstantsFocusTrap } from '../../../../out/Constants/ConstantsFocusTrap
 
 <style>
 	.dni_tree-view-children {
-		margin-left: 10px;
-		padding-left: 3px;
 		border-left: 1px solid var(--vscode-tree-indentGuidesStroke);
 	}
 

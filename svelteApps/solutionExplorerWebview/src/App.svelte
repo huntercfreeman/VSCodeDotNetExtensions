@@ -94,6 +94,7 @@ import { ConstantsFocusTrap } from "../../../out/Constants/ConstantsFocusTrap";
 	{#if selectedDotNetSolutionFile}
 		<TreeViewMapper ideFile={selectedDotNetSolutionFile}
 			index={0}
+			depth={0}
 			parent={undefined}
 			parentChildren={undefined} />
 	{/if}

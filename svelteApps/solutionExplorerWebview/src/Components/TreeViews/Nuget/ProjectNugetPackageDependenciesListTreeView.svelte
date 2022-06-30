@@ -10,6 +10,7 @@
 	
     export let projectNugetPackageDependenciesListFile: ProjectNugetPackageDependenciesListFile;
     export let index: number;
+	export let depth: number;
     export let parent: IdeFile | undefined;
 	export let parentChildren: IdeFile[];
 
@@ -75,5 +76,6 @@
               getChildFiles={getChildFiles}
 			  bind:children={children}
 			  {index}
+			  {depth}
 			  {parent}
 			  {parentChildren} />

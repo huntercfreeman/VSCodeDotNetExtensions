@@ -36,6 +36,7 @@
 
     export let ideFile: IdeFile;
     export let index: number;
+	export let depth: number;
     export let parent: IdeFile | undefined;
 	export let parentChildren: IdeFile[];
 
@@ -64,63 +65,63 @@
 </script>
 
 {#if ideFile.fileKind === FileKind.solution}
-    <DotNetSolutionTreeView {dotNetSolutionFile} {index} {parent} {parentChildren} />
+    <DotNetSolutionTreeView {dotNetSolutionFile} {index} {depth} {parent} {parentChildren} />
 
 {:else if ideFile.fileKind === FileKind.solutionFolder}
-    <DotNetSolutionFolderTreeView {solutionFolderFile} {index} {parent} {parentChildren} />
+    <DotNetSolutionFolderTreeView {solutionFolderFile} {index} {depth} {parent} {parentChildren} />
 
 {:else if ideFile.fileKind === FileKind.cSharpProject}
-    <CSharpProjectTreeView {cSharpProjectFile} {index} {parent} {parentChildren} />
+    <CSharpProjectTreeView {cSharpProjectFile} {index} {depth} {parent} {parentChildren} />
 
 {:else if ideFile.fileKind === FileKind.fSharpProject}
-    <FSharpProjectTreeView {fSharpProjectFile} {index} {parent} {parentChildren} />
+    <FSharpProjectTreeView {fSharpProjectFile} {index} {depth} {parent} {parentChildren} />
 
 {:else if ideFile.fileKind === FileKind.vcxProject}
-    <VcxProjectTreeView {vcxProjectFile} {index} {parent} {parentChildren} />
+    <VcxProjectTreeView {vcxProjectFile} {index} {depth} {parent} {parentChildren} />
 
 {:else if ideFile.fileKind === FileKind.directory}
-    <DirectoryTreeView {directoryFile} {index} {parent} {parentChildren} />
+    <DirectoryTreeView {directoryFile} {index} {depth} {parent} {parentChildren} />
 
 {:else if ideFile.fileKind === FileKind.cSharpProjectDependencies}
     <CSharpProjectDependenciesListTreeView
         {cSharpProjectDependenciesListFile}
-        {index} {parent} {parentChildren}
+        {index} {depth} {parent} {parentChildren}
     />
 {:else if ideFile.fileKind === FileKind.fSharpProjectDependencies}
     <FSharpProjectDependenciesListTreeView
         {fSharpProjectDependenciesListFile}
-        {index} {parent} {parentChildren}
+        {index} {depth} {parent} {parentChildren}
     />
 {:else if ideFile.fileKind === FileKind.nugetPackageDependenciesList}
     <ProjectNugetPackageDependenciesListTreeView
         {projectNugetPackageDependenciesListFile}
-        {index} {parent} {parentChildren}
+        {index} {depth} {parent} {parentChildren}
     />
 {:else if ideFile.fileKind === FileKind.nugetPackageDependency}
     <ProjectNugetPackageDependencyTreeView
         {projectNugetPackageDependencyFile}
-        {index} {parent} {parentChildren}
+        {index} {depth} {parent} {parentChildren}
     />
 {:else if ideFile.fileKind === FileKind.projectReferencesList}
     <ProjectToProjectReferencesListTreeView
         {projectToProjectReferencesListFile}
-        {index} {parent} {parentChildren}
+        {index} {depth} {parent} {parentChildren}
     />
 {:else if ideFile.fileKind === FileKind.projectReference}
     <ProjectToProjectReferenceTreeView
         {projectToProjectReferenceFile}
-        {index} {parent} {parentChildren}
+        {index} {depth} {parent} {parentChildren}
     />
 {:else if ideFile.fileKind === FileKind.vcxProjectReferencesListFile}
-    <VcxProjectReferencesListTreeView {vcxProjectReferencesListFile} {index} {parent} {parentChildren} />
+    <VcxProjectReferencesListTreeView {vcxProjectReferencesListFile} {index} {depth} {parent} {parentChildren} />
 {:else if ideFile.fileKind === FileKind.vcxProjectExternalDependenciesListFile}
     <VcxProjectExternalDependenciesListTreeView
         {vcxProjectExternalDependenciesListFile}
-        {index} {parent} {parentChildren}
+        {index} {depth} {parent} {parentChildren}
     />
 {:else if ideFile.fileKind === FileKind.vcxProjectFilterListFile}
-    <VCXProjectFilterListTreeView {vcxProjectFilterListFile} {index} {parent} {parentChildren} />
+    <VCXProjectFilterListTreeView {vcxProjectFilterListFile} {index} {depth} {parent} {parentChildren} />
 
 {:else}
-    <DefaultFileTreeView {ideFile} {index} {parent} {parentChildren} />
+    <DefaultFileTreeView {ideFile} {index} {depth} {parent} {parentChildren} />
 {/if}
