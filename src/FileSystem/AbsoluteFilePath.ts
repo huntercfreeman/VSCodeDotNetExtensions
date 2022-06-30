@@ -20,7 +20,7 @@ export class AbsoluteFilePath {
         let possibleFilenameNoExtension: string | undefined = AbsoluteFilePath
             .getFilenameWithoutExtensionFromFilenameWithExtension(this.filenameWithExtension);
 
-        if (!possibleFilenameNoExtension) {
+        if (!possibleFilenameNoExtension || isDirectory) {
             this.filenameNoExtension = this.filenameWithExtension;
         }
 
