@@ -97,7 +97,7 @@
 			? "dni_active-context-menu-target"
 			: "";
 
-	$: paddingLeftStyleStringInPixels = `padding-left: ${depth * 10}px;`;
+	$: paddingLeftInPixels = depth * 10;
 
 	function fireTitleOnDoubleClick(e: MouseEvent) {
 		setActiveIdeFileAsSelf();
@@ -322,7 +322,7 @@
 	<div
 		id={getId()}
 		class="dni_tree-view-title dni_unselectable {isActiveIdeFileCssClass} {isFocusedCssClass} {isActiveContextMenuTargetCssClass}"
-		style="{paddingLeftStyleStringInPixels}"
+		style="{`padding-left: ${paddingLeftInPixels}px;`}"
 		title={titleText}
 		on:dblclick={(e) => fireTitleOnDoubleClick(e)}
 		on:click={(e) => fireTitleOnSingleClick(e)}
@@ -357,6 +357,10 @@
 
 	<div class="dni_tree-view-children">
 		{#if ideFile.isExpanded}
+			<div class="dni_tree-view-title-border"
+					style="{`left: ${paddingLeftInPixels + 8}px;`}">
+			</div>
+
 			{#each children ?? getChildFiles() ?? [] as child, i (child.nonce)}
 				<TreeViewMapper
 					ideFile={child}
@@ -372,7 +376,14 @@
 
 <style>
 	.dni_tree-view-children {
+		position: relative;
+	}
+
+	.dni_tree-view-title-border {
+		position: absolute;
 		border-left: 1px solid var(--vscode-tree-indentGuidesStroke);
+		height: 100%;
+		z-index: 1;
 	}
 
 	.dni_tree-view-title {
