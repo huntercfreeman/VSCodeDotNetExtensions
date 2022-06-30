@@ -4,6 +4,11 @@ export class ConstantsKeyboard {
     public static readonly KEY_SPACE: string = " ";
     public static readonly KEY_ESCAPE: string = "Escape";
 
+    public static readonly KEY_F2: string = "F2";
+    public static readonly KEY_C: string = "c";
+    public static readonly KEY_DEL: string = "Delete";
+    public static readonly KEY_V: string = "v";
+
     public static readonly KEY_ARROW_LEFT: string = "ArrowLeft";
     public static readonly KEY_ARROW_DOWN: string = "ArrowDown";
     public static readonly KEY_ARROW_UP: string = "ArrowUp";
@@ -44,6 +49,10 @@ export class ConstantsKeyboard {
         this.KEY_ARROW_RIGHT,
         this.KEY_ARROW_RIGHT_ALTERNATIVE,
         this.KEY_ENTER,
-        this.KEY_SPACE
+        this.KEY_SPACE,
+        this.KEY_F2,
+        this.KEY_C,
+        this.KEY_DEL,
+        this.KEY_V,
     ];
 }

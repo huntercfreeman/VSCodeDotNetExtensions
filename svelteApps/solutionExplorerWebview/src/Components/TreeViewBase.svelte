@@ -13,6 +13,7 @@
 	import { activeIdeFileHandleOnKeyDownWrap } from "./activeState";
 	import DotNetIdeFocusTrap from './MaterialDesign/DotNetIdeFocusTrap.svelte';
 	import { ConstantsFocusTrap } from '../../../../out/Constants/ConstantsFocusTrap';
+	import DotNetIdeInputText from './MaterialDesign/DotNetIdeInputText.svelte';
 
 	export let ideFile: IdeFile;
 	export let children: IdeFile[] | undefined;
@@ -32,6 +33,8 @@
 	let focusTrapHtmlElement;
 
 	let activeIdeFileWrapValue;
+
+	let toBeRenameFilenameWithExtension: string | undefined;
 
 	const unsubscribeActiveIdeFileWrap = activeIdeFileWrap.subscribe((value) => {
 		if (!value) {
@@ -119,9 +122,7 @@
 	
 	function fireTitleOnSingleClick(e: MouseEvent) {
 
-		console.log("focus focus trap");
 		if (focusTrapHtmlElement) {
-			console.log("focus focus trap");
 			focusTrapHtmlElement.focus();
 		}
 
@@ -168,10 +169,18 @@
 			ConstantsKeyboard.ALL_ARROW_RIGHT_KEYS.indexOf(e.key) !== -1
 		) {
 			performArrowRight(e);
-		} else if (ConstantsKeyboard.KEY_ENTER.indexOf(e.key) !== -1) {
+		} else if (ConstantsKeyboard.KEY_ENTER === e.key) {
 			performEnter(e);
-		} else if (ConstantsKeyboard.KEY_SPACE.indexOf(e.key) !== -1) {
+		} else if (ConstantsKeyboard.KEY_SPACE === e.key) {
 			performSpace(e);
+		} else if (ConstantsKeyboard.KEY_F2 === e.key) {
+			performF2(e);
+		} else if (ConstantsKeyboard.KEY_C === e.key) {
+			performC(e);
+		} else if (ConstantsKeyboard.KEY_DEL === e.key) {
+			performDel(e);
+		} else if (ConstantsKeyboard.KEY_V === e.key) {
+			performV(e);
 		}
 	}
 
@@ -301,9 +310,40 @@
 			titleOnSingleClick(undefined);
 		}
 	}
+	
+	function performF2(e: KeyboardEvent) {
+
+		// if (ideFile..contextualInformation.find()) {
+
+		// }
+
+		// toBeRenameFilenameWithExtension = contextMenuTargetValue.absoluteFilePath.filenameWithExtension;
+	}
+
+	function performC(e: KeyboardEvent) {
+		if (e.ctrlKey) {
+			console.log("ctrl + C was pressed");
+		}
+	}
+	
+	function performDel(e: KeyboardEvent) {
+		console.log("DEL was pressed");
+	}
+
+	function performV(e: KeyboardEvent) {
+		if (e.ctrlKey) {
+			console.log("ctrl + V was pressed");
+		}
+	}
 
 	function getId () {
 		return `dni_tree-view-title-${ideFile.nonce}`;
+	}
+	
+	function renameOnKeyDown (e: KeyboardEvent) {
+		if (ConstantsKeyboard.KEY_ESCAPE === e.key) {
+			toBeRenameFilenameWithExtension = undefined;
+		}
 	}
 
 	onMount(() => {
@@ -361,7 +401,13 @@
 		<span class="dni_tree-view-title-text">
 			<FileIconDisplay {ideFile} />
 
-			{titleText}
+			{#if toBeRenameFilenameWithExtension !== undefined}
+				<DotNetIdeInputText bind:value={toBeRenameFilenameWithExtension}
+					                placeholder="Rename {ideFile.absoluteFilePath.filenameWithExtension}"
+									onKeyDown={renameOnKeyDown} />
+			{:else}
+				{titleText}
+			{/if}
 		</span>
 	</div>
 
