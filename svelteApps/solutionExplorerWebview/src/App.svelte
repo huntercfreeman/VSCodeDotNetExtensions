@@ -8,15 +8,12 @@
 	import ContextMenu from "./Components/ContextMenu.svelte";
 	import SolutionFileControlButtons from "./Components/SolutionFileControlButtons.svelte";
 	import TreeViewMapper from "./Components/TreeViewMapper.svelte";
-	import { activeIdeFileHandleOnKeyDownWrap, activeIdeFileWrap, ActiveIdeFileWrapTuple } from "./Components/activeState"
-	import { ConstantsKeyboard } from "../../../out/Constants/ConstantsKeyboard";
     import { activeFocusTarget } from "./Components/activeFocus";
-import { ConstantsFocusTrap } from "../../../out/Constants/ConstantsFocusTrap";
+	import { ConstantsFocusTrap } from "../../../out/Constants/ConstantsFocusTrap";
 
 	let dotNetSolutionFiles: DotNetSolutionFile[] = [];
 	let selectedDotNetSolutionFile: DotNetSolutionFile | undefined;
 
-	$: activeIdeFileHandleOnKeyDownValue = $activeIdeFileHandleOnKeyDownWrap;
 	$: activeFocusTargetValue = $activeFocusTarget;
 
 	$: solutionExplorerHasFocus = activeFocusTargetValue

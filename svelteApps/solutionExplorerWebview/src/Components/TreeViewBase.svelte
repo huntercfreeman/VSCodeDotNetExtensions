@@ -72,6 +72,16 @@
 
 			// Listen to key down events again
 			activeIdeFileHandleOnKeyDownWrap.set(handleOnKeyDown);
+
+			// If a currently active ide file has their chevron expansion toggled with a mouse event
+			// the active ide file's focus trap loses focus. This ensures the focus trap is refocused.
+			let treeViewBaseActiveIdeFileFocusTrap = document
+				.getElementById(ConstantsFocusTrap
+					.getFocusTrapId(ConstantsFocusTrap.NAMESPACE_ID_TREE_VIEW_BASE_ACTIVE, 0, 0));
+		
+			if (treeViewBaseActiveIdeFileFocusTrap) {
+				treeViewBaseActiveIdeFileFocusTrap.focus();
+			}
 		}
 	});
 
