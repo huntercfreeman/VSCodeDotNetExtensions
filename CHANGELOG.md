@@ -183,6 +183,21 @@ All notable changes to the "dot-net-ide" extension will be documented in this fi
 - OnClick of a context menu option will set focus to it. (Should it not be something like 'copy' where the context menu is told to close after the button is pressed.)
 - Indicate to user whether the solution explorer is in focus by making the active IdeFile have a background-color that indicates inactivity and is visually different from the background-color used when in focus.
 
+## [1.4.1] - 2022-06-30
+
+### Bug Fixes
+- Directories that contain 'extensions' no longer cause an exception.
+    - Example: 'MyDirectory.cs' was causing the extension to crash.
+- Don't lose focus on active ide file when using the mouse to click on an
+    expansion chevron to show child files.
+- Change tree view to indent child files using padding instead of margin.
+    - This causes the tree view to more accurrately replicate Visual Studio Code's tree views. This is due to the entirety of the row that an active TreeView entry is on will be highlighted not just the small part of the row which contains the TreeView entry filename.
+        - In short, highlight 100% of the width not only the filename.
+- Closing the context menu will set focus back to the active ide file in the tree view.
+### Changes
+- TreeView active file entry leverages a focus trap. No longer are there global on key down events for when the extension webview is active.
+    - The scroll into view is provided by the native functionality of settings focus to an element off screen that is in html. It used to be done by a relatively complex observing of every element and what percent of it was out of view.
+
 ---
 
 ## Keep this keepachangelog link
