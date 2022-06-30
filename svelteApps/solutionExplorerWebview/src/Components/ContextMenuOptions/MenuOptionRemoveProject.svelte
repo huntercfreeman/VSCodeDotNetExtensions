@@ -5,7 +5,7 @@
     import { MessageUpdateRemoveProject } from "../../../../../out/Messages/Update/MessageUpdateRemoveProject";
 
     export let closeMenu;
-    export let idNamespace: string;
+    export let namespaceId: string;
     export let index: number;
 	export let category;
 
@@ -52,7 +52,7 @@
             onClick={showConfirmQuestion}
 			{closeMenu}
             text="Remove Project (no files are deleted)."
-            {idNamespace}
+            {namespaceId}
             {index}
             {category}
             bind:isFocused={isFocused}

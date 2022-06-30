@@ -23,70 +23,70 @@
 
     export let contextualInformation: ContextualInformationDatum[];
     export let closeMenu;
-    export let idNamespace: string;
+    export let namespaceId: string;
 	export let category;
 	export let getNextIndex;
 </script>
 
 {#each contextualInformation as contextualInformationDatum}
     {#if ContextualInformationDatum.checkDatumEquality(ContextualInformationDatum.createNewTemplatedFile, contextualInformationDatum)}
-        <MenuOptionCreateNewTemplatedFile {closeMenu} {idNamespace} index={getNextIndex()} {category} />
+        <MenuOptionCreateNewTemplatedFile {closeMenu} {namespaceId} index={getNextIndex()} {category} />
 
     {:else if ContextualInformationDatum.checkDatumEquality(ContextualInformationDatum.createNewEmptyFile, contextualInformationDatum)}
-        <MenuOptionCreateNewEmptyFile {closeMenu} {idNamespace} index={getNextIndex()} {category}  />
+        <MenuOptionCreateNewEmptyFile {closeMenu} {namespaceId} index={getNextIndex()} {category}  />
 
     {:else if ContextualInformationDatum.checkDatumEquality(ContextualInformationDatum.refreshChildFiles, contextualInformationDatum)}
-        <MenuOptionRefreshChildFiles {closeMenu} {idNamespace} index={getNextIndex()} {category}  />
+        <MenuOptionRefreshChildFiles {closeMenu} {namespaceId} index={getNextIndex()} {category}  />
 
     {:else if ContextualInformationDatum.checkDatumEquality(ContextualInformationDatum.createDirectory, contextualInformationDatum)}
-        <MenuOptionCreateDirectory {closeMenu} {idNamespace} index={getNextIndex()} {category}  />
+        <MenuOptionCreateDirectory {closeMenu} {namespaceId} index={getNextIndex()} {category}  />
 
     {:else if ContextualInformationDatum.checkDatumEquality(ContextualInformationDatum.startWithoutDebugging, contextualInformationDatum)}
-        <MenuOptionStartWithoutDebugging {closeMenu} {idNamespace} index={getNextIndex()} {category}  />
+        <MenuOptionStartWithoutDebugging {closeMenu} {namespaceId} index={getNextIndex()} {category}  />
 
     {:else if ContextualInformationDatum.checkDatumEquality(ContextualInformationDatum.startDebugging, contextualInformationDatum)}
-        <MenuOptionStartDebugging {closeMenu} {idNamespace} index={getNextIndex()} {category}  />
+        <MenuOptionStartDebugging {closeMenu} {namespaceId} index={getNextIndex()} {category}  />
 
     {:else if ContextualInformationDatum.checkDatumEquality(ContextualInformationDatum.createNewCSharpProject, contextualInformationDatum)}
-        <MenuOptionCreateNewCSharpProject {closeMenu} {idNamespace} index={getNextIndex()} {category}  />
+        <MenuOptionCreateNewCSharpProject {closeMenu} {namespaceId} index={getNextIndex()} {category}  />
 
     {:else if ContextualInformationDatum.checkDatumEquality(ContextualInformationDatum.createNewFSharpProject, contextualInformationDatum)}
-        <MenuOptionCreateNewFSharpProject {closeMenu} {idNamespace} index={getNextIndex()} {category}  />
+        <MenuOptionCreateNewFSharpProject {closeMenu} {namespaceId} index={getNextIndex()} {category}  />
 
     {:else if ContextualInformationDatum.checkDatumEquality(ContextualInformationDatum.executeFSharpScriptFile, contextualInformationDatum)}
-        <MenuOptionExecuteFSharpScriptFile {closeMenu} {idNamespace} index={getNextIndex()} {category}  />
+        <MenuOptionExecuteFSharpScriptFile {closeMenu} {namespaceId} index={getNextIndex()} {category}  />
 
     {:else if ContextualInformationDatum.checkDatumEquality(ContextualInformationDatum.addExistingProject, contextualInformationDatum)}
-        <MenuOptionAddExistingProject {closeMenu} {idNamespace} index={getNextIndex()} {category}  />
+        <MenuOptionAddExistingProject {closeMenu} {namespaceId} index={getNextIndex()} {category}  />
 
     {:else if ContextualInformationDatum.checkDatumEquality(ContextualInformationDatum.addProjectReference, contextualInformationDatum)}
-        <MenuOptionAddProjectReference {closeMenu} {idNamespace} index={getNextIndex()} {category}  />
+        <MenuOptionAddProjectReference {closeMenu} {namespaceId} index={getNextIndex()} {category}  />
 
     {:else if ContextualInformationDatum.checkDatumEquality(ContextualInformationDatum.removeProjectReference, contextualInformationDatum)}
-        <MenuOptionRemoveProjectReference {closeMenu} {idNamespace} index={getNextIndex()} {category}  />
+        <MenuOptionRemoveProjectReference {closeMenu} {namespaceId} index={getNextIndex()} {category}  />
 
     {:else if ContextualInformationDatum.checkDatumEquality(ContextualInformationDatum.removeNugetPackageReference, contextualInformationDatum)}
-        <MenuOptionRemoveNugetPackageReference {closeMenu} {idNamespace} index={getNextIndex()} {category}  />
+        <MenuOptionRemoveNugetPackageReference {closeMenu} {namespaceId} index={getNextIndex()} {category}  />
 
     {:else if ContextualInformationDatum.checkDatumEquality(ContextualInformationDatum.putProjectInSolutionFolder, contextualInformationDatum)}
-        <MenuOptionPutProjectInSolutionFolder {closeMenu} {idNamespace} index={getNextIndex()} {category}  />
+        <MenuOptionPutProjectInSolutionFolder {closeMenu} {namespaceId} index={getNextIndex()} {category}  />
 
     {:else if ContextualInformationDatum.checkDatumEquality(ContextualInformationDatum.removeProject, contextualInformationDatum)}
-        <MenuOptionRemoveProject {closeMenu} {idNamespace} index={getNextIndex()} {category}  />
+        <MenuOptionRemoveProject {closeMenu} {namespaceId} index={getNextIndex()} {category}  />
 
     {:else if ContextualInformationDatum.checkDatumEquality(ContextualInformationDatum.copyFile, contextualInformationDatum)}
-        <MenuOptionCopyFile {closeMenu} {idNamespace} index={getNextIndex()} {category}  />
+        <MenuOptionCopyFile {closeMenu} {namespaceId} index={getNextIndex()} {category}  />
 
     {:else if ContextualInformationDatum.checkDatumEquality(ContextualInformationDatum.cutFile, contextualInformationDatum)}
-        <MenuOptionCutFile {closeMenu} {idNamespace} index={getNextIndex()} {category}  />
+        <MenuOptionCutFile {closeMenu} {namespaceId} index={getNextIndex()} {category}  />
 
     {:else if ContextualInformationDatum.checkDatumEquality(ContextualInformationDatum.deleteFile, contextualInformationDatum)}
-        <MenuOptionDeleteFile {closeMenu} {idNamespace} index={getNextIndex()} {category}  />
+        <MenuOptionDeleteFile {closeMenu} {namespaceId} index={getNextIndex()} {category}  />
 
     {:else if ContextualInformationDatum.checkDatumEquality(ContextualInformationDatum.paste, contextualInformationDatum)}
-        <MenuOptionPasteFile {closeMenu} {idNamespace} index={getNextIndex()} {category}  />
+        <MenuOptionPasteFile {closeMenu} {namespaceId} index={getNextIndex()} {category}  />
 
     {:else if ContextualInformationDatum.checkDatumEquality(ContextualInformationDatum.rename, contextualInformationDatum)}
-        <MenuOptionRename {closeMenu} {idNamespace} index={getNextIndex()} {category}  />
+        <MenuOptionRename {closeMenu} {namespaceId} index={getNextIndex()} {category}  />
     {/if}
 {/each}

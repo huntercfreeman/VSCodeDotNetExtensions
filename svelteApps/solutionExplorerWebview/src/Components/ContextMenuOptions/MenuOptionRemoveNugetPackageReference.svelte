@@ -5,7 +5,7 @@
     import { MessageUpdateRemoveNugetPackageReference } from "../../../../../out/Messages/Update/MessageUpdateRemoveNugetPackageReference";
 
     export let closeMenu;
-    export let idNamespace: string;
+    export let namespaceId: string;
     export let index: number;
 	export let category;
 
@@ -53,7 +53,7 @@
             onClick={showConfirmQuestion}
 			{closeMenu}
             text="Remove Nuget Package Reference."
-            {idNamespace}
+            {namespaceId}
             {index}
             {category}
             bind:isFocused={isFocused}

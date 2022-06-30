@@ -4,7 +4,7 @@
     import { MessageUpdateCopyAny } from "../../../../../out/Messages/Update/MessageUpdateCopyAny";
 
     export let closeMenu;
-    export let idNamespace: string;
+    export let namespaceId: string;
     export let index: number;
 	export let category;
 
@@ -39,7 +39,7 @@
             onClick={copyOnClick}
 			{closeMenu}
             text="Copy."
-            {idNamespace}
+            {namespaceId}
             {index}
             {category}
             bind:isFocused={isFocused}

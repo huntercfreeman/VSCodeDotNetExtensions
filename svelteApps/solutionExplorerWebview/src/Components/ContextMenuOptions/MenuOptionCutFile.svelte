@@ -5,7 +5,7 @@
     import { MessageUpdateCutAny } from "../../../../../out/Messages/Update/MessageUpdateCutAny";
 
     export let closeMenu;
-    export let idNamespace: string;
+    export let namespaceId: string;
     export let index: number;
 	export let category;
 
@@ -40,7 +40,7 @@
             onClick={cutOnClick}
 			{closeMenu}
             text="Cut."
-            {idNamespace}
+            {namespaceId}
             {index}
             {category}
             bind:isFocused={isFocused}

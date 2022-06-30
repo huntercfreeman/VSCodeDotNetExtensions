@@ -11,6 +11,7 @@
 	import { activeIdeFileHandleOnKeyDownWrap, activeIdeFileWrap, ActiveIdeFileWrapTuple } from "./Components/activeState"
 	import { ConstantsKeyboard } from "../../../out/Constants/ConstantsKeyboard";
     import { activeFocusTarget } from "./Components/activeFocus";
+import { ConstantsFocusTrap } from "../../../out/Constants/ConstantsFocusTrap";
 
 	let dotNetSolutionFiles: DotNetSolutionFile[] = [];
 	let selectedDotNetSolutionFile: DotNetSolutionFile | undefined;
@@ -22,7 +23,17 @@
 		? "dni_focused"
 		: "";
 
-	window.onfocus = () => activeFocusTarget.set(true);
+	window.onfocus = () => {
+		let treeViewBaseActiveIdeFileFocusTrap = document
+			.getElementById(ConstantsFocusTrap
+				.getFocusTrapId(ConstantsFocusTrap.NAMESPACE_ID_TREE_VIEW_BASE_ACTIVE, 0, 0));
+		
+		if (treeViewBaseActiveIdeFileFocusTrap) {
+			treeViewBaseActiveIdeFileFocusTrap.focus();
+		}
+
+		activeFocusTarget.set(true);
+	}
 	window.onblur = () => activeFocusTarget.set(undefined);
 	
 	function getSolutionFilesInWorkspace() {

@@ -5,7 +5,7 @@
     import { MessageUpdateRemoveProjectReference } from "../../../../../out/Messages/Update/MessageUpdateRemoveProjectReference";
 
     export let closeMenu;
-    export let idNamespace: string;
+    export let namespaceId: string;
     export let index: number;
 	export let category;
 
@@ -51,7 +51,7 @@
             onClick={showConfirmQuestion}
 			{closeMenu}
             text="Remove Project Reference."
-            {idNamespace}
+            {namespaceId}
             {index}
             {category}
             bind:isFocused={isFocused}

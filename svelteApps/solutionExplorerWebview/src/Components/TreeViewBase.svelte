@@ -12,6 +12,7 @@
 	} from "./activeState";
 	import { activeIdeFileHandleOnKeyDownWrap } from "./activeState";
 	import DotNetIdeFocusTrap from './MaterialDesign/DotNetIdeFocusTrap.svelte';
+import { ConstantsFocusTrap } from '../../../../out/Constants/ConstantsFocusTrap';
 
 	export let ideFile: IdeFile;
 	export let children: IdeFile[] | undefined;
@@ -320,7 +321,7 @@
 
 		{#if isActiveIdeFile}
 			<DotNetIdeFocusTrap bind:isFocused={isFocused}
-				idNamespace="tree-view-base-active"
+				namespaceId={ConstantsFocusTrap.NAMESPACE_ID_TREE_VIEW_BASE_ACTIVE}
 				onKeyDown={handleOnKeyDown}
 				bind:inputHtmlElement={focusTrapHtmlElement} />
 		{/if}

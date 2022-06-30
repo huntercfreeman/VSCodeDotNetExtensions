@@ -9,7 +9,7 @@
     import { MessageReadNugetPackageReferencesInProject } from "../../../../../out/Messages/Read/MessageReadNugetPackageReferencesInProject";
 
     export let closeMenu;
-    export let idNamespace: string;
+    export let namespaceId: string;
     export let index: number;
 	export let category;
 
@@ -94,7 +94,7 @@
             onClick={refreshOnClick}
 			{closeMenu}
             text="Refresh Child Files."
-            {idNamespace}
+            {namespaceId}
             {index}
             {category}
             bind:isFocused={isFocused}

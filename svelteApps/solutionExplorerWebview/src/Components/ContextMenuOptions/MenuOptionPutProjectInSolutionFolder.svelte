@@ -7,7 +7,7 @@
 import DotNetIdeInputText from "../MaterialDesign/DotNetIdeInputText.svelte";
     
     export let closeMenu;
-    export let idNamespace: string;
+    export let namespaceId: string;
     export let index: number;
 	export let category;
 
@@ -61,7 +61,7 @@ import DotNetIdeInputText from "../MaterialDesign/DotNetIdeInputText.svelte";
             onClick={startFormPutInSolutionFolder}
 			{closeMenu}
             text="Put in Solution Folder"
-            {idNamespace}
+            {namespaceId}
             {index}
             {category}
             bind:isFocused={isFocused}

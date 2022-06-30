@@ -5,7 +5,7 @@
     import { MessageUpdateExistingProjectIntoSolution } from "../../../../../out/Messages/Update/MessageUpdateExistingProjectIntoSolution";
 
     export let closeMenu;
-    export let idNamespace: string;
+    export let namespaceId: string;
     export let index: number;
 	export let category;
     
@@ -45,7 +45,7 @@
             onClick={addExistingProject}
 			{closeMenu}
             text="Add Existing Project."
-            {idNamespace}
+            {namespaceId}
             {index}
             {category}
             bind:isFocused={isFocused}

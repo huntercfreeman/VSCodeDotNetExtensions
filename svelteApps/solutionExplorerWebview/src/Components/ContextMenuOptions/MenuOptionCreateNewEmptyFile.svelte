@@ -5,7 +5,7 @@
     import { MessageCreateEmptyFileInAny } from "../../../../../out/Messages/Create/MessageCreateEmptyFileInAny";
 
 	export let closeMenu;
-    export let idNamespace: string;
+    export let namespaceId: string;
     export let index: number;
 	export let category;
 	
@@ -52,7 +52,7 @@
 			onClick={beginFormAddEmptyFileOnClick}
 			{closeMenu}
 			text="Create empty file."
-			{idNamespace}
+			{namespaceId}
 			{index}
             {category}
 			bind:isFocused={isFocused}

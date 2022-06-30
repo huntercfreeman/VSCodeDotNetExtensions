@@ -5,7 +5,7 @@
     import { MessageUpdateRenameAny } from "../../../../../out/Messages/Update/MessageUpdateRenameAny";
 
     export let closeMenu;
-    export let idNamespace: string;
+    export let namespaceId: string;
     export let index: number;
 	export let category;
 
@@ -52,7 +52,7 @@
 			onClick={beginFormRenameOnClick}
 			{closeMenu}
 			text="Rename."
-			{idNamespace}
+			{namespaceId}
 			{index}
             {category}
 			bind:isFocused={isFocused}

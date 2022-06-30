@@ -5,7 +5,7 @@
     import { MessageExecuteProjectDebugging } from "../../../../../out/Messages/Execute/MessageExecuteProjectDebugging";
 
     export let closeMenu;
-    export let idNamespace: string;
+    export let namespaceId: string;
     export let index: number;
 	export let category;
 
@@ -52,7 +52,7 @@
             onClick={startWithoutDebugging}
 			{closeMenu}
             text="Start debugging."
-            {idNamespace}
+            {namespaceId}
             {index}
             {category}
             bind:isFocused={isFocused}

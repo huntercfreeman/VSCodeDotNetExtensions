@@ -7,6 +7,7 @@
 	import { activeIdeFileWrap } from "./activeState.js";
 	import { ContextualInformationDatumKind } from "../../../../out/ContextMenus/ContextualInformationDatumKind";
 	import type { ContextualInformationDatum } from "../../../../out/ContextMenus/ContextualInformationDatum";
+	import { ConstantsFocusTrap } from "../../../../out/Constants/ConstantsFocusTrap";
 	
 	$: activeIdeFileWrapValue = $activeIdeFileWrap?.ideFile;
 
@@ -46,6 +47,14 @@
 		showMenu = false;
 
 		contextMenuTarget.set(undefined);
+
+		let treeViewBaseActiveIdeFileFocusTrap = document
+			.getElementById(ConstantsFocusTrap
+				.getFocusTrapId(ConstantsFocusTrap.NAMESPACE_ID_TREE_VIEW_BASE_ACTIVE, 0, 0));
+		
+		if (treeViewBaseActiveIdeFileFocusTrap) {
+			treeViewBaseActiveIdeFileFocusTrap.focus();
+		}
 	}
 
 	function extendOnKeyDown(keyboardEvent) {
@@ -89,7 +98,7 @@
 	<Menu {...pos} on:click={closeMenu} on:clickoutside={closeMenu}>
 		{#if (contextMenuTargetValue.contextualInformation?.length ?? 0) === 0}
 			<MenuOption text="No Context Menu Options for this item."
-			            idNamespace="context-menu"
+			            namespaceId={ConstantsFocusTrap.NAMESPACE_ID_CONTEXT_MENU}
 						category={-1}
 						index={-1}
 						{closeMenu}
@@ -102,7 +111,7 @@
 						category
 					)}
 					{closeMenu}
-					idNamespace="context-menu"
+					namespaceId={ConstantsFocusTrap.NAMESPACE_ID_CONTEXT_MENU}
 					{category}
 					{getNextIndex}
 				/>

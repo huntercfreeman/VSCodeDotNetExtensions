@@ -4,7 +4,7 @@
     import { MessageUpdatePasteIntoAny } from "../../../../../out/Messages/Update/MessageUpdatePasteIntoAny";
 
     export let closeMenu;
-    export let idNamespace: string;
+    export let namespaceId: string;
     export let index: number;
 	export let category;
 
@@ -42,7 +42,7 @@
             onClick={pasteOnClick}
 			{closeMenu}
             text="Paste."
-            {idNamespace}
+            {namespaceId}
             {index}
             {category}
             bind:isFocused={isFocused}

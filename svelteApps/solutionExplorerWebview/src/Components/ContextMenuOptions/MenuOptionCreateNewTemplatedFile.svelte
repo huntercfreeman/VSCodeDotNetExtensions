@@ -8,7 +8,7 @@
 import DotNetIdeInputCheckbox from "../MaterialDesign/DotNetIdeInputCheckbox.svelte";
 
     export let closeMenu;
-    export let idNamespace: string;
+    export let namespaceId: string;
     export let index: number;
 	export let category;
 
@@ -76,7 +76,7 @@ import DotNetIdeInputCheckbox from "../MaterialDesign/DotNetIdeInputCheckbox.sve
             onClick={beginFormAddFileWithTemplateNameOnClick}
 			{closeMenu}
             text="Create templated file."
-            {idNamespace}
+            {namespaceId}
             {index}
             {category}
             bind:isFocused={isFocused}

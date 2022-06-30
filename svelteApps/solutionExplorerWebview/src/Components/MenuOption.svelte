@@ -21,7 +21,7 @@
 			while (previousFocusTrap === undefined) {
 				previousFocusTrap = document
 					.getElementById(ConstantsFocusTrap
-						.getFocusTrapId(idNamespace, currentCategory, currentIndex));
+						.getFocusTrapId(namespaceId, currentCategory, currentIndex));
 
 				if (currentIndex < 0) {
 
@@ -36,7 +36,7 @@
 			// index out of bounds will not occur from not checking index < list.length - 1
 			// the variable will just be set to undefined and nothing will get ran
 
-			let nextFocusTrap = document.getElementById(ConstantsFocusTrap.getFocusTrapId(idNamespace, category, index + 1));
+			let nextFocusTrap = document.getElementById(ConstantsFocusTrap.getFocusTrapId(namespaceId, category, index + 1));
 
 			if (nextFocusTrap) {
 				nextFocusTrap.focus();
@@ -46,7 +46,7 @@
 			closeMenu();
 		}
 	};
-	export let idNamespace: string;
+	export let namespaceId: string;
     export let index: number;
 	export let onClickStopPropagation = false;
 	export let onClick = undefined;
@@ -82,7 +82,7 @@ import { ConstantsFocusTrap } from "../../../../out/Constants/ConstantsFocusTrap
 
 <div class:disabled={isDisabled} on:click={handleClick}>
 	<DotNetIdeFocusTrap onKeyDown={onKeyDown}
-		                {idNamespace}
+		                {namespaceId}
 						{index}
 						{category}
 						bind:isFocused={isFocused}

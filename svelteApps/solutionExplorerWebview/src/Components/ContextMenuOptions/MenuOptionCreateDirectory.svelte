@@ -7,7 +7,7 @@
     import { FileKind } from "../../../../../out/FileSystem/FileKind";
 
     export let closeMenu;
-    export let idNamespace: string;
+    export let namespaceId: string;
     export let index: number;
 	export let category;
     
@@ -56,7 +56,7 @@
             onClick={beginFormCreateDirectoryOnClick}
 			{closeMenu}
             text="Create Directory."
-            {idNamespace}
+            {namespaceId}
             {index}
             {category}
             bind:isFocused={isFocused}
